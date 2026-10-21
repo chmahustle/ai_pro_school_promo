@@ -1,0 +1,168 @@
+{
+  "videos": [
+    {
+      "id": "ai2026-v-guldaria",
+      "ytid": "eyqVEf-2294",
+      "author": "Гульдария",
+      "context": "400 000 ₸ за 2 недели",
+      "text": "Гульдария · 400 000 ₸ за 2 недели",
+      "src": "/stories/ai2026/video-guldaria.jpg",
+      "embed": "https://www.youtube.com/embed/eyqVEf-2294"
+    },
+    {
+      "id": "ai2026-v-shynar",
+      "ytid": "IsYI0XQy9A8",
+      "author": "Шынар",
+      "context": "500 000 ₸",
+      "text": "Шынар · 500 000 ₸",
+      "src": "/stories/ai2026/video-shynar.jpg",
+      "embed": "https://www.youtube.com/embed/IsYI0XQy9A8"
+    },
+    {
+      "id": "ai2026-v-moldir",
+      "ytid": "_vHOfJPFbUY",
+      "author": "Молдир",
+      "context": "1 000 000 ₸ в месяц",
+      "text": "Молдир · 1 000 000 ₸ в месяц",
+      "src": "/stories/ai2026/video-moldir.jpg",
+      "embed": "https://www.youtube.com/embed/_vHOfJPFbUY"
+    },
+    {
+      "id": "ai2026-v-r1",
+      "ytid": "cKWY9WswkBg",
+      "author": "Отзыв ученика курса",
+      "context": "видеоотзыв после курса",
+      "text": "Видеоотзыв с курса «ИИ-креатор»",
+      "src": "/stories/ai2026/video-review-1.jpg",
+      "embed": "https://www.youtube.com/embed/cKWY9WswkBg"
+    },
+    {
+      "id": "ai2026-v-r2",
+      "ytid": "IjdBjuBEsYg",
+      "author": "Отзыв ученика курса",
+      "context": "видеоотзыв после курса",
+      "text": "Видеоотзыв с курса «ИИ-креатор»",
+      "src": "/stories/ai2026/video-review-2.jpg",
+      "embed": "https://www.youtube.com/embed/IjdBjuBEsYg"
+    },
+    {
+      "id": "ai2026-v-r3",
+      "ytid": "6MNlwnkbZwY",
+      "author": "Отзыв ученика курса",
+      "context": "видеоотзыв после курса",
+      "text": "Видеоотзыв с курса «ИИ-креатор»",
+      "src": "/stories/ai2026/video-review-3.jpg",
+      "embed": "https://www.youtube.com/embed/6MNlwnkbZwY"
+    },
+    {
+      "id": "ai2026-v-r4",
+      "ytid": "3BGOZYQYhXU",
+      "author": "Отзыв ученика курса",
+      "context": "видеоотзыв после курса",
+      "text": "Видеоотзыв с курса «ИИ-креатор»",
+      "src": "/stories/ai2026/video-review-4.jpg",
+      "embed": "https://www.youtube.com/embed/3BGOZYQYhXU"
+    },
+    {
+      "id": "ai2026-v-r5",
+      "ytid": "D6k9I_fcdL8",
+      "author": "Отзыв ученика курса",
+      "context": "видеоотзыв после курса",
+      "text": "Видеоотзыв с курса «ИИ-креатор»",
+      "src": "/stories/ai2026/video-review-5.jpg",
+      "embed": "https://www.youtube.com/embed/D6k9I_fcdL8"
+    }
+  ],
+  "chats": [
+    {
+      "id": "ai2026-c-1",
+      "src": "/stories/ai2026/chat-1.jpg",
+      "url": "https://static.tildacdn.pro/tild6333-6366-4263-b531-366233336332/image_17.jpg"
+    },
+    {
+      "id": "ai2026-c-2",
+      "src": "/stories/ai2026/chat-2.png",
+      "url": "https://static.tildacdn.pro/tild3432-6166-4561-a566-666633333635/photo.png"
+    },
+    {
+      "id": "ai2026-c-3",
+      "src": "/stories/ai2026/chat-3.png",
+      "url": "https://static.tildacdn.pro/tild6637-3565-4463-b837-626530323864/photo.png"
+    },
+    {
+      "id": "ai2026-c-4",
+      "src": "/stories/ai2026/chat-4.jpeg",
+      "url": "https://static.tildacdn.pro/tild3434-6339-4366-b631-613137356233/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "id": "ai2026-c-5",
+      "src": "/stories/ai2026/chat-5.jpeg",
+      "url": "https://static.tildacdn.pro/tild3632-3836-4830-a630-613362623537/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "id": "ai2026-c-6",
+      "src": "/stories/ai2026/chat-6.jpeg",
+      "url": "https://static.tildacdn.pro/tild6435-6436-4331-b363-363162323962/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "id": "ai2026-c-7",
+      "src": "/stories/ai2026/chat-7.jpeg",
+      "url": "https://static.tildacdn.pro/tild3663-6631-4364-a233-363934636461/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "id": "ai2026-c-8",
+      "src": "/stories/ai2026/chat-8.jpeg",
+      "url": "https://static.tildacdn.pro/tild3164-6232-4666-b435-643031353834/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "id": "ai2026-c-9",
+      "src": "/stories/ai2026/chat-9.jpeg",
+      "url": "https://static.tildacdn.pro/tild6434-3734-4037-a162-306164353061/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "id": "ai2026-c-10",
+      "src": "/stories/ai2026/chat-10.jpeg",
+      "url": "https://static.tildacdn.pro/tild3663-3932-4465-b266-643337626630/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "id": "ai2026-c-11",
+      "src": "/stories/ai2026/chat-11.jpeg",
+      "url": "https://static.tildacdn.pro/tild3438-3761-4138-b566-326261383934/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "id": "ai2026-c-12",
+      "src": "/stories/ai2026/chat-12.jpeg",
+      "url": "https://static.tildacdn.pro/tild3338-3136-4135-b235-373764303634/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "id": "ai2026-c-13",
+      "src": "/stories/ai2026/chat-13.jpeg",
+      "url": "https://static.tildacdn.pro/tild6134-3763-4263-b462-353635363535/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "id": "ai2026-c-14",
+      "src": "/stories/ai2026/chat-14.jpeg",
+      "url": "https://static.tildacdn.pro/tild6537-6330-4164-b433-633832323632/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "id": "ai2026-c-15",
+      "src": "/stories/ai2026/chat-15.jpeg",
+      "url": "https://static.tildacdn.pro/tild6366-6638-4631-b835-656366393231/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "id": "ai2026-c-16",
+      "src": "/stories/ai2026/chat-16.jpeg",
+      "url": "https://static.tildacdn.pro/tild3839-6232-4462-a537-313731336330/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "id": "ai2026-c-17",
+      "src": "/stories/ai2026/chat-17.jpeg",
+      "url": "https://static.tildacdn.pro/tild3465-6264-4139-b964-323038633761/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "id": "ai2026-c-18",
+      "src": "/stories/ai2026/chat-18.jpeg",
+      "url": "https://static.tildacdn.pro/tild3264-3631-4064-b066-353361383166/WhatsApp_Image_2025-.jpeg"
+    }
+  ]
+}

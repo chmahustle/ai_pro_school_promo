@@ -1,0 +1,555 @@
+@import "tailwindcss";
+
+/* hover: без media (hover: hover) — эффекты работают и в браузерах, которые сообщают hover: none (встроенные превью, гибридные ноутбуки) */
+@custom-variant hover (&:hover);
+
+/* Mesh vars first — referenced from @theme background-image tokens */
+:root {
+  --mesh-home:
+    radial-gradient(ellipse 55% 45% at 50% 42%, rgba(255, 255, 255, 0.95) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 55% at 12% 18%, rgba(232, 48, 126, 0.22) 0%, transparent 58%),
+    radial-gradient(ellipse 65% 50% at 88% 22%, rgba(184, 166, 255, 0.38) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 78% 78%, rgba(126, 200, 255, 0.32) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 55% at 18% 82%, rgba(255, 176, 136, 0.4) 0%, transparent 58%),
+    radial-gradient(ellipse 50% 40% at 50% 100%, rgba(243, 241, 255, 0.8) 0%, transparent 60%),
+    #f6f5fa;
+
+  --mesh-business:
+    radial-gradient(ellipse 55% 45% at 50% 42%, rgba(255, 255, 255, 0.96) 0%, transparent 70%),
+    radial-gradient(ellipse 65% 50% at 15% 25%, rgba(126, 200, 255, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 55% at 85% 20%, rgba(184, 166, 255, 0.4) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 45% at 70% 85%, rgba(20, 18, 31, 0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 20% 80%, rgba(228, 233, 255, 0.7) 0%, transparent 55%),
+    #f6f5fa;
+
+  --mesh-freelance:
+    radial-gradient(ellipse 55% 45% at 50% 42%, rgba(255, 255, 255, 0.95) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 55% at 18% 20%, rgba(255, 176, 136, 0.45) 0%, transparent 58%),
+    radial-gradient(ellipse 65% 50% at 82% 28%, rgba(232, 48, 126, 0.2) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 75% 80%, rgba(255, 176, 136, 0.28) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 25% 85%, rgba(251, 208, 227, 0.55) 0%, transparent 55%),
+    #f6f5fa;
+
+  --mesh-career:
+    radial-gradient(ellipse 55% 45% at 50% 42%, rgba(255, 255, 255, 0.96) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 55% at 20% 22%, rgba(184, 166, 255, 0.4) 0%, transparent 55%),
+    radial-gradient(ellipse 65% 50% at 85% 30%, rgba(126, 200, 255, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 45% at 60% 85%, rgba(236, 233, 255, 0.7) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 15% 75%, rgba(228, 233, 255, 0.6) 0%, transparent 55%),
+    #f6f5fa;
+}
+
+/* ---------------------------------------------------------------------------
+   Design tokens — AI Pro School
+   Mesh-градиент (Wonder): только фон hero / финальный CTA / мягкие разделители.
+   Текст и карточки — на surface / bg / ink. Лайм удалён.
+--------------------------------------------------------------------------- */
+@theme {
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  /* --font-display задаёт next/font (Inter Tight) на <html>; стек с Manrope — в @utility ниже */
+
+  /* Surfaces */
+  --color-bg: #f6f5fa;
+  --color-surface: #ffffff;
+  --color-lavender: #ece9ff;
+  --color-soft-100: #f3f1ff;
+  --color-soft-200: #e4e9ff;
+  --color-peach: #ffe4d6;
+  --color-peach-100: #fff1ea;
+
+  /* Ink */
+  --color-ink: #14121f;
+  --color-ink-700: #2a2740;
+  --color-ink-500: #5f5b78;
+  --color-ink-300: #a6a3ba;
+  --color-ink-200: #d6d4e2;
+  --color-ink-100: #ebeaf2;
+
+  /* Тёмные поверхности (секции-панели, футер, тёмные карточки); текст остаётся ink */
+  --color-dark: #171717;
+
+  /* Brand — magenta (только мелкие акценты: иконки, бейджи, подчёркивания) */
+  --color-brand: #e8307e;
+  --color-brand-600: #c9246a;
+  --color-brand-700: #a01d56;
+  --color-brand-200: #f7b0cf;
+  --color-brand-100: #fbd0e3;
+  --color-brand-50: #fde8f1;
+
+  /* Mesh blob colors (для документации / JS) */
+  --color-mesh-pink: #e8307e;
+  --color-mesh-peach: #ffb088;
+  --color-mesh-sky: #7ec8ff;
+  --color-mesh-lavender: #b8a6ff;
+
+  /* Semantic */
+  --color-success: #1f9d6b;
+  --color-danger: #d9304f;
+
+  /* Radii */
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+  --radius-3xl: 40px;
+  --radius-pill: 999px;
+
+  /* Shadows — нейтральные, без индиго-glow */
+  --shadow-soft: 0 8px 30px rgba(20, 18, 31, 0.06);
+  --shadow-card: 0 16px 50px rgba(20, 18, 31, 0.1);
+  --shadow-float: 0 24px 60px -10px rgba(20, 18, 31, 0.18);
+  --shadow-pill: 0 2px 0 rgba(20, 18, 31, 0.04), 0 10px 30px -8px rgba(20, 18, 31, 0.12);
+
+  --spacing-section: 6rem;
+  --spacing-section-sm: 4rem;
+
+  --text-display-xl: clamp(2.5rem, 1.4rem + 5vw, 5.25rem);
+  --text-display-xl--line-height: 1.04;
+  --text-display-xl--letter-spacing: -0.015em;
+  --text-display-lg: clamp(2rem, 1.2rem + 3.6vw, 3.75rem);
+  --text-display-lg--line-height: 1.04;
+  --text-display-lg--letter-spacing: -0.015em;
+  --text-display-md: clamp(2rem, 1.3rem + 2.8vw, 3.25rem);
+  --text-display-md--line-height: 1.04;
+  --text-display-md--letter-spacing: -0.015em;
+  --text-display-sm: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+  --text-display-sm--line-height: 1.1;
+  --text-display-sm--letter-spacing: 0;
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-slow: float 9s ease-in-out infinite;
+  --animate-mesh-drift: mesh-drift 32s ease-in-out infinite;
+
+  /* Tailwind theme: bg-gradient-home / bg-gradient-business / … */
+  --background-image-gradient-home: var(--mesh-home);
+  --background-image-gradient-business: var(--mesh-business);
+  --background-image-gradient-freelance: var(--mesh-freelance);
+  --background-image-gradient-career: var(--mesh-career);
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(var(--float-rotate, 0deg)); }
+    50% { transform: translateY(-10px) rotate(var(--float-rotate, 0deg)); }
+  }
+  /* Только transform — дёшево на GPU, 32s */
+  @keyframes mesh-drift {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(2%, -1.5%, 0) scale(1.03); }
+  }
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    /* Полоса прокрутки скрыта: вместо неё стрелки ScrollControls; прокрутка колесом, клавишами и тачем работает */
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  html::-webkit-scrollbar {
+    display: none;
+  }
+
+  body {
+    @apply bg-bg text-ink font-sans antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection {
+    background: var(--color-brand-100);
+    color: var(--color-ink);
+  }
+
+  h1, h2 {
+    font-family: var(--font-display), var(--font-manrope), ui-sans-serif, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    line-height: 1.04;
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-family: var(--font-display), var(--font-manrope), ui-sans-serif, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+
+  h4 {
+    font-family: var(--font-display), var(--font-manrope), ui-sans-serif, sans-serif;
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  p {
+    @apply text-pretty;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-brand);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  button, [role="button"] {
+    cursor: pointer;
+  }
+
+  img, video {
+    @apply block max-w-full h-auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Inter Tight (--font-display от next/font) + Manrope fallback */
+  .font-display {
+    font-family: var(--font-display), var(--font-manrope), ui-sans-serif, sans-serif;
+  }
+
+  .container-site {
+    @apply mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-y {
+    @apply py-16 sm:py-20 lg:py-28;
+  }
+
+  /* Сетка поверх mesh (очень лёгкая) */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgba(20, 18, 31, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(20, 18, 31, 0.08) 1px, transparent 1px);
+    background-size: 56px 56px;
+    /* Заметнее в центре, по бокам и снизу растворяется */
+    mask-image:
+      linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%),
+      linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+    mask-composite: intersect;
+    -webkit-mask-image:
+      linear-gradient(to right, transparent 0%, #000 14%, #000 86%, transparent 100%),
+      linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+    -webkit-mask-composite: source-in;
+  }
+
+  .bg-grid-light {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+  }
+
+  /* Mesh surfaces */
+  .mesh-home { background: var(--mesh-home); }
+  .mesh-business { background: var(--mesh-business); }
+  .mesh-freelance { background: var(--mesh-freelance); }
+  .mesh-career { background: var(--mesh-career); }
+
+  /* Медленный drift слоя (включается классом .mesh-animate на дочернем слое) */
+  .mesh-animate {
+    animation: mesh-drift 32s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mesh-animate { animation: none; }
+  }
+
+  /* Мобильный viewport: чуть медленнее, меньше will-change нагрузка */
+  @media (max-width: 390px) {
+    .mesh-animate {
+      animation-duration: 40s;
+    }
+  }
+
+  /* Мягкий разделитель-секция: тонкая полоса mesh */
+  .mesh-divider {
+    background: var(--mesh-home);
+    opacity: 0.55;
+  }
+
+  .text-gradient-brand {
+    background: linear-gradient(90deg, var(--color-brand) 0%, #f06a9e 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mask-fade-x {
+    mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  }
+
+  @keyframes works-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.25; transform: scale(0.7) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.1) rotate(20deg); }
+  }
+
+  .animate-twinkle {
+    animation: twinkle 4.5s ease-in-out infinite;
+  }
+
+  .animate-works-marquee {
+    animation: works-marquee 60s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-twinkle {
+      animation: none;
+      opacity: 0.6;
+    }
+    .animate-works-marquee {
+      animation: none;
+    }
+  }
+
+  /* Футер: стрелка слева при hover ссылок (только opacity/transform) */
+  .footer-nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+  .footer-nav-arrow {
+    position: absolute;
+    right: calc(100% + 2px);
+    top: 50%;
+    opacity: 0;
+    transform: translate(-6px, -50%);
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease;
+    pointer-events: none;
+  }
+  .footer-nav-text {
+    display: inline-block;
+    transform: translateX(0);
+    transition: transform 160ms ease;
+  }
+  @media all {
+    .footer-nav-link:hover .footer-nav-arrow {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
+    .footer-nav-link:hover .footer-nav-text {
+      transform: translateX(4px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .footer-nav-arrow,
+    .footer-nav-text {
+      transition: none !important;
+    }
+  }
+
+  .business-case-ribbons path {
+    stroke-width: 70;
+  }
+  @media (min-width: 1024px) {
+    .business-case-ribbons path {
+      stroke-width: 110;
+    }
+  }
+
+  @media all {
+    .business-case-card:hover .business-case-card-inner {
+      transform: translateY(-4px);
+    }
+  }
+  .business-case-card-inner:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .business-case-card-inner {
+      transition: none !important;
+    }
+    .business-case-card:hover .business-case-card-inner {
+      transform: none;
+    }
+  }
+
+  /* Курсор у слова в hero: периодическое «нажатие» (пока не поехал по блокам) */
+  @keyframes cursor-nudge {
+    0%, 62%, 100% { transform: translate(0, 0) scale(1); }
+    72% { transform: translate(4px, 4px) scale(0.85); }
+    82% { transform: translate(0, 0) scale(1); }
+  }
+  .animate-cursor-nudge {
+    animation: cursor-nudge 3s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-cursor-nudge {
+      animation: none;
+    }
+  }
+
+  /* Декор карточек аудиторий: фоновая анимация + реакция на наведение */
+  @keyframes decor-breathe {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.07) rotate(10deg); }
+  }
+  @keyframes decor-sway {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-9px) rotate(3deg); }
+  }
+  .audience-decor-breathe {
+    animation: decor-breathe 8s ease-in-out infinite;
+  }
+  .audience-decor-sway {
+    animation: decor-sway 6s ease-in-out infinite;
+  }
+  .audience-decor {
+    transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @media all {
+    .audience-tile:hover .audience-decor-circle {
+      transform: translate(-16px, -12px) scale(1.12);
+    }
+    .audience-tile:hover .audience-decor-wave {
+      transform: translate(-12px, -14px) rotate(-6deg) scale(1.08);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .audience-decor-breathe,
+    .audience-decor-sway {
+      animation: none;
+    }
+    .audience-decor {
+      transition: none;
+    }
+    .audience-tile:hover .audience-decor-circle,
+    .audience-tile:hover .audience-decor-wave {
+      transform: none;
+    }
+  }
+
+  /* «Хотите так же?» + карточки аудиторий — hover только при настоящем hover */
+  .want-same-sticker-a,
+  .audience-sticker-a {
+    transform: rotate(-6deg);
+  }
+  .want-same-sticker-b,
+  .audience-sticker-b {
+    transform: rotate(4deg);
+  }
+  .want-same-sticker,
+  .want-same-spark,
+  .audience-sticker,
+  .audience-spark {
+    transition: transform 200ms ease-out;
+  }
+
+  @media all {
+    .want-same-tile:hover {
+      transform: translateY(-4px);
+    }
+    /* Карточки «Выберите свой путь»: заметный подъём с лёгким увеличением и тенью, соседние чуть отступают */
+    .audience-tile {
+      transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 350ms ease, opacity 350ms ease;
+    }
+    .audience-tile:hover {
+      transform: translateY(-10px) scale(1.025);
+      box-shadow: 0 28px 50px -18px rgba(20, 18, 31, 0.35);
+    }
+    .audience-grid:has(.audience-tile:hover) .audience-tile:not(:hover) {
+      transform: scale(0.985);
+      opacity: 0.88;
+    }
+    .audience-tile:hover .audience-cta-arrow {
+      transform: translateX(4px) scale(1.12);
+      background-color: #E8307E;
+      color: #fff;
+    }
+    /* Спокойный hover для страниц с классом .calm-hover (лендинги): лёгкий подъём без увеличения и без «отступания» соседей */
+    .calm-hover .audience-tile:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 28px -16px rgba(20, 18, 31, 0.28);
+    }
+    .calm-hover .audience-grid:has(.audience-tile:hover) .audience-tile:not(:hover) {
+      transform: none;
+      opacity: 1;
+    }
+    /* На розовой карточке стрелка при наведении становится тёмной (розовая слилась бы с фоном) */
+    .audience-tile-brand:hover .audience-cta-arrow {
+      background-color: #171717;
+      color: #fff;
+    }
+    .want-same-tile:hover .want-same-sticker-a,
+    .audience-tile:hover .audience-sticker-a {
+      transform: rotate(-2deg);
+    }
+    .want-same-tile:hover .want-same-sticker-b,
+    .audience-tile:hover .audience-sticker-b {
+      transform: rotate(2deg);
+    }
+    .want-same-tile:hover .want-same-spark,
+    .audience-tile:hover .audience-spark {
+      transform: rotate(12deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .want-same-tile,
+    .want-same-sticker,
+    .want-same-spark,
+    .audience-tile,
+    .audience-sticker,
+    .audience-spark {
+      transition: none !important;
+    }
+    .want-same-tile:hover,
+    .audience-tile:hover,
+    .audience-grid:has(.audience-tile:hover) .audience-tile:not(:hover) {
+      transform: none;
+      opacity: 1;
+    }
+    .audience-tile:hover .audience-cta-arrow {
+      transform: none;
+    }
+    .want-same-tile:hover .want-same-sticker-a,
+    .audience-tile:hover .audience-sticker-a {
+      transform: rotate(-6deg);
+    }
+    .want-same-tile:hover .want-same-sticker-b,
+    .audience-tile:hover .audience-sticker-b {
+      transform: rotate(4deg);
+    }
+    .want-same-tile:hover .want-same-spark,
+    .audience-tile:hover .audience-spark {
+      transform: none;
+    }
+  }
+}

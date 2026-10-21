@@ -1,0 +1,505 @@
+{
+  "videos_student": [
+    {
+      "ytid": "H9gsaBtulxQ",
+      "context": "2,7 млн просмотров",
+      "author": "Ученица практикума",
+      "src": "/stories/practicum/reel-2_7m.jpg",
+      "embed": "https://www.youtube.com/embed/H9gsaBtulxQ"
+    },
+    {
+      "ytid": "a6kI7H38uzU",
+      "context": "74 года",
+      "author": "Ученик практикума, 74 года",
+      "src": "/stories/practicum/reel-74y.jpg",
+      "embed": "https://www.youtube.com/embed/a6kI7H38uzU"
+    },
+    {
+      "ytid": "o4ezXzupeDo",
+      "context": "1,4 млн просмотров",
+      "author": "Ученица практикума",
+      "src": "/stories/practicum/reel-1_4m_a.jpg",
+      "embed": "https://www.youtube.com/embed/o4ezXzupeDo"
+    },
+    {
+      "ytid": "tj6WJDyANHM",
+      "context": "64 года",
+      "author": "Ученица практикума, 64 года",
+      "src": "/stories/practicum/reel-64y.jpg",
+      "embed": "https://www.youtube.com/embed/tj6WJDyANHM"
+    },
+    {
+      "ytid": "ZBLVe2acbvQ",
+      "context": "1 млн просмотров",
+      "author": "Ученица практикума",
+      "src": "/stories/practicum/reel-1m.jpg",
+      "embed": "https://www.youtube.com/embed/ZBLVe2acbvQ"
+    },
+    {
+      "ytid": "shtjx0pph9Q",
+      "context": "62 года",
+      "author": "Ученица практикума, 62 года",
+      "src": "/stories/practicum/reel-62y.jpg",
+      "embed": "https://www.youtube.com/embed/shtjx0pph9Q"
+    },
+    {
+      "ytid": "rpQWe1Z3CQ4",
+      "context": "1,9 млн просмотров",
+      "author": "Ученица практикума",
+      "src": "/stories/practicum/reel-1_9m.jpg",
+      "embed": "https://www.youtube.com/embed/rpQWe1Z3CQ4"
+    },
+    {
+      "ytid": "QoGgW3U7EQc",
+      "context": "1,4 млн просмотров",
+      "author": "Ученица практикума",
+      "src": "/stories/practicum/reel-1_4m_b.jpg",
+      "embed": "https://www.youtube.com/embed/QoGgW3U7EQc"
+    }
+  ],
+  "videos_extra": [
+    {
+      "ytid": "RDLCMfuHW4U",
+      "context": "ролик ученика / пример",
+      "author": "Ролик практикума",
+      "src": "/stories/practicum/reel-extra-1.jpg",
+      "embed": "https://www.youtube.com/embed/RDLCMfuHW4U"
+    },
+    {
+      "ytid": "wC3Iwmk_MTg",
+      "context": "ролик ученика / пример",
+      "author": "Ролик практикума",
+      "src": "/stories/practicum/reel-extra-2.jpg",
+      "embed": "https://www.youtube.com/embed/wC3Iwmk_MTg"
+    },
+    {
+      "ytid": "YJGNvYglvuE",
+      "context": "ролик ученика / пример",
+      "author": "Ролик практикума",
+      "src": "/stories/practicum/reel-extra-3.jpg",
+      "embed": "https://www.youtube.com/embed/YJGNvYglvuE"
+    },
+    {
+      "ytid": "Uac29_nlknA",
+      "context": "ролик ученика / пример",
+      "author": "Ролик практикума",
+      "src": "/stories/practicum/reel-extra-4.jpg",
+      "embed": "https://www.youtube.com/embed/Uac29_nlknA"
+    },
+    {
+      "ytid": "0lHtMeAnbrg",
+      "context": "ролик ученика / пример",
+      "author": "Ролик практикума",
+      "src": "/stories/practicum/reel-extra-5.jpg",
+      "embed": "https://www.youtube.com/embed/0lHtMeAnbrg"
+    },
+    {
+      "ytid": "IGaH0pRQAcs",
+      "context": "ролик ученика / пример",
+      "author": "Ролик практикума",
+      "src": "/stories/practicum/reel-extra-6.jpg",
+      "embed": "https://www.youtube.com/embed/IGaH0pRQAcs"
+    },
+    {
+      "ytid": "DraOftA9sdY",
+      "context": "ролик ученика / пример",
+      "author": "Ролик практикума",
+      "src": "/stories/practicum/reel-extra-7.jpg",
+      "embed": "https://www.youtube.com/embed/DraOftA9sdY"
+    },
+    {
+      "ytid": "bGeHiczDroc",
+      "context": "ролик ученика / пример",
+      "author": "Ролик практикума",
+      "src": "/stories/practicum/reel-extra-8.jpg",
+      "embed": "https://www.youtube.com/embed/bGeHiczDroc"
+    },
+    {
+      "ytid": "G58GV--LEYU",
+      "context": "ролик ученика / пример",
+      "author": "Ролик практикума",
+      "src": "/stories/practicum/reel-extra-9.jpg",
+      "embed": "https://www.youtube.com/embed/G58GV--LEYU"
+    }
+  ],
+  "receipts": [
+    {
+      "src": "/stories/practicum/receipt-1.png",
+      "url": "https://static.tildacdn.pro/tild6231-6332-4830-a331-643464393035/noroot.png"
+    },
+    {
+      "src": "/stories/practicum/receipt-2.png",
+      "url": "https://static.tildacdn.pro/tild6661-3134-4966-b130-306436623333/noroot.png"
+    },
+    {
+      "src": "/stories/practicum/receipt-3.png",
+      "url": "https://static.tildacdn.pro/tild6238-3732-4438-a639-663966323433/noroot.png"
+    },
+    {
+      "src": "/stories/practicum/receipt-4.png",
+      "url": "https://static.tildacdn.pro/tild3736-6362-4230-b636-663762393934/noroot.png"
+    },
+    {
+      "src": "/stories/practicum/receipt-5.png",
+      "url": "https://static.tildacdn.pro/tild3735-6634-4436-b066-646538376562/noroot.png"
+    },
+    {
+      "src": "/stories/practicum/receipt-6.png",
+      "url": "https://static.tildacdn.pro/tild6433-3730-4263-b663-323766623862/noroot.png"
+    },
+    {
+      "src": "/stories/practicum/receipt-7.png",
+      "url": "https://static.tildacdn.pro/tild3232-6337-4434-a130-613331616130/noroot.png"
+    },
+    {
+      "src": "/stories/practicum/receipt-8.png",
+      "url": "https://static.tildacdn.pro/tild3438-6133-4433-b733-376665333334/noroot.png"
+    },
+    {
+      "src": "/stories/practicum/receipt-9.png",
+      "url": "https://static.tildacdn.pro/tild3834-3032-4135-b038-663764326363/noroot.png"
+    },
+    {
+      "src": "/stories/practicum/receipt-10.png",
+      "url": "https://static.tildacdn.pro/tild3932-3238-4635-a332-333233343166/noroot.png"
+    },
+    {
+      "src": "/stories/practicum/receipt-11.png",
+      "url": "https://static.tildacdn.pro/tild3034-6564-4037-b764-646334633661/noroot.png"
+    },
+    {
+      "src": "/stories/practicum/receipt-12.png",
+      "url": "https://static.tildacdn.pro/tild6562-3136-4464-b230-626134363665/noroot.png"
+    }
+  ],
+  "chats": [
+    {
+      "src": "/stories/practicum/chat-1.jpeg",
+      "url": "https://static.tildacdn.pro/tild6334-3463-4736-b037-373734656137/IMG_5026JPG.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-2.jpeg",
+      "url": "https://static.tildacdn.pro/tild3231-6365-4462-b737-383763356365/IMG_5027JPG.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-3.jpeg",
+      "url": "https://static.tildacdn.pro/tild6263-3935-4664-b062-333466383535/IMG_5009JPG.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-4.jpeg",
+      "url": "https://static.tildacdn.pro/tild3733-6530-4661-b663-396539643135/IMG_5017JPG.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-5.jpeg",
+      "url": "https://static.tildacdn.pro/tild6336-3366-4439-b963-373465313536/WhatsApp_Image_2026-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-6.jpeg",
+      "url": "https://static.tildacdn.pro/tild6633-6465-4064-a162-613030623239/WhatsApp_Image_2026-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-7.jpeg",
+      "url": "https://static.tildacdn.pro/tild6632-3864-4639-a530-383933333464/WhatsApp_Image_2026-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-8.jpeg",
+      "url": "https://static.tildacdn.pro/tild6534-3337-4830-b035-386431303961/WhatsApp_Image_2026-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-9.jpeg",
+      "url": "https://static.tildacdn.pro/tild3131-6662-4962-a563-333164333137/WhatsApp_Image_2026-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-10.jpeg",
+      "url": "https://static.tildacdn.pro/tild6233-6266-4130-b634-626637666139/WhatsApp_Image_2026-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-11.jpeg",
+      "url": "https://static.tildacdn.pro/tild6666-6537-4237-a562-666238313461/WhatsApp_Image_2026-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-12.jpeg",
+      "url": "https://static.tildacdn.pro/tild3366-6130-4836-b431-393139393962/WhatsApp_Image_2026-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-13.jpeg",
+      "url": "https://static.tildacdn.pro/tild3736-3832-4265-b836-303264313735/WhatsApp_Image_2026-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-14.jpeg",
+      "url": "https://static.tildacdn.pro/tild3930-3965-4833-b734-636464393766/WhatsApp_Image_2026-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-15.jpeg",
+      "url": "https://static.tildacdn.pro/tild3964-3130-4164-b433-393765353862/WhatsApp_Image_2026-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-16.jpeg",
+      "url": "https://static.tildacdn.pro/tild3337-3938-4237-a563-326262376431/WhatsApp_Image_2026-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-17.jpeg",
+      "url": "https://static.tildacdn.pro/tild3265-3463-4166-b862-366338353330/WhatsApp_Image_2026-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-18.jpeg",
+      "url": "https://static.tildacdn.pro/tild3333-3537-4863-b237-383732313230/WhatsApp_Image_2026-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-19.png",
+      "url": "https://static.tildacdn.pro/tild6362-6336-4266-b335-646130306631/WhatsApp_Image_2025-.png"
+    },
+    {
+      "src": "/stories/practicum/chat-20.jpeg",
+      "url": "https://static.tildacdn.pro/tild3432-6436-4561-b638-386530303739/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-21.jpeg",
+      "url": "https://static.tildacdn.pro/tild3633-6163-4462-b032-333934346430/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-22.jpeg",
+      "url": "https://static.tildacdn.pro/tild6337-3930-4235-a334-666664333062/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-23.jpeg",
+      "url": "https://static.tildacdn.pro/tild6665-3033-4566-b531-333438396338/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-24.jpeg",
+      "url": "https://static.tildacdn.pro/tild3134-6132-4665-b161-343032313934/WhatsApp_Image_2026-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-25.jpeg",
+      "url": "https://static.tildacdn.pro/tild3464-3230-4039-a332-656132376632/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-26.jpeg",
+      "url": "https://static.tildacdn.pro/tild6235-3963-4166-b338-303231343236/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-27.jpeg",
+      "url": "https://static.tildacdn.pro/tild3965-3230-4234-b633-313338343532/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-28.jpeg",
+      "url": "https://static.tildacdn.pro/tild6133-3563-4562-b139-653864346333/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-29.jpeg",
+      "url": "https://static.tildacdn.pro/tild6266-6532-4639-b739-646665633063/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-30.jpeg",
+      "url": "https://static.tildacdn.pro/tild6239-3436-4130-b765-386263383937/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-31.jpeg",
+      "url": "https://static.tildacdn.pro/tild3935-6664-4631-b661-663463613737/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-32.jpeg",
+      "url": "https://static.tildacdn.pro/tild3662-3965-4430-b734-356565393435/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-33.jpeg",
+      "url": "https://static.tildacdn.pro/tild3531-3561-4861-a334-663030646135/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-34.jpeg",
+      "url": "https://static.tildacdn.pro/tild6635-3934-4562-a165-316631653465/1.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-35.jpeg",
+      "url": "https://static.tildacdn.pro/tild6234-3039-4061-a635-363864663064/3.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-36.jpeg",
+      "url": "https://static.tildacdn.pro/tild6336-3639-4132-b538-643731363563/WhatsApp_Image_2026-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-37.jpeg",
+      "url": "https://static.tildacdn.pro/tild3464-3633-4435-a637-306465663666/2.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-38.jpeg",
+      "url": "https://static.tildacdn.pro/tild6263-3666-4139-b031-656664653934/photo_2025-12-27_174.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-39.jpeg",
+      "url": "https://static.tildacdn.pro/tild3632-3532-4831-b930-653231303331/WhatsApp_Image_2026-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-40.jpeg",
+      "url": "https://static.tildacdn.pro/tild3664-6236-4532-b032-646239323264/photo_2025-12-27_173.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-41.jpeg",
+      "url": "https://static.tildacdn.pro/tild3462-3937-4632-a335-656662636661/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-42.jpeg",
+      "url": "https://static.tildacdn.pro/tild3163-6539-4832-b563-303465396662/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-43.jpeg",
+      "url": "https://static.tildacdn.pro/tild3532-3839-4264-b231-376334666330/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-44.jpeg",
+      "url": "https://static.tildacdn.pro/tild3034-3034-4132-a638-356365626231/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-45.jpeg",
+      "url": "https://static.tildacdn.pro/tild3762-3531-4432-a437-633463323234/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-46.jpeg",
+      "url": "https://static.tildacdn.pro/tild3137-6339-4632-a663-353466373237/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-47.jpeg",
+      "url": "https://static.tildacdn.pro/tild3562-6231-4235-b933-313939333436/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-48.jpeg",
+      "url": "https://static.tildacdn.pro/tild3731-3434-4538-b630-666534356530/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-49.jpeg",
+      "url": "https://static.tildacdn.pro/tild6466-3132-4432-a136-363939613465/photo_2025-12-27_173.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-50.jpeg",
+      "url": "https://static.tildacdn.pro/tild3733-3963-4964-a462-653930666139/photo_2025-12-27_173.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-51.jpeg",
+      "url": "https://static.tildacdn.pro/tild3766-3862-4439-a166-303334303662/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-52.jpeg",
+      "url": "https://static.tildacdn.pro/tild3937-3836-4862-a133-376562613331/photo_2025-12-27_173.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-53.jpeg",
+      "url": "https://static.tildacdn.pro/tild6535-3535-4239-b639-366362326231/photo_2025-12-27_173.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-54.jpeg",
+      "url": "https://static.tildacdn.pro/tild3839-6338-4131-b334-613362343565/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-55.jpeg",
+      "url": "https://static.tildacdn.pro/tild3338-6138-4433-a262-383236386330/photo_2025-12-27_173.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-56.jpeg",
+      "url": "https://static.tildacdn.pro/tild6134-3363-4435-b133-643136333065/photo_2025-12-27_173.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-57.jpeg",
+      "url": "https://static.tildacdn.pro/tild3961-3531-4131-b637-356635666533/photo_2025-12-27_174.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-58.jpeg",
+      "url": "https://static.tildacdn.pro/tild6564-3037-4635-b534-363436343264/photo_2025-12-27_174.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-59.jpeg",
+      "url": "https://static.tildacdn.pro/tild3537-6263-4063-b365-356562356166/IMG_5039JPG.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-60.jpeg",
+      "url": "https://static.tildacdn.pro/tild6637-6632-4662-a565-303630656530/IMG_5038JPG.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-61.jpeg",
+      "url": "https://static.tildacdn.pro/tild6563-6437-4463-b063-353838613439/IMG_5040JPG.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-62.jpeg",
+      "url": "https://static.tildacdn.pro/tild6663-3563-4732-b264-336239313332/IMG_5043JPG.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-63.jpeg",
+      "url": "https://static.tildacdn.pro/tild3832-6538-4630-a534-373564623663/IMG_5042JPG.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-64.jpeg",
+      "url": "https://static.tildacdn.pro/tild3961-6538-4065-b437-383931303165/IMG_5041JPG.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-65.jpeg",
+      "url": "https://static.tildacdn.pro/tild6163-3534-4837-b438-373836633461/IMG_5045JPG.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-66.jpeg",
+      "url": "https://static.tildacdn.pro/tild3733-3166-4136-b163-383738633761/IMG_5044JPG.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-67.jpeg",
+      "url": "https://static.tildacdn.pro/tild3364-6364-4464-b231-353439616235/IMG_5007JPG.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-68.jpeg",
+      "url": "https://static.tildacdn.pro/tild6365-6466-4536-a231-646431656562/IMG_4997JPG.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-69.jpeg",
+      "url": "https://static.tildacdn.pro/tild6366-6665-4766-a365-656139653130/IMG_5002JPG.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-70.jpeg",
+      "url": "https://static.tildacdn.pro/tild3830-3166-4561-b736-383434633730/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-71.jpeg",
+      "url": "https://static.tildacdn.pro/tild6462-3962-4631-b436-333730333530/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-72.jpeg",
+      "url": "https://static.tildacdn.pro/tild3137-6161-4434-a435-653232336138/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-73.jpeg",
+      "url": "https://static.tildacdn.pro/tild3632-3630-4134-a435-653463643961/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-74.jpeg",
+      "url": "https://static.tildacdn.pro/tild6232-6531-4438-a566-626662623838/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-75.jpeg",
+      "url": "https://static.tildacdn.pro/tild6438-3133-4761-b834-303733346665/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-76.jpeg",
+      "url": "https://static.tildacdn.pro/tild3434-3637-4165-b037-386133623563/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-77.jpeg",
+      "url": "https://static.tildacdn.pro/tild3939-6431-4435-a235-393039643332/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-78.jpeg",
+      "url": "https://static.tildacdn.pro/tild3663-3464-4731-b765-623030643464/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-79.jpeg",
+      "url": "https://static.tildacdn.pro/tild3061-6562-4030-a130-313665663934/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-80.jpeg",
+      "url": "https://static.tildacdn.pro/tild6364-3564-4939-b035-353361633239/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-81.jpeg",
+      "url": "https://static.tildacdn.pro/tild6432-3562-4735-b033-666339646130/WhatsApp_Image_2025-.jpeg"
+    },
+    {
+      "src": "/stories/practicum/chat-82.jpeg",
+      "url": "https://static.tildacdn.pro/tild3264-3139-4465-b038-646336653031/WhatsApp_Image_2025-.jpeg"
+    }
+  ]
+}
