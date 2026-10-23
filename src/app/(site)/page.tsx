@@ -6,12 +6,12 @@ import { HomeMetrics } from "@/components/sections/HomeMetrics";
 import { AudienceSwitcher } from "@/components/sections/AudienceSwitcher";
 import { HomeStories } from "@/components/sections/HomeStories";
 import { WantSameCta } from "@/components/sections/WantSameCta";
-import { CoursesCatalog } from "@/components/sections/CoursesCatalog";
+import { LineupSection } from "@/components/sections/LineupSection";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { FAQ } from "@/components/sections/FAQ";
 import { LeadSection } from "@/components/sections/LeadSection";
 import { generalFaq } from "@/data/faq";
-/** В каталоге есть «ближайший старт» практикума — зависит от даты; обновляем раз в час. */
+/** В блоке «Продуктовая линейка» есть «ближайший старт» (зависит от даты) и цены; обновляем раз в час. */
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
@@ -39,7 +39,7 @@ export default function HomePage() {
       <HomeMetrics />
       <AudienceSwitcher />
       <HomeStories />
-      <CoursesCatalog allHref="/courses" />
+      <LineupSection />
       <HowItWorks />
       <WantSameCta />
       <FAQ items={generalFaq.slice(0, 6)} description="Если не нашли ответ — напишите в WhatsApp, ответим лично." />

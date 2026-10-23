@@ -32,7 +32,7 @@ export function formatPhoneInput(raw: string): string {
   else national = d.startsWith("7") || d.startsWith("8") ? d.slice(1) : d;
   national = national.slice(0, 10);
 
-  if (d.length === 0) return "";
+  if (d.length === 0) return raw.trim().startsWith("+") ? "+" : "";
   let out = "+7";
   if (national.length > 0) out += ` (${national.slice(0, 3)}`;
   if (national.length >= 3) out += ")";
@@ -40,4 +40,15 @@ export function formatPhoneInput(raw: string): string {
   if (national.length > 6) out += `-${national.slice(6, 8)}`;
   if (national.length > 8) out += `-${national.slice(8, 10)}`;
   return out;
+}
+
+/**
+ * Обработка одного события ввода. Если человек вручную напечатал «+» — поле сбрасывается и разбирается заново:
+ * всё, что было слева от нового «+», отбрасывается, остаётся «+» и то, что справа от каретки
+ * («+7» + «+» + «77011234567» → «+7 (701) 123-45-67», а не «+7 (770) …»).
+ * value — значение поля после ввода, typed — вставленный символ (InputEvent.data), caret — позиция каретки после него.
+ */
+export function applyPhoneInput(value: string, typed: string | null | undefined, caret: number): string {
+  if (typed === "+") return formatPhoneInput(`+${value.slice(caret)}`);
+  return formatPhoneInput(value);
 }

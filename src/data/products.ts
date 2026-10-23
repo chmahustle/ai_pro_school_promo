@@ -298,3 +298,44 @@ export function formatCohortDate(cohort: Cohort, withWeekday = false): string {
   const text = `${d} ${MONTHS_GEN[(m ?? 1) - 1]}`;
   return withWeekday ? `${WEEKDAYS_SHORT[cohort.weekday]}, ${text}` : text;
 }
+
+// ───────────── Вход в направления ─────────────
+
+/** Подписи ступеней лестницы */
+export const STEP_LABELS: Record<Step, string> = {
+  try: "Попробовать",
+  project: "Сделать первый проект",
+  profession: "Освоить профессию",
+};
+
+/** Входные продукты (ступень «Попробовать») — по одному на направление */
+export function getEntryProducts(): Product[] {
+  return products.filter((p) => p.step === "try");
+}
+
+/** Короткое название входного продукта для подписи («Практикум», «Эфир») */
+const entryShortName: Partial<Record<ProductId, string>> = { practicum: vocabulary.practicumShort, efir: vocabulary.efirShort };
+
+/** Строка под кнопкой входа: «Практикум от 9 900 ₸», «Эфир бесплатно». Цена — из конфига, не хардкод. */
+export function formatEntryLine(product: Product, now: Date = new Date()): string {
+  const price = getCurrentPrice(product, now);
+  const name = entryShortName[product.id] ?? product.name;
+  if (price === null) return name;
+  if (price === 0) return `${name} бесплатно`;
+  return `${name} от${NBSP}${formatNumber(price)}${NBSP}₸`;
+}
+
+/**
+ * Подзаголовок первого экрана: «Два направления, начать можно с {минимальная платная входная цена} или с бесплатного эфира».
+ * Цена и «бесплатного» считаются по конфигу: пока эфир бесплатный — вторая половина есть, станет платным — исчезнет.
+ */
+export function getEntrySubtitle(now: Date = new Date()): { before: string; price: string; after: string } {
+  const entries = getEntryProducts();
+  const priced = entries.map((p) => getCurrentPrice(p, now));
+  const paid = priced.filter((v): v is number => v !== null && v > 0);
+  const hasFree = priced.some((v) => v === 0);
+  const min = paid.length ? Math.min(...paid) : null;
+  const before = "Два направления, начать можно с ";
+  if (min === null) return { before: hasFree ? `${before}бесплатного эфира` : "Два направления", price: "", after: "" };
+  return { before, price: `${formatNumber(min)}${NBSP}₸`, after: hasFree ? " или с бесплатного эфира" : "" };
+}

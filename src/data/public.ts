@@ -10,7 +10,22 @@ import { courses } from "./courses";
 import { getVisibleHeroResults, heroEvent, heroTeachers } from "./heroResults";
 import { getHomeMetrics } from "./metrics";
 import { formConfig } from "./forms";
-import { getProductForCourse, products } from "./products";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+import { lineup, lineupForWhomSource } from "./lineup";
+import {
+  formatCohortDate,
+  formatEntryLine,
+  formatPriceParts,
+  getEntryProducts,
+  getEntrySubtitle,
+  getNextCohort,
+  getProductForCourse,
+  products,
+  STEP_LABELS,
+  type Direction,
+  type Step,
+} from "./products";
 import { GENERAL_PRODUCT } from "./product-ids";
 import { site } from "@/lib/site";
 import { nameInSentence } from "@/lib/utils";
@@ -27,6 +42,8 @@ import type {
   PublicBonuses,
   PublicDev,
   PublicHeroData,
+  PublicLadder,
+  PublicLineup,
   PublicMetric,
   PublicReview,
   PublicStory,
@@ -155,6 +172,11 @@ export function getPublicHeroData(): PublicHeroData {
       ctaLabel: heroEvent.ctaLabel,
     },
     details,
+    entry: {
+      subtitle: getEntrySubtitle(),
+      creator: entryLineFor("creator"),
+      vibecoding: entryLineFor("vibecoding"),
+    },
     business: business ? { subtitle: business.hero.subtitle, outcomes: business.outcomes.map((o) => ({ title: o.title, text: o.text })) } : null,
   };
 }
@@ -298,4 +320,72 @@ export function getThanksPage(productId: string): ThanksPageData | null {
   const p = products.find((x) => x.id === productId);
   if (!p) return null;
   return { productId, productName: nameInSentence(p.name), responseNote: formConfig.responseNote.text, whatsappHref: `${waBase}?text=${encodeURIComponent(p.whatsappText)}` };
+}
+
+// ───────────── Продуктовая линейка ─────────────
+
+function entryLineFor(direction: Direction): string {
+  const p = getEntryProducts().find((x) => x.direction === direction);
+  return p ? formatEntryLine(p) : "";
+}
+
+const STEP_ORDER: Step[] = ["try", "project", "profession"];
+const LEADER_MEMBER = { "Надира": "nadira", "Майдан": "maidan" } as const;
+
+/** Фото показываем, только если файл есть в public/ */
+function photoIfExists(photo: string | null | undefined): string | null {
+  if (!photo) return null;
+  return existsSync(join(process.cwd(), "public", photo)) ? photo : null;
+}
+
+function startLabel(p: (typeof products)[number]): string | null {
+  if (p.nextStart) {
+    const [y, m, d] = p.nextStart.split("-").map(Number);
+    const weekday = new Date(Date.UTC(y ?? 1970, (m ?? 1) - 1, d ?? 1)).getUTCDay();
+    return formatCohortDate({ date: p.nextStart, weekday, verified: true });
+  }
+  const cohort = getNextCohort(p.id);
+  return cohort && cohort.verified ? formatCohortDate(cohort) : null;
+}
+
+/** Лестница продуктов направления: ступени по порядку try → project → profession, пустые не дорисовываются */
+export function getPublicLadder(direction: Direction): PublicLadder {
+  const steps = products
+    .filter((p) => p.direction === direction)
+    .sort((a, b) => STEP_ORDER.indexOf(a.step) - STEP_ORDER.indexOf(b.step));
+  const leaderName = steps[0]?.leader ?? (direction === "creator" ? "Надира" : "Майдан");
+  const member = team.find((m) => m.id === LEADER_MEMBER[leaderName]);
+  const source = courses.find((c) => c.slug === lineupForWhomSource[direction]);
+  return {
+    direction,
+    forWhom: (source?.forWhom ?? []).slice(0, 3).map((x) => x.title),
+    leader: { name: leaderName, photo: photoIfExists(member?.photo) },
+    steps: steps.map((p) => {
+      const { prefix, amount, unit } = formatPriceParts(p);
+      return {
+        id: p.id,
+        stepLabel: STEP_LABELS[p.step],
+        name: p.name,
+        devNameNote: SHOW_PLACEHOLDERS && p.nameStatus === "pending" ? "название на утверждении" : undefined,
+        resultLine: p.resultLine,
+        format: p.format,
+        price: { prefix, amount, unit },
+        start: startLabel(p),
+        ctaLabel: p.ctaLabel,
+        href: p.landingUrl,
+        isEntry: p.step === "try",
+      };
+    }),
+  };
+}
+
+export function getPublicLineup(): PublicLineup {
+  return {
+    id: lineup.id,
+    title: lineup.title,
+    subtitle: lineup.subtitle,
+    tabs: lineup.tabs.map((t) => ({ id: t.id, label: t.label })),
+    help: { label: lineup.help.label, href: `${site.whatsapp}?text=${encodeURIComponent(lineup.help.whatsappText)}` },
+    entryBadge: lineup.entryBadge,
+  };
 }

@@ -73,6 +73,44 @@ export interface PublicHeroData {
   /** Подробности кейса для окна по клику (по id карточки); null — только то, что есть в самой карточке */
   details: Record<string, { descriptor: string; before?: string; after?: string; quote?: string; photo: string | null; dev?: PublicDev } | null>;
   business: { subtitle: string; outcomes: { title: string; text: string }[] } | null;
+  /** Вход в направления: подзаголовок и подписи под кнопками (цены из products.ts) */
+  entry: { subtitle: { before: string; price: string; after: string }; creator: string; vibecoding: string };
+}
+
+/** Ступень лестницы продуктов: карточка в блоке «Продуктовая линейка» */
+export interface PublicLadderStep {
+  id: string;
+  /** «Попробовать», «Сделать первый проект», «Освоить профессию» */
+  stepLabel: string;
+  name: string;
+  /** Название ещё не утверждено — подпись только в dev */
+  devNameNote?: string;
+  resultLine: string;
+  format: string;
+  price: { prefix: string; amount: string; unit: string };
+  /** Ближайший старт: только подтверждённый, иначе null */
+  start: string | null;
+  ctaLabel: string;
+  href: string;
+  /** Входная ступень («Начните с этого») */
+  isEntry: boolean;
+}
+
+export interface PublicLadder {
+  direction: "creator" | "vibecoding";
+  /** Названия аудиторий («для кого») */
+  forWhom: string[];
+  leader: { name: string; photo: string | null };
+  steps: PublicLadderStep[];
+}
+
+export interface PublicLineup {
+  id: string;
+  title: string;
+  subtitle: string;
+  tabs: { id: "creator" | "vibecoding"; label: string }[];
+  help: { label: string; href: string };
+  entryBadge: string;
 }
 
 export interface PublicAudienceCard {

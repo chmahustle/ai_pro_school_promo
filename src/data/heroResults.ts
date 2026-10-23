@@ -4,6 +4,7 @@ import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 /**
  * Плавающие результаты в hero / чипы в метриках.
  * verified: false — показывать только в dev (SHOW_PLACEHOLDERS).
+ * В первом экране — только результаты без обещаний дохода (шаг 3a): карточки с суммами заработка убраны.
  * TODO(клиент): подтвердить цифры, добавить фото, дату эфира.
  */
 
@@ -20,24 +21,6 @@ export interface HeroResult {
 }
 
 export const heroResults: HeroResult[] = [
-  {
-    id: "guldaria",
-    name: "Гульдария",
-    result: "400 000 ₸ за 2 недели",
-    label: "Первый заработок",
-    progress: 72,
-    photo: null, // TODO: фото ученицы
-    verified: false,
-  },
-  {
-    id: "alyona",
-    name: "Алёна",
-    result: "Договор на 15 роликов · 500 000 ₸",
-    label: "Пакет для бренда",
-    progress: 88,
-    photo: null, // TODO: фото ученицы
-    verified: false,
-  },
   {
     id: "gulaiym",
     name: "Гульайым",

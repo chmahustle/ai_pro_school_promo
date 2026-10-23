@@ -9,7 +9,7 @@ import Link from "next/link";
 import { Button, Dropdown, Input, Textarea } from "@/components/ui";
 import { leadSchema, type LeadInput } from "@/lib/leads/schema";
 import { submitLead } from "@/lib/leads/submit";
-import { formatPhoneInput, PHONE_PLACEHOLDER } from "@/lib/phone";
+import { applyPhoneInput, PHONE_PLACEHOLDER } from "@/lib/phone";
 import { getAttribution, getSegment } from "@/lib/utm";
 import { newEventId, track } from "@/lib/analytics";
 import { resolveLeadProduct } from "@/data/product-ids";
@@ -179,10 +179,13 @@ export function LeadForm({
               // При фокусе в пустом поле сразу показываем «+7», на blur пустой префикс убираем
               onFocus={() => !field.value && field.onChange("+7")}
               onBlur={() => {
-                if (field.value === "+7") field.onChange("");
+                if (field.value === "+7" || field.value === "+") field.onChange("");
                 field.onBlur();
               }}
-              onChange={(e) => field.onChange(formatPhoneInput(e.target.value))}
+              onChange={(e) => {
+                const typed = (e.nativeEvent as InputEvent).data;
+                field.onChange(applyPhoneInput(e.target.value, typed, e.target.selectionStart ?? e.target.value.length));
+              }}
             />
           )}
         />

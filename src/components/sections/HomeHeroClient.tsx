@@ -4,11 +4,9 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Calendar, Play } from "lucide-react";
-import { Avatar, Button, MeshBackdrop, Pill, Ribbon } from "@/components/ui";
-import { HeroTitle } from "./HeroTitle";
+import { ArrowRight, Calendar } from "lucide-react";
+import { Avatar, MeshBackdrop, Pill, Ribbon } from "@/components/ui";
 import { HeroInfoModal, type HeroModalTarget } from "./HeroInfoModal";
-import { LeadButton } from "@/components/ui/LeadButton";
 import type { PublicHeroData, PublicHeroResult } from "@/data/public-types";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
@@ -29,9 +27,6 @@ export function HomeHeroClient({ data }: { data: PublicHeroData }) {
   const nadiraPhoto = data.teacher?.photo ?? null;
   const heroRef = useRef<HTMLDivElement>(null);
   const [modal, setModal] = useState<HeroModalTarget | null>(null);
-  const modalOpen = modal !== null;
-  // Курсор-«гид» ездит по блокам и «нажимает»: см. RoamingCursor
-  const [roaming, setRoaming] = useState(false);
   const [origin, setOrigin] = useState<{ x: number; y: number } | null>(null);
   /** Открыть окно из центра нажатого блока (анимация «как из Dock») */
   const openModal = (target: HeroModalTarget, el: HTMLElement) => {
@@ -74,8 +69,8 @@ export function HomeHeroClient({ data }: { data: PublicHeroData }) {
         ref={heroRef}
         className={cn(
           "relative mx-auto overflow-hidden rounded-3xl",
-          "min-h-[calc(100dvh-7.25rem)] sm:min-h-[calc(100dvh-7.75rem)]",
-          "lg:h-[calc(100dvh-7.75rem)] lg:min-h-[560px] lg:max-h-[900px]",
+          "flex min-h-[calc(100dvh-7.25rem)] flex-col sm:min-h-[calc(100dvh-7.75rem)]",
+          "lg:block lg:h-[calc(100dvh-7.75rem)] lg:min-h-[560px] lg:max-h-[900px]",
         )}
       >
         <div className={cn("absolute -inset-5", SHIFT_MESH)} aria-hidden>
@@ -84,8 +79,6 @@ export function HomeHeroClient({ data }: { data: PublicHeroData }) {
         <div className={cn("absolute -inset-5 hidden sm:block", SHIFT_RIBBON)} aria-hidden>
           <Ribbon variant="right" tone="light" draw />
         </div>
-
-        <RoamingCursor heroRef={heroRef} paused={modalOpen} onActive={setRoaming} />
 
         {/* Летающие карточки: только края, ≥ lg */}
         <div className={cn("pointer-events-none absolute inset-0 z-10 hidden lg:block", SHIFT_CARDS)}>
@@ -128,49 +121,38 @@ export function HomeHeroClient({ data }: { data: PublicHeroData }) {
           </div>
         </div>
 
-        {/* Текст: ровно по центру контейнера hero */}
-        <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center px-4">
-          <div className="pointer-events-auto flex w-full max-w-[32rem] flex-col items-center text-center sm:max-w-[34rem]">
+        {/* Текст: на ≥lg ровно по центру контейнера hero, на мобильных — обычный поток сверху */}
+        <div className="relative z-20 px-4 pb-4 pt-8 sm:pt-12 lg:pointer-events-none lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-center lg:p-4">
+          <div className="mx-auto flex w-full max-w-[34rem] flex-col items-center text-center lg:pointer-events-auto lg:max-w-[42rem]">
             <Pill tone="brand" dot className="mb-4">
               Онлайн-школа ИИ · Казахстан
             </Pill>
 
-            <HeroTitle hideCursor={roaming} />
+            <h1
+              id="hero-title"
+              className="font-display font-extrabold leading-[1.08] tracking-[-0.015em] text-ink [text-wrap:balance]"
+              style={{ fontSize: "clamp(28px, 3.6vw, 52px)" }}
+            >
+              Учим делать с ИИ то, за что платят: ролики, сайты и ботов
+            </h1>
 
-            <p className="mt-4 max-w-[38ch] text-center text-[13px] leading-relaxed text-ink-500 sm:text-[14px]">
-              Первые заказы ученики берут ещё во время обучения.
+            <p className="mt-4 max-w-[40ch] text-center text-[14px] leading-relaxed text-ink-500 sm:text-[15px]">
+              {data.entry.subtitle.before}
+              <span className="whitespace-nowrap">{data.entry.subtitle.price}</span>
+              {data.entry.subtitle.after}
             </p>
 
-            <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <LeadButton
-                variant="dark"
-                size="md"
-                source="home-hero"
-                className="hover:-translate-y-0.5 hover:shadow-float motion-reduce:hover:translate-y-0"
-                icon={<ArrowRight className="size-4" />}
-              >
-                Подобрать программу
-              </LeadButton>
-              <Button
-                variant="white"
-                size="md"
-                href="/reviews"
-                className="hover:-translate-y-0.5 hover:shadow-float motion-reduce:hover:translate-y-0"
-                icon={<Play className="size-3.5 fill-current" />}
-                iconPosition="left"
-                onClick={() => track({ name: "cta_click", params: { label: "results", location: "home-hero" } })}
-              >
-                Смотреть результаты
-              </Button>
+            <div className="mt-6 grid w-full grid-cols-1 gap-4 sm:w-auto sm:grid-cols-2 sm:gap-5">
+              <HeroChoice href="#lineup?tab=creator" label="Делать ИИ-ролики" note={data.entry.creator} location="home-hero-creator" />
+              <HeroChoice href="#lineup?tab=vibecoding" label="Собирать сайты и ботов" note={data.entry.vibecoding} location="home-hero-vibecoding" />
             </div>
-
           </div>
         </div>
 
         {/* Мобильный скролл карточек — под центром, внизу hero */}
         {results.length > 0 && (
           <ul
-            className="absolute inset-x-0 bottom-4 z-20 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 no-scrollbar lg:hidden"
+            className="relative z-20 mt-auto flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-4 no-scrollbar lg:hidden"
             aria-label="Результаты учеников"
           >
             {results.map((r) => (
@@ -183,6 +165,26 @@ export function HomeHeroClient({ data }: { data: PublicHeroData }) {
       </div>
       <HeroInfoModal data={data} target={modal} origin={origin} onClose={() => setModal(null)} />
     </section>
+  );
+}
+
+/**
+ * Один из двух равных по весу входов: кнопка к вкладке блока «Продуктовая линейка» + мелкая строка с ценой входа.
+ * Обычная ссылка (не next/link): ей нужен нативный hashchange, по нему LineupTabs открывает вкладку и скроллит к #lineup.
+ */
+function HeroChoice({ href, label, note, location }: { href: string; label: string; note: string; location: string }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <a
+        href={href}
+        onClick={() => track({ name: "cta_click", params: { label, location } })}
+        className="group inline-flex h-14 w-full items-center justify-center gap-2.5 whitespace-nowrap rounded-pill bg-ink px-7 text-base font-semibold text-white shadow-pill transition-[background-color,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-ink-700 hover:shadow-float active:scale-[0.98] motion-reduce:hover:translate-y-0 sm:w-auto"
+      >
+        {label}
+        <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" aria-hidden />
+      </a>
+      <span className="text-[12px] font-medium text-ink-500">{note}</span>
+    </div>
   );
 }
 
@@ -236,108 +238,6 @@ function FloatCard({
       >
         {children}
       </div>
-    </motion.div>
-  );
-}
-
-/** Порядок обхода блоков курсором-гидом */
-const TOUR = ["r0", "teacher", "r1", "event", "r2"] as const;
-
-interface CursorState {
-  x: number;
-  y: number;
-  opacity: number;
-  /** Без анимации (мгновенно поставить на место) */
-  instant?: boolean;
-}
-
-/**
- * Курсор-«гид»: стоит рядом со словом в заголовке, затем по очереди едет к блокам по бокам, «нажимает»
- * (круг от точки клика) и возвращается. Работает на ширине ≥1024px, без reduced-motion; пока открыто окно — стоит.
- * Управление декларативное (state → animate), без императивных controls.
- */
-function RoamingCursor({ heroRef, paused, onActive }: { heroRef: React.RefObject<HTMLDivElement | null>; paused: boolean; onActive: (v: boolean) => void }) {
-  const reduce = useReducedMotion();
-  const [cur, setCur] = useState<CursorState>({ x: 0, y: 0, opacity: 0, instant: true });
-  const [pressed, setPressed] = useState(false);
-  const [tick, setTick] = useState(0);
-
-  useEffect(() => {
-    const hero = heroRef.current;
-    if (!hero || reduce || paused) return;
-    if (!window.matchMedia("(min-width: 1024px)").matches) return;
-
-    let cancelled = false;
-    const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
-    const point = (sel: string, fx: number, fy: number) => {
-      const el = hero.querySelector(sel);
-      if (!el) return null;
-      const r = el.getBoundingClientRect();
-      const h = hero.getBoundingClientRect();
-      return { x: r.left - h.left + r.width * fx, y: r.top - h.top + r.height * fy };
-    };
-
-    (async () => {
-      await sleep(2200); // карточки как раз заканчивают появляться
-      const home = point("[data-cursor-home]", 0, 0);
-      if (!home || cancelled) return;
-      setCur({ ...home, opacity: 1, instant: true });
-      onActive(true);
-      await sleep(80);
-      while (!cancelled) {
-        await sleep(1200);
-        for (const id of TOUR) {
-          if (cancelled) return;
-          const p = point(`[data-hero-target="${id}"]`, 0.72, 0.62);
-          if (!p) continue;
-          setCur({ ...p, opacity: 1 });
-          await sleep(1300);
-          if (cancelled) return;
-          setPressed(true);
-          setTick((t) => t + 1);
-          await sleep(220);
-          setPressed(false);
-          await sleep(1000);
-        }
-        const h = point("[data-cursor-home]", 0, 0);
-        if (h) setCur({ ...h, opacity: 1 });
-        await sleep(5000);
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-      onActive(false);
-      setPressed(false);
-      setCur((c) => ({ ...c, opacity: 0, instant: true }));
-    };
-  }, [heroRef, reduce, paused, onActive]);
-
-  return (
-    <motion.div
-      aria-hidden
-      className="pointer-events-none absolute left-0 top-0 z-30 hidden lg:block"
-      initial={false}
-      animate={{ x: cur.x, y: cur.y, opacity: cur.opacity }}
-      transition={cur.instant ? { duration: 0 } : { x: { duration: 1.2, ease: [0.45, 0, 0.2, 1] }, y: { duration: 1.2, ease: [0.45, 0, 0.2, 1] }, opacity: { duration: 0.2 } }}
-    >
-      {tick > 0 && (
-        <motion.span
-          key={tick}
-          className="absolute -left-6 -top-6 size-12 rounded-full border-2 border-brand bg-brand/25"
-          initial={{ scale: 0, opacity: 0.9 }}
-          animate={{ scale: 2, opacity: 0 }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
-        />
-      )}
-      <motion.svg
-        viewBox="0 0 24 28"
-        animate={{ scale: pressed ? 0.78 : 1 }}
-        transition={{ duration: 0.12 }}
-        className="h-9 w-8 origin-top-left drop-shadow-[0_3px_4px_rgba(20,18,31,0.3)]"
-      >
-        <path d="M3.5 2.5v21l5.6-5.1 3.4 7.6 3.3-1.5-3.4-7.5h7.6z" fill="#fff" stroke="#14121F" strokeWidth="1.6" strokeLinejoin="round" />
-      </motion.svg>
     </motion.div>
   );
 }
