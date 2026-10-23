@@ -1,5 +1,5 @@
 import "server-only";
-import { formatNumber } from "@/lib/utils";
+import { formatNumber, nameInSentence } from "@/lib/utils";
 import type { ProductId } from "./product-ids";
 import { vocabulary } from "./vocabulary";
 
@@ -62,7 +62,7 @@ const SOURCE = "разбор сайта 22.10.2026";
 const AS_OF = "2026-10-22";
 
 /** Заготовка текста для WhatsApp и страницы «спасибо» — единая для всех продуктов */
-const wa = (name: string) => `Здравствуйте! Хочу узнать про «${name}»`;
+const wa = (name: string) => `Здравствуйте! Хочу узнать про ${nameInSentence(name)}`;
 const thanks = (id: ProductId) => `/thanks/${id}`;
 
 export const products: Product[] = [

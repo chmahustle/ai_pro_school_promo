@@ -1,6 +1,16 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+/**
+ * Название продукта внутри предложения: «Курс AI Content Creator» → «Курс AI Content Creator» в кавычках,
+ * а если в названии уже есть кавычки («Практикум «Вирусные ИИ-ролики»») — без внешних, чтобы не получить ««…»».
+ * Первая буква общего слова («Практикум», «Курс») — строчная, аббревиатуры не трогаем.
+ */
+export function nameInSentence(name: string): string {
+  const lowered = /^\p{Lu}\p{Ll}/u.test(name) ? name.charAt(0).toLowerCase() + name.slice(1) : name;
+  return name.includes("«") ? lowered : `«${name}»`;
+}
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }

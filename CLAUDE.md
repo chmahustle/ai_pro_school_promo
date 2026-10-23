@@ -93,6 +93,13 @@
 - **Аналитика:** Meta Pixel, TikTok, GA4, Яндекс.Метрика подключаются только если задан ID в env и только в production; события — через `track()` из `src/lib/analytics.ts`; Lead/Contact дублируются в Meta CAPI (`/api/capi`) с общим `event_id`. Поля ввода закрыты от вебвизора классом `ym-disable-keys` (уже в `Input`/`Textarea`).
 - **Процесс:** после каждого шага — коммит; отчёт таблицей «пункт / сделано / не сделано / причина»; визуальная проверка на 375 и 1440 px.
 
+## Скриншоты (Playwright без sudo)
+
+- Разово: `bash scripts/shots-setup.sh` — ставит Playwright и Chromium в `~/.cache/ai-pro-school-shots` и скачивает системные библиотеки (libnss3, libnspr4, libasound) в `libs/` без sudo; `shots.mjs` сам подставляет `LD_LIBRARY_PATH` (вручную: `export LD_LIBRARY_PATH=$HOME/.cache/ai-pro-school-shots/libs/usr/lib/x86_64-linux-gnu`). Если Chromium падает с «libnss3.so not found» — запустить setup.
+- Сайт: `bash scripts/shots-serve.sh 3111` — production-копия в `/tmp/aps-shots-site` на своём порту. **Не собирать и не снимать в основной папке при запущенном `npm run dev`**: `.next` общий, сборка ломает dev (500), а dev-файлы дают в prod «смесь» (не гидратируется страница, 404 на чанки). Остановить: `kill $(ss -ltnp | grep ':3111' | grep -o 'pid=[0-9]*' | cut -d= -f2)`.
+- Снимки: `node scripts/shots.mjs --base http://localhost:3111 / /thanks/practicum /for/business` → `tmp/shots/<страница>-<375|1440>-<top|form|bottom>.png` (папка в .gitignore). Скриншоты смотреть через Read.
+- Проверка телефона/форм: `npm test` (чистые функции, `node --test`).
+
 ## Структура
 
 ```

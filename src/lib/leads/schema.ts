@@ -1,15 +1,7 @@
 import { z } from "zod";
 import { isLeadProduct } from "@/data/product-ids";
 
-/** Нормализует телефон к формату 7XXXXXXXXXX (11 цифр) */
-export function normalizePhone(raw: string): string {
-  const digits = raw.replace(/\D/g, "");
-  if (digits.length === 11 && digits.startsWith("8")) return "7" + digits.slice(1);
-  if (digits.length === 10) return "7" + digits;
-  return digits;
-}
-
-export const KZ_PHONE_REGEX = /^7\d{10}$/;
+import { normalizePhone, PHONE_FORMAT_ERROR } from "@/lib/phone";
 
 export const leadSchema = z.object({
   name: z
@@ -19,8 +11,8 @@ export const leadSchema = z.object({
     .max(80, "Слишком длинное имя"),
   phone: z
     .string()
-    .transform(normalizePhone)
-    .refine((v) => KZ_PHONE_REGEX.test(v), "Введите номер в формате +7 (7XX) XXX-XX-XX"),
+    .transform((v) => normalizePhone(v) ?? "")
+    .refine((v) => v !== "", PHONE_FORMAT_ERROR),
   /** Продукт из products.ts или «general» («Не знаю, помогите выбрать») */
   product: z.string().refine(isLeadProduct, "Выберите продукт"),
   comment: z.string().trim().max(500).optional(),

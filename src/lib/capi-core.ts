@@ -8,17 +8,11 @@
  *   client_ip_address, client_user_agent, fbc, fbp — НЕ хэшируются.
  */
 import { createHash } from "node:crypto";
+import { normalizePhone } from "./phone";
 
 export const sha256 = (value: string): string => createHash("sha256").update(value, "utf8").digest("hex");
 
-/** Телефон → только цифры в формате 7XXXXXXXXXX (Казахстан/Россия); не получилось — null */
-export function normalizePhone(raw: string | undefined | null): string | null {
-  if (!raw) return null;
-  let d = raw.replace(/\D/g, "");
-  if (d.length === 11 && d.startsWith("8")) d = `7${d.slice(1)}`;
-  if (d.length === 10) d = `7${d}`;
-  return /^7\d{10}$/.test(d) ? d : null;
-}
+export { normalizePhone };
 
 /** Имя → {fn, ln}: нижний регистр, без знаков препинания; первое слово — имя, последнее (если слов больше одного) — фамилия */
 export function normalizeName(raw: string | undefined | null): { fn?: string; ln?: string } {

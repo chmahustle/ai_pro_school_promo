@@ -44,7 +44,7 @@ export function ThanksContent({ data }: { data: ThanksPageData }) {
 
   const title = "Заявка принята";
   const text = data.productName
-    ? `${data.responseNote} и расскажем про «${data.productName}». Если сообщения нет — напишите нам первыми.`
+    ? `${data.responseNote} и расскажем про ${data.productName}. Если сообщения нет — напишите нам первыми.`
     : `${data.responseNote} и поможем выбрать программу. Если сообщения нет — напишите нам первыми.`;
 
   return (

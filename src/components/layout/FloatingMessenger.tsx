@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { MessageCircle } from "lucide-react";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -18,9 +19,12 @@ function footerVisibleNow() {
 /**
  * WhatsApp: на мобильных — пилюля 48px с текстом;
  * на ≥lg после скролла — круглая иконка 56px без текста.
- * Скрывается, когда в зоне видимости футер (#site-footer) или блок с data-hide-floating.
+ * Скрывается, когда в зоне видимости футер (#site-footer) или блок с data-hide-floating, и на /thanks/*.
+ * Кнопка «наверх» (ScrollControls) стоит над ней с зазором 12px — размеры и отступы держать согласованными.
  */
 export function FloatingMessenger({ className }: { className?: string }) {
+  const pathname = usePathname();
+  const onThanks = pathname.startsWith("/thanks");
   const [scrolled, setScrolled] = useState(false);
   const [footerInView, setFooterInView] = useState(false);
 
@@ -57,6 +61,9 @@ export function FloatingMessenger({ className }: { className?: string }) {
   }, []);
 
   const hiddenByFooter = footerInView;
+
+  // На «Спасибо» своя кнопка WhatsApp — плавающая не нужна
+  if (onThanks) return null;
 
   return (
     <a

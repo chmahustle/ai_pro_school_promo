@@ -41,7 +41,7 @@ export default function ContactsPage() {
 
         <Reveal delay={0.1} className="rounded-2xl bg-surface p-6 shadow-soft sm:p-8">
           <h2 className="mb-5 font-display text-xl">Оставить заявку</h2>
-          <LeadForm config={getFormConfig()} formId="contacts" withComment hint="Ответим в течение рабочего дня" />
+          <LeadForm config={getFormConfig()} formId="contacts" withComment />
         </Reveal>
       </div>
     </Section>

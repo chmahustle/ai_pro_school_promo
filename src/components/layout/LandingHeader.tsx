@@ -2,43 +2,42 @@
 
 import { LeadButton } from "@/components/ui/LeadButton";
 import { Logo } from "./Logo";
-import { cn } from "@/lib/utils";
 
 interface LandingHeaderProps {
   ctaLabel: string;
+  /** Короткая подпись кнопки для узких экранов (до sm) */
+  ctaShortLabel?: string;
   interest: string;
   /** Якорь формы на странице — на лендингах скроллим к форме вместо модалки */
   formAnchor?: string;
-  invert?: boolean;
 }
 
 /**
  * Минимальный хедер для рекламных лендингов: лого + одна CTA. Без навигации,
  * чтобы не уводить трафик (меню доступно через лого → главная).
+ * Сплошная белая пилюля с тенью (как у главной шапки), логотип цветной, одна строка на любой ширине.
  */
-export function LandingHeader({ ctaLabel, interest, formAnchor, invert }: LandingHeaderProps) {
+export function LandingHeader({ ctaLabel, ctaShortLabel = "Записаться", interest, formAnchor }: LandingHeaderProps) {
+  const label = (
+    <>
+      <span className="sm:hidden">{ctaShortLabel}</span>
+      <span className="hidden sm:inline">{ctaLabel}</span>
+    </>
+  );
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
-      <div
-        className={cn(
-          "container-site flex h-14 items-center justify-between rounded-pill px-3 pl-4 backdrop-blur-xl sm:h-16 sm:px-4 sm:pl-5",
-          invert ? "bg-dark/65 text-white ring-1 ring-white/10 backdrop-blur-2xl" : "bg-white/75 shadow-pill",
-        )}
-      >
-        <Logo invert={invert} />
+      <div className="container-site flex h-14 items-center justify-between gap-3 rounded-pill bg-white px-3 pl-4 text-ink shadow-pill ring-1 ring-ink/5 sm:h-16 sm:px-4 sm:pl-5">
+        <Logo className="shrink-0" />
         {formAnchor ? (
           <a
             href={`#${formAnchor}`}
-            className={cn(
-              "inline-flex h-10 items-center rounded-pill px-4 text-[14px] font-semibold transition-colors",
-              invert ? "bg-white text-ink hover:bg-brand hover:text-white" : "bg-ink text-white hover:bg-ink-700",
-            )}
+            className="inline-flex h-10 shrink-0 items-center whitespace-nowrap rounded-pill bg-ink px-4 text-[14px] font-semibold text-white transition-colors hover:bg-ink-700"
           >
-            {ctaLabel}
+            {label}
           </a>
         ) : (
-          <LeadButton variant={invert ? "dark" : "dark"} size="sm" source="landing-header" interest={interest}>
-            {ctaLabel}
+          <LeadButton variant="dark" size="sm" source="landing-header" interest={interest}>
+            {label}
           </LeadButton>
         )}
       </div>

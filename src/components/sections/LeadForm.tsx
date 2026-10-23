@@ -9,7 +9,7 @@ import Link from "next/link";
 import { Button, Dropdown, Input, Textarea } from "@/components/ui";
 import { leadSchema, type LeadInput } from "@/lib/leads/schema";
 import { submitLead } from "@/lib/leads/submit";
-import { formatPhoneInput, PHONE_PLACEHOLDER } from "@/lib/phone-mask";
+import { formatPhoneInput, PHONE_PLACEHOLDER } from "@/lib/phone";
 import { getAttribution, getSegment } from "@/lib/utm";
 import { newEventId, track } from "@/lib/analytics";
 import { resolveLeadProduct } from "@/data/product-ids";
@@ -30,7 +30,7 @@ export interface LeadFormProps {
   /** Показать поле комментария */
   withComment?: boolean;
   submitLabel?: string;
-  /** Подпись под кнопкой */
+  /** Информационная подсказка без сроков: отдельной строкой над responseNote */
   hint?: string;
   /** Куда редиректить после успеха. По умолчанию /thanks/<продукт> */
   thanksPath?: string;
@@ -176,7 +176,12 @@ export function LeadForm({
               name={field.name}
               ref={field.ref}
               value={field.value}
-              onBlur={field.onBlur}
+              // При фокусе в пустом поле сразу показываем «+7», на blur пустой префикс убираем
+              onFocus={() => !field.value && field.onChange("+7")}
+              onBlur={() => {
+                if (field.value === "+7") field.onChange("");
+                field.onBlur();
+              }}
               onChange={(e) => field.onChange(formatPhoneInput(e.target.value))}
             />
           )}
@@ -242,9 +247,8 @@ export function LeadForm({
         {isSubmitting ? t.form.submitting : done ? t.form.success : (submitLabel ?? t.form.submit)}
       </Button>
 
-      <p className={cn("text-center text-[13px] leading-snug", invert ? "text-white/60" : "text-ink-500")}>
-        {hint ?? config.responseNote}
-      </p>
+      {hint && <p className={cn("text-center text-[13px] leading-snug", invert ? "text-white/60" : "text-ink-500")}>{hint}</p>}
+      <p className={cn("text-center text-[13px] leading-snug", invert ? "text-white/60" : "text-ink-500")}>{config.responseNote}</p>
       <p className={cn("text-center text-[12px] leading-snug", invert ? "text-white/55" : "text-ink-500")}>
         {config.agreement.before}
         <Link href={config.agreement.href} className={cn("underline underline-offset-2", invert ? "text-white" : "text-ink")}>

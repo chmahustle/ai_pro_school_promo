@@ -13,6 +13,7 @@ import { formConfig } from "./forms";
 import { getProductForCourse, products } from "./products";
 import { GENERAL_PRODUCT } from "./product-ids";
 import { site } from "@/lib/site";
+import { nameInSentence } from "@/lib/utils";
 import { getVisibleStories, canShowStoryMedia, isStoryPublishable, stories as allStories } from "./stories";
 import { team } from "./team";
 import { getVisibleTestimonials } from "./testimonials";
@@ -296,5 +297,5 @@ export function getThanksPage(productId: string): ThanksPageData | null {
   }
   const p = products.find((x) => x.id === productId);
   if (!p) return null;
-  return { productId, productName: p.name, responseNote: formConfig.responseNote.text, whatsappHref: `${waBase}?text=${encodeURIComponent(p.whatsappText)}` };
+  return { productId, productName: nameInSentence(p.name), responseNote: formConfig.responseNote.text, whatsappHref: `${waBase}?text=${encodeURIComponent(p.whatsappText)}` };
 }

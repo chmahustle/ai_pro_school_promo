@@ -178,7 +178,7 @@ export interface FormConfig {
 /** Данные страницы /thanks/[productId] */
 export interface ThanksPageData {
   productId: string;
-  /** Название продукта; у «general» — null */
+  /** Название продукта для фразы «про …» (уже с нужными кавычками, nameInSentence); у «general» — null */
   productName: string | null;
   /** Ссылка wa.me с текстом сообщения */
   whatsappHref: string;

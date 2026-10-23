@@ -68,11 +68,10 @@ export default async function AudienceLandingPage({ params }: { params: Promise<
 
   const order = blockOrder[a.slug as keyof typeof blockOrder] ?? blockOrder.business;
   // Тёмная шапка только над чёрным hero (бизнес); над светлыми (фриланс, специалисты) — светлая
-  const invertHeader = a.accent === "ink";
 
   return (
     <>
-      <LandingHeader ctaLabel={a.hero.primaryCta} interest="efir" formAnchor={FORM_ID} invert={invertHeader} />
+      <LandingHeader ctaLabel={a.hero.primaryCta} interest="efir" formAnchor={FORM_ID} />
       <LandingHero
         audience={{
           slug: a.slug,

@@ -12,7 +12,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "check:env": "node scripts/check-env.mjs",
-    "check:payload": "node scripts/check-payload.mjs"
+    "check:payload": "node scripts/check-payload.mjs",
+    "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "@eslint/eslintrc": "^3.3.7",

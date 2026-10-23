@@ -116,7 +116,6 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
         lockProduct
         compact
         submitLabel={course.ctaLabel}
-        hint="Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности"
         tone="mesh"
         mesh="home"
         thanksPath={`/thanks/${productForCourseSlug(course.slug)}`}
