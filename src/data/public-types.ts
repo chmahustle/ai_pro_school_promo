@@ -16,6 +16,7 @@ export interface PublicDev {
 export interface PublicStory {
   id: string;
   direction: "creator" | "vibecoding";
+  teacherProject?: boolean;
   audiences: AudienceSlug[];
   name: string;
   descriptor: string;
@@ -81,6 +82,7 @@ export interface PublicHeroData {
 /** Ступень лестницы продуктов: карточка в блоке «Продуктовая линейка» */
 export interface PublicLadderStep {
   id: string;
+  direction: "creator" | "vibecoding";
   /** «Попробовать», «Сделать первый проект», «Освоить профессию» */
   stepLabel: string;
   name: string;

@@ -13,16 +13,18 @@ interface HomeStoriesProps {
   audience?: AudienceSlug;
   /** Показывать только кейсы этого направления (страницы направлений) */
   direction?: "creator" | "vibecoding";
+  /** «projects» — блок проектов вайб-кодинга (лендинги): свои подписи вместо «Они начали с нуля» */
+  variant?: "results" | "projects";
 }
 
 /**
  * «Результаты учеников» (серверная часть): отбор verified && consent и сборка публичных карточек —
  * здесь, до передачи в браузер. Меньше 3 подтверждённых кейсов — блок скрыт.
  */
-export function HomeStories({ limit, withFilters, showAllLink, audience, direction }: HomeStoriesProps = {}) {
+export function HomeStories({ limit, withFilters, showAllLink, audience, direction, variant }: HomeStoriesProps = {}) {
   const stories = getPublicStories(audience, direction);
   if (stories.length < 3) return null;
   // Вкладки направлений: вайб-кодинг — только если есть подтверждённые кейсы этого направления
   const tabs = getPublicResultsTabs(stories).tabs;
-  return <HomeStoriesClient stories={stories} tabs={tabs} limit={limit} withFilters={withFilters} showAllLink={showAllLink} />;
+  return <HomeStoriesClient stories={stories} tabs={tabs} variant={variant} limit={limit} withFilters={withFilters} showAllLink={showAllLink} />;
 }

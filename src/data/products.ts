@@ -383,3 +383,9 @@ export function getEntryStep(direction: Direction, now: Date = new Date()): { na
   if (!p) return null;
   return { name: entryShortName[p.id] ?? p.name, price: formatPriceParts(p, now) };
 }
+
+/** Условия оплаты для страниц курсов: сумма рассрочки, если задана, иначе короткая заметка из конфига («есть рассрочка») */
+export function getPaymentNote(product: Product): string | null {
+  if (product.installmentFromPerMonth) return `Рассрочка от ${formatNumber(product.installmentFromPerMonth)}${NBSP}₸ в месяц`;
+  return product.priceNote || null;
+}

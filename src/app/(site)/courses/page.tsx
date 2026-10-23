@@ -1,17 +1,18 @@
 import { buildMetadata } from "@/lib/seo";
 import { CoursesHero } from "@/components/sections/CoursesHero";
-import { CoursesCatalog } from "@/components/sections/CoursesCatalog";
+import { CatalogSection } from "@/components/sections/CatalogSection";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { FAQ } from "@/components/sections/FAQ";
 import { LeadSection } from "@/components/sections/LeadSection";
 import { generalFaq } from "@/data/faq";
+import { getPublicCatalog } from "@/data/public";
 
 /** В каталоге есть «ближайший старт» практикума — зависит от даты; обновляем раз в час. */
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
   title: "Курсы по ИИ",
-  description: "Практикум по вирусным роликам, курс «ИИ-креатор» и вайбкодинг. Практические программы для заработка на ИИ без технического образования.",
+  description: `${getPublicCatalog().steps.map((s) => s.name).join(", ")}. Два направления: AI-креаторство и вайб-кодинг, у каждого своя лестница программ.`,
   path: "/courses",
 });
 
@@ -19,7 +20,7 @@ export default function CoursesPage() {
   return (
     <>
       <CoursesHero />
-      <CoursesCatalog bare={false} title="Выберите программу" eyebrow="Курсы" description={undefined} />
+      <CatalogSection />
       <HowItWorks />
       <FAQ items={generalFaq.slice(0, 5)} />
       <LeadSection

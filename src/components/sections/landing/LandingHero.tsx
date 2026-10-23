@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowRight, Gift } from "lucide-react";
+import { ArrowRight, Gift } from "lucide-react";
 import { Button, MeshBackdrop, Marquee, Pill, Ribbon, type MeshVariant } from "@/components/ui";
 import type { Audience } from "@/data/types";
 import { fadeUp, stagger } from "@/lib/motion";
@@ -206,11 +206,6 @@ export function LandingHero({ audience, formAnchor }: LandingHeroProps) {
             >
               {hero.primaryCta}
             </Button>
-            {hero.secondaryCta && (
-              <Button variant="outline" size="md" href="#program" icon={<ArrowDown className="size-4" />} className={cn("w-full sm:w-auto", th.secondary)}>
-                {hero.secondaryCta}
-              </Button>
-            )}
           </motion.div>
 
           {audience.leadMagnet && (

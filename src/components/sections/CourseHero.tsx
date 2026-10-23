@@ -1,5 +1,5 @@
 import type { Course } from "@/data/types";
-import { formatPriceParts, getProductForCourse } from "@/data/products";
+import { formatPriceParts, getPaymentNote, getProductForCourse } from "@/data/products";
 import { getCourseStart } from "@/lib/course-start";
 import { CourseHeroClient } from "./CourseHeroClient";
 
@@ -17,11 +17,13 @@ export function CourseHero({ course }: { course: Course }) {
         accent: course.accent,
         ctaLabel: course.ctaLabel,
         duration: course.duration,
-        format: course.format,
+        // Формат — из products.ts (единый источник с карточками лестницы и каталога)
+        format: product?.format ?? course.format,
         level: course.level,
         badgeDate: start.badgeDate,
         startFact: start.factValue,
         price: product ? formatPriceParts(product) : null,
+        paymentNote: product ? getPaymentNote(product) : null,
       }}
     />
   );

@@ -10,6 +10,8 @@ import { Team } from "@/components/sections/Team";
 import { FAQ } from "@/components/sections/FAQ";
 import { LeadSection } from "@/components/sections/LeadSection";
 import { CTA } from "@/components/sections/CTA";
+import { NextSteps } from "@/components/sections/NextSteps";
+import { getNextStep } from "@/data/public";
 import { courses, getCourse } from "@/data/courses";
 import { productForCourseSlug } from "@/data/product-ids";
 import { getCurrentPrice, getProductForCourse } from "@/data/products";
@@ -51,6 +53,8 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
   // Цена для разметки — из products.ts (единственный источник)
   const product = getProductForCourse(course.slug);
   const offerPrice = product ? getCurrentPrice(product) : null;
+  // Следующая ступень лестницы (у последней ступени блока нет)
+  const nextStep = product ? getNextStep(product.id) : null;
 
   const schema = {
     "@context": "https://schema.org",
@@ -87,6 +91,7 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
         <HomeStories audience={course.audiences[0]} limit={3} />
       </div>
       <Pricing course={course} />
+      {product && <NextSteps id="next" title="Что дальше" steps={nextStep ? [nextStep] : []} />}
       {courseReviews.length > 0 && <ReviewsWall items={courseReviews} tone="bg" moreHref="/reviews" />}
       <Team
         items={isWebinarCourse ? webinarSpeakers : team.filter((m) => m.id !== "maidan")}

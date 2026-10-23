@@ -39,6 +39,8 @@ export interface CourseHeroData {
   /** Значение плитки «Старт» (нет — плитки нет) */
   startFact: string | null;
   price: PriceParts | null;
+  /** Условия оплаты из products.ts (сумма рассрочки или «есть рассрочка») */
+  paymentNote: string | null;
 }
 
 export function CourseHeroClient({ course }: { course: CourseHeroData }) {
@@ -92,7 +94,12 @@ export function CourseHeroClient({ course }: { course: CourseHeroData }) {
               <Button variant={dark ? "outline" : "white"} size="lg" href="#program" className={dark ? "border-white/30 text-white hover:border-white" : ""}>
                 Программа
               </Button>
-              {course.price && <ProductPrice parts={course.price} className={cn("ml-1 font-display text-lg", dark ? "text-white" : "text-ink")} />}
+              {course.price && (
+                <span className="ml-1 flex flex-col leading-tight">
+                  <ProductPrice parts={course.price} className={cn("font-display text-lg", dark ? "text-white" : "text-ink")} />
+                  {course.paymentNote && <span className={cn("text-[13px]", dark ? "text-white/65" : "text-ink-500")}>{course.paymentNote}</span>}
+                </span>
+              )}
             </motion.div>
           </motion.div>
 

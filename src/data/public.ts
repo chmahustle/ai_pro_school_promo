@@ -22,11 +22,13 @@ import {
   getEntryStep,
   getEntrySubtitle,
   getNextCohort,
+  getCurrentPrice,
   getProduct,
   getProductForCourse,
   products,
   STEP_LABELS,
   type Direction,
+  type ProductId,
   type Step,
 } from "./products";
 import { GENERAL_PRODUCT } from "./product-ids";
@@ -53,6 +55,7 @@ import type {
   PublicDev,
   PublicHeroData,
   PublicLadder,
+  PublicLadderStep,
   PublicLineup,
   PublicMetric,
   PublicReview,
@@ -82,6 +85,7 @@ export function toPublicStory(s: Story): PublicStory {
   return {
     id: s.id,
     direction: s.direction,
+    teacherProject: s.teacherProject,
     audiences: s.audiences,
     name: s.name,
     descriptor: s.descriptor,
@@ -344,7 +348,11 @@ export function toPublicReview(r: Review): PublicReview {
 
 /** Тарифы только с ценой (без цены тариф не показываем) и без служебных полей */
 export function getPublicTariffs(course: Course): PublicTariff[] {
+  // Цена единственного тарифа — из products.ts (единый источник; в courses.ts она только для сверки)
+  const product = getProductForCourse(course.slug);
+  const productPrice = product && course.tariffs.length === 1 ? getCurrentPrice(product) : null;
   return course.tariffs
+    .map((t) => ({ ...t, price: productPrice ?? t.price }))
     .filter((t): t is typeof t & { price: number } => t.price !== null)
     .map((t) => ({
       id: t.id,
@@ -435,24 +443,49 @@ export function getPublicLadder(direction: Direction): PublicLadder {
     direction,
     forWhom: lineupForWhom[direction],
     leader: { name: leaderName, photo: photoIfExists(member?.photo) },
-    steps: steps.map((p) => {
-      const { prefix, amount, unit } = formatPriceParts(p);
-      return {
-        id: p.id,
-        stepLabel: STEP_LABELS[p.step],
-        name: p.name,
-        devNameNote: SHOW_PLACEHOLDERS && !p.nameApproved ? "название на утверждении" : undefined,
-        resultLine: p.resultLine,
-        format: p.format,
-        price: { prefix, amount, unit },
-        start: startLabel(p),
-        ctaLabel: p.ctaLabel,
-        href: p.landingUrl,
-        isEntry: p.step === "try",
-      };
-    }),
+    steps: steps.map(toLadderStep),
   };
 }
+
+/** Ступень лестницы для карточки (общая для лестницы, каталога и блоков «Что дальше») */
+function toLadderStep(p: (typeof products)[number]): PublicLadderStep {
+  const { prefix, amount, unit } = formatPriceParts(p);
+  return {
+    id: p.id,
+    direction: p.direction,
+    stepLabel: STEP_LABELS[p.step],
+    name: p.name,
+    devNameNote: SHOW_PLACEHOLDERS && !p.nameApproved ? "название на утверждении" : undefined,
+    resultLine: p.resultLine,
+    format: p.format,
+    price: { prefix, amount, unit },
+    start: startLabel(p),
+    ctaLabel: p.ctaLabel,
+    href: p.landingUrl,
+    isEntry: p.step === "try",
+  };
+}
+
+/** Карточки продуктов по списку id (для блоков «Что дальше») */
+export function getPublicSteps(ids: ProductId[]): PublicLadderStep[] {
+  return ids.map((id) => toLadderStep(getProduct(id)));
+}
+
+/** Следующая ступень лестницы после продукта (в том же направлении); null — продукт последний */
+export function getNextStep(id: ProductId): PublicLadderStep | null {
+  const p = getProduct(id);
+  const list = products.filter((x) => x.direction === p.direction).sort((a, b) => STEP_ORDER.indexOf(a.step) - STEP_ORDER.indexOf(b.step));
+  const next = list[list.findIndex((x) => x.id === id) + 1];
+  return next ? toLadderStep(next) : null;
+}
+
+/** Каталог: все продукты по порядку направлений и ступеней */
+export function getPublicCatalog(): { directions: { id: Direction; name: string }[]; steps: PublicLadderStep[] } {
+  const dirs = (Object.keys(directions) as Direction[]).map((id) => ({ id, name: directions[id].name }));
+  const steps = dirs.flatMap((d) => products.filter((p) => p.direction === d.id).sort((a, b) => STEP_ORDER.indexOf(a.step) - STEP_ORDER.indexOf(b.step)).map(toLadderStep));
+  return { directions: dirs, steps };
+}
+
 
 export function getPublicLineup(): PublicLineup {
   return {

@@ -77,6 +77,8 @@ export interface Story {
   id: string;
   /** Направление программы, после которой результат (для вкладок «Креаторство» / «Вайб-кодинг») */
   direction: "creator" | "vibecoding";
+  /** Проект преподавателя (не ученика): на карточке подпись «проект преподавателя»; показывается только при verified && consent */
+  teacherProject?: boolean;
   audiences: AudienceSlug[];
   name: string;
   /** Согласие автора на публикацию */

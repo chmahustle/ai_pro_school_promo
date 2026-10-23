@@ -14,6 +14,8 @@ import { FAQ } from "@/components/sections/FAQ";
 import { LeadSection } from "@/components/sections/LeadSection";
 import { landingAudiences, getAudience } from "@/data/audiences";
 import { webinarSpeakers } from "@/data/team";
+import { NextSteps } from "@/components/sections/NextSteps";
+import { getPublicSteps } from "@/data/public";
 import { getReviewsFor } from "@/data/reviews";
 import type { Audience, AudienceSlug } from "@/data/types";
 import { buildMetadata } from "@/lib/seo";
@@ -47,7 +49,8 @@ type Block =
   | "reviews"
   | "metrics"
   | "format"
-  | "faq";
+  | "faq"
+  | "next";
 
 /**
  * Порядок блоков под каждую ЦА — одни компоненты, разные акценты:
@@ -56,9 +59,9 @@ type Block =
  *  career     — сначала чек-лист рутины, затем программа; кейсы выше спикеров
  */
 const blockOrder: Record<Exclude<AudienceSlug, "beginners">, Block[]> = {
-  business: ["comparison", "outcomes", "forWhom", "speakers", "results", "format", "faq"],
-  freelancers: ["comparison", "outcomes", "forWhom", "metrics", "speakers", "results", "format", "faq"],
-  career: ["comparison", "outcomes", "forWhom", "results", "speakers", "reviews", "format", "faq"],
+  business: ["comparison", "outcomes", "forWhom", "speakers", "results", "format", "next", "faq"],
+  freelancers: ["comparison", "outcomes", "forWhom", "metrics", "speakers", "results", "format", "next", "faq"],
+  career: ["comparison", "outcomes", "forWhom", "results", "speakers", "reviews", "format", "next", "faq"],
 };
 
 export default async function AudienceLandingPage({ params }: { params: Promise<{ audience: string }> }) {
@@ -129,10 +132,10 @@ function LandingBlock({ block, audience }: { block: Block; audience: Audience })
         />
       );
     case "results":
-      // тёмная панель результатов — тот же блок, что на главной, только кейсы этой аудитории
+      // Кейсы ИИ-видео на лендингах не показываем; вместо них — проекты вайб-кодинга (verified && consent, меньше 3 — блока нет)
       return (
         <div className="mt-6 sm:mt-10">
-          <HomeStories audience={slug} limit={3} />
+          <HomeStories audience={slug} direction="vibecoding" variant="projects" limit={3} />
         </div>
       );
     case "reviews":
@@ -141,6 +144,9 @@ function LandingBlock({ block, audience }: { block: Block; audience: Audience })
       return <HomeMetrics />;
     case "format":
       return <FormatBlock format={audience.format} formAnchor={FORM_ID} ctaLabel={audience.hero.primaryCta} />;
+    case "next":
+      // «Что дальше после эфира»: офлайн-урок и курс (карточки из products.ts)
+      return <NextSteps id="after-efir" title="Что дальше после эфира" steps={getPublicSteps(["offline", "course"])} />;
     case "faq":
       return <FAQ items={audience.faq} title="Частые вопросы" />;
     default:

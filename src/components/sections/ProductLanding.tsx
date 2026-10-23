@@ -1,10 +1,11 @@
 import { Clock, MapPin, Users } from "lucide-react";
 import { Button, Pill, Section, SectionIntro } from "@/components/ui";
 import { ProductPrice } from "@/components/ui/ProductPrice";
-import { getPublicProductPage } from "@/data/public";
+import { getNextStep, getPublicProductPage } from "@/data/public";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 import { nbspDash } from "@/lib/utils";
 import { LeadSection } from "./LeadSection";
+import { NextSteps } from "./NextSteps";
 import { PageHero } from "./PageHero";
 
 /** Заголовок блока результата: у офлайна «Что получите», у курса «Что соберёте» */
@@ -16,6 +17,7 @@ const RESULT_TITLE = { offline: "Что получите", course: "Что со�
  */
 export function ProductLanding({ id }: { id: "offline" | "course" }) {
   const p = getPublicProductPage(id);
+  const nextStep = getNextStep(id);
   const hasVenue = Boolean(p.venue.address || p.venue.schedule);
 
   return (
@@ -108,6 +110,8 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
           </p>
         </div>
       )}
+
+      <NextSteps id="next" title="Что дальше" steps={nextStep ? [nextStep] : []} />
 
       <LeadSection
         className="mt-10 sm:mt-16"

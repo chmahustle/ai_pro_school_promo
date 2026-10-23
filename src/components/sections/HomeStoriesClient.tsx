@@ -16,6 +16,8 @@ interface HomeStoriesClientProps {
   /** Уже отфильтрованные на сервере (verified && consent) публичные карточки */
   stories: PublicStory[];
   /** Вкладки направлений (только те, где есть кейсы). Одна вкладка или фильтр по аудитории — полоса вкладок не рисуется */
+  /** «projects» — проекты вайб-кодинга: другие подписи шапки */
+  variant?: "results" | "projects";
   tabs?: { id: "creator" | "vibecoding"; label: string }[];
   /** Сколько карточек показать; null — все (страница /reviews) */
   limit?: number | null;
@@ -29,7 +31,7 @@ interface HomeStoriesClientProps {
  * «Результаты учеников»: тёмная панель с лентами. На главной — 3 карточки и ссылка на /reviews,
  * на /reviews — все карточки с фильтром по аудитории (тот же стиль).
  */
-export function HomeStoriesClient({ stories: all, tabs = [], limit = HOME_LIMIT, withFilters = false, showAllLink = true }: HomeStoriesClientProps) {
+export function HomeStoriesClient({ stories: all, tabs = [], variant = "results", limit = HOME_LIMIT, withFilters = false, showAllLink = true }: HomeStoriesClientProps) {
   const [filter, setFilter] = useState<FilterId>("all");
   const [direction, setDirection] = useState<"creator" | "vibecoding">(tabs[0]?.id ?? "creator");
   const showTabs = tabs.length > 1 && !withFilters;
@@ -66,9 +68,9 @@ export function HomeStoriesClient({ stories: all, tabs = [], limit = HOME_LIMIT,
         id="stories-title"
         tone="dark"
         align="left"
-        eyebrow="Результаты учеников"
-        title="Они начали с нуля — вот что получилось"
-        description="Люди без технического образования, которые освоили ИИ и монетизировали навык."
+        eyebrow={variant === "projects" ? "Проекты" : "Результаты учеников"}
+        title={variant === "projects" ? "Проекты вайб-кодинга" : "Они начали с нуля — вот что получилось"}
+        description={variant === "projects" ? undefined : "Люди без технического образования, которые освоили ИИ и монетизировали навык."}
         action={
           showAllLink ? (
             <ArrowLink href="/reviews" tone="onDark">
