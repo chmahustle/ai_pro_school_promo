@@ -229,7 +229,6 @@ export function LeadForm({
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 font-semibold underline underline-offset-2"
-            onClick={() => track({ name: "messenger_click", params: { channel: "whatsapp" } })}
           >
             <MessageCircle className="size-4" /> {t.common.whatsapp}
           </a>

@@ -61,7 +61,6 @@ export function ThanksContent({ targets }: { targets: ThanksTarget[] }) {
                 href={site.whatsapp}
                 icon={<MessageCircle className="size-5" />}
                 iconPosition="left"
-                onClick={() => track({ name: "messenger_click", params: { channel: "whatsapp" } })}
               >
                 Открыть WhatsApp
               </Button>

@@ -3,7 +3,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { MessageCircle } from "lucide-react";
 import { site } from "@/lib/site";
-import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 function footerVisibleNow() {
@@ -64,7 +63,6 @@ export function FloatingMessenger({ className }: { className?: string }) {
       aria-label="Написать в WhatsApp"
       aria-hidden={hiddenByFooter || undefined}
       tabIndex={hiddenByFooter ? -1 : undefined}
-      onClick={() => track({ name: "messenger_click", params: { channel: "whatsapp" } })}
       className={cn(
         "fixed bottom-4 right-4 z-40 flex items-center justify-center bg-[#25D366] font-semibold text-white shadow-float transition-[transform,opacity,width,padding] duration-300 hover:scale-105 sm:bottom-6 sm:right-6",
         "h-14 gap-2 rounded-pill pl-4 pr-5",

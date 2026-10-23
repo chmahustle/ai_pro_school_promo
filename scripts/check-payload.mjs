@@ -5,7 +5,9 @@
  *   • HTML и RSC-payload (.next/server/app/**: .html, .rsc) — запрещены JSON-ключи
  *     "priceStatus", "consent", "verified", "piiBlurred", "logoPermission" и фразы «с действующего сайта», «требует утверждения»;
  *   • клиентские JS-чанки (.next/static/**) — запрещены те же фразы и идентификаторы priceStatus, piiBlurred, logoPermission
- *     (их нет в коде интерфейса — значит, в чанк попали данные).
+ *     (их нет в коде интерфейса — значит, в чанк попали данные);
+ *   • секреты: имя META_CAPI_TOKEN (серверный токен Meta Conversions API) не должно встречаться ни в HTML, ни в чанках;
+ *     если токен задан в окружении сборки, ищем и его значение.
  * Нашли — сборка падает с указанием файла и контекста.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
@@ -16,7 +18,7 @@ const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const NEXT = join(ROOT, ".next");
 
 const KEYS = ["priceStatus", "consent", "verified", "piiBlurred", "logoPermission"];
-const PHRASES = ["с действующего сайта", "требует утверждения"];
+const PHRASES = ["с действующего сайта", "требует утверждения", "META_CAPI_TOKEN"];
 const CHUNK_IDENTIFIERS = ["priceStatus", "piiBlurred", "logoPermission"];
 
 function* walk(dir, exts) {
@@ -62,6 +64,14 @@ for (const file of walk(join(NEXT, "static"), [".js"])) {
   for (const id of CHUNK_IDENTIFIERS) {
     const i = text.indexOf(id);
     if (i !== -1) hits.push({ file, what: `идентификатор ${id}`, ctx: ctx(text, i, id.length) });
+  }
+}
+
+// 3. Значение серверного токена не должно оказаться ни в HTML/RSC, ни в клиентских файлах
+const secret = process.env.META_CAPI_TOKEN;
+if (secret && secret.length >= 8) {
+  for (const file of [...walk(join(NEXT, "server", "app"), [".html", ".rsc"]), ...walk(join(NEXT, "static"), [".js", ".css", ".html"])]) {
+    if (readFileSync(file, "utf8").includes(secret)) hits.push({ file, what: "значение META_CAPI_TOKEN", ctx: "(значение скрыто)" });
   }
 }
 

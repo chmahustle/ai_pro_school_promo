@@ -1,5 +1,6 @@
 import "server-only";
 import { formatNumber } from "@/lib/utils";
+import type { ProductId } from "./product-ids";
 import { vocabulary } from "./vocabulary";
 
 /**
@@ -9,7 +10,7 @@ import { vocabulary } from "./vocabulary";
  */
 export type Direction = "creator" | "vibecoding";
 export type Step = "try" | "project" | "profession";
-export type ProductId = "practicum" | "ai-creator" | "efir" | "offline" | "course";
+export type { ProductId } from "./product-ids";
 
 /** Изменение цены с даты. from: null — дата пока неизвестна, запись не действует. */
 export interface PriceStep {

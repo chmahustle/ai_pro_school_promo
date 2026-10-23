@@ -163,7 +163,6 @@ export function MobileMenu({ audiences: items, open, onClose }: MobileMenuProps)
                 href={site.whatsapp}
                 icon={<MessageCircle className="size-5" />}
                 iconPosition="left"
-                onClick={() => track({ name: "messenger_click", params: { channel: "whatsapp" } })}
               >
                 {t.common.whatsapp}
               </Button>

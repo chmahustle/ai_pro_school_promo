@@ -61,7 +61,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         id={id}
         aria-invalid={!!error || undefined}
         aria-describedby={error ? `${id}-error` : hint ? `${id}-hint` : undefined}
-        className={cn(fieldBase, "h-13", error ? fieldErr : fieldOk, className)}
+        // ym-disable-keys: Вебвизор Метрики не записывает вводимые значения (имя, телефон) — они заменяются звёздочками
+        className={cn("ym-disable-keys", fieldBase, "h-13", error ? fieldErr : fieldOk, className)}
         {...rest}
       />
     </FieldWrap>
@@ -133,7 +134,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
         ref={ref}
         id={id}
         aria-invalid={!!error || undefined}
-        className={cn(fieldBase, "min-h-24 resize-y py-3", error ? fieldErr : fieldOk, className)}
+        className={cn("ym-disable-keys", fieldBase, "min-h-24 resize-y py-3", error ? fieldErr : fieldOk, className)}
         {...rest}
       />
     </FieldWrap>
