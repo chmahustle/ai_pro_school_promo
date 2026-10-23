@@ -22,7 +22,7 @@ export default function PrivacyPage() {
           <p className="text-ink-500">Редакция от {new Date().toLocaleDateString("ru-RU")}. Шаблон — требует утверждения.</p>
           <h2 className="font-display text-xl">1. Оператор данных</h2>
           <p>
-            {site.legalName} (далее — «Школа»). Контакты: {site.phones.primary}, {site.email || "e-mail уточняется"}.
+            {site.legalName} (далее — «Школа»). Контакты: {site.phones.primary}{site.email ? `, ${site.email}` : ""}.
           </p>
           <h2 className="font-display text-xl">2. Какие данные мы собираем</h2>
           <p>Имя, номер телефона, выбранное направление обучения, комментарий, технические данные (UTM-метки, страница входа, cookie аналитических сервисов).</p>
