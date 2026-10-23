@@ -72,7 +72,7 @@ export default async function AudienceLandingPage({ params }: { params: Promise<
 
   return (
     <>
-      <LandingHeader ctaLabel={a.hero.primaryCta} interest={a.form.interest} formAnchor={FORM_ID} invert={invertHeader} />
+      <LandingHeader ctaLabel={a.hero.primaryCta} interest="efir" formAnchor={FORM_ID} invert={invertHeader} />
       <LandingHero
         audience={{
           slug: a.slug,
@@ -95,12 +95,12 @@ export default async function AudienceLandingPage({ params }: { params: Promise<
         description={a.form.description}
         tone="mesh"
         mesh={meshForAudience(a.slug)}
-        defaultInterest={a.form.interest}
-        lockInterest
+        defaultProduct="efir"
+        lockProduct
         compact
         submitLabel={a.form.submitLabel}
         hint="Ссылка на эфир и гайд придут в WhatsApp"
-        thanksPath={`/thanks?src=${a.slug}&interest=${a.form.interest}`}
+        thanksPath="/thanks/efir"
         bullets={a.leadMagnet ? [a.leadMagnet.title, "Ссылка на эфир — в WhatsApp", "Бесплатно, без скрытых условий"] : undefined}
       />
     </>

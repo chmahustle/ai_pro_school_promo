@@ -5,6 +5,7 @@ import { ArrowRight, Clock, Calendar, Signal, MonitorPlay } from "lucide-react";
 import { Button, MeshBackdrop, Pill, Ribbon } from "@/components/ui";
 import { ProductPrice } from "@/components/ui/ProductPrice";
 import { LeadButton } from "@/components/ui/LeadButton";
+import { productForCourseSlug } from "@/data/product-ids";
 import type { PriceParts } from "@/data/products";
 import type { AccentTheme } from "@/data/types";
 import { fadeUp, stagger } from "@/lib/motion";
@@ -83,7 +84,7 @@ export function CourseHeroClient({ course }: { course: CourseHeroData }) {
                 variant={dark ? "white" : "dark"}
                 size="lg"
                 source={`course-hero:${course.slug}`}
-                interest={course.slug}
+                interest={productForCourseSlug(course.slug)}
                 icon={<ArrowRight className="size-5" />}
               >
                 {course.ctaLabel}

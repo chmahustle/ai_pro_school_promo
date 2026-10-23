@@ -2,6 +2,7 @@ import { Instagram, Mail, MapPin, MessageCircle, Phone, Youtube } from "lucide-r
 import { buildMetadata } from "@/lib/seo";
 import { Button, Placeholder, Reveal, Section, SectionHead } from "@/components/ui";
 import { LeadForm } from "@/components/sections/LeadForm";
+import { getFormConfig } from "@/data/public";
 import { site } from "@/lib/site";
 
 export const metadata = buildMetadata({
@@ -40,7 +41,7 @@ export default function ContactsPage() {
 
         <Reveal delay={0.1} className="rounded-2xl bg-surface p-6 shadow-soft sm:p-8">
           <h2 className="mb-5 font-display text-xl">Оставить заявку</h2>
-          <LeadForm formId="contacts" withComment hint="Ответим в течение рабочего дня" />
+          <LeadForm config={getFormConfig()} formId="contacts" withComment hint="Ответим в течение рабочего дня" />
         </Reveal>
       </div>
     </Section>

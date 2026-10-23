@@ -15,6 +15,15 @@ export const company = {
    * а production-сборка печатает предупреждение (scripts/check-legal.mjs). Переключать вручную после утверждения.
    */
   privacyApproved: false,
+  /**
+   * Формулировка согласия под кнопкой формы (без чекбокса). Единое место: окончательную редакцию утвердит юрист школы.
+   * Ссылка — на слове linkText.
+   */
+  privacyConsent: {
+    before: "Отправляя форму, вы соглашаетесь с ",
+    linkText: "политикой конфиденциальности",
+    href: "/privacy",
+  },
 } as const;
 
 export type Company = typeof company;

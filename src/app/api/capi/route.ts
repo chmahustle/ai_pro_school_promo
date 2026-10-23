@@ -4,14 +4,12 @@ import { sendCapiEvent } from "@/lib/capi";
 
 export const runtime = "nodejs";
 
-/** Тело запроса от браузера (lib/analytics.ts → sendToCapi). Токена тут нет и быть не может. */
+/** Тело запроса от браузера (lib/analytics.ts → sendContactToCapi). Только Contact: Lead уходит с сервера из /api/lead. Токена тут нет и быть не может. */
 const bodySchema = z.object({
-  event: z.enum(["Lead", "Contact"]),
+  event: z.literal("Contact"),
   eventId: z.string().min(8).max(100),
   url: z.string().url().max(2000).optional(),
   product: z.string().max(40).nullish(),
-  name: z.string().max(120).optional(),
-  phone: z.string().max(40).optional(),
 });
 
 /** Мягкий rate-limit в памяти: 60 событий в минуту с одного IP */
@@ -49,7 +47,7 @@ export async function POST(req: Request) {
 
     const parsed = bodySchema.safeParse(await req.json());
     if (!parsed.success) return ok;
-    const { event, eventId, url, product, name, phone } = parsed.data;
+    const { event, eventId, url, product } = parsed.data;
 
     const cookies = req.headers.get("cookie");
     await sendCapiEvent({
@@ -60,8 +58,6 @@ export async function POST(req: Request) {
       userAgent: req.headers.get("user-agent") ?? undefined,
       fbp: cookie(cookies, "_fbp"),
       fbc: cookie(cookies, "_fbc"),
-      name,
-      phone,
       customData: { product: product ?? undefined },
     });
   } catch {

@@ -166,12 +166,22 @@ export interface PublicBonuses {
   items: string[];
 }
 
-export interface ThanksTarget {
-  kind: "audience" | "course";
-  slug: string;
-  /** Лендинг эфира (/for/*) */
-  isWebinar: boolean;
-  /** Гайд в подарок — только для лендингов */
-  guideTitle?: string;
-  courseShortName?: string;
+export interface FormConfig {
+  /** Продукты из products.ts + «Не знаю, помогите выбрать» */
+  productOptions: { value: string; label: string }[];
+  /** Согласие под кнопкой: «before» + ссылка «linkText» */
+  agreement: { before: string; linkText: string; href: string };
+  /** Обещание под кнопкой («Ответим в WhatsApp в течение 5 минут») */
+  responseNote: string;
+}
+
+/** Данные страницы /thanks/[productId] */
+export interface ThanksPageData {
+  productId: string;
+  /** Название продукта; у «general» — null */
+  productName: string | null;
+  /** Ссылка wa.me с текстом сообщения */
+  whatsappHref: string;
+  /** Обещание ответа («Ответим в WhatsApp в течение 5 минут») */
+  responseNote: string;
 }

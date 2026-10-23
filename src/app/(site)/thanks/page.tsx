@@ -1,23 +1,8 @@
-import { Suspense } from "react";
-import { buildMetadata } from "@/lib/seo";
-import { getThanksTargets } from "@/data/public";
-import { ThanksContent } from "./ThanksContent";
+import { redirect } from "next/navigation";
+import { GENERAL_PRODUCT, resolveLeadProduct } from "@/data/product-ids";
 
-export const metadata = buildMetadata({
-  title: "Спасибо! Заявка принята",
-  description: "Мы получили вашу заявку и скоро свяжемся.",
-  path: "/thanks",
-  noIndex: true,
-});
-
-/**
- * Страница «спасибо» — отдельный URL для пикселей/конверсий.
- * Контент зависит от ?src= и ?interest= (читаются на клиенте, страница остаётся статической).
- */
-export default function ThanksPage() {
-  return (
-    <Suspense fallback={null}>
-      <ThanksContent targets={getThanksTargets()} />
-    </Suspense>
-  );
+/** Старый адрес /thanks?interest=…: переводим на /thanks/<продукт> (закладки, письма) */
+export default async function ThanksLegacyRedirect({ searchParams }: { searchParams: Promise<{ interest?: string }> }) {
+  const { interest } = await searchParams;
+  redirect(`/thanks/${resolveLeadProduct(interest) || GENERAL_PRODUCT}`);
 }

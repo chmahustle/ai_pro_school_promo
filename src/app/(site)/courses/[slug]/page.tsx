@@ -11,6 +11,7 @@ import { FAQ } from "@/components/sections/FAQ";
 import { LeadSection } from "@/components/sections/LeadSection";
 import { CTA } from "@/components/sections/CTA";
 import { courses, getCourse } from "@/data/courses";
+import { productForCourseSlug } from "@/data/product-ids";
 import { getCurrentPrice, getProductForCourse } from "@/data/products";
 import { getPublishedReviews } from "@/data/reviews";
 import { team, webinarSpeakers } from "@/data/team";
@@ -111,14 +112,14 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
         formId={`course-${course.slug}`}
         title={isWebinarCourse ? "Записаться на бесплатный эфир" : `Записаться: ${course.shortName}`}
         description={isWebinarCourse ? "Оставьте имя и WhatsApp — пришлём ссылку на ближайший эфир и гайд." : `Ответим на вопросы, расскажем про тарифы${product?.installmentFromPerMonth != null ? " и рассрочку" : ""}, пришлём ссылку на оплату.`}
-        defaultInterest={course.slug}
-        lockInterest
+        defaultProduct={productForCourseSlug(course.slug)}
+        lockProduct
         compact
         submitLabel={course.ctaLabel}
         hint="Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности"
         tone="mesh"
         mesh="home"
-        thanksPath={`/thanks?src=course-${course.slug}&interest=${course.slug}`}
+        thanksPath={`/thanks/${productForCourseSlug(course.slug)}`}
       />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
     </div>

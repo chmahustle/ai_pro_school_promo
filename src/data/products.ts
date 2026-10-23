@@ -46,6 +46,11 @@ export interface Product {
   ctaLabel: string;
   landingUrl: string;
   whatsappText: string;
+  /**
+   * Ключевое слово для WhatsApp («УРОК», «VIBE») — пока null и нигде не используется: школа не подтвердила,
+   * какое слово к какому продукту относится.
+   */
+  whatsappKeyword: string | null;
   thanksUrl: string;
   leader: "Надира" | "Майдан";
   verified: boolean;
@@ -58,7 +63,7 @@ const AS_OF = "2026-10-22";
 
 /** Заготовка текста для WhatsApp и страницы «спасибо» — единая для всех продуктов */
 const wa = (name: string) => `Здравствуйте! Хочу узнать про «${name}»`;
-const thanks = (id: ProductId) => `/thanks?src=product-${id}&interest=${id}`;
+const thanks = (id: ProductId) => `/thanks/${id}`;
 
 export const products: Product[] = [
   {
@@ -80,6 +85,7 @@ export const products: Product[] = [
     ctaLabel: "Записаться на практикум",
     landingUrl: "/courses/practicum",
     whatsappText: wa(vocabulary.practicum),
+    whatsappKeyword: null,
     thanksUrl: thanks("practicum"),
     leader: "Надира",
     verified: true,
@@ -105,6 +111,7 @@ export const products: Product[] = [
     ctaLabel: "Узнать про курс",
     landingUrl: "/courses/ai-creator",
     whatsappText: wa(vocabulary.creatorCourse),
+    whatsappKeyword: null,
     thanksUrl: thanks("ai-creator"),
     leader: "Надира",
     verified: true,
@@ -131,6 +138,7 @@ export const products: Product[] = [
     ctaLabel: "Записаться на эфир",
     landingUrl: "/courses/vibecoding#efir",
     whatsappText: wa(vocabulary.efir),
+    whatsappKeyword: null,
     thanksUrl: thanks("efir"),
     leader: "Майдан",
     verified: true,
@@ -156,6 +164,7 @@ export const products: Product[] = [
     ctaLabel: "Забронировать место",
     landingUrl: "/courses/vibecoding-offline",
     whatsappText: wa(vocabulary.offline),
+    whatsappKeyword: null,
     thanksUrl: thanks("offline"),
     leader: "Майдан",
     verified: true,
@@ -181,6 +190,7 @@ export const products: Product[] = [
     ctaLabel: "Узнать про курс",
     landingUrl: "/courses/vibecoding-course",
     whatsappText: wa(vocabulary.vibecodingCourse),
+    whatsappKeyword: null,
     thanksUrl: thanks("course"),
     leader: "Майдан",
     verified: true,

@@ -3,10 +3,11 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 import { Modal } from "@/components/ui";
 import { LeadForm } from "./LeadForm";
+import type { FormConfig } from "@/data/public-types";
 import { track } from "@/lib/analytics";
 
 interface OpenOptions {
-  /** Предвыбранное направление */
+  /** Предвыбранный продукт (id из products.ts, слаг курса или ЦА) */
   interest?: string;
   /** Откуда открыли (для аналитики) */
   source?: string;
@@ -22,7 +23,7 @@ interface LeadModalContextValue {
 const Ctx = createContext<LeadModalContextValue | null>(null);
 
 /** Глобальная модалка заявки: любая кнопка вызывает useLeadModal().open({...}) */
-export function LeadModalProvider({ children }: { children: ReactNode }) {
+export function LeadModalProvider({ children, config }: { children: ReactNode; config: FormConfig }) {
   const [isOpen, setIsOpen] = useState(false);
   const [opts, setOpts] = useState<OpenOptions>({});
 
@@ -44,8 +45,8 @@ export function LeadModalProvider({ children }: { children: ReactNode }) {
         </p>
         <LeadForm
           formId={`modal:${opts.source ?? "global"}`}
-          defaultInterest={opts.interest}
-          hint="Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности"
+          config={config}
+          defaultProduct={opts.interest}
           onSuccess={close}
         />
       </Modal>

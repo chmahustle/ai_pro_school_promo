@@ -6,16 +6,19 @@ import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 function footerVisibleNow() {
-  const footer = document.getElementById("site-footer");
-  if (!footer) return false;
-  const rect = footer.getBoundingClientRect();
-  return rect.top < window.innerHeight - 24 && rect.bottom > 48;
+  // Мешающие блоки: футер и всё, что помечено data-hide-floating (форма заявки, финальный CTA)
+  const blockers = document.querySelectorAll("#site-footer, [data-hide-floating]");
+  for (const el of blockers) {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 24 && rect.bottom > 48) return true;
+  }
+  return false;
 }
 
 /**
- * WhatsApp: на мобильных — пилюля с текстом;
+ * WhatsApp: на мобильных — пилюля 48px с текстом;
  * на ≥lg после скролла — круглая иконка 56px без текста.
- * Скрывается, когда в зоне видимости футер (#site-footer).
+ * Скрывается, когда в зоне видимости футер (#site-footer) или блок с data-hide-floating.
  */
 export function FloatingMessenger({ className }: { className?: string }) {
   const [scrolled, setScrolled] = useState(false);
@@ -33,8 +36,8 @@ export function FloatingMessenger({ className }: { className?: string }) {
   }, []);
 
   useEffect(() => {
-    const footer = document.getElementById("site-footer");
-    if (!footer) return;
+    const blockers = document.querySelectorAll("#site-footer, [data-hide-floating]");
+    if (blockers.length === 0) return;
 
     const sync = () => setFooterInView(footerVisibleNow());
     sync();
@@ -43,7 +46,7 @@ export function FloatingMessenger({ className }: { className?: string }) {
       () => sync(),
       { rootMargin: "48px 0px 48px 0px", threshold: [0, 0.05, 0.15] },
     );
-    io.observe(footer);
+    blockers.forEach((el) => io.observe(el));
     window.addEventListener("scroll", sync, { passive: true });
     window.addEventListener("resize", sync);
     return () => {
@@ -65,7 +68,7 @@ export function FloatingMessenger({ className }: { className?: string }) {
       tabIndex={hiddenByFooter ? -1 : undefined}
       className={cn(
         "fixed bottom-4 right-4 z-40 flex items-center justify-center bg-[#25D366] font-semibold text-white shadow-float transition-[transform,opacity,width,padding] duration-300 hover:scale-105 sm:bottom-6 sm:right-6",
-        "h-14 gap-2 rounded-pill pl-4 pr-5",
+        "h-12 gap-2 rounded-pill pl-3.5 pr-4",
         "lg:size-14 lg:gap-0 lg:rounded-full lg:p-0",
         hiddenByFooter
           ? "pointer-events-none translate-y-4 opacity-0"

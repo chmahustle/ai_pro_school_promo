@@ -1,5 +1,10 @@
 import "server-only";
 import type { Lead } from "./schema";
+import { products } from "@/data/products";
+
+function productLabel(id: string): string {
+  return products.find((p) => p.id === id)?.name ?? "Не знаю, помогите выбрать";
+}
 
 /**
  * Серверные адаптеры доставки заявок. Выбирается через LEADS_ADAPTER в .env.
@@ -45,7 +50,7 @@ const webhookAdapter: LeadAdapter = {
           ? { "X-Webhook-Secret": process.env.LEADS_WEBHOOK_SECRET }
           : {}),
       },
-      body: JSON.stringify({ ...lead, source: "ai-pro-school.kz", sent_at: new Date().toISOString() }),
+      body: JSON.stringify({ ...lead, product_name: productLabel(lead.product), source: "ai-pro-school.kz", sent_at: new Date().toISOString() }),
     });
     if (!res.ok) return { ok: false, error: `webhook ${res.status}` };
     return { ok: true };
@@ -68,9 +73,12 @@ const telegramAdapter: LeadAdapter = {
       `🆕 Заявка с сайта`,
       `👤 ${lead.name}`,
       `📞 +${lead.phone}`,
-      `🎯 ${lead.interest}`,
+      `🎯 ${productLabel(lead.product)}`,
+      lead.segment ? `🧩 сегмент: ${lead.segment}` : null,
       lead.comment ? `💬 ${lead.comment}` : null,
       lead.page ? `📄 ${lead.page}` : null,
+      lead.firstPage && lead.firstPage !== lead.page ? `🚪 первая страница: ${lead.firstPage}` : null,
+      lead.referrer ? `↩️ ${lead.referrer}` : null,
       utm ? `\n${utm}` : null,
     ]
       .filter(Boolean)

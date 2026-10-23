@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { leadSchema } from "@/lib/leads/schema";
 import { getLeadAdapter } from "@/lib/leads/adapters";
+import { sendCapiEvent } from "@/lib/capi";
 
 export const runtime = "nodejs";
 
@@ -50,6 +51,35 @@ export async function POST(req: Request) {
     if (!result.ok) {
       console.error("[leads] delivery failed", adapter.name, result.error);
       return NextResponse.json({ ok: false, error: "Не удалось отправить заявку" }, { status: 502 });
+    }
+    // Lead в Meta CAPI — после ответа, чтобы не задерживать посетителя; сбой CAPI на заявку не влияет
+    const lead = parsed.data;
+    if (lead.eventId) {
+      const eventId = lead.eventId;
+      const userAgent = req.headers.get("user-agent") ?? undefined;
+      const cookies = req.headers.get("cookie");
+      const cookie = (name: string) => {
+        const m = cookies?.match(new RegExp(`(?:^|;\\s*)${name}=([^;]+)`));
+        return m?.[1] ? decodeURIComponent(m[1]) : undefined;
+      };
+      after(async () => {
+        try {
+          await sendCapiEvent({
+            eventName: "Lead",
+            eventId,
+            eventSourceUrl: lead.page ? new URL(lead.page, req.headers.get("origin") ?? `https://${req.headers.get("host") ?? "localhost"}`).href : undefined,
+            ip: ip === "unknown" ? undefined : ip,
+            userAgent,
+            fbp: lead.fbp ?? cookie("_fbp"),
+            fbc: lead.fbc ?? cookie("_fbc"),
+            name: lead.name,
+            phone: lead.phone,
+            customData: { product: lead.product },
+          });
+        } catch {
+          // тихо
+        }
+      });
     }
     return NextResponse.json({ ok: true, id: result.id });
   } catch (e) {

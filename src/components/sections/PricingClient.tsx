@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Check, Gift, Minus } from "lucide-react";
 import { Badge, Pill, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
 import { LeadButton } from "@/components/ui/LeadButton";
+import { productForCourseSlug } from "@/data/product-ids";
 import type { PublicBonuses, PublicTariff } from "@/data/public-types";
 import { cn, formatTenge } from "@/lib/utils";
 
@@ -153,7 +154,7 @@ function TariffCard({ tariff: t, mode, course }: { tariff: PublicTariff; mode: "
           size="md"
           fullWidth
           source={`pricing:${course.slug}:${t.id}`}
-          interest={course.slug}
+          interest={productForCourseSlug(course.slug)}
           modalTitle={`${course.shortName} · ${t.name}`}
           modalDescription="Оставьте контакты — пришлём детали тарифа, ссылку на оплату и ответим на вопросы."
         >

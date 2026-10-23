@@ -5,7 +5,7 @@ import { site } from "@/lib/site";
 /** Минимальный футер лендинга: лого, оферта, политика, телефон */
 export function LandingFooter() {
   return (
-    <footer className="container-site flex flex-col items-center gap-4 py-10 text-center text-[13px] text-ink-500 sm:flex-row sm:justify-between sm:text-left">
+    <footer id="site-footer" className="container-site flex flex-col items-center gap-4 py-10 text-center text-[13px] text-ink-500 sm:flex-row sm:justify-between sm:text-left">
       <Logo />
       <p>
         © {new Date().getFullYear()} {site.name}

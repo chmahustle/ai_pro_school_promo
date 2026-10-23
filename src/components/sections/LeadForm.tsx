@@ -6,29 +6,33 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Check, Loader2, MessageCircle } from "lucide-react";
 import Link from "next/link";
-import { Button, Checkbox, Dropdown, Input, Textarea } from "@/components/ui";
-import { leadSchema, LEAD_INTERESTS, type LeadInput } from "@/lib/leads/schema";
+import { Button, Dropdown, Input, Textarea } from "@/components/ui";
+import { leadSchema, type LeadInput } from "@/lib/leads/schema";
 import { submitLead } from "@/lib/leads/submit";
 import { formatPhoneInput, PHONE_PLACEHOLDER } from "@/lib/phone-mask";
-import { getUtm } from "@/lib/utm";
-import { track } from "@/lib/analytics";
+import { getAttribution, getSegment } from "@/lib/utm";
+import { newEventId, track } from "@/lib/analytics";
+import { resolveLeadProduct } from "@/data/product-ids";
+import type { FormConfig } from "@/data/public-types";
 import { site } from "@/lib/site";
 import { useT } from "@/i18n/LocaleProvider";
 import { cn } from "@/lib/utils";
 
 export interface LeadFormProps {
+  /** Публичные настройки формы (список продуктов, согласие, обещание ответа) — собираются на сервере */
+  config: FormConfig;
   /** Идентификатор формы для аналитики (hero, footer, modal, landing-business…) */
   formId: string;
-  /** Предвыбранное направление */
-  defaultInterest?: string;
-  /** Скрыть селект (на ЦА-лендингах направление фиксировано) */
-  lockInterest?: boolean;
+  /** Предвыбранный продукт: id из products.ts, слаг курса или ЦА (приводится к id) */
+  defaultProduct?: string;
+  /** Скрыть выбор продукта (на лендингах продукт фиксирован) */
+  lockProduct?: boolean;
   /** Показать поле комментария */
   withComment?: boolean;
   submitLabel?: string;
   /** Подпись под кнопкой */
   hint?: string;
-  /** Куда редиректить после успеха. По умолчанию /thanks?src=<formId> */
+  /** Куда редиректить после успеха. По умолчанию /thanks/<продукт> */
   thanksPath?: string;
   /** Светлая форма на тёмном фоне */
   invert?: boolean;
@@ -39,9 +43,10 @@ export interface LeadFormProps {
 }
 
 export function LeadForm({
+  config,
   formId,
-  defaultInterest = "",
-  lockInterest,
+  defaultProduct,
+  lockProduct,
   withComment,
   submitLabel,
   hint,
@@ -62,15 +67,15 @@ export function LeadForm({
     control,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<LeadInput>({
     resolver: zodResolver(leadSchema),
     defaultValues: {
       name: "",
       phone: "",
-      interest: defaultInterest,
+      product: resolveLeadProduct(defaultProduct),
       comment: "",
-      consent: false,
       formId,
       website: "",
     },
@@ -88,33 +93,46 @@ export function LeadForm({
     if (typeof window !== "undefined") {
       setValue("formId", formId);
       setValue("page", window.location.pathname + window.location.search);
-      setValue("utm", getUtm() as Record<string, string | undefined>);
+      // Без явного продукта берём тот, что «стоит за» страницей
+      if (!getValues("product")) setValue("product", resolveLeadProduct(defaultProduct, window.location.pathname));
     }
-  }, [setValue, formId]);
+  }, [setValue, getValues, formId, defaultProduct]);
 
   const onSubmit = async (data: LeadInput) => {
     setServerError(null);
-    // utm/page подстраховываем на submit (если useEffect ещё не успел)
+    // Атрибуция собирается в момент отправки: cookies _fbp/_fbc и first-touch UTM
+    const attr = getAttribution();
+    const page = window.location.pathname + window.location.search;
+    const eventId = newEventId();
     const payload: LeadInput = {
       ...data,
       formId: data.formId || formId,
-      page: data.page || (typeof window !== "undefined" ? window.location.pathname + window.location.search : undefined),
-      utm: data.utm ?? (getUtm() as Record<string, string | undefined>),
+      page,
+      eventId,
+      utm: attr.utm,
+      referrer: attr.referrer,
+      firstPage: attr.firstPage,
+      fbp: attr.fbp,
+      fbc: attr.fbc,
+      ttclid: attr.ttclid,
+      segment: getSegment(window.location.pathname, attr.utm),
     };
-    track({ name: "lead_submit", params: { form_id: formId, course: payload.interest } });
+    track({ name: "lead_submit", params: { form_id: formId, course: payload.product } });
     const res = await submitLead(payload);
     if (!res.ok) {
       setServerError(res.error ?? t.form.error);
       return;
     }
+    // Lead в браузерные пиксели уйдёт со страницы «Спасибо» с тем же event_id; здесь только запоминаем
+    try {
+      sessionStorage.setItem("aps_lead", JSON.stringify({ eventId, product: payload.product, formId, page, sent: false }));
+    } catch {
+      // приватный режим: Lead на сервере всё равно ушёл
+    }
     setDone(true);
     onSuccess?.();
-    const path =
-      thanksPath ?? `/thanks?src=${encodeURIComponent(formId)}&interest=${encodeURIComponent(payload.interest)}`;
-    router.push(path);
+    router.push(thanksPath ?? `/thanks/${payload.product}`);
   };
-
-  const labelColor = invert ? "text-white/80" : undefined;
 
   return (
     <form
@@ -165,16 +183,16 @@ export function LeadForm({
         />
       </div>
 
-      {!lockInterest ? (
+      {!lockProduct ? (
         <Controller
-          name="interest"
+          name="product"
           control={control}
           render={({ field }) => (
             <Dropdown
               label={t.form.interest}
-              placeholder="Выберите направление"
-              options={LEAD_INTERESTS}
-              error={errors.interest?.message}
+              placeholder="Выберите программу"
+              options={config.productOptions}
+              error={errors.product?.message}
               className={invert ? "bg-white/95" : undefined}
               name={field.name}
               value={field.value ?? ""}
@@ -184,7 +202,7 @@ export function LeadForm({
           )}
         />
       ) : (
-        <input type="hidden" {...register("interest")} />
+        <input type="hidden" {...register("product")} />
       )}
 
       {withComment && (
@@ -196,30 +214,6 @@ export function LeadForm({
           {...register("comment")}
         />
       )}
-
-      <Controller
-        control={control}
-        name="consent"
-        render={({ field }) => (
-          <Checkbox
-            className={labelColor}
-            label={
-              <>
-                {t.form.consent}.{" "}
-                <Link href="/privacy" className={cn("underline underline-offset-2", invert ? "text-white" : "text-ink")}>
-                  Политика конфиденциальности
-                </Link>
-              </>
-            }
-            error={errors.consent?.message}
-            name={field.name}
-            ref={field.ref}
-            checked={field.value === true}
-            onBlur={field.onBlur}
-            onChange={(e) => field.onChange(e.target.checked)}
-          />
-        )}
-      />
 
       {serverError && (
         <div role="alert" className="flex flex-col gap-2 rounded-xl bg-danger/10 p-4 text-sm text-danger">
@@ -248,7 +242,15 @@ export function LeadForm({
         {isSubmitting ? t.form.submitting : done ? t.form.success : (submitLabel ?? t.form.submit)}
       </Button>
 
-      {hint && <p className={cn("text-center text-[13px]", invert ? "text-white/60" : "text-ink-500")}>{hint}</p>}
+      <p className={cn("text-center text-[13px] leading-snug", invert ? "text-white/60" : "text-ink-500")}>
+        {hint ?? config.responseNote}
+      </p>
+      <p className={cn("text-center text-[12px] leading-snug", invert ? "text-white/55" : "text-ink-500")}>
+        {config.agreement.before}
+        <Link href={config.agreement.href} className={cn("underline underline-offset-2", invert ? "text-white" : "text-ink")}>
+          {config.agreement.linkText}
+        </Link>
+      </p>
     </form>
   );
 }

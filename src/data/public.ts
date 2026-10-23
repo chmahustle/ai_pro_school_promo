@@ -9,7 +9,10 @@ import { company } from "./company";
 import { courses } from "./courses";
 import { getVisibleHeroResults, heroEvent, heroTeachers } from "./heroResults";
 import { getHomeMetrics } from "./metrics";
-import { getProductForCourse } from "./products";
+import { formConfig } from "./forms";
+import { getProductForCourse, products } from "./products";
+import { GENERAL_PRODUCT } from "./product-ids";
+import { site } from "@/lib/site";
 import { getVisibleStories, canShowStoryMedia, isStoryPublishable, stories as allStories } from "./stories";
 import { team } from "./team";
 import { getVisibleTestimonials } from "./testimonials";
@@ -30,7 +33,8 @@ import type {
   PublicTeamMember,
   PublicTestimonial,
   PublicWork,
-  ThanksTarget,
+  FormConfig,
+  ThanksPageData,
 } from "./public-types";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 
@@ -268,16 +272,29 @@ export function isInstallmentEnabled(course: Course): boolean {
   return p?.installmentFromPerMonth != null;
 }
 
-// ───────────── Страница «Спасибо» ─────────────
+// ───────────── Формы и страница «Спасибо» ─────────────
 
-export function getThanksTargets(): ThanksTarget[] {
-  return [
-    ...audiences.map((a) => ({
-      kind: "audience" as const,
-      slug: a.slug as string,
-      isWebinar: a.path.startsWith("/for/"),
-      guideTitle: a.leadMagnet?.title,
-    })),
-    ...courses.map((c) => ({ kind: "course" as const, slug: c.slug as string, isWebinar: false, courseShortName: c.shortName })),
-  ];
+/** Настройки формы заявки для клиента: список продуктов, согласие, обещание — всё из data-файлов */
+export function getFormConfig(): FormConfig {
+  return {
+    productOptions: [...products.map((p) => ({ value: p.id as string, label: p.name })), { value: formConfig.generalOption.value, label: formConfig.generalOption.label }],
+    agreement: { before: company.privacyConsent.before, linkText: company.privacyConsent.linkText, href: company.privacyConsent.href },
+    responseNote: formConfig.responseNote.text,
+  };
+}
+
+/** Идентификаторы страниц /thanks/[productId] */
+export function getThanksProductIds(): string[] {
+  return [...products.map((p) => p.id as string), GENERAL_PRODUCT];
+}
+
+/** Страница «Спасибо»: ссылка WhatsApp с текстом из products.ts (для «general» — из forms.ts) */
+export function getThanksPage(productId: string): ThanksPageData | null {
+  const waBase = site.whatsapp;
+  if (productId === GENERAL_PRODUCT) {
+    return { productId, productName: null, responseNote: formConfig.responseNote.text, whatsappHref: `${waBase}?text=${encodeURIComponent(formConfig.generalWhatsappText)}` };
+  }
+  const p = products.find((x) => x.id === productId);
+  if (!p) return null;
+  return { productId, productName: p.name, responseNote: formConfig.responseNote.text, whatsappHref: `${waBase}?text=${encodeURIComponent(p.whatsappText)}` };
 }

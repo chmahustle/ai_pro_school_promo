@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "@/styles/globals.css";
 import { interTight, manrope } from "@/styles/fonts";
 import { ScrollControls } from "@/components/layout/ScrollControls";
+import { getFormConfig } from "@/data/public";
 import { Providers } from "@/components/layout/Providers";
 import { Analytics } from "@/components/layout/Analytics";
 import { IS_INDEXABLE, SITE_URL, site } from "@/lib/site";
@@ -40,7 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru" className={`${manrope.variable} ${interTight.variable}`}>
       <body className="min-h-dvh flex flex-col">
-        <Providers>
+        <Providers formConfig={getFormConfig()}>
           {children}
           <ScrollControls />
         </Providers>

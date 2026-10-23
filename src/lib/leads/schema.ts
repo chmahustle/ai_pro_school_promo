@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isLeadProduct } from "@/data/product-ids";
 
 /** Нормализует телефон к формату 7XXXXXXXXXX (11 цифр) */
 export function normalizePhone(raw: string): string {
@@ -20,15 +21,24 @@ export const leadSchema = z.object({
     .string()
     .transform(normalizePhone)
     .refine((v) => KZ_PHONE_REGEX.test(v), "Введите номер в формате +7 (7XX) XXX-XX-XX"),
-  /** Что интересует: slug курса или ЦА */
-  interest: z.string().min(1, "Выберите направление"),
+  /** Продукт из products.ts или «general» («Не знаю, помогите выбрать») */
+  product: z.string().refine(isLeadProduct, "Выберите продукт"),
   comment: z.string().trim().max(500).optional(),
-  consent: z
-    .boolean({ required_error: "Нужно согласие на обработку данных" })
-    .refine((v) => v === true, { message: "Нужно согласие на обработку данных" }),
   /** Служебные поля (скрытые) */
   formId: z.string().default("default"),
-  page: z.string().optional(),
+  /** Страница, с которой отправлена заявка */
+  page: z.string().max(500).optional(),
+  /** Общий с браузерным Lead идентификатор события (дедупликация в Meta) */
+  eventId: z.string().min(8).max(100).optional(),
+  /** Сегмент: из /for/<сегмент> или utm_content */
+  segment: z.string().max(120).optional(),
+  referrer: z.string().max(1000).optional(),
+  /** Первая страница сессии */
+  firstPage: z.string().max(500).optional(),
+  fbp: z.string().max(200).optional(),
+  fbc: z.string().max(300).optional(),
+  ttclid: z.string().max(300).optional(),
+  /** utm_* и click-id первого захода */
   utm: z.record(z.string(), z.string().optional()).optional(),
   /** Honeypot — боты заполняют, люди нет */
   website: z.string().max(0).optional(),
@@ -36,16 +46,3 @@ export const leadSchema = z.object({
 
 export type LeadInput = z.input<typeof leadSchema>;
 export type Lead = z.output<typeof leadSchema>;
-
-/** Варианты «что интересует» для селекта в форме */
-export const LEAD_INTERESTS = [
-  { value: "ai-creator", label: "Курс «ИИ-креатор»" },
-  { value: "practicum", label: "Практикум по вирусным роликам" },
-  { value: "vibecoding", label: "Вайбкодинг" },
-  { value: "business", label: "Вайбкодинг для бизнеса (эфир)" },
-  { value: "freelancers", label: "Вайбкодинг для фрилансеров (эфир)" },
-  { value: "career", label: "Вайбкодинг для специалистов в найме (эфир)" },
-  { value: "consult", label: "Нужна консультация" },
-] as const;
-
-export type LeadInterest = (typeof LEAD_INTERESTS)[number]["value"];

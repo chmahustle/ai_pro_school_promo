@@ -14,8 +14,9 @@
  *   lead             — Lead: подтверждённая заявка (trackLead; подключается на /thanks)
  *   contact          — Contact: клик по ссылке/кнопке WhatsApp (авто, из <Analytics/>; trackContact)
  *
- * Lead и Contact уходят во все подключённые системы и дублируются на сервер в Meta Conversions API (/api/capi)
- * с тем же event_id, что и браузерное событие, — Meta дедуплицирует их.
+ * Contact уходит во все подключённые системы и дублируется на сервер в Meta Conversions API (/api/capi).
+ * Lead: серверное событие отправляет /api/lead при приёме заявки, браузерное — trackLead() на /thanks/[productId];
+ * у обоих один event_id (генерируется при отправке формы) — Meta дедуплицирует.
  */
 import type { ProductId } from "@/data/product-ids";
 
@@ -126,25 +127,15 @@ export function track(arg: AnalyticsEvent | AnalyticsEvent["name"], params?: unk
   send(event, newEventId());
 }
 
-/** Данные для Conversions API */
-interface CapiPayload {
-  event: "Lead" | "Contact";
-  eventId: string;
-  url: string;
-  product?: ProductId | null;
-  name?: string;
-  phone?: string;
-}
-
-/** Серверная копия события для Meta CAPI. Если токена на сервере нет — /api/capi тихо пропустит. */
-function sendToCapi(payload: CapiPayload) {
+/** Серверная копия Contact для Meta CAPI. Если токена на сервере нет — /api/capi тихо пропустит. */
+function sendContactToCapi(payload: { eventId: string; url: string; product?: ProductId | null }) {
   // Только production и только если подключён Meta Pixel (event_id имеет смысл лишь вместе с браузерным событием)
   if (process.env.NODE_ENV !== "production" || typeof window === "undefined" || !analyticsIds.metaPixel) return;
   try {
     void fetch("/api/capi", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ event: "Contact", ...payload }),
       keepalive: true,
     }).catch(() => undefined);
   } catch {
@@ -156,18 +147,15 @@ function sendToCapi(payload: CapiPayload) {
 export function trackContact(params: ContactParams): string {
   const eventId = newEventId();
   send({ name: "contact", params }, eventId);
-  sendToCapi({ event: "Contact", eventId, url: window.location.href, product: params.product });
+  sendContactToCapi({ eventId, url: window.location.href, product: params.product });
   return eventId;
 }
 
 /**
- * Lead: подтверждённая заявка. Подключается на /thanks (следующий шаг).
- * Имя и телефон в пиксели НЕ уходят — только в CAPI, где сервер хэширует их SHA-256.
+ * Lead в браузерные пиксели: вызывается на /thanks/[productId] один раз за заявку.
+ * eventId — тот же, что сервер использовал при отправке Lead в Conversions API (дедупликация в Meta).
+ * Имя и телефон сюда не передаются; серверное событие Lead отправляет /api/lead при приёме заявки.
  */
-export function trackLead(params: LeadParams & { name?: string; phone?: string }): string {
-  const { name, phone, ...pixelParams } = params;
-  const eventId = newEventId();
-  send({ name: "lead", params: pixelParams }, eventId);
-  sendToCapi({ event: "Lead", eventId, url: window.location.href, product: params.product, name, phone });
-  return eventId;
+export function trackLead(params: LeadParams, eventId: string): void {
+  send({ name: "lead", params }, eventId);
 }

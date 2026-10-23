@@ -1,10 +1,11 @@
 import { MessageCircle, ShieldCheck, Timer } from "lucide-react";
 import { Button, MeshBackdrop, Pill, Reveal, type MeshVariant } from "@/components/ui";
 import { LeadForm, type LeadFormProps } from "./LeadForm";
+import { getFormConfig } from "@/data/public";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-interface LeadSectionProps extends Omit<LeadFormProps, "className"> {
+interface LeadSectionProps extends Omit<LeadFormProps, "className" | "config"> {
   id?: string;
   eyebrow?: string;
   title: string;
@@ -34,7 +35,7 @@ export function LeadSection({
   const isDark = tone === "dark";
 
   return (
-    <section id={id} className={cn("scroll-mt-24 px-2 sm:px-4", className)} aria-labelledby={`${id}-title`}>
+    <section id={id} data-hide-floating className={cn("scroll-mt-24 px-2 sm:px-4", className)} aria-labelledby={`${id}-title`}>
       <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl">
         {tone === "mesh" && <MeshBackdrop variant={mesh} rounded="rounded-2xl sm:rounded-3xl" />}
         {isDark && <div className="absolute inset-0 bg-dark" aria-hidden />}
@@ -93,7 +94,7 @@ export function LeadSection({
           </Reveal>
 
           <Reveal delay={0.1} className="rounded-[32px] bg-surface p-6 text-ink shadow-float sm:p-8">
-            <LeadForm {...formProps} />
+            <LeadForm config={getFormConfig()} {...formProps} />
           </Reveal>
         </div>
       </div>
