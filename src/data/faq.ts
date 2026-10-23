@@ -1,3 +1,4 @@
+import "server-only";
 import type { FaqItem } from "./types";
 
 /** Общий FAQ для главной и /about. Источник: ai2026 + prakticum, обобщено. */

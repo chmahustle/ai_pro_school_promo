@@ -1,3 +1,4 @@
+import "server-only";
 import type { Review } from "./types";
 import { filterForPublish } from "@/lib/placeholders";
 
@@ -162,10 +163,4 @@ export function getReviewsFor(audience: Review["audiences"][number], kinds?: Rev
   );
 }
 
-export const reviewKindLabels: Record<Review["kind"], string> = {
-  text: "Отзывы",
-  video: "Видео",
-  receipt: "Оплаты",
-  chat: "Переписки",
-};
-
+export { reviewKindLabels } from "./review-labels";

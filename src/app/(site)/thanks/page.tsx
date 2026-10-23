@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { buildMetadata } from "@/lib/seo";
+import { getThanksTargets } from "@/data/public";
 import { ThanksContent } from "./ThanksContent";
 
 export const metadata = buildMetadata({
@@ -16,7 +17,7 @@ export const metadata = buildMetadata({
 export default function ThanksPage() {
   return (
     <Suspense fallback={null}>
-      <ThanksContent />
+      <ThanksContent targets={getThanksTargets()} />
     </Suspense>
   );
 }

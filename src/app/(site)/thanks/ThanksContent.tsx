@@ -7,11 +7,11 @@ import { Check, MessageCircle, ArrowRight } from "lucide-react";
 import { Button, MeshBackdrop, Pill } from "@/components/ui";
 import { track } from "@/lib/analytics";
 import { site } from "@/lib/site";
-import { getAudience } from "@/data/audiences";
-import { getCourse } from "@/data/courses";
+import type { ThanksTarget } from "@/data/public-types";
 import { fadeUp, stagger } from "@/lib/motion";
 
-export function ThanksContent() {
+/** targets — публичные названия лендингов и курсов, собранные на сервере (getThanksTargets) */
+export function ThanksContent({ targets }: { targets: ThanksTarget[] }) {
   const params = useSearchParams();
   const src = params.get("src") ?? undefined;
   const interest = params.get("interest") ?? undefined;
@@ -20,15 +20,15 @@ export function ThanksContent() {
     track({ name: "lead_success", params: { source: src } });
   }, [src]);
 
-  const audience = interest ? getAudience(interest) : undefined;
-  const course = interest ? getCourse(interest) : undefined;
-  const isWebinar = !!audience && audience.path.startsWith("/for/");
+  const audience = interest ? targets.find((t) => t.kind === "audience" && t.slug === interest) : undefined;
+  const course = interest ? targets.find((t) => t.kind === "course" && t.slug === interest) : undefined;
+  const isWebinar = !!audience?.isWebinar;
 
   const title = isWebinar ? "Вы зарегистрированы на эфир" : "Заявка принята";
   const text = isWebinar
-    ? `Ссылка на эфир и гайд «${audience?.leadMagnet?.title.replace(/^Гайд «|»$/g, "") ?? "в подарок"}» придут в WhatsApp в течение нескольких минут. Если не пришло — напишите нам.`
+    ? `Ссылка на эфир и гайд «${audience?.guideTitle?.replace(/^Гайд «|»$/g, "") ?? "в подарок"}» придут в WhatsApp в течение нескольких минут. Если не пришло — напишите нам.`
     : course
-      ? `Мы свяжемся с вами в течение рабочего дня, расскажем про программу «${course.shortName}» и ответим на вопросы.`
+      ? `Мы свяжемся с вами в течение рабочего дня, расскажем про программу «${course.courseShortName}» и ответим на вопросы.`
       : "Мы свяжемся с вами в течение рабочего дня. А пока — посмотрите результаты учеников или напишите в WhatsApp.";
 
   return (

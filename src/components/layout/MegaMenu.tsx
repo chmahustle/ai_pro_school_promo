@@ -4,22 +4,22 @@ import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { landingAudiences, audiences } from "@/data/audiences";
-import type { Audience } from "@/data/types";
+import type { MenuAudience } from "@/data/public-types";
+import type { AccentTheme } from "@/data/types";
 import { cn } from "@/lib/utils";
 import { easeOut } from "@/lib/motion";
 import { AudienceIcon, AudienceIllustration, Ribbon } from "@/components/ui";
 import { useT } from "@/i18n/LocaleProvider";
 
 /** Цвета превью совпадают с hero страниц: бизнес — чёрный, фриланс — персиково-розовый mesh, найм — сиреневый, новичкам — mesh главной */
-const accentBg: Record<Audience["accent"], string> = {
+const accentBg: Record<AccentTheme, string> = {
   ink: "bg-dark text-white",
   peach: "mesh-freelance text-ink",
   lavender: "bg-lavender text-ink",
   indigo: "mesh-home text-ink",
 };
 
-const accentChip: Record<Audience["accent"], string> = {
+const accentChip: Record<AccentTheme, string> = {
   ink: "bg-white/10 text-white",
   peach: "bg-white/75 text-ink",
   lavender: "bg-white/75 text-brand-700",
@@ -27,6 +27,8 @@ const accentChip: Record<Audience["accent"], string> = {
 };
 
 interface MegaMenuProps {
+  /** Пункты меню — собираются на сервере (data/public.ts → getMenuData) */
+  audiences: MenuAudience[];
   open: boolean;
   onClose: () => void;
   id: string;
@@ -36,11 +38,9 @@ interface MegaMenuProps {
  * Mega-menu «Для кого» (референс ventorme): слева — список ЦА, справа — большая
  * превью-карточка выбранной ЦА, меняется при наведении/фокусе.
  */
-export function MegaMenu({ open, onClose, id }: MegaMenuProps) {
+export function MegaMenu({ audiences: items, open, onClose, id }: MegaMenuProps) {
   const t = useT();
-  // Ссылку на /for/business из шапки не показываем
-  const items = [...landingAudiences.filter((a) => a.slug !== "business"), ...audiences.filter((a) => a.slug === "beginners")];
-  const [activeSlug, setActiveSlug] = useState<Audience["slug"]>(items[0]!.slug);
+  const [activeSlug, setActiveSlug] = useState<MenuAudience["slug"]>(items[0]!.slug);
   const active = items.find((a) => a.slug === activeSlug) ?? items[0]!;
 
   return (
@@ -137,7 +137,7 @@ export function MegaMenu({ open, onClose, id }: MegaMenuProps) {
                   <Ribbon variant="card" tone={active.accent === "ink" ? "dark" : "light"} opacity={active.accent === "ink" ? 0.18 : 0.55} />
                   <div className="relative z-10 flex items-start justify-between gap-4">
                     <span className={cn("rounded-pill px-3 py-1 text-xs font-semibold", accentChip[active.accent])}>
-                      {active.hero.eyebrow}
+                      {active.heroEyebrow}
                     </span>
                     <span aria-hidden className="leading-none">
                       <AudienceIcon slug={active.slug} className="size-10" />
@@ -149,7 +149,7 @@ export function MegaMenu({ open, onClose, id }: MegaMenuProps) {
                   </div>
 
                   <div className="relative z-10">
-                    <p className="font-display text-lg leading-tight">{active.hero.title}</p>
+                    <p className="font-display text-lg leading-tight">{active.heroTitle}</p>
                     <Link
                       href={active.path}
                       onClick={onClose}

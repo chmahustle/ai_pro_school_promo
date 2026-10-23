@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown, Menu } from "lucide-react";
+import type { MenuAudience } from "@/data/public-types";
 import { Logo } from "./Logo";
 import { MegaMenu } from "./MegaMenu";
 import { MobileMenu } from "./MobileMenu";
@@ -20,7 +21,7 @@ import { cn } from "@/lib/utils";
  * Desktop: лого · [Для кого ▾ · Курсы · Результаты · О нас · Блог] · RU/KZ · Вход · CTA
  * Mobile: лого · CTA · бургер → MobileMenu (аккордеон «Для кого»).
  */
-export function Header() {
+export function Header({ menuAudiences }: { menuAudiences: MenuAudience[] }) {
   const t = useT();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -135,7 +136,7 @@ export function Header() {
             </ul>
 
             <div onMouseEnter={openMega} onMouseLeave={scheduleClose}>
-              <MegaMenu open={megaOpen} onClose={() => setMegaOpen(false)} id={megaId} />
+              <MegaMenu audiences={menuAudiences} open={megaOpen} onClose={() => setMegaOpen(false)} id={megaId} />
             </div>
           </nav>
 
@@ -175,7 +176,7 @@ export function Header() {
         </div>
       </header>
 
-      <MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <MobileMenu audiences={menuAudiences} open={mobileOpen} onClose={() => setMobileOpen(false)} />
     </>
   );
 }

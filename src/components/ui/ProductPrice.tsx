@@ -1,18 +1,18 @@
-import { formatPriceParts, type Product } from "@/data/products";
+import type { PriceParts } from "@/data/products";
 import { cn } from "@/lib/utils";
 
 /**
- * Цена продукта из products.ts: «9 900 ₸», «от 249 000 ₸», «бесплатно».
- * Неразрывные пробелы + white-space: nowrap, «от» и «₸» мельче числа. Нет цены — ничего не рендерит.
+ * Цена: «9 900 ₸», «от 249 000 ₸», «бесплатно». Части приходят готовыми с сервера (formatPriceParts) —
+ * компонент ничего не знает о данных продуктов. Неразрывные пробелы + nowrap, «от» и «₸» мельче числа.
+ * Нет цены (пустое amount) — ничего не рендерит.
  */
-export function ProductPrice({ product, className }: { product: Product; className?: string }) {
-  const { prefix, amount, unit } = formatPriceParts(product);
-  if (!amount) return null;
+export function ProductPrice({ parts, className }: { parts: Pick<PriceParts, "prefix" | "amount" | "unit">; className?: string }) {
+  if (!parts.amount) return null;
   return (
     <span className={cn("whitespace-nowrap", className)}>
-      {prefix && <span className="mr-[0.3em] text-[0.6em] font-semibold">{prefix}</span>}
-      {amount}
-      {unit && <span className="ml-[0.2em] text-[0.6em] font-bold">{unit}</span>}
+      {parts.prefix && <span className="mr-[0.3em] text-[0.6em] font-semibold">{parts.prefix}</span>}
+      {parts.amount}
+      {parts.unit && <span className="ml-[0.2em] text-[0.6em] font-bold">{parts.unit}</span>}
     </span>
   );
 }

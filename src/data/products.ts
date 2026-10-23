@@ -1,3 +1,4 @@
+import "server-only";
 import { formatNumber } from "@/lib/utils";
 import { vocabulary } from "./vocabulary";
 

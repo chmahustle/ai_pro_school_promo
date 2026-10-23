@@ -1,3 +1,4 @@
+import "server-only";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 
 /** Максимум карточек ленты на главной */

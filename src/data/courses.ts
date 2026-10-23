@@ -1,3 +1,4 @@
+import "server-only";
 import type { Course, CourseSlug } from "./types";
 
 /**

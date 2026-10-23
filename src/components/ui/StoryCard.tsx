@@ -4,19 +4,17 @@ import { Play, Quote } from "lucide-react";
 import { Avatar } from "./Avatar";
 import { MediaPlaceholder } from "./MediaPlaceholder";
 import { PlaceholderBadge } from "./PlaceholderBadge";
-import type { Story } from "@/data/types";
-import { canShowStoryMedia, isStoryPublishable } from "@/data/stories";
-import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
+import type { PublicStory } from "@/data/public-types";
 import { cn } from "@/lib/utils";
 
 export interface StoryCardProps {
-  story: Story;
+  story: PublicStory;
   /** Открыть лайтбокс/видео по индексу медиа */
   onOpenMedia?: () => void;
   className?: string;
 }
 
-function ResultTitle({ result }: { result: Story["result"] }) {
+function ResultTitle({ result }: { result: PublicStory["result"] }) {
   const brand = [result.value, result.unit].filter(Boolean).join("\u00a0");
   return (
     <h3 className="font-display font-bold leading-[1.15] tracking-[-0.02em] text-ink [font-size:clamp(22px,2vw,28px)]">
@@ -52,7 +50,7 @@ function formatAsOf(asOf: string) {
   return months[idx] ? `${months[idx]} ${m[1]}` : asOf;
 }
 
-function mediaCaption(story: Story): string {
+function mediaCaption(story: PublicStory): string {
   if (story.media?.caption) return story.media.caption;
   if (story.media?.type === "receipt") return "Данные скрыты";
   if (story.media?.type === "stats") return "Скриншот статистики";
@@ -63,11 +61,12 @@ function mediaCaption(story: Story): string {
  * Единая карточка результата ученика.
  */
 export function StoryCard({ story, onOpenMedia, className }: StoryCardProps) {
-  const showBadge = !isStoryPublishable(story);
-  const badgeStatus = story.placeholder ? "placeholder" : "unverified";
+  // Пометки проверки приходят только в dev (story.dev); в production-сборке их нет вовсе
+  const badgeStatus = story.dev?.badge ?? null;
+  const showBadge = badgeStatus !== null;
   const showBeforeAfter = Boolean(story.before && story.after);
-  const showQuote = story.quote?.verbatim === true;
-  const showMedia = canShowStoryMedia(story);
+  const showQuote = Boolean(story.quote);
+  const showMedia = Boolean(story.media);
   const isReceipt = story.variant === "receipt" || story.media?.type === "receipt";
   const isVideo = story.media?.type === "video";
 
@@ -78,10 +77,10 @@ export function StoryCard({ story, onOpenMedia, className }: StoryCardProps) {
         className,
       )}
     >
-      {showBadge && (
+      {showBadge && badgeStatus && (
         <PlaceholderBadge
           status={badgeStatus}
-          note={story.note}
+          note={story.dev?.note}
           className="left-auto right-2 top-2"
         />
       )}
@@ -169,20 +168,20 @@ export function StoryCard({ story, onOpenMedia, className }: StoryCardProps) {
       )}
 
       {/* Цитата */}
-      {showQuote && story.quote && (
+      {showQuote && (
         <p className="mt-4 flex gap-2 text-[14px] italic leading-relaxed text-ink-500">
           <Quote className="mt-0.5 size-4 shrink-0 opacity-40" aria-hidden />
-          {story.quote.text}
+          {story.quote}
         </p>
       )}
 
       {/* Подвал: источник и дата — метаданные проверки, только в dev */}
-      {SHOW_PLACEHOLDERS && (
-      <footer className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px] text-ink-500">
-        <span>{story.source}</span>
-        <span aria-hidden>·</span>
-        <time dateTime={story.asOf}>{formatAsOf(story.asOf)}</time>
-      </footer>
+      {story.dev?.source && story.dev.asOf && (
+        <footer className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px] text-ink-500">
+          <span>{story.dev.source}</span>
+          <span aria-hidden>·</span>
+          <time dateTime={story.dev.asOf}>{formatAsOf(story.dev.asOf)}</time>
+        </footer>
       )}
     </article>
   );

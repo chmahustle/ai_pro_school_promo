@@ -5,7 +5,7 @@ import { ArrowLink, RevealGroup, RevealItem, Section, SectionIntro, TileDecor } 
 import { ProductPrice } from "@/components/ui/ProductPrice";
 import { courses } from "@/data/courses";
 import type { Course } from "@/data/types";
-import { getCurrentPrice, getProductForCourse } from "@/data/products";
+import { formatPriceParts, getCurrentPrice, getProductForCourse } from "@/data/products";
 import { getCourseStart } from "@/lib/course-start";
 import { cn } from "@/lib/utils";
 
@@ -112,7 +112,7 @@ export function CourseCard({ course, index }: { course: Course; index?: number }
       </div>
 
       <div className={cn("relative z-10 mt-auto flex items-center justify-between gap-3 border-t pt-5", t.line)}>
-        {product ? <ProductPrice product={product} className="font-display text-xl" /> : <span />}
+        {product ? <ProductPrice parts={formatPriceParts(product)} className="font-display text-xl" /> : <span />}
         <span className={cn("grid size-11 shrink-0 place-items-center rounded-full transition-transform duration-300 group-hover:rotate-45 group-hover:scale-110", t.arrow)}>
           <ArrowUpRight className="size-5" aria-hidden />
         </span>

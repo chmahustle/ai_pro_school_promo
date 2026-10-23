@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { ArrowRight, Instagram, MessageCircle, Youtube } from "lucide-react";
 import { Logo } from "./Logo";

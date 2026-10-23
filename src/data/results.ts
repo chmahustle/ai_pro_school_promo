@@ -1,3 +1,4 @@
+import "server-only";
 import type { ResultCase } from "./types";
 import { SHOW_PLACEHOLDERS, filterForPublish } from "@/lib/placeholders";
 

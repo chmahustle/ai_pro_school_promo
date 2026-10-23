@@ -4,47 +4,47 @@ import { useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, Check, Instagram, Youtube } from "lucide-react";
 import { Avatar, Button, MediaPlaceholder, Modal, Pill, PlaceholderBadge } from "@/components/ui";
-import { audiences } from "@/data/audiences";
-import { heroEvent, type HeroResult } from "@/data/heroResults";
-import { isStoryPublishable, stories } from "@/data/stories";
-import { team } from "@/data/team";
-import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
+import type { PublicHeroData, PublicHeroResult } from "@/data/public-types";
 
-export type HeroModalTarget = { type: "teacher" } | { type: "event" } | { type: "result"; result: HeroResult };
+export type HeroModalTarget = { type: "teacher" } | { type: "event" } | { type: "result"; result: PublicHeroResult };
 
 interface HeroInfoModalProps {
+  /** Публичные данные hero, собранные на сервере (без служебных полей) */
+  data: PublicHeroData;
   target: HeroModalTarget | null;
   onClose: () => void;
   /** Откуда «вылетает» окно */
   origin?: { x: number; y: number } | null;
 }
 
-/** Окно с подробностями карточки hero. Весь текст — из src/data/* (team, stories, audiences, heroResults) */
-export function HeroInfoModal({ target, onClose, origin }: HeroInfoModalProps) {
+/** Окно с подробностями карточки hero. Весь текст приходит в props (data/public.ts → getPublicHeroData). */
+export function HeroInfoModal({ data, target, onClose, origin }: HeroInfoModalProps) {
   // Пока окно сворачивается, содержимое не должно пропадать — помним последнюю цель
   const lastTarget = useRef<HeroModalTarget | null>(target);
   if (target) lastTarget.current = target;
   const shown = target ?? lastTarget.current;
 
   return (
-    <Modal open={target !== null} onClose={onClose} title={titleFor(shown)} size="lg" origin={origin}>
-      {shown?.type === "teacher" && <TeacherBody onClose={onClose} />}
-      {shown?.type === "event" && <EventBody onClose={onClose} />}
-      {shown?.type === "result" && <ResultBody result={shown.result} onClose={onClose} />}
+    <Modal open={target !== null} onClose={onClose} title={titleFor(data, shown)} size="lg" origin={origin}>
+      {shown?.type === "teacher" && <TeacherBody data={data} onClose={onClose} />}
+      {shown?.type === "event" && <EventBody data={data} onClose={onClose} />}
+      {shown?.type === "result" && <ResultBody data={data} result={shown.result} onClose={onClose} />}
     </Modal>
   );
 }
 
-function titleFor(t: HeroModalTarget | null): string | undefined {
+function titleFor(data: PublicHeroData, t: HeroModalTarget | null): string | undefined {
   if (!t) return undefined;
-  if (t.type === "teacher") return team.find((m) => m.id === "nadira")?.name;
-  if (t.type === "event") return heroEvent.title;
+  if (t.type === "teacher") return data.teacherMember?.name;
+  if (t.type === "event") return data.event.title;
   return t.result.name;
 }
 
-function TeacherBody({ onClose }: { onClose: () => void }) {
-  const m = team.find((x) => x.id === "nadira");
+function TeacherBody({ data, onClose }: { data: PublicHeroData; onClose: () => void }) {
+  const m = data.teacherMember;
   if (!m) return null;
+  const instagram = m.socials.find((x) => x.key === "instagram")?.href;
+  const youtube = m.socials.find((x) => x.key === "youtube")?.href;
   return (
     <div className="grid gap-6 sm:grid-cols-[minmax(0,240px)_1fr] sm:gap-8">
       <div className="relative">
@@ -67,13 +67,13 @@ function TeacherBody({ onClose }: { onClose: () => void }) {
           <Button variant="dark" size="sm" href="/about" onClick={onClose} icon={<ArrowRight className="size-4" />}>
             О школе
           </Button>
-          {m.socials?.instagram && (
-            <Button variant="outline" size="sm" href={m.socials.instagram} icon={<Instagram className="size-4" />} iconPosition="left">
+          {instagram && (
+            <Button variant="outline" size="sm" href={instagram} icon={<Instagram className="size-4" />} iconPosition="left">
               Instagram
             </Button>
           )}
-          {m.socials?.youtube && (
-            <Button variant="outline" size="sm" href={m.socials.youtube} icon={<Youtube className="size-4" />} iconPosition="left">
+          {youtube && (
+            <Button variant="outline" size="sm" href={youtube} icon={<Youtube className="size-4" />} iconPosition="left">
               YouTube
             </Button>
           )}
@@ -83,19 +83,19 @@ function TeacherBody({ onClose }: { onClose: () => void }) {
   );
 }
 
-function EventBody({ onClose }: { onClose: () => void }) {
-  const business = audiences.find((a) => a.slug === "business");
+function EventBody({ data, onClose }: { data: PublicHeroData; onClose: () => void }) {
+  const { event, business } = data;
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-wrap items-center gap-2">
-        <Pill tone="brand">{heroEvent.duration}</Pill>
-        {heroEvent.tags.map((t) => (
+        <Pill tone="brand">{event.duration}</Pill>
+        {event.tags.map((t) => (
           <Pill key={t} tone="lavender">
             {t}
           </Pill>
         ))}
       </div>
-      {business && <p className="text-base leading-relaxed text-ink-700">{business.hero.subtitle}</p>}
+      {business && <p className="text-base leading-relaxed text-ink-700">{business.subtitle}</p>}
       {business && (
         <ul className="grid gap-3 sm:grid-cols-2">
           {business.outcomes.map((o) => (
@@ -106,25 +106,22 @@ function EventBody({ onClose }: { onClose: () => void }) {
           ))}
         </ul>
       )}
-      <p className="text-[14px] text-ink-500">
-        Дата эфира: {heroEvent.date ?? (SHOW_PLACEHOLDERS ? "TODO — уточнить у клиента" : "сообщим после регистрации")}
-      </p>
+      <p className="text-[14px] text-ink-500">Дата эфира: {event.modalDateText}</p>
       <div>
-        <Button variant="dark" size="md" href={heroEvent.href} onClick={onClose} icon={<ArrowRight className="size-4" />}>
-          {heroEvent.ctaLabel}
+        <Button variant="dark" size="md" href={event.href} onClick={onClose} icon={<ArrowRight className="size-4" />}>
+          {event.ctaLabel}
         </Button>
       </div>
     </div>
   );
 }
 
-function ResultBody({ result, onClose }: { result: HeroResult; onClose: () => void }) {
-  const story = stories.find((s) => s.name.startsWith(result.name));
-  // Детали кейса показываем только подтверждённые (verified && consent); в dev — все, с бейджем
-  const details = story && (isStoryPublishable(story) || SHOW_PLACEHOLDERS) ? story : null;
+function ResultBody({ data, result, onClose }: { data: PublicHeroData; result: PublicHeroResult; onClose: () => void }) {
+  // Детали кейса сервер передаёт только подтверждённые (verified && consent); в dev — все, с пометкой
+  const details = data.details[result.id] ?? null;
   return (
     <div className="relative flex flex-col gap-5">
-      {details && !isStoryPublishable(details) && <PlaceholderBadge status={details.placeholder ? "placeholder" : "unverified"} note={details.note} />}
+      {details?.dev?.badge && <PlaceholderBadge status={details.dev.badge} note={details.dev.note} />}
       <div className="flex items-center gap-4">
         <Avatar name={result.name} src={details?.photo ?? result.photo} size="lg" />
         <div>
@@ -148,7 +145,7 @@ function ResultBody({ result, onClose }: { result: HeroResult; onClose: () => vo
           </p>
         </div>
       )}
-      {details?.quote?.verbatim && <p className="text-[15px] italic leading-relaxed text-ink-500">«{details.quote.text}»</p>}
+      {details?.quote && <p className="text-[15px] italic leading-relaxed text-ink-500">«{details.quote}»</p>}
       <div>
         <Link
           href="/reviews"

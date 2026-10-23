@@ -1,3 +1,4 @@
+import "server-only";
 import type { Partner } from "./types";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 

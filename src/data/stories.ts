@@ -1,3 +1,4 @@
+import "server-only";
 import type { AudienceSlug, Story } from "./types";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 
@@ -260,10 +261,4 @@ export function getStoriesForAudience(audience: AudienceSlug, limit?: number): S
   return limit ? list.slice(0, limit) : list;
 }
 
-export const storyAudienceFilters: { id: "all" | AudienceSlug; label: string }[] = [
-  { id: "all", label: "Все" },
-  { id: "beginners", label: "Новички" },
-  { id: "business", label: "Бизнес" },
-  { id: "freelancers", label: "Фриланс" },
-  { id: "career", label: "В найме" },
-];
+export { storyAudienceFilters } from "./story-filters";

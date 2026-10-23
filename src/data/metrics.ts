@@ -1,3 +1,4 @@
+import "server-only";
 import type { Metric } from "./types";
 import { isPublishable, SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 

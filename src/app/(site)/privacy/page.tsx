@@ -1,5 +1,7 @@
 import { buildMetadata } from "@/lib/seo";
 import { Placeholder, Section, SectionHead } from "@/components/ui";
+import { company } from "@/data/company";
+import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 import { site } from "@/lib/site";
 
 export const metadata = buildMetadata({
@@ -19,7 +21,9 @@ export default function PrivacyPage() {
       <SectionHead as="h1" eyebrow="Документы" title="Политика конфиденциальности" />
       <Placeholder note="TODO: юридически выверенный текст политики">
         <article className="prose-aps max-w-3xl space-y-6 rounded-2xl bg-surface p-6 text-[15px] leading-relaxed text-ink-700 shadow-soft sm:p-10">
-          <p className="text-ink-500">Редакция от {new Date().toLocaleDateString("ru-RU")}. Шаблон — требует утверждения.</p>
+          <p className="text-ink-500">
+            Редакция от {new Date().toLocaleDateString("ru-RU")}.{SHOW_PLACEHOLDERS && !company.privacyApproved ? " Шаблон — требует утверждения." : ""}
+          </p>
           <h2 className="font-display text-xl">1. Оператор данных</h2>
           <p>
             {site.legalName} (далее — «Школа»). Контакты: {site.phones.primary}{site.email ? `, ${site.email}` : ""}.

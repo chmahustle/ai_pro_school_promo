@@ -8,7 +8,7 @@ import { ArrowRight, ChevronDown, X, MessageCircle } from "lucide-react";
 import { Logo } from "./Logo";
 import { LangSwitch } from "./LangSwitch";
 import { mainNav, LOGIN_URL, PICK_PROGRAM_HREF } from "./nav";
-import { landingAudiences, audiences } from "@/data/audiences";
+import type { MenuAudience } from "@/data/public-types";
 import { AudienceIcon, Button } from "@/components/ui";
 import { useT } from "@/i18n/LocaleProvider";
 import { site } from "@/lib/site";
@@ -17,16 +17,16 @@ import { cn } from "@/lib/utils";
 import { easeOut } from "@/lib/motion";
 
 interface MobileMenuProps {
+  /** Пункты «Для кого» — собираются на сервере (getMenuData) */
+  audiences: MenuAudience[];
   open: boolean;
   onClose: () => void;
 }
 
 /** Полноэкранное мобильное меню с аккордеоном «Для кого» */
-export function MobileMenu({ open, onClose }: MobileMenuProps) {
+export function MobileMenu({ audiences: items, open, onClose }: MobileMenuProps) {
   const t = useT();
   const [forWhomOpen, setForWhomOpen] = useState(true);
-  // Ссылку на /for/business из шапки не показываем
-  const items = [...landingAudiences.filter((a) => a.slug !== "business"), ...audiences.filter((a) => a.slug === "beginners")];
 
   useEffect(() => {
     if (!open) return;
