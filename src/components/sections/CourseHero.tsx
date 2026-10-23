@@ -2,12 +2,15 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, Clock, Calendar, Signal, MonitorPlay } from "lucide-react";
-import { Button, MeshBackdrop, Pill, Placeholder, Ribbon } from "@/components/ui";
+import { Button, MeshBackdrop, Pill, Ribbon } from "@/components/ui";
+import { ProductPrice } from "@/components/ui/ProductPrice";
 import { LeadButton } from "@/components/ui/LeadButton";
 import type { Course } from "@/data/types";
 import { fadeUp, stagger } from "@/lib/motion";
 import { meshForAccent } from "@/lib/mesh";
-import { cn, formatTenge } from "@/lib/utils";
+import { getProductForCourse } from "@/data/products";
+import { getCourseStart } from "@/lib/course-start";
+import { cn } from "@/lib/utils";
 
 /** Цвета плиток фактов — те же, что у карточек главной */
 const tiles = [
@@ -24,19 +27,15 @@ const tiles = [
 export function CourseHero({ course }: { course: Course }) {
   const dark = course.accent === "ink";
   const mesh = meshForAccent(course.accent);
+  const start = getCourseStart(course);
+  const product = getProductForCourse(course.slug);
   const facts = [
     { icon: Clock, label: "Длительность", value: course.duration },
     { icon: MonitorPlay, label: "Формат", value: course.format },
     { icon: Signal, label: "Уровень", value: course.level },
-    { icon: Calendar, label: "Старт", value: course.startDate ?? course.startNote ?? "По записи" },
+    ...(start.factValue ? [{ icon: Calendar, label: "Старт", value: start.factValue }] : []),
   ];
 
-  const price = (() => {
-    if (course.priceFrom === 0) return "Бесплатно";
-    if (course.priceFrom === null) return "Цена уточняется";
-    return `от ${formatTenge(course.priceFrom)}`;
-  })();
-  const priceNode = <span className={cn("ml-1 whitespace-nowrap font-display text-lg", dark ? "text-white" : "text-ink")}>{price}</span>;
 
   return (
     <section className="px-2 sm:px-4" aria-labelledby="course-title">
@@ -50,9 +49,7 @@ export function CourseHero({ course }: { course: Course }) {
               <Pill tone={dark ? "brand" : "dark"} dot>
                 {course.shortName}
               </Pill>
-              {course.startDate && (
-                <Pill tone="white">Старт {course.startDate}</Pill>
-              )}
+              {start.badgeDate && <Pill tone="white">Старт {start.badgeDate}</Pill>}
             </motion.div>
 
             <motion.h1
@@ -80,13 +77,7 @@ export function CourseHero({ course }: { course: Course }) {
               <Button variant={dark ? "outline" : "white"} size="lg" href="#program" className={dark ? "border-white/30 text-white hover:border-white" : ""}>
                 Программа
               </Button>
-              {course.priceStatus === "verified" ? (
-                priceNode
-              ) : (
-                <Placeholder inline status="unverified" note={course.priceNote}>
-                  {priceNode}
-                </Placeholder>
-              )}
+              {product && <ProductPrice product={product} className={cn("ml-1 font-display text-lg", dark ? "text-white" : "text-ink")} />}
             </motion.div>
           </motion.div>
 

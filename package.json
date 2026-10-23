@@ -5,11 +5,12 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "check:copy": "node scripts/check-copy.mjs",
-    "prebuild": "node scripts/check-copy.mjs",
+    "prebuild": "node scripts/check-env.mjs && node scripts/check-copy.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check:env": "node scripts/check-env.mjs"
   },
   "dependencies": {
     "@eslint/eslintrc": "^3.3.7",

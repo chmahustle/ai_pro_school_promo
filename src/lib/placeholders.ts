@@ -1,12 +1,13 @@
 /**
  * Плейсхолдеры — любые данные (фото, чеки, суммы, логотипы, цифры),
- * которые ещё не подтверждены клиентом. В dev-режиме такие элементы
- * помечаются бейджем <PlaceholderBadge/>. В проде бейдж скрыт, но
- * флаг NEXT_PUBLIC_SHOW_PLACEHOLDERS=true включает его для финальной проверки.
+ * которые ещё не подтверждены клиентом. Показываются ТОЛЬКО в dev (`next dev`, NODE_ENV !== "production"),
+ * поверх них — бейдж <PlaceholderBadge/>.
+ *
+ * Production-сборка флаг NEXT_PUBLIC_SHOW_PLACEHOLDERS игнорирует: раньше при true в проде показывались
+ * заглушки (кейсы «Компания A/B», «Эксперт C»). Дополнительно scripts/check-env.mjs (prebuild) валит сборку,
+ * если этот флаг выставлен в окружении или в .env-файлах.
  */
-export const SHOW_PLACEHOLDERS =
-  process.env.NODE_ENV !== "production" ||
-  process.env.NEXT_PUBLIC_SHOW_PLACEHOLDERS === "true";
+export const SHOW_PLACEHOLDERS = process.env.NODE_ENV !== "production";
 
 /** Статус проверки данных */
 export type VerificationStatus = "verified" | "unverified" | "placeholder";

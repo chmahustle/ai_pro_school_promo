@@ -5,6 +5,7 @@ import { Check, Gift, Minus } from "lucide-react";
 import { Badge, Pill, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
 import { LeadButton } from "@/components/ui/LeadButton";
 import type { Course, Tariff } from "@/data/types";
+import { getProductForCourse } from "@/data/products";
 import { cn, formatTenge } from "@/lib/utils";
 
 interface PricingProps {
@@ -18,8 +19,12 @@ interface PricingProps {
  * тарифа есть installment. Цены со status !== verified → бейдж; price === null → «Уточняется».
  */
 export function Pricing({ course, title = "Тарифы", eyebrow = "Стоимость" }: PricingProps) {
-  const { tariffs, bonuses } = course;
-  const hasInstallment = tariffs.some((t) => t.installment);
+  const { bonuses } = course;
+  const product = getProductForCourse(course.slug);
+  // Тариф без цены не показываем (никаких «Уточняется»); нет ни одного тарифа с ценой — блока нет
+  const tariffs = course.tariffs.filter((t) => t.price !== null);
+  // Рассрочку показываем только когда в products.ts заполнена цифра платежа
+  const hasInstallment = product?.installmentFromPerMonth != null && tariffs.some((t) => t.installment);
   const [mode, setMode] = useState<"full" | "installment">("full");
 
   if (tariffs.length === 0) return null;
@@ -85,13 +90,8 @@ export function Pricing({ course, title = "Тарифы", eyebrow = "Стоим�
 function TariffCard({ tariff: t, mode, course }: { tariff: Tariff; mode: "full" | "installment"; course: Course }) {
   const showInstallment = mode === "installment" && t.installment;
   const priceNode = (() => {
+    if (t.price === null) return null; // такие тарифы отфильтрованы выше
     if (t.price === 0) return <span className="font-display text-3xl">Бесплатно</span>;
-    if (t.price === null)
-      return (
-        <span className="inline-flex flex-col">
-          <span className="font-display text-2xl text-ink-500">Уточняется</span>
-        </span>
-      );
     if (showInstallment)
       return (
         <span className="inline-flex items-baseline gap-1.5">

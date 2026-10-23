@@ -6,7 +6,6 @@ import { LeadButton } from "@/components/ui/LeadButton";
 import { PageHero } from "@/components/sections/PageHero";
 import { HomeMetrics } from "@/components/sections/HomeMetrics";
 import { HomeStories } from "@/components/sections/HomeStories";
-import { BusinessCasesSection } from "@/components/sections/BusinessCasesSection";
 import { ReviewsArchive } from "@/components/sections/ReviewsArchive";
 import { LeadSection } from "@/components/sections/LeadSection";
 
@@ -48,9 +47,6 @@ export default function ReviewsPage() {
         <Suspense fallback={null}>
           <ReviewsArchive />
         </Suspense>
-      </div>
-      <div className="mt-4">
-        <BusinessCasesSection />
       </div>
       <LeadSection
         className="mt-10 sm:mt-16"

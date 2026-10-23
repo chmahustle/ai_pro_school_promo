@@ -38,7 +38,8 @@ interface MegaMenuProps {
  */
 export function MegaMenu({ open, onClose, id }: MegaMenuProps) {
   const t = useT();
-  const items = [...landingAudiences, ...audiences.filter((a) => a.slug === "beginners")];
+  // Ссылку на /for/business из шапки не показываем
+  const items = [...landingAudiences.filter((a) => a.slug !== "business"), ...audiences.filter((a) => a.slug === "beginners")];
   const [activeSlug, setActiveSlug] = useState<Audience["slug"]>(items[0]!.slug);
   const active = items.find((a) => a.slug === activeSlug) ?? items[0]!;
 

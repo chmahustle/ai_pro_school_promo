@@ -5,6 +5,16 @@ export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://ai-pro-school.kz"
 ).replace(/\/$/, "");
 
+/** Хосты, которые разрешено индексировать. Любой другой (test., tests., localhost) — noindex. */
+const INDEXABLE_HOSTS = ["ai-pro-school.kz", "www.ai-pro-school.kz"];
+export const IS_INDEXABLE = (() => {
+  try {
+    return INDEXABLE_HOSTS.includes(new URL(SITE_URL).hostname);
+  } catch {
+    return false;
+  }
+})();
+
 export const site = {
   name: "AI Pro School",
   legalName: "AI Pro School", // TODO: юридическое лицо (ИП/ТОО) для футера и оферты

@@ -1,10 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, Clock, Signal } from "lucide-react";
-import { ArrowLink, Placeholder, RevealGroup, RevealItem, Section, SectionIntro, TileDecor } from "@/components/ui";
+import { ArrowLink, RevealGroup, RevealItem, Section, SectionIntro, TileDecor } from "@/components/ui";
+import { ProductPrice } from "@/components/ui/ProductPrice";
 import { courses } from "@/data/courses";
 import type { Course } from "@/data/types";
-import { cn, formatTenge } from "@/lib/utils";
+import { getCurrentPrice, getProductForCourse } from "@/data/products";
+import { getCourseStart } from "@/lib/course-start";
+import { cn } from "@/lib/utils";
 
 interface CoursesCatalogProps {
   title?: string;
@@ -65,27 +68,10 @@ export function CoursesCatalog({
   );
 }
 
-function PriceLabel({ course }: { course: Course }) {
-  if (course.priceFrom === 0) return <span className="font-display text-xl">Бесплатно</span>;
-  if (course.priceFrom === null) {
-    return (
-      <Placeholder inline status="unverified" note={course.priceNote}>
-        <span className="text-sm font-semibold opacity-75">Цена уточняется</span>
-      </Placeholder>
-    );
-  }
-  const label = <span className="whitespace-nowrap font-display text-xl">{formatTenge(course.priceFrom)}</span>;
-  return course.priceStatus === "verified" ? (
-    label
-  ) : (
-    <Placeholder inline status="unverified" note={course.priceNote}>
-      {label}
-    </Placeholder>
-  );
-}
-
 export function CourseCard({ course, index }: { course: Course; index?: number }) {
   const tone = toneBySlug[course.slug] ?? "dark";
+  const product = getProductForCourse(course.slug);
+  const start = getCourseStart(course);
   const t = tones[tone];
   return (
     <Link
@@ -104,8 +90,8 @@ export function CourseCard({ course, index }: { course: Course; index?: number }
           {String(index ?? 0).padStart(2, "0")}
         </span>
         <div className="flex flex-wrap justify-end gap-2 pt-1">
-          {course.startDate && <span className={cn("rounded-pill px-3 py-1 text-[12px] font-semibold", t.pill)}>Старт {course.startDate}</span>}
-          {course.priceFrom === 0 && <span className={cn("rounded-pill px-3 py-1 text-[12px] font-semibold", t.pill)}>Бесплатно</span>}
+          {start.badgeDate && <span className={cn("rounded-pill px-3 py-1 text-[12px] font-semibold", t.pill)}>Старт {start.badgeDate}</span>}
+          {product && getCurrentPrice(product) === 0 && <span className={cn("rounded-pill px-3 py-1 text-[12px] font-semibold", t.pill)}>Бесплатно</span>}
         </div>
       </div>
 
@@ -126,10 +112,7 @@ export function CourseCard({ course, index }: { course: Course; index?: number }
       </div>
 
       <div className={cn("relative z-10 mt-auto flex items-center justify-between gap-3 border-t pt-5", t.line)}>
-        <div className="flex items-baseline gap-2">
-          {course.priceFrom ? <span className={cn("text-[11px] font-bold uppercase tracking-wide", t.muted)}>от</span> : null}
-          <PriceLabel course={course} />
-        </div>
+        {product ? <ProductPrice product={product} className="font-display text-xl" /> : <span />}
         <span className={cn("grid size-11 shrink-0 place-items-center rounded-full transition-transform duration-300 group-hover:rotate-45 group-hover:scale-110", t.arrow)}>
           <ArrowUpRight className="size-5" aria-hidden />
         </span>

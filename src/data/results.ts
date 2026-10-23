@@ -95,66 +95,12 @@ export const results: ResultCase[] = [
   },
 ];
 
-/** Кейсы бизнесов (B2B). PLACEHOLDER: в источниках нет — заполнить реальными. */
-export const businessCases: ResultCase[] = [
-  {
-    id: "biz-1",
-    name: "Компания A",
-    context: "сфера услуг · 12 сотрудников",
-    headline: "Telegram-бот приёма заявок вместо менеджера",
-    before: "Заявки терялись в WhatsApp, менеджер отвечал по 2–3 часа.",
-    after: "Бот квалифицирует заявки и пишет в CRM за минуту. Экономия ~X ₸/мес на разработке.",
-    beforeValue: "2–3 часа",
-    afterValue: "за минуту",
-    summary: "Бот пишет заявки в CRM за минуту.",
-    keyResult: "за минуту",
-    keyResultLabel: "заявка в CRM",
-    photo: null,
-    audiences: ["business"],
-    course: "vibecoding",
-    consent: false,
-    status: "placeholder",
-    note: "PLACEHOLDER: заменить реальным кейсом бизнеса.",
-  },
-  {
-    id: "biz-2",
-    name: "Компания B",
-    context: "ритейл",
-    headline: "Лендинг и CRM-интеграция за 3 дня",
-    before: "Подрядчик оценил сайт + интеграцию в X ₸ и 6 недель.",
-    after: "Собственник собрал вайбкодингом за 3 дня, запустил рекламу.",
-    beforeValue: "6 недель",
-    afterValue: "3 дня",
-    summary: "Собрал вайбкодингом за 3 дня.",
-    keyResult: "3 дня",
-    keyResultLabel: "вместо 6 недель",
-    photo: null,
-    audiences: ["business"],
-    course: "vibecoding",
-    consent: false,
-    status: "placeholder",
-    note: "PLACEHOLDER: заменить реальным кейсом бизнеса.",
-  },
-  {
-    id: "biz-3",
-    name: "Эксперт C",
-    context: "онлайн-школа",
-    headline: "AI-ассистент отвечает ученикам 24/7",
-    before: "Кураторы тратили 4 часа в день на типовые вопросы.",
-    after: "RAG-ассистент закрывает 80% вопросов, кураторы занимаются разборами.",
-    beforeValue: "4 часа/день",
-    afterValue: "80%",
-    summary: "Ассистент закрывает 80% вопросов.",
-    keyResult: "80%",
-    keyResultLabel: "вопросов закрывает ассистент",
-    photo: null,
-    audiences: ["business"],
-    course: "vibecoding",
-    consent: false,
-    status: "placeholder",
-    note: "PLACEHOLDER: заменить реальным кейсом.",
-  },
-];
+/**
+ * Кейсы бизнесов (B2B). Пусто: прежние «Компания A/B», «Эксперт C» были выдуманными заглушками и удалены.
+ * Добавлять только реальные кейсы с verified: true и consent: true — иначе блок не показывается
+ * (в проде нужно минимум 3 подтверждённых).
+ */
+export const businessCases: ResultCase[] = [];
 
 export function getPublishedResults() {
   return filterForPublish(results);

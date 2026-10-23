@@ -12,6 +12,7 @@ export const ru = {
     contacts: "Контакты",
     login: "Вход",
     apply: "Оставить заявку",
+    pickProgram: "Подобрать программу",
     menu: "Меню",
     close: "Закрыть",
     allCourses: "Все курсы",

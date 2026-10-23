@@ -4,12 +4,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, X, MessageCircle } from "lucide-react";
+import { ArrowRight, ChevronDown, X, MessageCircle } from "lucide-react";
 import { Logo } from "./Logo";
 import { LangSwitch } from "./LangSwitch";
-import { mainNav, LOGIN_URL } from "./nav";
+import { mainNav, LOGIN_URL, PICK_PROGRAM_HREF } from "./nav";
 import { landingAudiences, audiences } from "@/data/audiences";
-import { LeadButton } from "@/components/ui/LeadButton";
 import { AudienceIcon, Button } from "@/components/ui";
 import { useT } from "@/i18n/LocaleProvider";
 import { site } from "@/lib/site";
@@ -26,7 +25,8 @@ interface MobileMenuProps {
 export function MobileMenu({ open, onClose }: MobileMenuProps) {
   const t = useT();
   const [forWhomOpen, setForWhomOpen] = useState(true);
-  const items = [...landingAudiences, ...audiences.filter((a) => a.slug === "beginners")];
+  // Ссылку на /for/business из шапки не показываем
+  const items = [...landingAudiences.filter((a) => a.slug !== "business"), ...audiences.filter((a) => a.slug === "beginners")];
 
   useEffect(() => {
     if (!open) return;
@@ -143,9 +143,19 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
             </ul>
 
             <div className="mt-6 flex flex-col gap-3">
-              <LeadButton variant="dark" size="lg" fullWidth source="mobile-menu">
-                {t.nav.apply}
-              </LeadButton>
+              <Button
+                variant="dark"
+                size="lg"
+                fullWidth
+                href={PICK_PROGRAM_HREF}
+                icon={<ArrowRight className="size-5" />}
+                onClick={() => {
+                  track({ name: "cta_click", params: { label: "pick_program", location: "mobile-menu" } });
+                  onClose();
+                }}
+              >
+                {t.nav.pickProgram}
+              </Button>
               <Button
                 variant="outline"
                 size="lg"

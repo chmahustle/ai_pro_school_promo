@@ -11,6 +11,9 @@ import { HowItWorks } from "@/components/sections/HowItWorks";
 import { FAQ } from "@/components/sections/FAQ";
 import { LeadSection } from "@/components/sections/LeadSection";
 import { generalFaq } from "@/data/faq";
+/** В каталоге есть «ближайший старт» практикума — зависит от даты; обновляем раз в час. */
+export const revalidate = 3600;
+
 export const metadata = buildMetadata({
   title: `${site.name} — ${site.tagline}`,
   description: site.description,

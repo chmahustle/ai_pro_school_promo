@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SITE_URL, site } from "./site";
+import { IS_INDEXABLE, SITE_URL, site } from "./site";
 
 interface PageMeta {
   title: string;
@@ -48,6 +48,6 @@ export function buildMetadata({ title, description, path, image = "/og/default.p
       description,
       ...(imageUrl ? { images: [imageUrl] } : {}),
     },
-    robots: noIndex ? { index: false, follow: false } : { index: true, follow: true },
+    robots: noIndex || !IS_INDEXABLE ? { index: false, follow: false } : { index: true, follow: true },
   };
 }

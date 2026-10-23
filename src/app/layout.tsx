@@ -4,7 +4,7 @@ import { interTight, manrope } from "@/styles/fonts";
 import { ScrollControls } from "@/components/layout/ScrollControls";
 import { Providers } from "@/components/layout/Providers";
 import { Analytics } from "@/components/layout/Analytics";
-import { SITE_URL, site } from "@/lib/site";
+import { IS_INDEXABLE, SITE_URL, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     locale: site.locale,
   },
   twitter: { card: "summary_large_image" },
-  robots: { index: true, follow: true },
+  robots: { index: IS_INDEXABLE, follow: IS_INDEXABLE },
 };
 
 export const viewport: Viewport = {

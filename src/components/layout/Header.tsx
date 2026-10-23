@@ -4,13 +4,14 @@ import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { ChevronDown, Menu } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu } from "lucide-react";
 import { Logo } from "./Logo";
 import { MegaMenu } from "./MegaMenu";
 import { MobileMenu } from "./MobileMenu";
 import { LangSwitch } from "./LangSwitch";
-import { mainNav, LOGIN_URL } from "./nav";
-import { LeadButton } from "@/components/ui/LeadButton";
+import { mainNav, LOGIN_URL, PICK_PROGRAM_HREF } from "./nav";
+import { Button } from "@/components/ui";
+import { track } from "@/lib/analytics";
 import { useT } from "@/i18n/LocaleProvider";
 import { cn } from "@/lib/utils";
 
@@ -149,10 +150,17 @@ export function Header() {
             >
               {t.nav.login}
             </a>
-            <LeadButton variant="dark" size="sm" source="header" className="h-10 px-4 text-[14px]">
-              <span className="hidden sm:inline">{t.nav.apply}</span>
-              <span className="sm:hidden">Заявка</span>
-            </LeadButton>
+            <Button
+              variant="dark"
+              size="sm"
+              href={PICK_PROGRAM_HREF}
+              icon={<ArrowRight className="size-4" />}
+              className="h-10 px-4 text-[14px]"
+              onClick={() => track({ name: "cta_click", params: { label: "pick_program", location: "header" } })}
+            >
+              <span className="hidden sm:inline">{t.nav.pickProgram}</span>
+              <span className="sm:hidden">Подобрать</span>
+            </Button>
             <button
               type="button"
               aria-label={t.nav.menu}

@@ -1,9 +1,11 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL } from "@/lib/site";
+import { IS_INDEXABLE, SITE_URL } from "@/lib/site";
 import { courses } from "@/data/courses";
 import { landingAudiences } from "@/data/audiences";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  // На тестовом домене карта сайта пустая
+  if (!IS_INDEXABLE) return [];
   const now = new Date();
   const staticPages: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },

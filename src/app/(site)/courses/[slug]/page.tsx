@@ -11,10 +11,17 @@ import { FAQ } from "@/components/sections/FAQ";
 import { LeadSection } from "@/components/sections/LeadSection";
 import { CTA } from "@/components/sections/CTA";
 import { courses, getCourse } from "@/data/courses";
+import { getCurrentPrice, getProductForCourse } from "@/data/products";
 import { getPublishedReviews } from "@/data/reviews";
 import { team, webinarSpeakers } from "@/data/team";
 import { buildMetadata } from "@/lib/seo";
 import { SITE_URL, site } from "@/lib/site";
+
+/**
+ * Страницы курсов собираются статически, но «ближайший старт» практикума зависит от текущей даты —
+ * пересобираем раз в час, чтобы дата не устаревала.
+ */
+export const revalidate = 3600;
 
 export function generateStaticParams() {
   return courses.map((c) => ({ slug: c.slug }));
@@ -39,6 +46,9 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
 
   const courseReviews = getPublishedReviews().filter((r) => r.course === course.slug).slice(0, 6);
   const isWebinarCourse = course.slug === "vibecoding";
+  // Цена для разметки — из products.ts (единственный источник)
+  const product = getProductForCourse(course.slug);
+  const offerPrice = product ? getCurrentPrice(product) : null;
 
   const schema = {
     "@context": "https://schema.org",
@@ -47,11 +57,11 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
     description: course.description,
     provider: { "@type": "EducationalOrganization", name: site.name, url: SITE_URL },
     url: `${SITE_URL}/courses/${course.slug}`,
-    ...(course.priceFrom !== null
+    ...(offerPrice !== null
       ? {
           offers: {
             "@type": "Offer",
-            price: course.priceFrom,
+            price: offerPrice,
             priceCurrency: "KZT",
             availability: "https://schema.org/InStock",
           },
@@ -100,7 +110,7 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
         className="mt-10 sm:mt-16"
         formId={`course-${course.slug}`}
         title={isWebinarCourse ? "Записаться на бесплатный эфир" : `Записаться: ${course.shortName}`}
-        description={isWebinarCourse ? "Оставьте имя и WhatsApp — пришлём ссылку на ближайший эфир и гайд." : "Ответим на вопросы, расскажем про тарифы и рассрочку, пришлём ссылку на оплату."}
+        description={isWebinarCourse ? "Оставьте имя и WhatsApp — пришлём ссылку на ближайший эфир и гайд." : `Ответим на вопросы, расскажем про тарифы${product?.installmentFromPerMonth != null ? " и рассрочку" : ""}, пришлём ссылку на оплату.`}
         defaultInterest={course.slug}
         lockInterest
         compact

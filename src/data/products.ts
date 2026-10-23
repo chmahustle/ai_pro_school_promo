@@ -264,3 +264,25 @@ export function getNextCohort(id: ProductId, now: Date = new Date()): Cohort | n
   }
   return null;
 }
+
+/** Какой продукт стоит за страницей курса (цены и даты на страницах курсов берём из него) */
+export const courseProductId: Record<string, ProductId> = {
+  "ai-creator": "ai-creator",
+  practicum: "practicum",
+  vibecoding: "efir",
+};
+
+export function getProductForCourse(slug: string): Product | null {
+  const id = courseProductId[slug];
+  return id ? getProduct(id) : null;
+}
+
+const WEEKDAYS_SHORT = ["вс", "пн", "вт", "ср", "чт", "пт", "сб"];
+const MONTHS_GEN = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+
+/** «26 октября» — дата потока по-русски; withWeekday: «пн, 26 октября» */
+export function formatCohortDate(cohort: Cohort, withWeekday = false): string {
+  const [, m, d] = cohort.date.split("-").map(Number);
+  const text = `${d} ${MONTHS_GEN[(m ?? 1) - 1]}`;
+  return withWeekday ? `${WEEKDAYS_SHORT[cohort.weekday]}, ${text}` : text;
+}
