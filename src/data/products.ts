@@ -348,3 +348,10 @@ export function getEntrySubtitle(now: Date = new Date()): { before: string; pric
   if (min === null) return { before: hasFree ? `${before}бесплатного эфира` : "Два направления", price: "", after: "" };
   return { before, price: `${formatNumber(min)}${NBSP}₸`, after: hasFree ? " или с бесплатного эфира" : "" };
 }
+
+/** Первый шаг направления для карточек: короткое название и цена (из конфига) */
+export function getEntryStep(direction: Direction, now: Date = new Date()): { name: string; price: PriceParts } | null {
+  const p = getEntryProducts().find((x) => x.direction === direction);
+  if (!p) return null;
+  return { name: entryShortName[p.id] ?? p.name, price: formatPriceParts(p, now) };
+}

@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { HomeSection, SectionIntro } from "@/components/ui";
-import { getAudiencesForCards } from "@/data/audiences";
-import type { Audience, AudienceSlug } from "@/data/types";
+import { ProductPrice } from "@/components/ui/ProductPrice";
+import { getPublicAudienceGroups } from "@/data/public";
+import type { PublicAudienceCard } from "@/data/public-types";
+import type { AudienceSlug } from "@/data/types";
 import { cn, nbspDash } from "@/lib/utils";
 
 type Skin = "brand" | "soft" | "ink" | "lavender";
@@ -89,8 +91,13 @@ function CardDecor({ skin }: { skin: Skin }) {
   return null;
 }
 
+/** Явное размещение на xl: шапки в первой строке, карточки под своей шапкой (литеральные классы — Tailwind не видит динамические) */
+const XL_HEAD: Record<string, string> = { creator: "xl:col-start-1 xl:row-start-1", vibecoding: "xl:col-start-2 xl:col-span-3 xl:row-start-1" };
+const XL_CARD = ["xl:col-start-1", "xl:col-start-2", "xl:col-start-3", "xl:col-start-4"];
+
 export function AudienceSwitcher() {
-  const items = getAudiencesForCards();
+  const groups = getPublicAudienceGroups();
+  let col = 0;
 
   return (
     <HomeSection id="audiences" labelledBy="audience-title">
@@ -103,13 +110,18 @@ export function AudienceSwitcher() {
 
       <ul
         className={cn(
-          "audience-grid grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4",
-          "xl:grid-rows-[auto_auto_auto_auto_auto_minmax(1rem,1fr)_auto]",
+          "audience-grid grid grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-2 xl:grid-cols-4",
+          "xl:grid-rows-[auto_auto_auto_auto_auto_auto_minmax(1rem,1fr)_auto]",
         )}
       >
-        {items.map((a) => (
-          <li key={a.slug} className="contents">
-            <AudienceCardLink audience={a} />
+        {groups.map((g) => (
+          <li key={g.direction} className="contents">
+            <h3 className={cn("mt-4 border-b border-ink/10 pb-3 font-display text-[20px] font-bold leading-tight text-ink first:mt-0 sm:col-span-2 sm:text-[22px] xl:mt-0", XL_HEAD[g.direction])}>
+              {g.title}
+            </h3>
+            {g.cards.map((a) => (
+              <AudienceCardLink key={a.slug} audience={a} className={cn("xl:row-start-2", XL_CARD[col++])} />
+            ))}
           </li>
         ))}
       </ul>
@@ -117,11 +129,9 @@ export function AudienceSwitcher() {
   );
 }
 
-function AudienceCardLink({ audience: a }: { audience: Audience }) {
-  const { card } = a;
-  const skin = skins[a.slug];
+function AudienceCardLink({ audience: card, className }: { audience: PublicAudienceCard; className?: string }) {
+  const skin = skins[card.slug];
   const onDark = skin === "brand" || skin === "ink";
-  const showProof = card.proof?.verified === true;
 
   return (
     <Link
@@ -131,6 +141,7 @@ function AudienceCardLink({ audience: a }: { audience: Audience }) {
         "outline-none",
         "focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-[#14121F]",
         "xl:row-span-7 xl:grid xl:min-h-0 xl:grid-rows-subgrid xl:gap-y-3",
+        className,
         skinShell[skin],
         skin === "brand" && "audience-tile-brand",
       )}
@@ -207,12 +218,16 @@ function AudienceCardLink({ audience: a }: { audience: Audience }) {
         )}
       </div>
 
-      {/* 5 · spacer / proof */}
-      <div className="relative z-10 mt-auto min-h-4 flex-1 xl:mt-0">
-        {showProof ? (
-          <p className={cn("text-[12px] leading-snug", onDark ? "text-white/55" : "text-ink-500")}>
-            {card.proof!.text}
+      {/* 5 · первый шаг и цена (products.ts) / proof */}
+      <div className="relative z-10 mt-auto min-h-4 flex-1 pt-3 xl:mt-0 xl:pt-0">
+        {card.firstStep && (
+          <p className={cn("text-[13px] leading-snug", onDark ? "text-white/80" : "text-ink-700")}>
+            <span className={cn("font-semibold", onDark ? "text-white/55" : "text-ink-500")}>Первый шаг: </span>
+            {card.firstStep.name} · <ProductPrice parts={card.firstStep.price} className="font-bold" />
           </p>
+        )}
+        {card.proofText ? (
+          <p className={cn("mt-1 text-[12px] leading-snug", onDark ? "text-white/55" : "text-ink-500")}>{card.proofText}</p>
         ) : null}
       </div>
 

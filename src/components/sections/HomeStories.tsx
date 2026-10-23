@@ -1,4 +1,4 @@
-import { getPublicStories } from "@/data/public";
+import { getPublicResultsTabs, getPublicStories } from "@/data/public";
 import type { AudienceSlug } from "@/data/types";
 import { HomeStoriesClient } from "./HomeStoriesClient";
 
@@ -20,5 +20,7 @@ interface HomeStoriesProps {
 export function HomeStories({ limit, withFilters, showAllLink, audience }: HomeStoriesProps = {}) {
   const stories = getPublicStories(audience);
   if (stories.length < 3) return null;
-  return <HomeStoriesClient stories={stories} limit={limit} withFilters={withFilters} showAllLink={showAllLink} />;
+  // Вкладки направлений: вайб-кодинг — только если есть подтверждённые кейсы этого направления
+  const tabs = getPublicResultsTabs(stories).tabs;
+  return <HomeStoriesClient stories={stories} tabs={tabs} limit={limit} withFilters={withFilters} showAllLink={showAllLink} />;
 }

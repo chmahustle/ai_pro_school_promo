@@ -52,10 +52,10 @@ export const partners: Partner[] = [
   },
 ];
 
-/** Прод: verified && logoPermission. Dev: все (для вёрстки). */
+/** Прод: verified && logoPermission && есть файл логотипа (без логотипов полоса скрыта). Dev: все (для вёрстки). */
 export function getVisiblePartners(): Partner[] {
   if (SHOW_PLACEHOLDERS) return partners;
-  return partners.filter((p) => p.verified && p.logoPermission);
+  return partners.filter((p) => p.verified && p.logoPermission && Boolean(p.logo));
 }
 
 /** @deprecated используйте getVisiblePartners */

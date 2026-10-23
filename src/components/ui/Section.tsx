@@ -1,4 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react";
+import { headingMaxWidth, headingSize } from "@/lib/heading";
 import { cn, nbspDash } from "@/lib/utils";
 import { Pill } from "./Pill";
 
@@ -87,7 +88,7 @@ export function SectionHead({
     >
       <div className={cn("flex flex-col gap-4", align === "center" ? "items-center" : "items-start")}>
         {eyebrow && <Pill tone={eyebrowTone}>{eyebrow}</Pill>}
-        <Heading className={cn(size === "lg" ? "text-display-lg" : "text-display-md", "max-w-[22ch]")}>{nbspDash(title)}</Heading>
+        <Heading className={cn(headingSize(title, size === "lg" ? "lg" : "md"), headingMaxWidth(title))}>{nbspDash(title)}</Heading>
         {description && (
           <p className={cn("max-w-[56ch] text-[14px] leading-relaxed sm:text-[15px]", invert ? "text-white/70" : "text-ink-500")}>
             {nbspDash(description)}

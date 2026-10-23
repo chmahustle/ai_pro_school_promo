@@ -45,7 +45,7 @@ export function HomeMetricsClient({ items, chips }: { items: PublicMetric[]; chi
         {item(<FeaturedCard metric={featured} chips={chips} />, "sm:col-span-2 lg:col-span-5 lg:row-span-2")}
         {views && item(<StatCard metric={views} tone="glass" />, "lg:col-span-4")}
         {followers && item(<StatCard metric={followers} tone="white" />, "lg:col-span-3")}
-        {check && item(<StatCard metric={check} tone="white" />, "lg:col-span-4")}
+        {check && item(<StatCard metric={check} tone="white" />, geo ? "lg:col-span-4" : "lg:col-span-7")}
         {geo && item(<StatCard metric={geo} tone="glass" />, "lg:col-span-3")}
       </motion.div>
     </HomeSection>

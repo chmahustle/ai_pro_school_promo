@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Pill } from "./Pill";
+import { headingSize } from "@/lib/heading";
 import { cn, nbspDash } from "@/lib/utils";
 
 interface SectionIntroProps {
@@ -29,7 +30,7 @@ export function SectionIntro({ id, eyebrow, title, description, tone = "light", 
         <Pill tone={dark ? "white" : "brand"} dot>
           {eyebrow}
         </Pill>
-        <h2 id={id} className={cn("mt-4 text-display-md", dark ? "text-white" : "text-ink")}>
+        <h2 id={id} className={cn("mt-4", headingSize(title), dark ? "text-white" : "text-ink")}>
           {nbspDash(title)}
         </h2>
         {description && (

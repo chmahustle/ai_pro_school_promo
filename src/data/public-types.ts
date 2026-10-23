@@ -15,6 +15,7 @@ export interface PublicDev {
 
 export interface PublicStory {
   id: string;
+  direction: "creator" | "vibecoding";
   audiences: AudienceSlug[];
   name: string;
   descriptor: string;
@@ -123,6 +124,45 @@ export interface PublicAudienceCard {
   href: string;
   /** Короткое доказательство — только подтверждённое */
   proofText: string | null;
+  /** Первый шаг направления и его цена (из products.ts) */
+  firstStep: { name: string; price: { prefix: string; amount: string; unit: string } } | null;
+}
+
+/** «Выберите свой путь»: шапка направления и карточки аудиторий под ней */
+export interface PublicAudienceGroup {
+  direction: "creator" | "vibecoding";
+  title: string;
+  cards: PublicAudienceCard[];
+}
+
+/** Шаг пути в «Как это работает» */
+export interface PublicPathStep {
+  n: string;
+  title: string;
+  text: string;
+  /** Цена шага, если у шага есть продукт */
+  price: { prefix: string; amount: string; unit: string } | null;
+}
+
+export interface PublicPaths {
+  tabs: { id: "creator" | "vibecoding"; label: string }[];
+  paths: Record<"creator" | "vibecoding", PublicPathStep[]>;
+}
+
+/** Логотип/название в полосе «Где нас видели» */
+export interface PublicPartner {
+  id: string;
+  name: string;
+  /** Файл логотипа; null — только в dev (в проде без логотипа записи нет) */
+  logo: string | null;
+  relationLabel: string;
+  /** Только dev: чего не хватает для показа */
+  devNote?: string;
+}
+
+/** Вкладки блока «Результаты учеников» */
+export interface PublicResultsTabs {
+  tabs: { id: "creator" | "vibecoding"; label: string }[];
 }
 
 export interface MenuAudience {

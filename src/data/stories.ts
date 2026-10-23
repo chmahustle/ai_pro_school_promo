@@ -11,6 +11,7 @@ import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 export const stories: Story[] = [
   {
     id: "alena",
+    direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Алёна Заярных",
     descriptor: "без опыта в AI-видео",
     photo: "/stories/case-alena.webp",
@@ -30,6 +31,7 @@ export const stories: Story[] = [
   },
   {
     id: "madina",
+    direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Мадина",
     descriptor: "мама двоих детей в декрете",
     photo: "/stories/case-madina.webp",
@@ -49,6 +51,7 @@ export const stories: Story[] = [
   },
   {
     id: "gulaiym",
+    direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Гульайым",
     descriptor: "ноль опыта в AI и монтаже",
     photo: "/stories/case-gulayym.webp",
@@ -68,6 +71,7 @@ export const stories: Story[] = [
   },
   {
     id: "guldaria",
+    direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Гульдария",
     descriptor: "мама двоих детей",
     photo: null,
@@ -88,6 +92,7 @@ export const stories: Story[] = [
   },
   {
     id: "shynar",
+    direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Шынар",
     descriptor: "43 года",
     photo: null,
@@ -108,6 +113,7 @@ export const stories: Story[] = [
   },
   {
     id: "moldir",
+    direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Молдир",
     descriptor: "техспец",
     photo: null,
@@ -128,6 +134,7 @@ export const stories: Story[] = [
   },
   {
     id: "video-practicum-2_7m",
+    direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Ученица практикума",
     descriptor: "вирусный ИИ-ролик",
     photo: null,
@@ -148,6 +155,7 @@ export const stories: Story[] = [
   },
   {
     id: "video-practicum-74y",
+    direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Ученик практикума",
     descriptor: "74 года",
     photo: null,
@@ -168,6 +176,7 @@ export const stories: Story[] = [
   },
   {
     id: "video-practicum-1_9m",
+    direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Ученица практикума",
     descriptor: "вирусный ИИ-ролик",
     photo: null,
@@ -188,6 +197,7 @@ export const stories: Story[] = [
   },
   {
     id: "receipt-practicum-1",
+    direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Оплата за ролик",
     descriptor: "ученик практикума",
     photo: null,
@@ -208,6 +218,7 @@ export const stories: Story[] = [
   },
   {
     id: "receipt-practicum-2",
+    direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Оплата за ролик",
     descriptor: "ученик практикума",
     photo: null,

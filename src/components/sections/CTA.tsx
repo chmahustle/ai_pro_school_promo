@@ -1,3 +1,4 @@
+import { headingSize } from "@/lib/heading";
 import { ArrowRight } from "lucide-react";
 import { Button, MeshBackdrop, Reveal, type MeshVariant } from "@/components/ui";
 import { LeadButton } from "@/components/ui/LeadButton";
@@ -78,7 +79,7 @@ export function CTA({
           {!dark ? (
             <div className="flex w-full flex-col gap-6 rounded-2xl bg-surface/92 p-6 shadow-soft backdrop-blur-[2px] sm:p-8 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-2xl">
-                <h2 className="text-display-md text-ink">{nbspDash(title)}</h2>
+                <h2 className={cn(headingSize(title), "text-ink")}>{nbspDash(title)}</h2>
                 {description && <p className="mt-3 text-base text-ink-500 sm:text-lg">{nbspDash(description)}</p>}
               </div>
               <CtaButtons
@@ -94,7 +95,7 @@ export function CTA({
           ) : (
             <>
               <div className="max-w-2xl">
-                <h2 className="text-display-md text-white">{nbspDash(title)}</h2>
+                <h2 className={cn(headingSize(title), "text-white")}>{nbspDash(title)}</h2>
                 {description && <p className="mt-3 text-base text-white/70 sm:text-lg">{nbspDash(description)}</p>}
               </div>
               <CtaButtons

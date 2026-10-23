@@ -28,6 +28,9 @@ export interface HomeMetric {
   pills?: string[];
 }
 
+/**
+ * «4 региона» (Казахстан, Россия, Европа, США) из блока убраны по решению владельца (шаг 3b) — не показывать, пока не подтвердят.
+ */
 export const homeMetrics: HomeMetric[] = [
   {
     id: "students",
@@ -73,19 +76,6 @@ export const homeMetrics: HomeMetric[] = [
     sourceUrl: null,
     asOf: null,
     verified: false,
-  },
-  {
-    id: "geo",
-    value: 4,
-    suffix: "",
-    label: "региона",
-    hint: undefined,
-    source: "Страница практикума",
-    sourceUrl: null,
-    asOf: null,
-    verified: false,
-    /** Страны — пилюли в UI */
-    pills: ["Казахстан", "Россия", "Европа", "США"],
   },
 ];
 

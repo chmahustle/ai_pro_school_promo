@@ -75,6 +75,8 @@ export interface StoryMedia {
  */
 export interface Story {
   id: string;
+  /** Направление программы, после которой результат (для вкладок «Креаторство» / «Вайб-кодинг») */
+  direction: "creator" | "vibecoding";
   audiences: AudienceSlug[];
   name: string;
   /** Согласие автора на публикацию */

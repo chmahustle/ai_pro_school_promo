@@ -1,16 +1,8 @@
 import Image from "next/image";
 import { Marquee, PlaceholderBadge } from "@/components/ui";
-import { getVisiblePartners } from "@/data/partners";
-import type { Partner, PartnerRelation } from "@/data/types";
-import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
+import { getPublicPartners } from "@/data/public";
+import type { PublicPartner } from "@/data/public-types";
 import { cn } from "@/lib/utils";
-
-const relationLabel: Record<PartnerRelation, string> = {
-  graduate: "Выпускница программы",
-  winner: "Победитель",
-  founders: "Основатели платформы",
-  speaker: "Спикер",
-};
 
 interface LogosMarqueeProps {
   title?: string;
@@ -20,7 +12,7 @@ interface LogosMarqueeProps {
 
 /** Полоса «Где нас видели». Без меток резидент/партнёр. */
 export function LogosMarquee({ title = "Где нас видели", className, invert }: LogosMarqueeProps) {
-  const items = getVisiblePartners();
+  const items = getPublicPartners();
   if (items.length === 0) return null;
   // Половина ленты должна быть шире экрана (≈2600px при ~190px на элемент), иначе справа будет пустота
   const repeat = Math.max(1, Math.ceil(14 / items.length));
@@ -41,16 +33,16 @@ export function LogosMarquee({ title = "Где нас видели", className, 
   );
 }
 
-function PartnerItem({ partner: p, invert }: { partner: Partner; invert?: boolean }) {
-  const showBadge = SHOW_PLACEHOLDERS && !(p.verified && p.logoPermission);
-  const useLogo = Boolean(p.logo && p.logoPermission);
+function PartnerItem({ partner: p, invert }: { partner: PublicPartner; invert?: boolean }) {
+  const showBadge = Boolean(p.devNote);
+  const useLogo = Boolean(p.logo && !p.devNote);
 
   return (
     <div className="relative flex h-12 items-center">
       {showBadge && (
         <PlaceholderBadge
           status="placeholder"
-          note={p.note ?? "Нужны verified + logoPermission"}
+          note={p.devNote}
           className="-top-5 left-0"
         />
       )}
@@ -71,7 +63,7 @@ function PartnerItem({ partner: p, invert }: { partner: Partner; invert?: boolea
         >
           <span className="text-[15px] font-semibold leading-none sm:text-base">{p.name}</span>
           <span className={cn("text-[11px] font-medium leading-none", invert ? "text-white/45" : "text-ink-500")}>
-            {relationLabel[p.relation]}
+            {p.relationLabel}
           </span>
         </span>
       )}

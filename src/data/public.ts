@@ -12,12 +12,14 @@ import { getHomeMetrics } from "./metrics";
 import { formConfig } from "./forms";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { lineup, lineupForWhom } from "./lineup";
+import { audienceGroups, lineup, lineupForWhom, partnerProjectStep, pathTabs, resultsTabs } from "./lineup";
+import { getVisiblePartners } from "./partners";
 import {
   formatCohortDate,
   formatEntryLine,
   formatPriceParts,
   getEntryProducts,
+  getEntryStep,
   getEntrySubtitle,
   getNextCohort,
   getProductForCourse,
@@ -33,12 +35,17 @@ import { getVisibleStories, canShowStoryMedia, isStoryPublishable, stories as al
 import { team } from "./team";
 import { getVisibleTestimonials } from "./testimonials";
 import { getVisibleWorks } from "./works";
-import type { Audience, Course, Review, Story, TeamMember } from "./types";
+import type { Audience, AudienceSlug, Course, Partner, Review, Story, TeamMember } from "./types";
 import type {
   FooterLegal,
   MenuAudience,
   MenuData,
   PublicAudienceCard,
+  PublicAudienceGroup,
+  PublicPartner,
+  PublicPathStep,
+  PublicPaths,
+  PublicResultsTabs,
   PublicBonuses,
   PublicDev,
   PublicHeroData,
@@ -71,6 +78,7 @@ const devOf = (s: Pick<Story, "source" | "asOf" | "note" | "placeholder"> & { ve
 export function toPublicStory(s: Story): PublicStory {
   return {
     id: s.id,
+    direction: s.direction,
     audiences: s.audiences,
     name: s.name,
     descriptor: s.descriptor,
@@ -183,17 +191,81 @@ export function getPublicHeroData(): PublicHeroData {
 
 // ───────────── Аудитории, меню, футер ─────────────
 
+/** Направление аудитории: по группам «Выберите свой путь» */
+const directionOfAudience = (slug: AudienceSlug): Direction => (audienceGroups.find((g) => g.slugs.includes(slug as never))?.direction ?? "vibecoding");
+
 export function getPublicAudienceCards(): PublicAudienceCard[] {
-  return getAudiencesForCards().map((a: Audience) => ({
-    slug: a.slug,
-    title: a.card.title,
-    titleNote: a.card.titleNote,
-    pain: a.card.pain,
-    chips: a.card.chips,
-    ctaLabel: a.card.ctaLabel,
-    href: a.card.href,
-    proofText: a.card.proof?.verified === true ? a.card.proof.text : null,
+  return getAudiencesForCards().map((a: Audience) => {
+    const step = getEntryStep(directionOfAudience(a.slug));
+    return {
+      slug: a.slug,
+      title: a.card.title,
+      titleNote: a.card.titleNote,
+      pain: a.card.pain,
+      chips: a.card.chips,
+      ctaLabel: a.card.ctaLabel,
+      href: a.card.href,
+      proofText: a.card.proof?.verified === true ? a.card.proof.text : null,
+      firstStep: step ? { name: step.name, price: { prefix: step.price.prefix, amount: step.price.amount, unit: step.price.unit } } : null,
+    };
+  });
+}
+
+/** Карточки аудиторий под двумя шапками-направлениями; пустая группа не возвращается */
+export function getPublicAudienceGroups(): PublicAudienceGroup[] {
+  const cards = getPublicAudienceCards();
+  return audienceGroups
+    .map((g) => ({
+      direction: g.direction,
+      title: g.title,
+      cards: g.slugs.map((slug) => cards.find((c) => c.slug === slug)).filter((c): c is PublicAudienceCard => Boolean(c)),
+    }))
+    .filter((g) => g.cards.length > 0);
+}
+
+// ───────────── «Как это работает»: пути ─────────────
+
+const toPrice = (p: (typeof products)[number]) => {
+  const { prefix, amount, unit } = formatPriceParts(p);
+  return amount ? { prefix, amount, unit } : null;
+};
+
+/** Два пути: креаторство (практикум → курс) и вайб-кодинг (эфир → офлайн → курс → проект для партнёра) */
+export function getPublicPaths(): PublicPaths {
+  const build = (direction: Direction): PublicPathStep[] => {
+    const steps = products
+      .filter((p) => p.direction === direction)
+      .sort((a, b) => STEP_ORDER.indexOf(a.step) - STEP_ORDER.indexOf(b.step))
+      .map((p) => ({ title: p.name, text: p.resultLine, price: toPrice(p) }));
+    if (direction === "vibecoding") steps.push({ title: partnerProjectStep.title, text: "", price: null });
+    return steps.map((s, i) => ({ n: String(i + 1).padStart(2, "0"), ...s }));
+  };
+  return { tabs: pathTabs.map((t) => ({ id: t.id, label: t.label })), paths: { creator: build("creator"), vibecoding: build("vibecoding") } };
+}
+
+// ───────────── Где нас видели ─────────────
+
+const RELATION_LABEL: Record<Partner["relation"], string> = {
+  graduate: "Выпускница программы",
+  winner: "Победитель",
+  founders: "Основатели платформы",
+  speaker: "Спикер",
+};
+
+/** Партнёры для полосы: в проде только verified && logoPermission && есть файл логотипа */
+export function getPublicPartners(): PublicPartner[] {
+  return getVisiblePartners().map((p) => ({
+    id: p.id,
+    name: p.name,
+    logo: p.logo ?? null,
+    relationLabel: RELATION_LABEL[p.relation],
+    devNote: SHOW_PLACEHOLDERS && !(p.verified && p.logoPermission && p.logo) ? (p.note ?? "Нужны verified + logoPermission + логотип") : undefined,
   }));
+}
+
+/** Вкладки «Результаты учеников»: вайб-кодинг — только если есть подтверждённые кейсы этого направления */
+export function getPublicResultsTabs(stories: { direction: Direction }[]): PublicResultsTabs {
+  return { tabs: resultsTabs.filter((t) => stories.some((s) => s.direction === t.id)).map((t) => ({ id: t.id, label: t.label })) };
 }
 
 const toMenuAudience = (a: Audience): MenuAudience => ({
