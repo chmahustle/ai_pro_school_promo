@@ -18,9 +18,9 @@ export function ProductLadder({ direction, className }: { direction: Direction; 
   return (
     <div className={className}>
       <div className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
-        {ladder.forWhom.length > 0 && (
+        {ladder.forWhom && (
           <p className="text-[14px] leading-relaxed text-ink-500 sm:text-[15px]">
-            <span className="font-semibold text-ink">Для кого:</span> {ladder.forWhom.join(" · ")}
+            <span className="font-semibold text-ink">Для кого:</span> {ladder.forWhom}
           </p>
         )}
         <div className="flex shrink-0 items-center gap-3">

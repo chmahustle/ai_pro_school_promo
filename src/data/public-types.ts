@@ -98,8 +98,8 @@ export interface PublicLadderStep {
 
 export interface PublicLadder {
   direction: "creator" | "vibecoding";
-  /** Названия аудиторий («для кого») */
-  forWhom: string[];
+  /** Строка «для кого» */
+  forWhom: string;
   leader: { name: string; photo: string | null };
   steps: PublicLadderStep[];
 }

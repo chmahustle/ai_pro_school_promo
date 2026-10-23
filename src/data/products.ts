@@ -1,4 +1,5 @@
 import "server-only";
+import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 import { formatNumber, nameInSentence } from "@/lib/utils";
 import type { ProductId } from "./product-ids";
 import { vocabulary } from "./vocabulary";
@@ -24,8 +25,11 @@ export interface Product {
   direction: Direction;
   step: Step;
   name: string;
-  /** Название ещё не утверждено — в тексте помечать «на утверждении» */
-  nameStatus: "approved" | "pending";
+  /**
+   * Название утверждено. false — в проде показывается короткое название (`name`), полное рабочее — только в dev
+   * (см. resolveName); утвердят — поставить true и убрать из vocabulary лишнее.
+   */
+  nameApproved: boolean;
   resultLine: string;
   format: string;
   /** Текущая цена, ₸. 0 — бесплатно. null — не задана (не показываем) */
@@ -65,13 +69,18 @@ const AS_OF = "2026-10-22";
 const wa = (name: string) => `Здравствуйте! Хочу узнать про ${nameInSentence(name)}`;
 const thanks = (id: ProductId) => `/thanks/${id}`;
 
+/** Название продукта с неутверждённой частью: в проде — публичное, в dev — полное рабочее (с пометкой в UI) */
+function resolveName(publicName: string, fullWorkingName: string): string {
+  return SHOW_PLACEHOLDERS ? fullWorkingName : publicName;
+}
+
 export const products: Product[] = [
   {
     id: "practicum",
     direction: "creator",
     step: "try",
     name: vocabulary.practicum,
-    nameStatus: "approved",
+    nameApproved: true,
     resultLine: "Первый ИИ-ролик с телефона на бесплатных нейросетях",
     format: "онлайн, потоки дважды в неделю",
     price: 9900,
@@ -97,7 +106,7 @@ export const products: Product[] = [
     direction: "creator",
     step: "profession",
     name: vocabulary.creatorCourse,
-    nameStatus: "approved",
+    nameApproved: true,
     resultLine: "Портфолио, упакованный профиль и прайс",
     format: "онлайн, куратор проверяет работы",
     price: 249000,
@@ -123,7 +132,7 @@ export const products: Product[] = [
     direction: "vibecoding",
     step: "try",
     name: vocabulary.efir,
-    nameStatus: "approved",
+    nameApproved: true,
     resultLine: "Увидеть, как без кода собирается сайт с заявками",
     format: "онлайн, 1,5 часа",
     price: 0, // сейчас бесплатно
@@ -150,7 +159,7 @@ export const products: Product[] = [
     direction: "vibecoding",
     step: "project",
     name: vocabulary.offline,
-    nameStatus: "approved",
+    nameApproved: true,
     resultLine: "Демо сайта, бота или агента под свою задачу за 3 часа",
     format: "Астана, сб и вс, 3 часа, до 8 мест",
     price: 35000,
@@ -175,8 +184,8 @@ export const products: Product[] = [
     id: "course",
     direction: "vibecoding",
     step: "profession",
-    name: vocabulary.vibecodingCourseFull,
-    nameStatus: "pending", // название на утверждении
+    name: resolveName(vocabulary.vibecodingCourse, vocabulary.vibecodingCourseFull),
+    nameApproved: false, // «(Junior AI Developer)» — рабочее название на утверждении, только в dev
     resultLine: "Магазин с CRM, Telegram-бот, ИИ-агент и проект для компании-партнёра",
     format: "3 месяца",
     price: 400000,

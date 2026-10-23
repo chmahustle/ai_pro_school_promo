@@ -12,7 +12,7 @@ import { getHomeMetrics } from "./metrics";
 import { formConfig } from "./forms";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { lineup, lineupForWhomSource } from "./lineup";
+import { lineup, lineupForWhom } from "./lineup";
 import {
   formatCohortDate,
   formatEntryLine,
@@ -355,10 +355,9 @@ export function getPublicLadder(direction: Direction): PublicLadder {
     .sort((a, b) => STEP_ORDER.indexOf(a.step) - STEP_ORDER.indexOf(b.step));
   const leaderName = steps[0]?.leader ?? (direction === "creator" ? "Надира" : "Майдан");
   const member = team.find((m) => m.id === LEADER_MEMBER[leaderName]);
-  const source = courses.find((c) => c.slug === lineupForWhomSource[direction]);
   return {
     direction,
-    forWhom: (source?.forWhom ?? []).slice(0, 3).map((x) => x.title),
+    forWhom: lineupForWhom[direction],
     leader: { name: leaderName, photo: photoIfExists(member?.photo) },
     steps: steps.map((p) => {
       const { prefix, amount, unit } = formatPriceParts(p);
@@ -366,7 +365,7 @@ export function getPublicLadder(direction: Direction): PublicLadder {
         id: p.id,
         stepLabel: STEP_LABELS[p.step],
         name: p.name,
-        devNameNote: SHOW_PLACEHOLDERS && p.nameStatus === "pending" ? "название на утверждении" : undefined,
+        devNameNote: SHOW_PLACEHOLDERS && !p.nameApproved ? "название на утверждении" : undefined,
         resultLine: p.resultLine,
         format: p.format,
         price: { prefix, amount, unit },

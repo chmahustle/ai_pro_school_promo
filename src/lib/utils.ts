@@ -1,5 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { extendTailwindMerge } from "tailwind-merge";
 
 /**
  * Название продукта внутри предложения: «Курс AI Content Creator» → «Курс AI Content Creator» в кавычках,
@@ -10,6 +10,14 @@ export function nameInSentence(name: string): string {
   const lowered = /^\p{Lu}\p{Ll}/u.test(name) ? name.charAt(0).toLowerCase() + name.slice(1) : name;
   return name.includes("«") ? lowered : `«${name}»`;
 }
+
+/**
+ * twMerge, который знает наши размеры шрифта из @theme (--text-display-*): без этого `text-display-md` считался цветом
+ * и вырезался соседним `text-ink`. Новый размер добавлять и сюда, и в globals.css.
+ */
+const twMerge = extendTailwindMerge({
+  extend: { classGroups: { "font-size": [{ text: ["display-xl", "display-lg", "display-md", "display-sm"] }] } },
+});
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

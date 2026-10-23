@@ -18,8 +18,8 @@ export const lineup = {
   entryBadge: "Начните с этого",
 } as const;
 
-/**
- * Строка «для кого» под вкладкой: названия аудиторий из действующих страниц курсов (courses.ts → forWhom), первые три.
- * TODO(клиент): утвердить формулировку «для кого» для каждого направления.
- */
-export const lineupForWhomSource = { creator: "ai-creator", vibecoding: "vibecoding" } as const;
+/** Строка «для кого» под вкладкой направления */
+export const lineupForWhom: Record<Direction, string> = {
+  creator: "Новички и контентщики",
+  vibecoding: "Бизнес, фрилансеры и специалисты в найме",
+};
