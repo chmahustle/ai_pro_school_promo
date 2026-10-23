@@ -2,7 +2,9 @@ import Image from "next/image";
 import { ArrowDown, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui";
 import { ProductPrice } from "@/components/ui/ProductPrice";
+import Link from "next/link";
 import { getPublicLadder, getPublicLineup } from "@/data/public";
+import { directions } from "@/data/lineup";
 import type { Direction } from "@/data/products";
 import { cn, nbspDash } from "@/lib/utils";
 
@@ -11,12 +13,13 @@ import { cn, nbspDash } from "@/lib/utils";
  * (на мобильных вертикально, стрелки вниз). Данные — products.ts через getPublicLadder; пустую ступень не дорисовываем.
  * Переиспользуется на страницах направлений (шаг 5).
  */
-export function ProductLadder({ direction, className }: { direction: Direction; className?: string }) {
+export function ProductLadder({ direction, className, showHeader = true }: { direction: Direction; className?: string; /** Строка «Для кого» и ведущий над лестницей (на страницах направлений они уже в hero) */ showHeader?: boolean }) {
   const ladder = getPublicLadder(direction);
   const { entryBadge } = getPublicLineup();
 
   return (
     <div className={className}>
+      {showHeader && (
       <div className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
         {ladder.forWhom && (
           <p className="text-[14px] leading-relaxed text-ink-500 sm:text-[15px]">
@@ -32,8 +35,12 @@ export function ProductLadder({ direction, className }: { direction: Direction; 
           <p className="text-[14px] text-ink-500">
             Ведёт <span className="font-semibold text-ink">{ladder.leader.name}</span>
           </p>
+          <Link href={directions[direction].path} className="ml-2 inline-flex items-center gap-1 text-[14px] font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
+            О направлении <ArrowRight className="size-4" aria-hidden />
+          </Link>
         </div>
       </div>
+      )}
 
       <ol className="flex flex-col gap-3 lg:flex-row lg:items-stretch lg:gap-4">
         {ladder.steps.map((step, i) => (

@@ -56,6 +56,14 @@ export interface Product {
    */
   whatsappKeyword: string | null;
   thanksUrl: string;
+  /** Сколько мест осталось (офлайн-формат). null — счётчик скрыт; «до 8 мест» в формате — вместимость, не остаток */
+  seatsLeft: number | null;
+  /** Адрес проведения (офлайн). null — блок «Где и когда» скрыт */
+  address: string | null;
+  /** Даты проведения (офлайн). null — блок «Где и когда» скрыт */
+  schedule: string | null;
+  /** Программа по модулям; null — блок скрыт (данных в проекте нет) */
+  modules: { title: string; items: string[] }[] | null;
   leader: "Надира" | "Майдан";
   verified: boolean;
   source: string;
@@ -95,6 +103,10 @@ export const products: Product[] = [
     landingUrl: "/courses/practicum",
     whatsappText: wa(vocabulary.practicum),
     whatsappKeyword: null,
+    seatsLeft: null,
+    address: null, // TODO(клиент): адрес проведения
+    schedule: null, // TODO(клиент): даты проведения
+    modules: null, // TODO(клиент): программа по модулям
     thanksUrl: thanks("practicum"),
     leader: "Надира",
     verified: true,
@@ -121,6 +133,10 @@ export const products: Product[] = [
     landingUrl: "/courses/ai-creator",
     whatsappText: wa(vocabulary.creatorCourse),
     whatsappKeyword: null,
+    seatsLeft: null,
+    address: null, // TODO(клиент): адрес проведения
+    schedule: null, // TODO(клиент): даты проведения
+    modules: null, // TODO(клиент): программа по модулям
     thanksUrl: thanks("ai-creator"),
     leader: "Надира",
     verified: true,
@@ -148,6 +164,10 @@ export const products: Product[] = [
     landingUrl: "/courses/vibecoding#efir",
     whatsappText: wa(vocabulary.efir),
     whatsappKeyword: null,
+    seatsLeft: null,
+    address: null, // TODO(клиент): адрес проведения
+    schedule: null, // TODO(клиент): даты проведения
+    modules: null, // TODO(клиент): программа по модулям
     thanksUrl: thanks("efir"),
     leader: "Майдан",
     verified: true,
@@ -174,6 +194,10 @@ export const products: Product[] = [
     landingUrl: "/courses/vibecoding-offline",
     whatsappText: wa(vocabulary.offline),
     whatsappKeyword: null,
+    seatsLeft: null,
+    address: null, // TODO(клиент): адрес проведения
+    schedule: null, // TODO(клиент): даты проведения
+    modules: null, // TODO(клиент): программа по модулям
     thanksUrl: thanks("offline"),
     leader: "Майдан",
     verified: true,
@@ -200,6 +224,10 @@ export const products: Product[] = [
     landingUrl: "/courses/vibecoding-course",
     whatsappText: wa(vocabulary.vibecodingCourse),
     whatsappKeyword: null,
+    seatsLeft: null,
+    address: null, // TODO(клиент): адрес проведения
+    schedule: null, // TODO(клиент): даты проведения
+    modules: null, // TODO(клиент): программа по модулям
     thanksUrl: thanks("course"),
     leader: "Майдан",
     verified: true,

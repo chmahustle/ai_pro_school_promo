@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, ChevronDown, X, MessageCircle } from "lucide-react";
 import { Logo } from "./Logo";
 import { LangSwitch } from "./LangSwitch";
-import { mainNav, LOGIN_URL, PICK_PROGRAM_HREF } from "./nav";
+import { directionNav, mainNav, LOGIN_URL, PICK_PROGRAM_HREF } from "./nav";
 import type { MenuAudience } from "@/data/public-types";
 import { AudienceIcon, Button } from "@/components/ui";
 import { useT } from "@/i18n/LocaleProvider";
@@ -120,6 +120,17 @@ export function MobileMenu({ audiences: items, open, onClose }: MobileMenuProps)
                 </AnimatePresence>
               </li>
 
+              {directionNav.map((d) => (
+                <li key={d.href}>
+                  <Link
+                    href={d.href}
+                    onClick={onClose}
+                    className="block rounded-2xl bg-surface px-5 py-4 font-display text-lg shadow-soft hover:bg-soft-100"
+                  >
+                    {d.label}
+                  </Link>
+                </li>
+              ))}
               {mainNav.map((item) => (
                 <li key={item.key}>
                   <Link

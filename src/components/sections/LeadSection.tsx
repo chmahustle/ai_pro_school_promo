@@ -93,7 +93,7 @@ export function LeadSection({
             </div>
           </Reveal>
 
-          <Reveal delay={0.1} className="rounded-[32px] bg-surface p-6 text-ink shadow-float sm:p-8">
+          <Reveal delay={0.1} className="min-w-0 rounded-[32px] bg-surface p-6 text-ink shadow-float sm:p-8">
             <LeadForm config={getFormConfig()} {...formProps} />
           </Reveal>
         </div>

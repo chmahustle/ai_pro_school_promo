@@ -5,7 +5,7 @@ export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 
 export function generateStaticParams() {
-  return courses.map((c) => ({ slug: c.slug }));
+  return courses.filter((c) => c.slug !== "vibecoding").map((c) => ({ slug: c.slug }));
 }
 
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {

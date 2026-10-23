@@ -11,14 +11,16 @@ interface HomeStoriesProps {
   showAllLink?: boolean;
   /** Показывать только кейсы этой аудитории (лендинги) */
   audience?: AudienceSlug;
+  /** Показывать только кейсы этого направления (страницы направлений) */
+  direction?: "creator" | "vibecoding";
 }
 
 /**
  * «Результаты учеников» (серверная часть): отбор verified && consent и сборка публичных карточек —
  * здесь, до передачи в браузер. Меньше 3 подтверждённых кейсов — блок скрыт.
  */
-export function HomeStories({ limit, withFilters, showAllLink, audience }: HomeStoriesProps = {}) {
-  const stories = getPublicStories(audience);
+export function HomeStories({ limit, withFilters, showAllLink, audience, direction }: HomeStoriesProps = {}) {
+  const stories = getPublicStories(audience, direction);
   if (stories.length < 3) return null;
   // Вкладки направлений: вайб-кодинг — только если есть подтверждённые кейсы этого направления
   const tabs = getPublicResultsTabs(stories).tabs;

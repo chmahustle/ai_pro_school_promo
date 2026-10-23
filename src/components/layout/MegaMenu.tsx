@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { easeOut } from "@/lib/motion";
 import { AudienceIcon, AudienceIllustration, Ribbon } from "@/components/ui";
 import { useT } from "@/i18n/LocaleProvider";
+import { directionNav } from "./nav";
 
 /** Цвета превью совпадают с hero страниц: бизнес — чёрный, фриланс — персиково-розовый mesh, найм — сиреневый, новичкам — mesh главной */
 const accentBg: Record<AccentTheme, string> = {
@@ -110,6 +111,18 @@ export function MegaMenu({ audiences: items, open, onClose, id }: MegaMenuProps)
                   </motion.li>
                 );
               })}
+              {directionNav.map((d) => (
+                <li key={d.href} className="mt-1 first:pt-1">
+                  <Link
+                    href={d.href}
+                    onClick={onClose}
+                    className="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold text-ink-700 transition-[background-color,box-shadow,color] duration-200 hover:bg-white hover:text-ink hover:shadow-soft"
+                  >
+                    {d.label}
+                    <ArrowUpRight className="size-4" />
+                  </Link>
+                </li>
+              ))}
               <li className="mt-1 pt-1">
                 <Link
                   href="/courses"

@@ -25,7 +25,8 @@ import { SITE_URL, site } from "@/lib/site";
 export const revalidate = 3600;
 
 export function generateStaticParams() {
-  return courses.map((c) => ({ slug: c.slug }));
+  // vibecoding — отдельная страница направления (courses/vibecoding)
+  return courses.filter((c) => c.slug !== "vibecoding").map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

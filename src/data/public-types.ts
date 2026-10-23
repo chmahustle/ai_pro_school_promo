@@ -263,3 +263,36 @@ export interface ThanksPageData {
   /** Обещание ответа («Ответим в WhatsApp в течение 5 минут») */
   responseNote: string;
 }
+
+/** Страница направления (/courses/creator, /courses/vibecoding) */
+export interface PublicDirectionPage {
+  direction: "creator" | "vibecoding";
+  name: string;
+  tagline: string;
+  path: string;
+  forWhom: string;
+  leader: { name: string; photo: string | null };
+  /** Продукт, подставляемый в форму (входная ступень) */
+  entryProduct: string;
+  seo: { title: string; description: string };
+}
+
+/** Страница продукта (/courses/vibecoding-offline, /courses/vibecoding-course) */
+export interface PublicProductPage {
+  id: string;
+  directionName: string;
+  directionPath: string;
+  name: string;
+  resultLine: string;
+  format: string;
+  price: { prefix: string; amount: string; unit: string };
+  /** «Рассрочка от … ₸ в месяц» — только если сумма задана */
+  installment: string | null;
+  ctaLabel: string;
+  seatsLeft: number | null;
+  venue: { address: string | null; schedule: string | null };
+  modules: { title: string; items: string[] }[] | null;
+  /** Только dev: каких данных не хватает для скрытых блоков */
+  devMissing: string[];
+  seo: { title: string; description: string };
+}

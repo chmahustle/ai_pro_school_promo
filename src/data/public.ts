@@ -12,7 +12,7 @@ import { getHomeMetrics } from "./metrics";
 import { formConfig } from "./forms";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { audienceGroups, lineup, lineupForWhom, partnerProjectStep, pathTabs, resultsTabs } from "./lineup";
+import { audienceGroups, directions, lineup, lineupForWhom, partnerProjectStep, pathTabs, resultsTabs } from "./lineup";
 import { getVisiblePartners } from "./partners";
 import {
   formatCohortDate,
@@ -22,6 +22,7 @@ import {
   getEntryStep,
   getEntrySubtitle,
   getNextCohort,
+  getProduct,
   getProductForCourse,
   products,
   STEP_LABELS,
@@ -30,7 +31,7 @@ import {
 } from "./products";
 import { GENERAL_PRODUCT } from "./product-ids";
 import { site } from "@/lib/site";
-import { nameInSentence } from "@/lib/utils";
+import { formatNumber, nameInSentence } from "@/lib/utils";
 import { getVisibleStories, canShowStoryMedia, isStoryPublishable, stories as allStories } from "./stories";
 import { team } from "./team";
 import { getVisibleTestimonials } from "./testimonials";
@@ -42,6 +43,8 @@ import type {
   MenuData,
   PublicAudienceCard,
   PublicAudienceGroup,
+  PublicDirectionPage,
+  PublicProductPage,
   PublicPartner,
   PublicPathStep,
   PublicPaths,
@@ -97,9 +100,10 @@ export function toPublicStory(s: Story): PublicStory {
 }
 
 /** Карточки результатов: verified && consent (в dev — все), опционально по аудитории */
-export function getPublicStories(audience?: Story["audiences"][number]): PublicStory[] {
+export function getPublicStories(audience?: Story["audiences"][number], direction?: Story["direction"]): PublicStory[] {
   return getVisibleStories()
     .filter((s) => !audience || s.audiences.includes(audience))
+    .filter((s) => !direction || s.direction === direction)
     .map(toPublicStory);
 }
 
@@ -459,4 +463,66 @@ export function getPublicLineup(): PublicLineup {
     help: { label: lineup.help.label, href: `${site.whatsapp}?text=${encodeURIComponent(lineup.help.whatsappText)}` },
     entryBadge: lineup.entryBadge,
   };
+}
+
+// ───────────── Страницы направлений и продуктов (шаг 5a) ─────────────
+
+/** Страница направления: названия и «для кого» из lineup.ts, ведущий и входной продукт — из products.ts */
+export function getPublicDirectionPage(direction: Direction): PublicDirectionPage {
+  const d = directions[direction];
+  const entry = getEntryProducts().find((p) => p.direction === direction);
+  const ladder = getPublicLadder(direction);
+  return {
+    direction,
+    name: d.name,
+    tagline: d.tagline,
+    path: d.path,
+    forWhom: lineupForWhom[direction],
+    leader: ladder.leader,
+    entryProduct: entry?.id ?? "general",
+    seo: {
+      title: `${d.name}: ${d.tagline}`,
+      description: `${d.name}: ${d.tagline}. Лестница программ: ${ladder.steps.map((s) => s.name).join(" → ")}. Ведёт ${ladder.leader.name}.`,
+    },
+  };
+}
+
+const NBSP_ = "\u00a0";
+
+/** Страница продукта: цена, рассрочка (если сумма задана), места и «Где и когда» (если данные есть) */
+export function getPublicProductPage(id: "offline" | "course"): PublicProductPage {
+  const p = getProduct(id);
+  const { prefix, amount, unit } = formatPriceParts(p);
+  const d = directions[p.direction];
+  const missing: string[] = [];
+  if (id === "offline") {
+    if (!p.address) missing.push("адрес проведения");
+    if (!p.schedule) missing.push("даты проведения");
+  }
+  if (id === "course" && !p.modules) missing.push("программа по модулям");
+  return {
+    id: p.id,
+    directionName: d.name,
+    directionPath: d.path,
+    name: p.name,
+    resultLine: p.resultLine,
+    format: p.format,
+    price: { prefix, amount, unit },
+    installment: p.installmentFromPerMonth ? `Рассрочка от ${formatNumber(p.installmentFromPerMonth)}${NBSP_}₸ в месяц` : null,
+    ctaLabel: p.ctaLabel,
+    seatsLeft: p.seatsLeft,
+    venue: { address: p.address, schedule: p.schedule },
+    modules: p.modules,
+    devMissing: SHOW_PLACEHOLDERS ? missing : [],
+    seo: { title: p.name, description: `${p.resultLine}. ${p.format}.` },
+  };
+}
+
+/** Ссылки на новые страницы для меню и футера */
+export function getCatalogLinks(): { label: string; href: string }[] {
+  return [
+    { label: directions.creator.name, href: directions.creator.path },
+    { label: directions.vibecoding.name, href: directions.vibecoding.path },
+    ...(["offline", "course"] as const).map((id) => ({ label: getProduct(id).name, href: getProduct(id).landingUrl })),
+  ];
 }

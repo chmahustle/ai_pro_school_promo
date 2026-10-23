@@ -4,6 +4,7 @@ import { Logo } from "./Logo";
 import { site } from "@/lib/site";
 import { company } from "@/data/company";
 import { courses } from "@/data/courses";
+import { getCatalogLinks } from "@/data/public";
 import { landingAudiences } from "@/data/audiences";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 import { cn } from "@/lib/utils";
@@ -87,9 +88,21 @@ export function Footer() {
 
           <div className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-3">
             <FooterCol title="Курсы">
-              {courses.map((c) => (
-                <FooterLink key={c.slug} href={`/courses/${c.slug}`}>
-                  {c.shortName}
+              {getCatalogLinks().slice(0, 2).map((l) => (
+                <FooterLink key={l.href} href={l.href}>
+                  {l.label}
+                </FooterLink>
+              ))}
+              {courses
+                .filter((c) => c.slug !== "vibecoding")
+                .map((c) => (
+                  <FooterLink key={c.slug} href={`/courses/${c.slug}`}>
+                    {c.shortName}
+                  </FooterLink>
+                ))}
+              {getCatalogLinks().slice(2).map((l) => (
+                <FooterLink key={l.href} href={l.href}>
+                  {l.label}
                 </FooterLink>
               ))}
               <FooterLink href="/courses">Все курсы</FooterLink>

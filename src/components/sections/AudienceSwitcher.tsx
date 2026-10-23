@@ -50,8 +50,9 @@ function Spark({
 function CardDecor({ skin }: { skin: Skin }) {
   if (skin === "brand") {
     return (
-      <span className="pointer-events-none absolute -right-10 top-1/2 -translate-y-1/2" aria-hidden>
-        <Spark fill="#ECE9FF" size={200} className="h-[170px] w-[170px] opacity-95 sm:h-[200px] sm:w-[200px]" />
+      // Звезда в верхнем правом углу, за пределами текстовых строк: не заходит на чипы, цену первого шага и CTA
+      <span className="pointer-events-none absolute -right-6 -top-6" aria-hidden>
+        <Spark fill="#ECE9FF" size={96} className="h-[84px] w-[84px] opacity-95 sm:h-[96px] sm:w-[96px]" />
       </span>
     );
   }

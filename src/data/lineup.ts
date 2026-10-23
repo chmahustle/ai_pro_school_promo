@@ -1,6 +1,12 @@
 import "server-only";
 import type { Direction } from "./products";
 
+/** Направления школы: название, подзаголовок и страница направления (шаг 5a) */
+export const directions: Record<Direction, { name: string; tagline: string; path: string }> = {
+  creator: { name: "AI-креаторство", tagline: "ИИ-ролики и контент на заказ", path: "/courses/creator" },
+  vibecoding: { name: "Вайб-кодинг", tagline: "сайты, боты и автоматизации без кода", path: "/courses/vibecoding" },
+};
+
 /**
  * Тексты блока «Продуктовая линейка» на главной (шаг 3a). Названия продуктов, цены, форматы и ссылки — в products.ts.
  * Подписи вкладок, заголовок и текст кнопки помощи заданы в ТЗ шага 3a.
@@ -10,8 +16,8 @@ export const lineup = {
   title: "Два направления — выберите своё",
   subtitle: "У каждого своя лестница: начните с первой ступени",
   tabs: [
-    { id: "creator", label: "AI-креаторство: ИИ-ролики и контент на заказ" },
-    { id: "vibecoding", label: "Вайб-кодинг: сайты, боты и автоматизации без кода" },
+    { id: "creator", label: `${directions.creator.name}: ${directions.creator.tagline}` },
+    { id: "vibecoding", label: `${directions.vibecoding.name}: ${directions.vibecoding.tagline}` },
   ] satisfies { id: Direction; label: string }[],
   help: { label: "Не знаю, с чего начать", whatsappText: "Помогите выбрать программу" },
   /** Пилюля у входной ступени */

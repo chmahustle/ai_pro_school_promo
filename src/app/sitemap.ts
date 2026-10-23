@@ -21,11 +21,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "weekly",
     priority: 0.9,
   }));
+  // Страницы направлений и продуктов вайб-кодинга (шаг 5a); /courses/vibecoding уже в списке курсов
+  const newPages: MetadataRoute.Sitemap = ["/courses/creator", "/courses/vibecoding-offline", "/courses/vibecoding-course"].map((path) => ({
+    url: `${SITE_URL}${path}`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: 0.9,
+  }));
   const landingPages: MetadataRoute.Sitemap = landingAudiences.map((a) => ({
     url: `${SITE_URL}${a.path}`,
     lastModified: now,
     changeFrequency: "weekly",
     priority: 0.8,
   }));
-  return [...staticPages, ...coursePages, ...landingPages];
+  return [...staticPages, ...coursePages, ...newPages, ...landingPages];
 }
