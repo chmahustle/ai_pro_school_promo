@@ -40,9 +40,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: first?.message ?? "Проверьте поля формы" }, { status: 422 });
   }
 
-  // Honeypot заполнен → делаем вид, что всё ок, но не отправляем
+  // Honeypot заполнен → отвечаем обычным успехом, дальше не передаём, факт логируем (без персональных данных)
   if (parsed.data.website) {
-    return NextResponse.json({ ok: true, id: "ignored" });
+    console.warn("[leads] honeypot triggered, lead dropped", { ip, formId: parsed.data.formId, page: parsed.data.page });
+    return NextResponse.json({ ok: true });
   }
 
   try {
