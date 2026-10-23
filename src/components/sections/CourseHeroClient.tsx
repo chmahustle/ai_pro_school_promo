@@ -10,7 +10,7 @@ import type { PriceParts } from "@/data/products";
 import type { AccentTheme } from "@/data/types";
 import { fadeUp, stagger } from "@/lib/motion";
 import { meshForAccent } from "@/lib/mesh";
-import { cn } from "@/lib/utils";
+import { cn, nbspDash } from "@/lib/utils";
 
 /** Цвета плиток фактов — те же, что у карточек главной */
 const tiles = [
@@ -72,11 +72,11 @@ export function CourseHeroClient({ course }: { course: CourseHeroData }) {
               variants={fadeUp}
               className={cn("font-display text-[clamp(2rem,1.3rem+3vw,3.5rem)] font-extrabold leading-[1.06] tracking-[-0.015em] [text-wrap:balance]", dark ? "text-white" : "text-ink")}
             >
-              {course.tagline}
+              {nbspDash(course.tagline)}
             </motion.h1>
 
             <motion.p variants={fadeUp} className={cn("max-w-[56ch] text-[15px] leading-relaxed", dark ? "text-white/70" : "text-ink-500")}>
-              {course.description}
+              {nbspDash(course.description)}
             </motion.p>
 
             <motion.div variants={fadeUp} className="flex flex-col gap-3 sm:flex-row sm:items-center">

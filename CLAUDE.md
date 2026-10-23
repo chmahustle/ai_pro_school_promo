@@ -30,6 +30,8 @@
 - Размеры: `text-display-xl|lg|md|sm` (clamp, tracking −0.03/−0.02em)
 - Unbounded используется только в OG-картинках (`src/lib/og.tsx`)
 
+Типографика заголовков: у h1–h4 глобально `text-wrap: balance` (globals.css). Длинное тире в заголовках и подзаголовках — через `nbspDash()` из `lib/utils.ts` (U+00A0 перед «—», тире не уходит в начало строки); применять в общих компонентах (`SectionIntro`, `SectionHead`, hero, `CTA`, карточки), тексты вручную не править. Размеры `text-display-*` объявлены и в `@theme`, и в `extendTailwindMerge` (`cn()`): новый размер добавлять в оба места, иначе `cn` примет его за цвет и вырежет.
+
 Радиусы: `lg 16`, `xl 24`, `2xl 32`, `3xl 40`, `pill 999`. Тени: `shadow-soft|card|float|pill`. Отступы секций: `section 6rem`, `section-sm 4rem`; контейнер `.container-site` (max 1280).
 
 Анимации: `animate-marquee|float|float-slow|mesh-drift`; всё должно уважать `prefers-reduced-motion`.

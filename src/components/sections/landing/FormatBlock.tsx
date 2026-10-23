@@ -1,4 +1,5 @@
 import { ArrowRight, Clock, MonitorPlay, Wallet, MessageCircle, type LucideIcon } from "lucide-react";
+import { nbspDash } from "@/lib/utils";
 import { Pill, RevealGroup, RevealItem } from "@/components/ui";
 import { Button } from "@/components/ui";
 import type { Audience } from "@/data/types";
@@ -32,7 +33,7 @@ export function FormatBlock({ format, formAnchor, ctaLabel }: FormatBlockProps) 
               Формат
             </Pill>
             <h2 id="format-title" className="mt-4 text-display-md text-ink">
-              {format.title}
+              {nbspDash(format.title)}
             </h2>
             {formAnchor && ctaLabel && (
               <Button variant="dark" size="md" href={`#${formAnchor}`} icon={<ArrowRight className="size-4" />} className="mt-7">

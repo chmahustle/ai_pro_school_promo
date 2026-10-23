@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Reveal, Section, SectionIntro } from "@/components/ui";
-import { cn } from "@/lib/utils";
+import { cn, nbspDash } from "@/lib/utils";
 
 interface Step {
   n: string;
@@ -83,8 +83,8 @@ export function HowItWorks({
           last ? "bg-brand text-white" : invert ? "bg-white/5 ring-1 ring-white/10" : "bg-surface shadow-soft",
         )}
       >
-        <h3 className="font-display text-[17px] leading-tight">{st.title}</h3>
-        <p className={cn("mt-1.5 text-[13.5px] leading-snug", last ? "text-white/85" : invert ? "text-white/65" : "text-ink-500")}>{st.text}</p>
+        <h3 className="font-display text-[17px] leading-tight">{nbspDash(st.title)}</h3>
+        <p className={cn("mt-1.5 text-[13.5px] leading-snug", last ? "text-white/85" : invert ? "text-white/65" : "text-ink-500")}>{nbspDash(st.text)}</p>
       </div>
     );
   };

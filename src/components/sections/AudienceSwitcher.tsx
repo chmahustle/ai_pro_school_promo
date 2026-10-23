@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { HomeSection, SectionIntro } from "@/components/ui";
 import { getAudiencesForCards } from "@/data/audiences";
 import type { Audience, AudienceSlug } from "@/data/types";
-import { cn } from "@/lib/utils";
+import { cn, nbspDash } from "@/lib/utils";
 
 type Skin = "brand" | "soft" | "ink" | "lavender";
 
@@ -145,7 +145,7 @@ function AudienceCardLink({ audience: a }: { audience: Audience }) {
             onDark ? "text-white" : "text-ink",
           )}
         >
-          {card.title}
+          {nbspDash(card.title)}
         </h3>
         {card.titleNote ? (
           <p

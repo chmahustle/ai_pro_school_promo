@@ -5,7 +5,7 @@ import { Avatar } from "./Avatar";
 import { MediaPlaceholder } from "./MediaPlaceholder";
 import { PlaceholderBadge } from "./PlaceholderBadge";
 import type { PublicStory } from "@/data/public-types";
-import { cn } from "@/lib/utils";
+import { cn, nbspDash } from "@/lib/utils";
 
 export interface StoryCardProps {
   story: PublicStory;
@@ -21,7 +21,7 @@ function ResultTitle({ result }: { result: PublicStory["result"] }) {
       {brand ? <span className="text-brand">{brand}</span> : null}
       {result.text ? (
         <span className="text-ink">
-          {brand ? ` ${result.text}` : result.text}
+          {nbspDash(brand ? ` ${result.text}` : result.text)}
         </span>
       ) : null}
     </h3>

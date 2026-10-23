@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Button, MeshBackdrop, Reveal, type MeshVariant } from "@/components/ui";
 import { LeadButton } from "@/components/ui/LeadButton";
-import { cn } from "@/lib/utils";
+import { cn, nbspDash } from "@/lib/utils";
 
 interface CTAProps {
   title: string;
@@ -40,8 +40,8 @@ export function CTA({
           <LinesPattern />
           <div className="container-site relative z-10 flex flex-col items-start gap-7 py-12 sm:py-16 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-2xl">
-              <h2 className="font-display text-[clamp(1.875rem,1.3rem+2.4vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.015em] [text-wrap:balance]">{title}</h2>
-              {description && <p className="mt-3 max-w-[52ch] text-[15px] leading-relaxed text-white/85">{description}</p>}
+              <h2 className="font-display text-[clamp(1.875rem,1.3rem+2.4vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.015em] [text-wrap:balance]">{nbspDash(title)}</h2>
+              {description && <p className="mt-3 max-w-[52ch] text-[15px] leading-relaxed text-white/85">{nbspDash(description)}</p>}
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
               {primaryHref ? (
@@ -78,8 +78,8 @@ export function CTA({
           {!dark ? (
             <div className="flex w-full flex-col gap-6 rounded-2xl bg-surface/92 p-6 shadow-soft backdrop-blur-[2px] sm:p-8 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-2xl">
-                <h2 className="text-display-md text-ink">{title}</h2>
-                {description && <p className="mt-3 text-base text-ink-500 sm:text-lg">{description}</p>}
+                <h2 className="text-display-md text-ink">{nbspDash(title)}</h2>
+                {description && <p className="mt-3 text-base text-ink-500 sm:text-lg">{nbspDash(description)}</p>}
               </div>
               <CtaButtons
                 primaryLabel={primaryLabel}
@@ -94,8 +94,8 @@ export function CTA({
           ) : (
             <>
               <div className="max-w-2xl">
-                <h2 className="text-display-md text-white">{title}</h2>
-                {description && <p className="mt-3 text-base text-white/70 sm:text-lg">{description}</p>}
+                <h2 className="text-display-md text-white">{nbspDash(title)}</h2>
+                {description && <p className="mt-3 text-base text-white/70 sm:text-lg">{nbspDash(description)}</p>}
               </div>
               <CtaButtons
                 primaryLabel={primaryLabel}

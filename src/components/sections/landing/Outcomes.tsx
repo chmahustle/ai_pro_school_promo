@@ -1,7 +1,7 @@
 import { Gift } from "lucide-react";
 import { RevealGroup, RevealItem, Section, SectionIntro, TileDecor, type TileDecorTone } from "@/components/ui";
 import type { Audience } from "@/data/types";
-import { cn } from "@/lib/utils";
+import { cn, nbspDash } from "@/lib/utils";
 
 interface OutcomesProps {
   audience: Audience;
@@ -29,8 +29,8 @@ export function Outcomes({ audience, title = "За 1,5 часа вы поймё�
               <div className={cn("audience-tile relative flex min-h-[260px] w-full flex-col overflow-hidden rounded-[28px] p-6 sm:p-7", t.tile)}>
                 <TileDecor tone={t.decor} />
                 <span className={cn("relative font-display text-[48px] font-extrabold leading-none tabular-nums", t.num)}>0{i + 1}</span>
-                <h3 className="relative mt-auto pt-8 font-display text-[21px] font-bold leading-tight">{o.title}</h3>
-                <p className={cn("relative mt-2 text-[14px] leading-snug", t.text)}>{o.text}</p>
+                <h3 className="relative mt-auto pt-8 font-display text-[21px] font-bold leading-tight">{nbspDash(o.title)}</h3>
+                <p className={cn("relative mt-2 text-[14px] leading-snug", t.text)}>{nbspDash(o.text)}</p>
               </div>
             </RevealItem>
           );

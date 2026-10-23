@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { nbspDash } from "@/lib/utils";
 import { MeshBackdrop, Pill, Reveal, Ribbon } from "@/components/ui";
 
 interface PageHeroProps {
@@ -25,9 +26,9 @@ export function PageHero({ id, eyebrow, title, description, actions, aside }: Pa
               {eyebrow}
             </Pill>
             <h1 id={id} className="mt-4 max-w-[18ch] font-display text-[clamp(2.25rem,1.4rem+3.4vw,4rem)] font-extrabold leading-[1.04] tracking-[-0.015em] text-ink">
-              {title}
+              {nbspDash(title)}
             </h1>
-            {description && <p className="mt-4 max-w-[52ch] text-[15px] leading-relaxed text-ink-500">{description}</p>}
+            {description && <p className="mt-4 max-w-[52ch] text-[15px] leading-relaxed text-ink-500">{nbspDash(description)}</p>}
             {actions && <div className="mt-7 flex flex-wrap items-center gap-3">{actions}</div>}
           </div>
           {aside && <Reveal delay={0.1}>{aside}</Reveal>}

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui";
 import { ProductPrice } from "@/components/ui/ProductPrice";
 import { getPublicLadder, getPublicLineup } from "@/data/public";
 import type { Direction } from "@/data/products";
-import { cn } from "@/lib/utils";
+import { cn, nbspDash } from "@/lib/utils";
 
 /**
  * Лестница продуктов одного направления: «для кого», ведущий и карточки ступеней слева направо со стрелками
@@ -60,9 +60,9 @@ export function ProductLadder({ direction, className }: { direction: Direction; 
                 )}
               </div>
 
-              <h3 className="mt-5 font-display text-[22px] font-bold leading-tight sm:text-[24px]">{step.name}</h3>
+              <h3 className="mt-5 font-display text-[22px] font-bold leading-tight sm:text-[24px]">{nbspDash(step.name)}</h3>
               {step.devNameNote && <p className="mt-1 text-[12px] font-semibold text-danger">{step.devNameNote}</p>}
-              <p className="mt-2 text-[14px] leading-snug text-ink-700">{step.resultLine}</p>
+              <p className="mt-2 text-[14px] leading-snug text-ink-700">{nbspDash(step.resultLine)}</p>
               <p className="mt-3 text-[13px] leading-snug text-ink-500">{step.format}</p>
 
               <div className="mt-auto pt-6">

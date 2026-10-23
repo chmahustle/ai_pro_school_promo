@@ -8,7 +8,7 @@ import type { Audience } from "@/data/types";
 import { fadeUp, stagger } from "@/lib/motion";
 import { track } from "@/lib/analytics";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
-import { cn } from "@/lib/utils";
+import { cn, nbspDash } from "@/lib/utils";
 
 type PillTone = "brand" | "dark" | "white" | "peach" | "lavender";
 
@@ -187,11 +187,11 @@ export function LandingHero({ audience, formAnchor }: LandingHeroProps) {
             variants={fadeUp}
             className={cn("mt-4 font-display text-[clamp(1.875rem,1.2rem+2.6vw,3.25rem)] font-extrabold leading-[1.06] tracking-[-0.015em] [text-wrap:balance]", th.title)}
           >
-            <Highlighted text={hero.title} highlight={hero.highlight} className={th.highlight} />
+            <Highlighted text={nbspDash(hero.title)} highlight={hero.highlight} className={th.highlight} />
           </motion.h1>
 
           <motion.p variants={fadeUp} className={cn("mt-4 max-w-[54ch] text-[14px] leading-relaxed sm:text-[15px]", th.sub)}>
-            {hero.subtitle}
+            {nbspDash(hero.subtitle)}
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-6 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:justify-center">

@@ -1,7 +1,7 @@
 import { Check, X } from "lucide-react";
 import { HomeSection, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
 import type { Course } from "@/data/types";
-import { cn } from "@/lib/utils";
+import { cn, nbspDash } from "@/lib/utils";
 
 /** «Кому подходит / кому нет» */
 export function CourseForWhom({ course }: { course: Course }) {
@@ -18,8 +18,8 @@ export function CourseForWhom({ course }: { course: Course }) {
                   <Check className="size-4" aria-hidden />
                 </span>
                 <div>
-                  <h3 className="font-sans text-[16px] font-bold leading-snug">{f.title}</h3>
-                  <p className="mt-1.5 text-[14px] leading-relaxed text-ink-500">{f.text}</p>
+                  <h3 className="font-sans text-[16px] font-bold leading-snug">{nbspDash(f.title)}</h3>
+                  <p className="mt-1.5 text-[14px] leading-relaxed text-ink-500">{nbspDash(f.text)}</p>
                 </div>
               </div>
             </RevealItem>

@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { clsx, type ClassValue } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
@@ -9,6 +10,15 @@ import { extendTailwindMerge } from "tailwind-merge";
 export function nameInSentence(name: string): string {
   const lowered = /^\p{Lu}\p{Ll}/u.test(name) ? name.charAt(0).toLowerCase() + name.slice(1) : name;
   return name.includes("«") ? lowered : `«${name}»`;
+}
+
+/**
+ * Неразрывный пробел перед длинным тире: « — » → «\u00A0— », чтобы тире не оказывалось в начале строки.
+ * Применять к заголовкам и подзаголовкам (SectionIntro, hero, карточки) — не править тексты вручную.
+ * Не строки (ReactNode с разметкой) возвращаются как есть.
+ */
+export function nbspDash<T extends ReactNode>(value: T): T {
+  return (typeof value === "string" ? value.replace(/ — /g, "\u00A0— ") : value) as T;
 }
 
 /**

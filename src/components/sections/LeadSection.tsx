@@ -3,7 +3,7 @@ import { Button, MeshBackdrop, Pill, Reveal, type MeshVariant } from "@/componen
 import { LeadForm, type LeadFormProps } from "./LeadForm";
 import { getFormConfig } from "@/data/public";
 import { site } from "@/lib/site";
-import { cn } from "@/lib/utils";
+import { cn, nbspDash } from "@/lib/utils";
 
 interface LeadSectionProps extends Omit<LeadFormProps, "className" | "config"> {
   id?: string;
@@ -49,11 +49,11 @@ export function LeadSection({
               {eyebrow}
             </Pill>
             <h2 id={`${id}-title`} className="font-display text-[clamp(1.75rem,1.2rem+2vw,2.875rem)] font-extrabold leading-[1.08] tracking-[-0.015em] [text-wrap:balance]">
-              {title}
+              {nbspDash(title)}
             </h2>
             {description && (
               <p className={cn("max-w-[48ch] text-[15px] leading-relaxed", isDark ? "text-white/70" : "text-ink-500")}>
-                {description}
+                {nbspDash(description)}
               </p>
             )}
             {bullets && (

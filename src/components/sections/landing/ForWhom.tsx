@@ -1,6 +1,6 @@
 import { Check } from "lucide-react";
 import { HomeSection, RevealGroup, RevealItem, SectionIntro } from "@/components/ui";
-import { cn } from "@/lib/utils";
+import { cn, nbspDash } from "@/lib/utils";
 
 interface ForWhomProps {
   items: { title: string; text: string }[];
@@ -33,8 +33,8 @@ export function ForWhom({ items, footnote, title = "Этот эфир для в�
                 </span>
               )}
               <div>
-                <h3 className="font-sans text-[16px] font-bold leading-snug text-white">{it.title}</h3>
-                <p className="mt-1.5 text-[14px] leading-relaxed text-white/65">{it.text}</p>
+                <h3 className="font-sans text-[16px] font-bold leading-snug text-white">{nbspDash(it.title)}</h3>
+                <p className="mt-1.5 text-[14px] leading-relaxed text-white/65">{nbspDash(it.text)}</p>
               </div>
             </div>
           </RevealItem>
