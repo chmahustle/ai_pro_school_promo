@@ -198,7 +198,6 @@ export interface Course {
   format: string;
   duration: string;
   level: string;
-  startDate?: string;
   startNote?: string;
   /** Цена «от» для карточек. null → «по запросу / уточняется» */
   priceFrom: number | null;

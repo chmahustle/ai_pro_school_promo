@@ -15,7 +15,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const SRC = join(ROOT, "src");
 
-const FORBIDDEN = ["Цена уточняется", "TODO(клиент)", "Старт 20 апреля"];
+const FORBIDDEN = ["Цена уточняется", "TODO(клиент)", "Старт 20 апреля", "20 апреля"];
 const EXT = new Set([".ts", ".tsx", ".mjs", ".js", ".jsx"]);
 
 function* walk(dir) {

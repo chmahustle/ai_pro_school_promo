@@ -12,6 +12,8 @@ interface ProgramsProps {
 
 /** Программа курса по неделям/эфирам — аккордеон */
 export function Programs({ modules, title = "Программа", eyebrow = "Что внутри", description, tone = "bg" }: ProgramsProps) {
+  // Нет модулей с содержанием — блока нет (никаких пустых рамок)
+  if (modules.filter((m) => m.lessons.length > 0).length === 0) return null;
   return (
     <Section id="program" tone={tone} className="scroll-mt-24">
       <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr]">

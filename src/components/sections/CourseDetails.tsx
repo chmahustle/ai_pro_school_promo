@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 
 /** «Кому подходит / кому нет» */
 export function CourseForWhom({ course }: { course: Course }) {
+  if (course.forWhom.length === 0) return null;
   return (
     <Section>
       <SectionIntro id="for-whom-title" align="left" eyebrow="Кому подходит" title="Курс для вас, если вы" />
@@ -48,6 +49,7 @@ export function CourseForWhom({ course }: { course: Course }) {
 
 /** «Чему научитесь» — нумерованные плитки */
 export function CourseOutcomes({ course }: { course: Course }) {
+  if (course.outcomes.length === 0) return null;
   return (
     <Section>
       <SectionIntro id="outcomes-title" align="left" eyebrow="Результат" title="За время обучения вы научитесь" />
@@ -67,7 +69,7 @@ export function CourseOutcomes({ course }: { course: Course }) {
 
 /** «Как вы зарабатываете» — тёмная панель главной со стеклянными плитками */
 export function CourseMonetization({ course }: { course: Course }) {
-  if (!course.monetization) return null;
+  if (!course.monetization || course.monetization.length === 0) return null;
   return (
     <HomeSection id="monetization" labelledBy="monetization-title" tone="dark" compact className="mt-4">
       <SectionIntro

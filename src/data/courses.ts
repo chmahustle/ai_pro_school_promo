@@ -20,7 +20,6 @@ export const courses: Course[] = [
     format: "Онлайн · видеоуроки + чат с обратной связью",
     duration: "4 недели + вводный модуль",
     level: "Без опыта",
-    startDate: undefined,
     startNote: "Старт сразу после оплаты",
     priceFrom: null,
     priceStatus: "unverified",
