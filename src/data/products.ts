@@ -366,7 +366,7 @@ export function formatEntryLine(product: Product, now: Date = new Date()): strin
   const name = entryShortName[product.id] ?? product.name;
   if (price === null) return name;
   if (price === 0) return `${name} бесплатно`;
-  return `${name} от${NBSP}${formatNumber(price)}${NBSP}₸`;
+  return `${name}${NBSP}${formatNumber(price)}${NBSP}₸`;
 }
 
 /**

@@ -8,7 +8,7 @@ import { ProductLadder } from "./ProductLadder";
 export function LineupSection() {
   const lineup = getPublicLineup();
   return (
-    <Section id={lineup.id} className="scroll-mt-24" aria-labelledby={`${lineup.id}-title`}>
+    <Section id={lineup.id} className="scroll-mt-28" aria-labelledby={`${lineup.id}-title`}>
       <SectionIntro id={`${lineup.id}-title`} eyebrow="Продуктовая линейка" title={lineup.title} description={lineup.subtitle} />
       <LineupTabs
         sectionId={lineup.id}

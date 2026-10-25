@@ -5,7 +5,7 @@ import { ArrowLink, HomeSection, Lightbox, SectionIntro, StoryCard, type Lightbo
 import { storyAudienceFilters } from "@/data/story-filters";
 import type { PublicStory } from "@/data/public-types";
 import type { AudienceSlug } from "@/data/types";
-import { cn } from "@/lib/utils";
+import { cn, noBreakHyphen } from "@/lib/utils";
 
 const HOME_LIMIT = 3;
 type FilterId = "all" | AudienceSlug;
@@ -69,7 +69,7 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
         tone="dark"
         align="left"
         eyebrow={variant === "projects" ? "Проекты" : "Результаты учеников"}
-        title={variant === "projects" ? "Проекты вайб-кодинга" : "Они начали с нуля — вот что получилось"}
+        title={variant === "projects" ? noBreakHyphen("Проекты вайб-кодинга") : "Они начали с нуля — вот что получилось"}
         description={variant === "projects" ? undefined : "Люди без технического образования, которые освоили ИИ и монетизировали навык."}
         action={
           showAllLink ? (
@@ -95,7 +95,7 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
                 t.id === direction ? "bg-white text-ink" : "bg-white/10 text-white/80 hover:bg-white/20 hover:text-white",
               )}
             >
-              {t.label}
+              {noBreakHyphen(t.label)}
             </button>
           ))}
         </div>

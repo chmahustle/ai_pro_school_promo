@@ -18,7 +18,12 @@ export function nameInSentence(name: string): string {
  * Не строки (ReactNode с разметкой) возвращаются как есть.
  */
 export function nbspDash<T extends ReactNode>(value: T): T {
-  return (typeof value === "string" ? value.replace(/ — /g, "\u00A0— ") : value) as T;
+  return (typeof value === "string" ? noBreakHyphen(value.replace(/ — /g, "\u00A0— ")) : value) as T;
+}
+
+/** «вайб-кодинг» не переносится по дефису: обычный дефис → неразрывный (U+2011) внутри слова. Только для вывода, не для SEO/мета. */
+export function noBreakHyphen(value: string): string {
+  return value.replace(/(вайб)-(?=кодинг)/gi, "$1\u2011");
 }
 
 /**

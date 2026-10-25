@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { webinarCta } from "@/data/heroResults";
 import { Ribbon } from "@/components/ui";
-import { cn } from "@/lib/utils";
+import { cn, noBreakHyphen } from "@/lib/utils";
 
 /** Четырёхконечная искра — форма как в логотипе */
 function Spark({
@@ -106,7 +106,7 @@ export function WantSameCta() {
               href={webinarCta.href}
               className={cn(tileBase, "bg-lavender text-ink md:col-span-2 lg:col-span-1")}
             >
-              <span className={titleClass}>{vocabulary.efir}</span>
+              <span className={titleClass}>{noBreakHyphen(vocabulary.efir)}</span>
               <svg
                 className="pointer-events-none absolute -bottom-16 -right-10 h-[180%] w-[90%] opacity-80"
                 viewBox="0 0 200 200"

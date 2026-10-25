@@ -34,7 +34,7 @@ export interface ContactParams {
 export type AnalyticsEvent =
   | { name: "page_view"; params: { path: string } }
   | { name: "view_landing"; params: { audience: string } }
-  | { name: "cta_click"; params: { label: string; location: string } }
+  | { name: "cta_click"; params: { label: string; location: string; direction?: string } }
   | { name: "lead_start"; params: { form_id: string } }
   | { name: "lead_submit"; params: { form_id: string; audience?: string; course?: string } }
   | { name: "lead_success"; params: { source?: string } }

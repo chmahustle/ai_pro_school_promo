@@ -5,7 +5,7 @@ import { ProductPrice } from "@/components/ui/ProductPrice";
 import { getPublicAudienceGroups } from "@/data/public";
 import type { PublicAudienceCard } from "@/data/public-types";
 import type { AudienceSlug } from "@/data/types";
-import { cn, nbspDash } from "@/lib/utils";
+import { cn, nbspDash, noBreakHyphen } from "@/lib/utils";
 
 type Skin = "brand" | "soft" | "ink" | "lavender";
 
@@ -118,7 +118,7 @@ export function AudienceSwitcher() {
         {groups.map((g) => (
           <li key={g.direction} className="contents">
             <h3 className={cn("mt-4 border-b border-ink/10 pb-3 font-display text-[20px] font-bold leading-tight text-ink first:mt-0 sm:col-span-2 sm:text-[22px] xl:mt-0", XL_HEAD[g.direction])}>
-              {g.title}
+              {noBreakHyphen(g.title)}
             </h3>
             {g.cards.map((a) => (
               <AudienceCardLink key={a.slug} audience={a} className={cn("xl:row-start-2", XL_CARD[col++])} />

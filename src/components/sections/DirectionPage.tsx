@@ -49,8 +49,8 @@ export function DirectionPage({ direction, children }: { direction: Direction; c
         }
       />
 
-      <Section id="ladder" className="scroll-mt-24" aria-labelledby="ladder-title">
-        <SectionIntro id="ladder-title" eyebrow="Программы" title="Начните с первой ступени" description={lineup.subtitle} />
+      <Section id="ladder" className="scroll-mt-28" aria-labelledby="ladder-title">
+        <SectionIntro id="ladder-title" eyebrow="Программы" title="Начните с первой ступени" description={lineup.ladderSubtitle[direction]} />
         <ProductLadder direction={direction} showHeader={false} />
       </Section>
 

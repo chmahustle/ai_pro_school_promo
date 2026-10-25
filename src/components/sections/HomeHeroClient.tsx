@@ -138,8 +138,8 @@ export function HomeHeroClient({ data }: { data: PublicHeroData }) {
             </p>
 
             <div className="mt-6 grid w-full grid-cols-1 gap-4 sm:w-auto sm:grid-cols-2 sm:gap-5">
-              <HeroChoice href="#lineup?tab=creator" label="Делать ИИ-ролики" note={data.entry.creator} location="home-hero-creator" />
-              <HeroChoice href="#lineup?tab=vibecoding" label="Собирать сайты и ботов" note={data.entry.vibecoding} location="home-hero-vibecoding" />
+              <HeroChoice href="/#lineup?tab=creator" direction="creator" label="Делать ИИ-ролики" note={data.entry.creator} location="home-hero-creator" />
+              <HeroChoice href="/#lineup?tab=vibecoding" direction="vibecoding" label="Собирать сайты и ботов" note={data.entry.vibecoding} location="home-hero-vibecoding" />
             </div>
           </div>
         </div>
@@ -165,14 +165,21 @@ export function HomeHeroClient({ data }: { data: PublicHeroData }) {
 
 /**
  * Один из двух равных по весу входов: кнопка к вкладке блока «Продуктовая линейка» + мелкая строка с ценой входа.
- * Обычная ссылка (не next/link): ей нужен нативный hashchange, по нему LineupTabs открывает вкладку и скроллит к #lineup.
+ * Ссылка (не next/link) с href для открытия без JS; по клику URL меняется без перезагрузки и шлётся hashchange — LineupTabs открывает вкладку и скроллит к #lineup.
  */
-function HeroChoice({ href, label, note, location }: { href: string; label: string; note: string; location: string }) {
+function HeroChoice({ href, label, note, location, direction }: { href: string; label: string; note: string; location: string; direction: "creator" | "vibecoding" }) {
   return (
     <div className="flex flex-col items-center gap-2">
       <a
         href={href}
-        onClick={() => track({ name: "cta_click", params: { label, location } })}
+        onClick={(e) => {
+          track({ name: "cta_click", params: { label, location, direction } });
+          // Без перезагрузки, даже если в адресе уже есть ?tab=…: меняем URL сами и сообщаем LineupTabs через hashchange
+          if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+          e.preventDefault();
+          window.history.pushState(null, "", `${window.location.pathname}?tab=${direction}#lineup`);
+          window.dispatchEvent(new HashChangeEvent("hashchange"));
+        }}
         className="group inline-flex h-14 w-full items-center justify-center gap-2.5 whitespace-nowrap rounded-pill bg-ink px-7 text-base font-semibold text-white shadow-pill transition-[background-color,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-ink-700 hover:shadow-float active:scale-[0.98] motion-reduce:hover:translate-y-0 sm:w-auto"
       >
         {label}

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { useReducedMotion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { cn, noBreakHyphen } from "@/lib/utils";
 
 type TabId = "creator" | "vibecoding";
 
@@ -91,7 +91,7 @@ export function LineupTabs({ sectionId, tabs, panels }: LineupTabsProps) {
                 on ? "bg-ink text-white" : "text-ink-700 hover:bg-soft-100",
               )}
             >
-              {t.label}
+              {noBreakHyphen(t.label)}
             </button>
           );
         })}

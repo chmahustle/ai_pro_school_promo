@@ -112,6 +112,7 @@ export interface PublicLineup {
   id: string;
   title: string;
   subtitle: string;
+  ladderSubtitle: Record<"creator" | "vibecoding", string>;
   tabs: { id: "creator" | "vibecoding"; label: string }[];
   help: { label: string; href: string };
   entryBadge: string;

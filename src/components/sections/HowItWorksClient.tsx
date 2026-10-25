@@ -5,7 +5,7 @@ import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform 
 import { Reveal, Section, SectionIntro } from "@/components/ui";
 import { ProductPrice } from "@/components/ui/ProductPrice";
 import type { PublicPaths, PublicPathStep } from "@/data/public-types";
-import { cn, nbspDash } from "@/lib/utils";
+import { cn, nbspDash, noBreakHyphen } from "@/lib/utils";
 
 type Direction = "creator" | "vibecoding";
 
@@ -107,7 +107,7 @@ export function HowItWorksClient({
                 on ? "bg-ink text-white" : invert ? "bg-white/10 text-white/80 hover:bg-white/20" : "bg-surface text-ink-700 hover:bg-soft-100",
               )}
             >
-              {t.label}
+              {noBreakHyphen(t.label)}
             </button>
           );
         })}

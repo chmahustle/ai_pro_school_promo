@@ -19,6 +19,8 @@ export const lineup = {
     { id: "creator", label: `${directions.creator.name}: ${directions.creator.tagline}` },
     { id: "vibecoding", label: `${directions.vibecoding.name}: ${directions.vibecoding.tagline}` },
   ] satisfies { id: Direction; label: string }[],
+  /** Подзаголовок «Программ» на странице направления */
+  ladderSubtitle: { creator: "Два шага: от практикума до курса", vibecoding: "Три шага: от эфира до курса" } satisfies Record<Direction, string>,
   help: { label: "Не знаю, с чего начать", whatsappText: "Помогите выбрать программу" },
   /** Пилюля у входной ступени */
   entryBadge: "Начните с этого",

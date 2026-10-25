@@ -500,6 +500,7 @@ export function getPublicLineup(): PublicLineup {
     id: lineup.id,
     title: lineup.title,
     subtitle: lineup.subtitle,
+    ladderSubtitle: lineup.ladderSubtitle,
     tabs: lineup.tabs.map((t) => ({ id: t.id, label: t.label })),
     help: { label: lineup.help.label, href: `${site.whatsapp}?text=${encodeURIComponent(lineup.help.whatsappText)}` },
     entryBadge: lineup.entryBadge,
