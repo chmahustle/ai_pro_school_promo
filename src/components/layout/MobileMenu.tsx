@@ -1,21 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, ChevronDown, X, MessageCircle } from "lucide-react";
+import { ArrowRight, X, MessageCircle } from "lucide-react";
+import { DirectionCard } from "./DirectionCard";
 import { Logo } from "./Logo";
 import { LangSwitch } from "./LangSwitch";
 import { mainNav, PICK_PROGRAM_HREF } from "./nav";
 import type { PublicNavMenu } from "@/data/public-types";
 import { Button } from "@/components/ui";
-import { NoBreakTerms } from "@/components/ui/NoBreakTerms";
-import { ProductPrice } from "@/components/ui/ProductPrice";
 import { useT } from "@/i18n/LocaleProvider";
 import { site } from "@/lib/site";
 import { track } from "@/lib/analytics";
-import { cn } from "@/lib/utils";
 import { easeOut } from "@/lib/motion";
 
 interface MobileMenuProps {
@@ -25,10 +23,9 @@ interface MobileMenuProps {
   onClose: () => void;
 }
 
-/** Полноэкранное мобильное меню: две секции-аккордеона направлений (то же содержимое, что в выпадающем меню шапки) */
+/** Полноэкранное мобильное меню: две крупные кнопки-карточки направлений (те же, что в выпадающем меню шапки), без аккордеона */
 export function MobileMenu({ menu, open, onClose }: MobileMenuProps) {
   const t = useT();
-  const [openDir, setOpenDir] = useState<string | null>(menu.columns[0]?.direction ?? null);
 
   useEffect(() => {
     if (!open) return;
@@ -79,57 +76,11 @@ export function MobileMenu({ menu, open, onClose }: MobileMenuProps) {
             className="flex-1 overflow-y-auto px-4 pb-6 pt-4 sm:px-6"
           >
             <ul className="flex flex-col gap-2" role="list">
-              {menu.columns.map((col) => {
-                const isOpen = openDir === col.direction;
-                return (
-                  <li key={col.direction} className="rounded-2xl bg-surface shadow-soft">
-                    <button
-                      type="button"
-                      aria-expanded={isOpen}
-                      aria-controls={`mobile-dir-${col.direction}`}
-                      onClick={() => setOpenDir(isOpen ? null : col.direction)}
-                      className="flex w-full items-center justify-between px-5 py-4 text-left font-display text-lg"
-                    >
-                      <span>
-                        <NoBreakTerms text={col.title} />
-                        <span className="block font-sans text-[12px] font-normal text-ink-500">Ведёт {col.leaderName}</span>
-                      </span>
-                      <ChevronDown className={cn("size-5 shrink-0 transition-transform", isOpen && "rotate-180")} />
-                    </button>
-                    <AnimatePresence initial={false}>
-                      {isOpen && (
-                        <motion.ul
-                          id={`mobile-dir-${col.direction}`}
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.25, ease: easeOut }}
-                          className="overflow-hidden"
-                          role="list"
-                        >
-                          <li>
-                            <Link href={col.href} onClick={onClose} className="block px-5 py-3 text-[15px] font-semibold text-ink-700 hover:bg-soft-100">
-                              О направлении →
-                            </Link>
-                          </li>
-                          {col.items.map((item) => (
-                            <li key={item.id}>
-                              <Link href={item.href} onClick={onClose} className="flex items-center justify-between gap-3 px-5 py-3 hover:bg-soft-100">
-                                <span className="min-w-0 text-[15px] font-semibold leading-snug">
-                                  <NoBreakTerms text={item.name} />
-                                </span>
-                                <ProductPrice parts={item.price} className="shrink-0 text-[14px] font-bold text-ink-700" />
-                              </Link>
-                            </li>
-                          ))}
-                          <li className="pb-2" />
-                        </motion.ul>
-                      )}
-                    </AnimatePresence>
-                  </li>
-                );
-              })}
-
+              {menu.cards.map((c) => (
+                <li key={c.direction}>
+                  <DirectionCard card={c} onNavigate={onClose} className="bg-surface shadow-soft" />
+                </li>
+              ))}
               {mainNav.map((item) => (
                 <li key={item.key}>
                   <Link

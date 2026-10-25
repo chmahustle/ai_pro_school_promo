@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 /**
  * Плавающий хедер-«пилюля» (референс ventorme / mindset health).
  * Desktop: лого · [Направления ▾ · Результаты · О нас] · RU/KZ · CTA «Подобрать программу» (→ /#lineup)
- * Mobile: лого · CTA · бургер → MobileMenu (две секции-аккордеона направлений).
+ * Mobile: лого · CTA · бургер → MobileMenu (две карточки направлений).
  */
 export function Header({ menu }: { menu: PublicNavMenu }) {
   const t = useT();

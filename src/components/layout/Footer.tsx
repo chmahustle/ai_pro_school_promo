@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Instagram, MessageCircle, Youtube } from "lucide-react";
+import { NoBreakTerms } from "@/components/ui/NoBreakTerms";
 import { Logo } from "./Logo";
 import { LOGIN_URL } from "./nav";
 import { site } from "@/lib/site";
@@ -91,7 +92,7 @@ export function Footer() {
             <FooterCol title="Курсы">
               {getCatalogLinks().slice(0, 2).map((l) => (
                 <FooterLink key={l.href} href={l.href}>
-                  {l.label}
+                  <NoBreakTerms text={l.label} />
                 </FooterLink>
               ))}
               {courses
@@ -103,7 +104,7 @@ export function Footer() {
                 ))}
               {getCatalogLinks().slice(2).map((l) => (
                 <FooterLink key={l.href} href={l.href}>
-                  {l.label}
+                  <NoBreakTerms text={l.label} />
                 </FooterLink>
               ))}
               <FooterLink href="/courses">Все курсы</FooterLink>

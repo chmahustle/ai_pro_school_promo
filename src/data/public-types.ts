@@ -307,26 +307,16 @@ export interface PublicProductPage {
   seo: { title: string; description: string };
 }
 
-/** Меню «Направления» в шапке и мобильной панели (data/navMenu.ts) */
+/** Меню «Направления» в шапке и мобильной панели (data/navMenu.ts): две крупные карточки направлений */
 export interface PublicNavMenu {
-  columns: {
+  cards: {
     direction: "creator" | "vibecoding";
     title: string;
+    pitch: string;
+    forWhom: string;
     href: string;
-    leaderName: string;
-    items: { id: string; name: string; href: string; price: { prefix: string; amount: string; unit: string } }[];
+    /** «Начать с практикума за 9 900 ₸» / «Начать с эфира, бесплатно»: цена и «бесплатно» — из products.ts */
+    start: { before: string; free: boolean; price: { prefix: string; amount: string; unit: string } };
   }[];
-  /** Тёмная карточка справа (эфир); null — карточки нет */
-  card: {
-    eyebrow: string;
-    name: string;
-    resultLine: string;
-    format: string;
-    price: { prefix: string; amount: string; unit: string };
-    /** Ближайшая дата — только подтверждённая */
-    start: string | null;
-    ctaLabel: string;
-    href: string;
-  } | null;
   allCoursesHref: string;
 }

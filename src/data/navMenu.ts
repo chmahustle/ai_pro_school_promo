@@ -1,38 +1,34 @@
 import "server-only";
-import { directions } from "./lineup";
-import { getPublicLadder } from "./public";
+import { directions, lineupForWhom } from "./lineup";
+import { formatPriceParts, getEntryProducts, getCurrentPrice } from "./products";
+import { vocabulary } from "./vocabulary";
 import type { PublicNavMenu } from "./public-types";
 
+/** Родительный падеж входных продуктов для строки «Начать с …» */
+const GEN: Record<string, string> = { practicum: vocabulary.practicumGen, efir: vocabulary.efirGen };
+
 /**
- * Меню «Направления» в шапке (десктоп и мобильная панель): две колонки с продуктами из products.ts
- * (название, цена через formatPriceParts, ссылка на лендинг), заголовок колонки — страница направления.
- * Тёмная карточка справа — эфир: название, результат и формат из конфига; «Бесплатный эфир» и «гайд в подарок» не пишем,
- * дата — только подтверждённая (cohortVerified), обещаний дохода нет.
+ * Меню «Направления» в шапке (десктоп и мобильная панель): две крупные карточки направлений.
+ * Строка старта — входной продукт направления и его цена из products.ts: платный — «Начать с практикума за 9 900 ₸»,
+ * бесплатный — «Начать с эфира, бесплатно» (станет платным — строка поменяется сама). Обещаний дохода и «подарка» нет.
  */
 export function getNavMenu(): PublicNavMenu {
-  const columns = (["creator", "vibecoding"] as const).map((direction) => {
-    const ladder = getPublicLadder(direction);
+  const cards = (["creator", "vibecoding"] as const).map((direction) => {
+    const d = directions[direction];
+    const entry = getEntryProducts().find((p) => p.direction === direction);
+    const { prefix, amount, unit } = entry ? formatPriceParts(entry) : { prefix: "", amount: "", unit: "" };
     return {
       direction,
-      title: directions[direction].name,
-      href: directions[direction].path,
-      leaderName: ladder.leader.name,
-      items: ladder.steps.map((s) => ({ id: s.id, name: s.name, href: s.href, price: s.price })),
+      title: d.name,
+      pitch: d.pitch,
+      forWhom: lineupForWhom[direction],
+      href: d.path,
+      start: {
+        before: `Начать с ${entry ? (GEN[entry.id] ?? entry.name) : d.name}`,
+        free: entry ? getCurrentPrice(entry) === 0 : false,
+        price: { prefix, amount, unit },
+      },
     };
   });
-  const efir = getPublicLadder("vibecoding").steps.find((s) => s.id === "efir") ?? null;
-  return {
-    columns,
-    card: efir && {
-      eyebrow: directions.vibecoding.name,
-      name: efir.name,
-      resultLine: efir.resultLine,
-      format: efir.format,
-      price: efir.price,
-      start: efir.start,
-      ctaLabel: efir.ctaLabel,
-      href: efir.href,
-    },
-    allCoursesHref: "/courses",
-  };
+  return { cards, allCoursesHref: "/courses" };
 }
