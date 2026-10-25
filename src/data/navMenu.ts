@@ -23,6 +23,8 @@ export function getNavMenu(): PublicNavMenu {
       pitch: d.pitch,
       forWhom: lineupForWhom[direction],
       href: d.path,
+      teaser: entry?.resultLine ?? "",
+      entry: { href: entry?.landingUrl ?? d.path, ctaLabel: entry?.ctaLabel ?? d.name },
       start: {
         before: `Начать с ${entry ? (GEN[entry.id] ?? entry.name) : d.name}`,
         free: entry ? getCurrentPrice(entry) === 0 : false,
