@@ -171,6 +171,8 @@ export interface Tariff extends Verifiable {
   price: number | null;
   /** Старая цена для зачёркивания */
   oldPrice?: number | null;
+  /** Старая цена подтверждена школой. Не true — зачёркнутая цена скрыта в проде (в dev с пометкой) */
+  oldPriceVerified?: boolean;
   /** Ежемесячный платёж в рассрочку */
   installment?: number | null;
   installmentMonths?: number;
@@ -217,7 +219,8 @@ export interface Course {
   /** Что продаёте после курса / как зарабатываете */
   monetization?: { title: string; items: string[] }[];
   tariffs: Tariff[];
-  bonuses?: { title: string; items: string[]; deadline?: string };
+  /** verified: false — бонус не подтверждён школой: в проде скрыт, в dev с пометкой (не задано — показывается) */
+  bonuses?: { title: string; items: string[]; deadline?: string; verified?: boolean };
   faq: FaqItem[];
   audiences: AudienceSlug[];
   seo: { title: string; description: string };

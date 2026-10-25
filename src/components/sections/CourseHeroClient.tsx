@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, Clock, Calendar, Signal, MonitorPlay } from "lucide-react";
-import { Button, MeshBackdrop, Pill, Ribbon } from "@/components/ui";
+import { MeshBackdrop, Pill, Ribbon } from "@/components/ui";
 import { ProductPrice } from "@/components/ui/ProductPrice";
 import { LeadButton } from "@/components/ui/LeadButton";
 import { productForCourseSlug } from "@/data/product-ids";
@@ -38,6 +38,8 @@ export interface CourseHeroData {
   badgeDate: string | null;
   /** Значение плитки «Старт» (нет — плитки нет) */
   startFact: string | null;
+  /** Подпись плитки: «Старт» (дата, срок старта) или «Записи эфиров» (пока формат не подтверждён) */
+  startFactLabel: string;
   price: PriceParts | null;
   /** Условия оплаты из products.ts (сумма рассрочки или «есть рассрочка») */
   paymentNote: string | null;
@@ -50,7 +52,7 @@ export function CourseHeroClient({ course }: { course: CourseHeroData }) {
     { icon: Clock, label: "Длительность", value: course.duration },
     { icon: MonitorPlay, label: "Формат", value: course.format },
     { icon: Signal, label: "Уровень", value: course.level },
-    ...(course.startFact ? [{ icon: Calendar, label: "Старт", value: course.startFact }] : []),
+    ...(course.startFact ? [{ icon: Calendar, label: course.startFactLabel, value: course.startFact }] : []),
   ];
 
 
@@ -91,9 +93,6 @@ export function CourseHeroClient({ course }: { course: CourseHeroData }) {
               >
                 {course.ctaLabel}
               </LeadButton>
-              <Button variant={dark ? "outline" : "white"} size="lg" href="#program" className={dark ? "border-white/30 text-white hover:border-white" : ""}>
-                Программа
-              </Button>
               {course.price && (
                 <span className="ml-1 flex flex-col leading-tight">
                   <ProductPrice parts={course.price} className={cn("font-display text-lg", dark ? "text-white" : "text-ink")} />

@@ -1,4 +1,5 @@
 import { Clock, MapPin, Users } from "lucide-react";
+import { LandingHeader } from "@/components/layout/LandingHeader";
 import { Button, Pill, Section, SectionIntro } from "@/components/ui";
 import { ProductPrice } from "@/components/ui/ProductPrice";
 import { getNextStep, getPublicProductPage } from "@/data/public";
@@ -21,7 +22,8 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
   const hasVenue = Boolean(p.venue.address || p.venue.schedule);
 
   return (
-    <div className="calm-hover">
+    <div className="calm-hover pt-[88px] sm:pt-[96px]">
+      <LandingHeader ctaLabel={p.ctaLabel} interest={id} formAnchor="lead" />
       <PageHero
         id={`${id}-title`}
         eyebrow={p.directionName}
@@ -31,9 +33,6 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
           <>
             <Button variant="dark" size="lg" fillTone="dark" href="#lead">
               {p.ctaLabel}
-            </Button>
-            <Button variant="white" size="lg" href={p.directionPath}>
-              О направлении
             </Button>
           </>
         }

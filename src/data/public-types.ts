@@ -232,6 +232,8 @@ export interface PublicTariff {
   name: string;
   price: number;
   oldPrice?: number | null;
+  /** Только dev: пометка о неподтверждённых данных тарифа */
+  devNote?: string;
   installment?: number | null;
   installmentMonths?: number;
   description: string;
@@ -244,6 +246,8 @@ export interface PublicTariff {
 export interface PublicBonuses {
   title: string;
   items: string[];
+  /** Только dev: пометка о неподтверждённом бонусе */
+  devNote?: string;
 }
 
 export interface FormConfig {

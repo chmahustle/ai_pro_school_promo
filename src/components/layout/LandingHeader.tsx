@@ -13,8 +13,8 @@ interface LandingHeaderProps {
 }
 
 /**
- * Минимальный хедер для рекламных лендингов: лого + одна CTA. Без навигации,
- * чтобы не уводить трафик (меню доступно через лого → главная).
+ * Минимальный хедер для лендингов (/for/*, страницы продуктов): логотип без ссылки + одна CTA. Без навигации,
+ * чтобы не уводить трафик.
  * Сплошная белая пилюля с тенью (как у главной шапки), логотип цветной, одна строка на любой ширине.
  */
 export function LandingHeader({ ctaLabel, ctaShortLabel = "Записаться", interest, formAnchor }: LandingHeaderProps) {
@@ -27,7 +27,7 @@ export function LandingHeader({ ctaLabel, ctaShortLabel = "Записаться"
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
       <div className="container-site flex h-14 items-center justify-between gap-3 rounded-pill bg-white px-3 pl-4 text-ink shadow-pill ring-1 ring-ink/5 sm:h-16 sm:px-4 sm:pl-5">
-        <Logo className="shrink-0" />
+        <Logo className="shrink-0" asLink={false} />
         {formAnchor ? (
           <a
             href={`#${formAnchor}`}

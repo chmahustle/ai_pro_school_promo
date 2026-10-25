@@ -76,6 +76,7 @@ export function PricingClient({ course, title = "Тарифы", eyebrow = "Ст�
           </span>
           <div className="flex-1">
             <p className="font-display text-lg leading-tight">{bonuses.title}</p>
+            {bonuses.devNote && <p className="mt-1 text-[12px] font-semibold text-danger">{bonuses.devNote}</p>}
             <ul className="mt-3 flex flex-wrap gap-2">
               {bonuses.items.map((b) => (
                 <li key={b}>
@@ -126,6 +127,7 @@ function TariffCard({ tariff: t, mode, course }: { tariff: PublicTariff; mode: "
 
       <div>
         <h3 className="font-display text-xl">{t.name}</h3>
+        {t.devNote && <p className="mt-1 text-[12px] font-semibold text-danger">{t.devNote}</p>}
         <p className={cn("mt-1.5 text-[14px] leading-snug", t.popular ? "text-white/65" : "text-ink-500")}>{t.description}</p>
       </div>
 

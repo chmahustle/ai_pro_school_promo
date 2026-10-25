@@ -7,6 +7,8 @@ export interface CourseStart {
   badgeDate: string | null;
   /** Значение для плитки «Старт»: дата с днём недели или пояснение; null — плитку не показываем */
   factValue: string | null;
+  /** Подпись плитки: «Старт» или «Записи эфиров» (у практикума без подтверждённой даты — про записи) */
+  factLabel: string;
 }
 
 /**
@@ -19,9 +21,9 @@ export function getCourseStart(course: Pick<Course, "slug" | "startNote">, now: 
     const cohort = getNextCohort("practicum", now);
     if (cohort && (cohort.verified || SHOW_PLACEHOLDERS)) {
       const mark = cohort.verified ? "" : " (не подтверждено)"; // dev-only: в проде сюда попадают только подтверждённые даты
-      return { badgeDate: formatCohortDate(cohort) + mark, factValue: formatCohortDate(cohort, true) + mark };
+      return { badgeDate: formatCohortDate(cohort) + mark, factValue: formatCohortDate(cohort, true) + mark, factLabel: "Старт" };
     }
-    return { badgeDate: null, factValue: course.startNote ?? null };
+    return { badgeDate: null, factValue: course.startNote ?? null, factLabel: "Записи эфиров" };
   }
-  return { badgeDate: null, factValue: course.startNote ?? null };
+  return { badgeDate: null, factValue: course.startNote ?? null, factLabel: "Старт" };
 }

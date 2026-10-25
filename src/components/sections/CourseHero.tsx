@@ -22,6 +22,7 @@ export function CourseHero({ course }: { course: Course }) {
         level: course.level,
         badgeDate: start.badgeDate,
         startFact: start.factValue,
+        startFactLabel: start.factLabel,
         price: product ? formatPriceParts(product) : null,
         paymentNote: product ? getPaymentNote(product) : null,
       }}

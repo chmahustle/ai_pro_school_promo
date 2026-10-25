@@ -7,24 +7,29 @@ interface LogoProps {
   invert?: boolean;
   /** Только знак, без текста */
   markOnly?: boolean;
+  /** false — логотип без ссылки (минимальная шапка лендингов) */
+  asLink?: boolean;
 }
 
 const LOGO_SRC = "/og/logo.svg";
 
 /** Логотип: public/og/logo.svg + текстовый wordmark */
-export function Logo({ className, invert, markOnly }: LogoProps) {
-  return (
-    <Link
-      href="/"
-      aria-label="AI Pro School — на главную"
-      className={cn("inline-flex items-center gap-2.5 rounded-pill", className)}
-    >
+export function Logo({ className, invert, markOnly, asLink = true }: LogoProps) {
+  const content = (
+    <>
       <LogoMark className="size-9" />
       {!markOnly && (
         <span className={cn("font-display text-[15px] font-extrabold leading-none tracking-tight", invert ? "text-white" : "text-ink")}>
           AI&nbsp;Pro&nbsp;<span className={invert ? "text-brand-200" : "text-brand-700"}>School</span>
         </span>
       )}
+    </>
+  );
+  const cls = cn("inline-flex items-center gap-2.5 rounded-pill", className);
+  if (!asLink) return <span className={cls}>{content}</span>;
+  return (
+    <Link href="/" aria-label="AI Pro School — на главную" className={cls}>
+      {content}
     </Link>
   );
 }

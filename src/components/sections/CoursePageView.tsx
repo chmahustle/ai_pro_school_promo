@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
+import { LandingHeader } from "@/components/layout/LandingHeader";
 import { CourseHero } from "@/components/sections/CourseHero";
 import { CourseForWhom, CourseOutcomes, CourseMonetization } from "@/components/sections/CourseDetails";
 import { Programs } from "@/components/sections/Programs";
@@ -9,47 +9,23 @@ import { ReviewsWall } from "@/components/sections/ReviewsWall";
 import { Team } from "@/components/sections/Team";
 import { FAQ } from "@/components/sections/FAQ";
 import { LeadSection } from "@/components/sections/LeadSection";
-import { CTA } from "@/components/sections/CTA";
 import { NextSteps } from "@/components/sections/NextSteps";
 import { getNextStep } from "@/data/public";
-import { courses, getCourse } from "@/data/courses";
+import { getCourse } from "@/data/courses";
 import { productForCourseSlug } from "@/data/product-ids";
 import { getCurrentPrice, getProductForCourse } from "@/data/products";
 import { getPublishedReviews } from "@/data/reviews";
-import { team, webinarSpeakers } from "@/data/team";
-import { buildMetadata } from "@/lib/seo";
+import { team } from "@/data/team";
 import { SITE_URL, site } from "@/lib/site";
 
 /**
- * Страницы курсов собираются статически, но «ближайший старт» практикума зависит от текущей даты —
- * пересобираем раз в час, чтобы дата не устаревала.
+ * Страница курса-лендинга (практикум, ИИ-креатор): минимальная шапка (логотип без ссылки + одна CTA) и футер, как у /for/*.
  */
-export const revalidate = 3600;
-
-export function generateStaticParams() {
-  // vibecoding — отдельная страница направления (courses/vibecoding)
-  return courses.filter((c) => c.slug !== "vibecoding").map((c) => ({ slug: c.slug }));
-}
-
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
-  const c = getCourse(slug);
-  if (!c) return {};
-  return buildMetadata({
-    title: c.seo.title,
-    description: c.seo.description,
-    path: `/courses/${c.slug}`,
-    image: null, // file-based opengraph-image.tsx в этом сегменте
-  });
-}
-
-export default async function CoursePage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
   const course = getCourse(slug);
   if (!course) notFound();
 
   const courseReviews = getPublishedReviews().filter((r) => r.course === course.slug).slice(0, 6);
-  const isWebinarCourse = course.slug === "vibecoding";
   // Цена для разметки — из products.ts (единственный источник)
   const product = getProductForCourse(course.slug);
   const offerPrice = product ? getCurrentPrice(product) : null;
@@ -76,13 +52,14 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
   };
 
   return (
-    <div className="calm-hover">
+    <div className="calm-hover pt-[88px] sm:pt-[96px]">
+      <LandingHeader ctaLabel={course.ctaLabel} interest={productForCourseSlug(course.slug)} formAnchor="lead" />
       <CourseHero course={course} />
       <CourseForWhom course={course} />
       <Programs
         modules={course.program}
-        title={isWebinarCourse ? "Как устроено обучение" : "Программа курса"}
-        description={isWebinarCourse ? "Начинаем с бесплатного эфира — дальше полная программа." : "Пошагово, без перегруза. Всё сразу применимо для заработка."}
+        title="Программа курса"
+        description="Пошагово, без перегруза. Всё сразу применимо для заработка."
       />
       <CourseOutcomes course={course} />
       <CourseMonetization course={course} />
@@ -94,30 +71,17 @@ export default async function CoursePage({ params }: { params: Promise<{ slug: s
       {product && <NextSteps id="next" title="Что дальше" steps={nextStep ? [nextStep] : []} />}
       {courseReviews.length > 0 && <ReviewsWall items={courseReviews} tone="bg" moreHref="/reviews" />}
       <Team
-        items={isWebinarCourse ? webinarSpeakers : team.filter((m) => m.id !== "maidan")}
-        eyebrow={isWebinarCourse ? "Спикеры" : "Кто ведёт"}
-        title={isWebinarCourse ? "Кто проведёт эфир" : "Кто ведёт курс"}
-        layout={isWebinarCourse ? "wide" : "grid"}
+        items={team.filter((m) => m.id !== "maidan")}
+        eyebrow="Кто ведёт"
+        title="Кто ведёт курс"
+        layout="grid"
       />
       <FAQ items={course.faq} />
-      {isWebinarCourse && (
-        <CTA
-          title="Выберите свой эфир"
-          description="У каждой аудитории — свой разбор задач и свой гайд в подарок."
-          primaryLabel="Для бизнеса"
-          primaryHref="/for/business"
-          secondaryLabel="Для фрилансеров"
-          secondaryHref="/for/freelancers"
-          tone="mesh"
-          mesh="home"
-          source="course-vibecoding-cta"
-        />
-      )}
       <LeadSection
         className="mt-10 sm:mt-16"
         formId={`course-${course.slug}`}
-        title={isWebinarCourse ? "Записаться на бесплатный эфир" : `Записаться: ${course.shortName}`}
-        description={isWebinarCourse ? "Оставьте имя и WhatsApp — пришлём ссылку на ближайший эфир и гайд." : `Ответим на вопросы, расскажем про тарифы${product?.installmentFromPerMonth != null ? " и рассрочку" : ""}, пришлём ссылку на оплату.`}
+        title={`Записаться: ${course.shortName}`}
+        description={`Ответим на вопросы, расскажем про тарифы${product?.installmentFromPerMonth != null ? " и рассрочку" : ""}, пришлём ссылку на оплату.`}
         defaultProduct={productForCourseSlug(course.slug)}
         lockProduct
         compact

@@ -358,7 +358,9 @@ export function getPublicTariffs(course: Course): PublicTariff[] {
       id: t.id,
       name: t.name,
       price: t.price,
-      oldPrice: t.oldPrice,
+      // Старая цена — только подтверждённая; в dev показывается с пометкой
+      oldPrice: t.oldPrice && (t.oldPriceVerified !== false || SHOW_PLACEHOLDERS) ? t.oldPrice : null,
+      devNote: SHOW_PLACEHOLDERS && t.oldPrice && t.oldPriceVerified === false ? "старая цена не подтверждена" : undefined,
       installment: t.installment,
       installmentMonths: t.installmentMonths,
       description: t.description,
@@ -370,7 +372,11 @@ export function getPublicTariffs(course: Course): PublicTariff[] {
 }
 
 export function getPublicBonuses(course: Course): PublicBonuses | null {
-  return course.bonuses ? { title: course.bonuses.title, items: course.bonuses.items } : null;
+  const b = course.bonuses;
+  if (!b) return null;
+  // Неподтверждённый бонус: в проде скрыт, в dev с пометкой
+  if (b.verified === false && !SHOW_PLACEHOLDERS) return null;
+  return { title: b.title, items: b.items, devNote: b.verified === false ? "бонус не подтверждён" : undefined };
 }
 
 /** Рассрочка включена, когда в products.ts заполнена цифра платежа */
