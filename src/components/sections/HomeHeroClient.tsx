@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Calendar } from "lucide-react";
 import { Avatar, MeshBackdrop, Pill, Ribbon } from "@/components/ui";
+import { HeroTitle } from "./HeroTitle";
 import { HeroInfoModal, type HeroModalTarget } from "./HeroInfoModal";
 import type { PublicHeroData, PublicHeroResult } from "@/data/public-types";
 import { track } from "@/lib/analytics";
@@ -128,13 +129,7 @@ export function HomeHeroClient({ data }: { data: PublicHeroData }) {
               Онлайн-школа ИИ · Казахстан
             </Pill>
 
-            <h1
-              id="hero-title"
-              className="font-display font-extrabold leading-[1.08] tracking-[-0.015em] text-ink [text-wrap:balance]"
-              style={{ fontSize: "clamp(28px, 3.6vw, 52px)" }}
-            >
-              Учим делать с ИИ то, за что платят: ролики, сайты и ботов
-            </h1>
+            <HeroTitle />
 
             <p className="mt-4 max-w-[40ch] text-center text-[14px] leading-relaxed text-ink-500 sm:text-[15px]">
               {data.entry.subtitle.before}
