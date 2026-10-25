@@ -77,7 +77,7 @@ export function CourseMonetization({ course }: { course: Course }) {
         tone="dark"
         align="left"
         eyebrow="Как вы зарабатываете"
-        title="Курс — это не только навыки. Мы показываем, как превращать ИИ в деньги"
+        title="Курс — это не только навыки: мы показываем, как применять ИИ в работе"
       />
       <RevealGroup as="ul" className={cn("audience-grid grid gap-4", course.monetization.length >= 4 ? "md:grid-cols-2 lg:grid-cols-4" : "md:grid-cols-2")}>
         {course.monetization.map((m, i) => (

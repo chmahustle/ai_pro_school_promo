@@ -11,6 +11,7 @@ import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 export const stories: Story[] = [
   {
     id: "alena",
+    individualResult: true, // доход: только отдельной историей
     direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Алёна Заярных",
     descriptor: "без опыта в AI-видео",
@@ -57,11 +58,6 @@ export const stories: Story[] = [
     photo: "/stories/case-gulayym.webp",
     result: { value: "1 600 000", unit: "просмотров", text: "за 5 дней" },
     before: "Ноль опыта в AI и монтаже, пустой аккаунт, не знала, с чего начать.",
-    after: "Ролики от 522 тыс. до 1,7 млн просмотров.",
-    quote: {
-      text: "Всему научилась за 3 дня · от нуля до 1 млн просмотров за 5 дней",
-      verbatim: true,
-    },
     audiences: ["beginners", "freelancers", "career", "business"],
     source: "freelance.ai-pro-school.kz",
     asOf: "2026-10",
@@ -70,28 +66,8 @@ export const stories: Story[] = [
     note: "Источник: https://freelance.ai-pro-school.kz/ #cases",
   },
   {
-    id: "guldaria",
-    direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
-    name: "Гульдария",
-    descriptor: "мама двоих детей",
-    photo: null,
-    result: { value: "400 000", unit: "₸", text: "за 2 недели" },
-    media: {
-      type: "video",
-      src: "/stories/video-guldaria.jpg",
-      embedUrl: "https://www.youtube.com/embed/eyqVEf-2294",
-      piiBlurred: false,
-      caption: "Видеоотзыв Гульдарии",
-    },
-    audiences: ["beginners"],
-    source: "ai-pro-school.kz/ai2026",
-    asOf: "2026-10",
-    verified: true,
-    consent: true,
-    note: "Видео с https://ai-pro-school.kz/ai2026 · YouTube eyqVEf-2294",
-  },
-  {
     id: "shynar",
+    individualResult: true, // доход: только отдельной историей
     direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Шынар",
     descriptor: "43 года",
@@ -113,6 +89,7 @@ export const stories: Story[] = [
   },
   {
     id: "moldir",
+    individualResult: true, // доход: только отдельной историей
     direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Молдир",
     descriptor: "техспец",

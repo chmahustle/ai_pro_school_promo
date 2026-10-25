@@ -4,18 +4,18 @@ import { Button, RevealGroup, RevealItem, Section, SectionIntro } from "@/compon
 import { PageHero } from "@/components/sections/PageHero";
 import { CTA } from "@/components/sections/CTA";
 import { site } from "@/lib/site";
-import { cn } from "@/lib/utils";
+import { cn, nbspDash } from "@/lib/utils";
 
 export const metadata = buildMetadata({
   title: "Блог",
-  description: "Статьи и разборы AI Pro School: как зарабатывать на ИИ, вайбкодинг, нейросети для бизнеса и контента.",
+  description: "Статьи и разборы AI Pro School: как зарабатывать на ИИ, вайб-кодинг, нейросети для бизнеса и контента.",
   path: "/blog",
 });
 
 /** PLACEHOLDER: темы первых материалов. Структура карточек готова под CMS/MDX; TODO(клиент): реальные статьи. */
 const posts = [
   { slug: "todo-1", title: "Какие ИИ-услуги реально покупают в 2026 году", tag: "Заработок", date: "Скоро" },
-  { slug: "todo-2", title: "Вайбкодинг для бизнеса: 5 задач, которые закрываются за вечер", tag: "Вайбкодинг", date: "Скоро" },
+  { slug: "todo-2", title: "Вайб-кодинг для бизнеса: 5 задач, которые закрываются за вечер", tag: "Вайб-кодинг", date: "Скоро" },
   { slug: "todo-3", title: "Как сделать первый вирусный ролик на бесплатных нейросетях", tag: "Контент", date: "Скоро" },
 ];
 
@@ -62,7 +62,7 @@ export default function BlogPage() {
                     <path d="M50 8C53.2 32.5 67.5 46.8 92 50C67.5 53.2 53.2 67.5 50 92C46.8 67.5 32.5 53.2 8 50C32.5 46.8 46.8 32.5 50 8Z" />
                   </svg>
                   <span className={cn("relative inline-flex self-start rounded-pill px-3 py-1 text-[12px] font-semibold", t.pill)}>{p.tag}</span>
-                  <h2 className="relative mt-auto pt-10 font-display text-[22px] font-bold leading-tight [text-wrap:balance]">{p.title}</h2>
+                  <h2 className="relative mt-auto pt-10 font-display text-[22px] font-bold leading-tight [text-wrap:balance]">{nbspDash(p.title)}</h2>
                   <p className={cn("relative mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold", t.muted)}>
                     <Clock className="size-3.5" aria-hidden />
                     {p.date}

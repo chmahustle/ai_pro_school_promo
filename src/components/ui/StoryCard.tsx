@@ -85,6 +85,9 @@ export function StoryCard({ story, onOpenMedia, className }: StoryCardProps) {
         />
       )}
 
+      {story.individualResult && (
+        <p className="mb-3 inline-flex self-start rounded-pill bg-brand-50 px-3 py-1 text-[12px] font-semibold text-brand-700">индивидуальный результат</p>
+      )}
       {story.teacherProject && (
         <p className="mb-3 inline-flex self-start rounded-pill bg-ink-100 px-3 py-1 text-[12px] font-semibold text-ink-700">проект преподавателя</p>
       )}

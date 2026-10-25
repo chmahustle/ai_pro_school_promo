@@ -41,7 +41,7 @@ export default function ReviewsPage() {
       />
       <HomeMetrics />
       <div className="mt-4">
-        <HomeStories limit={null} withFilters showAllLink={false} />
+        <HomeStories limit={null} withFilters showAllLink={false} includeIndividual />
       </div>
       <div id="archive" className="scroll-mt-24">
         <Suspense fallback={null}>

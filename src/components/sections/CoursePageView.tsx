@@ -10,7 +10,8 @@ import { Team } from "@/components/sections/Team";
 import { FAQ } from "@/components/sections/FAQ";
 import { LeadSection } from "@/components/sections/LeadSection";
 import { NextSteps } from "@/components/sections/NextSteps";
-import { getNextStep } from "@/data/public";
+import { getNextStep, getRefundTerms } from "@/data/public";
+import { RefundTerms } from "@/components/sections/RefundTerms";
 import { getCourse } from "@/data/courses";
 import { productForCourseSlug } from "@/data/product-ids";
 import { getCurrentPrice, getProductForCourse } from "@/data/products";
@@ -19,7 +20,7 @@ import { team } from "@/data/team";
 import { SITE_URL, site } from "@/lib/site";
 
 /**
- * Страница курса-лендинга (практикум, ИИ-креатор): минимальная шапка (логотип без ссылки + одна CTA) и футер, как у /for/*.
+ * Страница курса-лендинга (практикум, AI Content Creator): минимальная шапка (логотип без ссылки + одна CTA) и футер, как у /for/*.
  */
 export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
   const course = getCourse(slug);
@@ -68,6 +69,7 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
         <HomeStories audience={course.audiences[0]} limit={3} />
       </div>
       <Pricing course={course} />
+      {product && <RefundTerms text={getRefundTerms(product.id)} />}
       {product && <NextSteps id="next" title="Что дальше" steps={nextStep ? [nextStep] : []} />}
       {courseReviews.length > 0 && <ReviewsWall items={courseReviews} tone="bg" moreHref="/reviews" />}
       <Team

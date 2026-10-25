@@ -3,7 +3,7 @@ import type { ResultCase } from "./types";
 import { SHOW_PLACEHOLDERS, filterForPublish } from "@/lib/placeholders";
 
 /**
- * Кейсы учеников «до / после». Источники: лендинги вайбкодинга (3 кейса, одинаковые на всех),
+ * Кейсы учеников «до / после». Источники: лендинги вайб-кодинга (3 кейса, одинаковые на всех),
  * ai2026 (3 коротких результата). Фото = null → placeholder.
  *
  * status "verified" = текст дословно с действующих страниц школы.
@@ -44,27 +44,12 @@ export const results: ResultCase[] = [
     context: "ноль опыта в AI и монтаже",
     headline: "1 600 000 просмотров за 5 дней",
     before: "Ноль опыта в AI и монтаже, пустой аккаунт, не знала, с чего начать.",
-    after: "Ролики от 522 тыс. до 1,7 млн просмотров.",
-    quote: "Всему научилась за 3 дня · от нуля до 1 млн просмотров за 5 дней",
+    after: "1 600 000 просмотров за 5 дней",
     photo: "/stories/case-gulayym.webp",
     audiences: ["beginners", "freelancers", "career", "business"],
     course: "practicum",
     source: "https://freelance.ai-pro-school.kz/",
     status: "verified",
-  },
-  {
-    id: "guldaria",
-    name: "Гульдария",
-    context: "мама двоих детей",
-    headline: "400 000 ₸ за 2 недели",
-    before: "Не зарабатывала на ИИ, искала удалённый формат.",
-    after: "Заработала 400 000 ₸ за 2 недели.",
-    photo: null,
-    audiences: ["beginners"],
-    course: "ai-creator",
-    source: "https://ai-pro-school.kz/ai2026",
-    status: "verified",
-    note: "Видеоотзыв YouTube eyqVEf-2294. before — не с лендинга, не использовать как verbatim.",
   },
   {
     id: "shynar",

@@ -1,3 +1,4 @@
+import { vocabulary } from "@/data/vocabulary";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { webinarCta } from "@/data/heroResults";
@@ -100,12 +101,12 @@ export function WantSameCta() {
               </span>
             </Link>
 
-            {/* 3. Бесплатный вебинар */}
+            {/* 3. Эфир «Вайб-кодинг вживую» */}
             <Link
               href={webinarCta.href}
               className={cn(tileBase, "bg-lavender text-ink md:col-span-2 lg:col-span-1")}
             >
-              <span className={titleClass}>Бесплатный вебинар</span>
+              <span className={titleClass}>{vocabulary.efir}</span>
               <svg
                 className="pointer-events-none absolute -bottom-16 -right-10 h-[180%] w-[90%] opacity-80"
                 viewBox="0 0 200 200"

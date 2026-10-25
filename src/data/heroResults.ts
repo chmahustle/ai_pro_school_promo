@@ -1,5 +1,6 @@
 import "server-only";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
+import { vocabulary } from "./vocabulary";
 
 /**
  * Плавающие результаты в hero / чипы в метриках.
@@ -43,7 +44,7 @@ export interface HeroEvent {
 }
 
 export const heroEvent: HeroEvent = {
-  title: "Бесплатный эфир по вайбкодингу",
+  title: vocabulary.efir,
   duration: "1,5 часа",
   tags: ["Бизнес", "Фриланс", "Карьера"],
   date: null, // TODO: дата эфира
@@ -52,7 +53,7 @@ export const heroEvent: HeroEvent = {
 };
 
 /**
- * CTA «Бесплатный вебинар» в блоке «Хотите так же?».
+ * CTA «Эфир «Вайб-кодинг вживую»» в блоке «Хотите так же?».
  * TODO: формы вебинара на главной ещё нет — повесить id="webinar-form" на блок записи
  * и заменить href на рабочий якорь / URL.
  */

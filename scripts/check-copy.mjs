@@ -16,6 +16,43 @@ const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const SRC = join(ROOT, "src");
 
 const FORBIDDEN = ["Цена уточняется", "TODO(клиент)", "Старт 20 апреля", "20 апреля"];
+
+/**
+ * Шаг 6: обещания и неутверждённые формулировки (нельзя нигде вне dev-блоков).
+ * «пассивный доход» разрешён только в отрицании: «Это не пассивный доход», «ищете пассивный доход» (список «не подойдёт»),
+ * «Это пассивный доход?» (вопрос FAQ с ответом «Нет»), «не обещаем пассивный доход».
+ */
+const FORBIDDEN_PHRASES = [
+  "400 000 ₸ за 2 недели",
+  "рост чека",
+  "Рост чека",
+  "×2–3",
+  "в 2–3 раза",
+  "Всему научилась",
+  "в разы",
+  "вместо 2 недель",
+  "за 1 вечер",
+  "Освоить профессию за месяц",
+  "освоить профессию за месяц",
+  "гарантированно",
+  // старые написания (словарь: «вайб-кодинг», «Курс AI Content Creator», Эфир «Вайб-кодинг вживую»)
+  "вайбкодинг",
+  "Вайбкодинг",
+  "Vibe Coding",
+  "Vibe-coding",
+  "Бесплатный вебинар",
+  "AI Content Creator (курс)",
+];
+const FORBIDDEN_RE = [
+  { re: /(?<![А-Яа-яЁё-])ИИ-креатор(?![а-яё])/, name: "ИИ-креатор (курс называется «Курс AI Content Creator»)" },
+  {
+    re: /пассивн(ый|ого|ым) доход/,
+    name: "пассивный доход",
+    allow: /не пассивн|ищете пассивн|Это пассивный доход\?|не обещаем пассивн/,
+  },
+];
+// Файлы, где старые написания перечислены намеренно (справочник словаря)
+const SKIP_FILES = new Set(["src/data/vocabulary.ts"]);
 const EXT = new Set([".ts", ".tsx", ".mjs", ".js", ".jsx"]);
 
 function* walk(dir) {
@@ -67,8 +104,13 @@ for (const file of walk(SRC)) {
     }
     const code = stripComments(raw, state);
     if (dev || raw.includes("copy-check:ignore") || raw.includes("SHOW_PLACEHOLDERS")) return;
-    for (const phrase of FORBIDDEN) {
+    for (const phrase of [...FORBIDDEN, ...(SKIP_FILES.has(relative(ROOT, file)) ? [] : FORBIDDEN_PHRASES)]) {
       if (code.includes(phrase)) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase, text: raw.trim().slice(0, 140) });
+    }
+    if (!SKIP_FILES.has(relative(ROOT, file))) {
+      for (const r of FORBIDDEN_RE) {
+        if (r.re.test(code) && !(r.allow && r.allow.test(code))) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase: r.name, text: raw.trim().slice(0, 140) });
+      }
     }
   });
 }

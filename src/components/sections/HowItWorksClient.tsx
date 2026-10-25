@@ -42,7 +42,7 @@ function buildPath(n: number): string {
 export function HowItWorksClient({
   data,
   eyebrow = "Как это работает",
-  title = "Путь от первого ролика до стабильного дохода",
+  title = "Как устроен путь: шаг за шагом",
   description = "Мы не учим «ради обучения». Каждый шаг — про конкретный навык, который покупают.",
   tone = "lavender",
 }: HowItWorksClientProps) {

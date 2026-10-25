@@ -1,5 +1,6 @@
 import { Accordion, Section, SectionHead } from "@/components/ui";
 import type { FaqItem } from "@/data/types";
+import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 
 interface FAQProps {
   items: FaqItem[];
@@ -21,13 +22,15 @@ export function FAQ({
   bare,
   withSchema = true,
 }: FAQProps) {
-  if (items.length === 0) return null;
+  // Вопросы без подтверждённого ответа школы — только в dev
+  const list = items.filter((i) => i.verified !== false || SHOW_PLACEHOLDERS);
+  if (list.length === 0) return null;
 
   const schema = withSchema
     ? {
         "@context": "https://schema.org",
         "@type": "FAQPage",
-        mainEntity: items.map((i) => ({
+        mainEntity: list.filter((i) => i.a).map((i) => ({
           "@type": "Question",
           name: i.q,
           acceptedAnswer: { "@type": "Answer", text: i.a },
@@ -38,7 +41,7 @@ export function FAQ({
   const body = (
     <>
       <Accordion
-        items={items.map((i) => ({ id: i.id, title: i.q, content: <p>{i.a}</p> }))}
+        items={list.map((i) => ({ id: i.id, title: i.q, content: <p>{i.a || "Ответ школы не получен — вопрос виден только в dev"}</p> }))}
         tone={tone === "white" ? "lavender" : "white"}
       />
       {schema && (

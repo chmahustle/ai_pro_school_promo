@@ -42,7 +42,7 @@ export const team: TeamMember[] = [
     ],
     photo: "/photo/maidan.jpg",
     status: "verified",
-    note: "Текст — из лендингов вайбкодинга. Фото — public/photo/maidan.jpg.",
+    note: "Текст — из лендингов вайб-кодинга. Фото — public/photo/maidan.jpg.",
   },
   {
     id: "alena",
@@ -56,5 +56,5 @@ export const team: TeamMember[] = [
   },
 ];
 
-/** Спикеры эфиров по вайбкодингу (для ЦА-лендингов) */
+/** Спикеры эфиров по вайб-кодингу (для ЦА-лендингов) */
 export const webinarSpeakers = team.filter((m) => m.id === "nadira" || m.id === "maidan");

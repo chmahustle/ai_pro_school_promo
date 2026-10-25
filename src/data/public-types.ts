@@ -17,6 +17,7 @@ export interface PublicStory {
   id: string;
   direction: "creator" | "vibecoding";
   teacherProject?: boolean;
+  individualResult?: boolean;
   audiences: AudienceSlug[];
   name: string;
   descriptor: string;
@@ -298,6 +299,8 @@ export interface PublicProductPage {
   seatsLeft: number | null;
   venue: { address: string | null; schedule: string | null };
   modules: { title: string; items: string[] }[] | null;
+  /** Условия возврата (текст школы); null — блок скрыт */
+  refundTerms: string | null;
   /** Только dev: каких данных не хватает для скрытых блоков */
   devMissing: string[];
   seo: { title: string; description: string };

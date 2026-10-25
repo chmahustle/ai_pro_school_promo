@@ -79,6 +79,8 @@ export interface Story {
   direction: "creator" | "vibecoding";
   /** Проект преподавателя (не ученика): на карточке подпись «проект преподавателя»; показывается только при verified && consent */
   teacherProject?: boolean;
+  /** Результат с доходом: только отдельной историей с подписью «индивидуальный результат» (не в первом экране и не на главной/лендингах) */
+  individualResult?: boolean;
   audiences: AudienceSlug[];
   name: string;
   /** Согласие автора на публикацию */
@@ -163,6 +165,8 @@ export interface FaqItem {
   id: string;
   q: string;
   a: string;
+  /** false — ответа от школы нет: вопрос скрыт в проде, в dev показан с пометкой */
+  verified?: boolean;
 }
 
 export interface Tariff extends Verifiable {

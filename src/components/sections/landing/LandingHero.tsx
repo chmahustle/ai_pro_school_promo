@@ -216,7 +216,7 @@ export function LandingHero({ audience, formAnchor }: LandingHeroProps) {
           )}
 
           {hero.floatingCards.length > 0 && (
-            <motion.ul variants={fadeUp} className="mt-6 grid w-full grid-cols-3 gap-2 text-left lg:hidden" aria-label="Коротко">
+            <motion.ul variants={fadeUp} className="mt-6 grid w-full gap-2 text-left lg:hidden" style={{ gridTemplateColumns: `repeat(${Math.min(3, hero.floatingCards.length)}, minmax(0, 1fr))` }} aria-label="Коротко">
               {hero.floatingCards.map((c) => (
                 <li key={c.label} className={cn("rounded-2xl p-3 ring-1", th.card)}>
                   <p className={cn("font-display text-base leading-none", th.cardValue)}>{c.value}</p>

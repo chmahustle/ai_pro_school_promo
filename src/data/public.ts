@@ -86,6 +86,7 @@ export function toPublicStory(s: Story): PublicStory {
     id: s.id,
     direction: s.direction,
     teacherProject: s.teacherProject,
+    individualResult: s.individualResult,
     audiences: s.audiences,
     name: s.name,
     descriptor: s.descriptor,
@@ -104,8 +105,9 @@ export function toPublicStory(s: Story): PublicStory {
 }
 
 /** Карточки результатов: verified && consent (в dev — все), опционально по аудитории */
-export function getPublicStories(audience?: Story["audiences"][number], direction?: Story["direction"]): PublicStory[] {
+export function getPublicStories(audience?: Story["audiences"][number], direction?: Story["direction"], includeIndividual = false): PublicStory[] {
   return getVisibleStories()
+    .filter((s) => includeIndividual || !s.individualResult)
     .filter((s) => !audience || s.audiences.includes(audience))
     .filter((s) => !direction || s.direction === direction)
     .map(toPublicStory);
@@ -539,6 +541,7 @@ export function getPublicProductPage(id: "offline" | "course"): PublicProductPag
     if (!p.schedule) missing.push("даты проведения");
   }
   if (id === "course" && !p.modules) missing.push("программа по модулям");
+  if (!p.refundTerms) missing.push("условия возврата");
   return {
     id: p.id,
     directionName: d.name,
@@ -552,6 +555,7 @@ export function getPublicProductPage(id: "offline" | "course"): PublicProductPag
     seatsLeft: p.seatsLeft,
     venue: { address: p.address, schedule: p.schedule },
     modules: p.modules,
+    refundTerms: p.refundTerms,
     devMissing: SHOW_PLACEHOLDERS ? missing : [],
     seo: { title: p.name, description: `${p.resultLine}. ${p.format}.` },
   };
@@ -564,4 +568,9 @@ export function getCatalogLinks(): { label: string; href: string }[] {
     { label: directions.vibecoding.name, href: directions.vibecoding.path },
     ...(["offline", "course"] as const).map((id) => ({ label: getProduct(id).name, href: getProduct(id).landingUrl })),
   ];
+}
+
+/** Условия возврата продукта: только текст школы из products.ts; нет — null (блок скрыт) */
+export function getRefundTerms(id: ProductId): string | null {
+  return getProduct(id).refundTerms;
 }

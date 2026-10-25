@@ -29,62 +29,6 @@ export interface HomeMetric {
 }
 
 /**
- * «4 региона» (Казахстан, Россия, Европа, США) из блока убраны по решению владельца (шаг 3b) — не показывать, пока не подтвердят.
- */
-export const homeMetrics: HomeMetric[] = [
-  {
-    id: "students",
-    value: 3000,
-    suffix: "+",
-    label: "Учеников",
-    hint: "Прошли программы школы по всему миру",
-    source: "Лендинги вайбкодинга",
-    sourceUrl: null,
-    asOf: null,
-    verified: false,
-    featured: true,
-    // TODO: 1000+ / 2000+ / 3000+ — расходятся
-  },
-  {
-    id: "views",
-    value: 70,
-    suffix: "\u00a0млн+",
-    label: "Просмотры контента",
-    source: "Instagram · TikTok · YouTube",
-    sourceUrl: null,
-    asOf: null,
-    verified: false,
-    // TODO: 50 или 70 млн
-  },
-  {
-    id: "followers",
-    value: 90,
-    suffix: "\u00a0тыс.+",
-    label: "Подписчики в соцсетях",
-    source: "Соцсети школы",
-    sourceUrl: null,
-    asOf: null,
-    verified: false,
-    // TODO: 70 или 90 тыс.
-  },
-  {
-    id: "avg-check",
-    value: 30_000,
-    suffix: "\u00a0₸",
-    label: "Средний чек ученика за ролик",
-    source: "Страница практикума",
-    sourceUrl: null,
-    asOf: null,
-    verified: false,
-  },
-];
-
-/** verified всегда; unverified — только в dev / SHOW_PLACEHOLDERS */
-export function getHomeMetrics(): HomeMetric[] {
-  return homeMetrics.filter((m) => m.verified || SHOW_PLACEHOLDERS);
-}
-
-/**
  * Ключевые метрики школы (для /about, лендингов, /reviews).
  *
  * ВАЖНО: источники расходятся. Ниже каждая цифра со статусом:
@@ -104,7 +48,7 @@ export const metrics: Metric[] = [
     label: "учеников по миру",
     hint: "прошли программы школы",
     status: "unverified",
-    note: "Источники: 1000+ (ai2026), 2000+ (практикум), 3000+ (лендинги вайбкодинга, 2026). Берём последнюю.",
+    note: "Источники: 1000+ (ai2026), 2000+ (практикум), 3000+ (лендинги вайб-кодинга, 2026). Берём последнюю.",
   },
   {
     id: "views",
@@ -114,7 +58,7 @@ export const metrics: Metric[] = [
     hint: "в Instagram, TikTok и YouTube",
     format: "compact",
     status: "unverified",
-    note: "Источники: 50 млн (главная, ai2026, практикум), 70 млн+ (лендинги вайбкодинга). Берём последнюю.",
+    note: "Источники: 50 млн (главная, ai2026, практикум), 70 млн+ (лендинги вайб-кодинга). Берём последнюю.",
   },
   {
     id: "followers",
@@ -173,6 +117,66 @@ export const metrics: Metric[] = [
 ];
 
 /**
+ * «4 региона» (Казахстан, Россия, Европа, США) из блока убраны по решению владельца (шаг 3b) — не показывать, пока не подтвердят.
+ */
+/** Значение показателя берётся из `metrics` ниже: одно значение на показатель, дублей чисел нет */
+const M = (id: string) => metrics.find((m) => m.id === id)!;
+const confirmed = (id: string) => M(id).status === "verified";
+
+export const homeMetrics: HomeMetric[] = [
+  {
+    id: "students",
+    value: M("students").value,
+    suffix: "+",
+    label: "Учеников",
+    hint: "Прошли программы школы по всему миру",
+    source: "Лендинги вайб-кодинга",
+    sourceUrl: null,
+    asOf: null,
+    verified: confirmed("students"),
+    featured: true,
+    // TODO: 1000+ / 2000+ / 3000+ — расходятся
+  },
+  {
+    id: "views",
+    value: M("views").value / 1_000_000,
+    suffix: "\u00a0млн+",
+    label: "Просмотры контента",
+    source: "Instagram · TikTok · YouTube",
+    sourceUrl: null,
+    asOf: null,
+    verified: confirmed("views"),
+    // TODO: 50 или 70 млн
+  },
+  {
+    id: "followers",
+    value: M("followers").value / 1000,
+    suffix: "\u00a0тыс.+",
+    label: "Подписчики в соцсетях",
+    source: "Соцсети школы",
+    sourceUrl: null,
+    asOf: null,
+    verified: confirmed("followers"),
+    // TODO: 70 или 90 тыс.
+  },
+  {
+    id: "avg-check",
+    value: M("avg-check").value,
+    suffix: "\u00a0₸",
+    label: "Средний чек ученика за ролик",
+    source: "Страница практикума",
+    sourceUrl: null,
+    asOf: null,
+    verified: confirmed("avg-check"),
+  },
+];
+
+/** verified всегда; unverified — только в dev / SHOW_PLACEHOLDERS */
+export function getHomeMetrics(): HomeMetric[] {
+  return homeMetrics.filter((m) => m.verified || SHOW_PLACEHOLDERS);
+}
+
+/**
  * Явный флаг: показывать ли unverified-метрики. По умолчанию — нет.
  * Включить можно только осознанно здесь, не через env.
  */
@@ -199,8 +203,8 @@ export const astanaHub = {
   note: "ai2026: «в процессе получения резидентства»; остальные страницы: «резидент». Уточнить.",
 };
 
-/** Метрики спикеров (для карточек команды) — из лендингов вайбкодинга */
+/** Метрики спикеров (для карточек команды) — из лендингов вайб-кодинга */
 export const founderMetrics = {
-  students: { value: 3000, suffix: "+", label: "учеников по миру", status: "unverified" as const },
-  views: { value: 70_000_000, suffix: "+", label: "просмотров", status: "unverified" as const },
+  students: { value: M("students").value, suffix: "+", label: "учеников по миру", status: M("students").status },
+  views: { value: M("views").value, suffix: "+", label: "просмотров", status: M("views").status },
 };

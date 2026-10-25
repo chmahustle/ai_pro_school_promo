@@ -62,6 +62,8 @@ export interface Product {
   address: string | null;
   /** Даты проведения (офлайн). null — блок «Где и когда» скрыт */
   schedule: string | null;
+  /** Условия возврата — только текст школы; null — блок скрыт (на страницах курсов) */
+  refundTerms: string | null;
   /** Программа по модулям; null — блок скрыт (данных в проекте нет) */
   modules: { title: string; items: string[] }[] | null;
   leader: "Надира" | "Майдан";
@@ -107,6 +109,7 @@ export const products: Product[] = [
     address: null, // TODO(клиент): адрес проведения
     schedule: null, // TODO(клиент): даты проведения
     modules: null, // TODO(клиент): программа по модулям
+    refundTerms: null, // TODO(клиент): условия возврата (текст школы)
     thanksUrl: thanks("practicum"),
     leader: "Надира",
     verified: true,
@@ -137,6 +140,7 @@ export const products: Product[] = [
     address: null, // TODO(клиент): адрес проведения
     schedule: null, // TODO(клиент): даты проведения
     modules: null, // TODO(клиент): программа по модулям
+    refundTerms: null, // TODO(клиент): условия возврата (текст школы)
     thanksUrl: thanks("ai-creator"),
     leader: "Надира",
     verified: true,
@@ -168,6 +172,7 @@ export const products: Product[] = [
     address: null, // TODO(клиент): адрес проведения
     schedule: null, // TODO(клиент): даты проведения
     modules: null, // TODO(клиент): программа по модулям
+    refundTerms: null, // TODO(клиент): условия возврата (текст школы)
     thanksUrl: thanks("efir"),
     leader: "Майдан",
     verified: true,
@@ -198,6 +203,7 @@ export const products: Product[] = [
     address: null, // TODO(клиент): адрес проведения
     schedule: null, // TODO(клиент): даты проведения
     modules: null, // TODO(клиент): программа по модулям
+    refundTerms: null, // TODO(клиент): условия возврата (текст школы)
     thanksUrl: thanks("offline"),
     leader: "Майдан",
     verified: true,
@@ -228,6 +234,7 @@ export const products: Product[] = [
     address: null, // TODO(клиент): адрес проведения
     schedule: null, // TODO(клиент): даты проведения
     modules: null, // TODO(клиент): программа по модулям
+    refundTerms: null, // TODO(клиент): условия возврата (текст школы)
     thanksUrl: thanks("course"),
     leader: "Майдан",
     verified: true,

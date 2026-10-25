@@ -7,6 +7,7 @@ import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 import { nbspDash } from "@/lib/utils";
 import { LeadSection } from "./LeadSection";
 import { NextSteps } from "./NextSteps";
+import { RefundTerms } from "./RefundTerms";
 import { PageHero } from "./PageHero";
 
 /** Заголовок блока результата: у офлайна «Что получите», у курса «Что соберёте» */
@@ -109,6 +110,8 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
           </p>
         </div>
       )}
+
+      <RefundTerms text={p.refundTerms} />
 
       <NextSteps id="next" title="Что дальше" steps={nextStep ? [nextStep] : []} />
 

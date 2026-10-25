@@ -11,11 +11,11 @@ import { LeadSection } from "@/components/sections/LeadSection";
 import { generalFaq } from "@/data/faq";
 import { team } from "@/data/team";
 import { site } from "@/lib/site";
-import { cn } from "@/lib/utils";
+import { cn, nbspDash } from "@/lib/utils";
 
 export const metadata = buildMetadata({
   title: "О школе",
-  description: "AI Pro School — онлайн-школа ИИ из Казахстана. Учим зарабатывать на ИИ людей без технического образования: контент, вайбкодинг, автоматизация.",
+  description: "AI Pro School — онлайн-школа ИИ из Казахстана. Учим зарабатывать на ИИ людей без технического образования: контент, вайб-кодинг, автоматизация.",
   path: "/about",
 });
 
@@ -46,7 +46,7 @@ export default function AboutPage() {
             Школа, которая выросла из <span className="text-gradient-brand">собственных ИИ-роликов</span>
           </>
         }
-        description="Мы потратили десятки миллионов тенге на таргет и увидели, как реклама дорожает. Вирусные ролики через ИИ стали альтернативой — и мы начали учить этому других. Сегодня AI Pro School — это практикум, курс «ИИ-креатор» и направление вайбкодинга для бизнеса и специалистов."
+        description="Мы потратили десятки миллионов тенге на таргет и увидели, как реклама дорожает. Вирусные ролики через ИИ стали альтернативой — и мы начали учить этому других. Сегодня AI Pro School — это практикум, курс AI Content Creator и направление вайб-кодинга для бизнеса и специалистов."
         aside={
           founder?.photo ? (
             <figure className="relative mx-auto aspect-[4/5] w-full max-w-[420px] overflow-hidden rounded-[32px] bg-dark shadow-float">
@@ -75,8 +75,8 @@ export default function AboutPage() {
               <RevealItem as="li" key={p.title} className="flex">
                 <article className={cn("audience-tile flex min-h-[280px] w-full flex-col rounded-[28px] p-6", t.tile)}>
                   <span className={cn("font-display text-[52px] font-extrabold leading-none tabular-nums", t.num)}>0{i + 1}</span>
-                  <h3 className="mt-auto pt-8 font-display text-[20px] font-bold leading-tight">{p.title}</h3>
-                  <p className={cn("mt-2 text-[14px] leading-snug", t.text)}>{p.text}</p>
+                  <h3 className="mt-auto pt-8 font-display text-[20px] font-bold leading-tight">{nbspDash(p.title)}</h3>
+                  <p className={cn("mt-2 text-[14px] leading-snug", t.text)}>{nbspDash(p.text)}</p>
                 </article>
               </RevealItem>
             );
@@ -98,7 +98,7 @@ export default function AboutPage() {
             <div className="min-w-0 max-w-3xl">
               <p className="text-[12px] font-bold uppercase tracking-wider text-brand-200">Платформа</p>
               <h2 id="platform-title" className="mt-1 font-display text-[clamp(1.375rem,1.1rem+1vw,1.875rem)] font-bold leading-tight">
-                Strimmeo — своя платформа ИИ-креаторов
+                {nbspDash("Strimmeo — своя платформа ИИ-креаторов")}
               </h2>
               <p className="mt-1.5 max-w-[62ch] text-[14px] leading-snug text-white/65">
                 Ученики размещают портфолио, а школа приводит заказчиков. Разработана при поддержке Astana Hub.
