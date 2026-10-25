@@ -306,3 +306,27 @@ export interface PublicProductPage {
   devMissing: string[];
   seo: { title: string; description: string };
 }
+
+/** Меню «Направления» в шапке и мобильной панели (data/navMenu.ts) */
+export interface PublicNavMenu {
+  columns: {
+    direction: "creator" | "vibecoding";
+    title: string;
+    href: string;
+    leaderName: string;
+    items: { id: string; name: string; href: string; price: { prefix: string; amount: string; unit: string } }[];
+  }[];
+  /** Тёмная карточка справа (эфир); null — карточки нет */
+  card: {
+    eyebrow: string;
+    name: string;
+    resultLine: string;
+    format: string;
+    price: { prefix: string; amount: string; unit: string };
+    /** Ближайшая дата — только подтверждённая */
+    start: string | null;
+    ctaLabel: string;
+    href: string;
+  } | null;
+  allCoursesHref: string;
+}

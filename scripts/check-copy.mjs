@@ -51,6 +51,9 @@ const FORBIDDEN_RE = [
     allow: /не пассивн|ищете пассивн|Это пассивный доход\?|не обещаем пассивн/,
   },
 ];
+// Файлы меню (шаг 8): шапка, мобильное меню, футер, словари, данные меню — без «Бесплатный эфир», «гайд в подарок», «чек в 2–3 раза»
+const MENU_FILES = /^src\/(components\/layout\/(Header|MegaMenu|MobileMenu|Footer|nav)\.tsx?|data\/navMenu\.ts|i18n\/dictionaries\/.*)$/;
+const MENU_FORBIDDEN = ["Бесплатный эфир", "бесплатный эфир", "гайд в подарок", "Гайд в подарок", "чек в 2–3 раза"];
 // Файлы, где старые написания перечислены намеренно (справочник словаря)
 const SKIP_FILES = new Set(["src/data/vocabulary.ts"]);
 const EXT = new Set([".ts", ".tsx", ".mjs", ".js", ".jsx"]);
@@ -106,6 +109,11 @@ for (const file of walk(SRC)) {
     if (dev || raw.includes("copy-check:ignore") || raw.includes("SHOW_PLACEHOLDERS")) return;
     for (const phrase of [...FORBIDDEN, ...(SKIP_FILES.has(relative(ROOT, file)) ? [] : FORBIDDEN_PHRASES)]) {
       if (code.includes(phrase)) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase, text: raw.trim().slice(0, 140) });
+    }
+    if (MENU_FILES.test(relative(ROOT, file))) {
+      for (const phrase of MENU_FORBIDDEN) {
+        if (code.includes(phrase)) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase: `${phrase} (меню)`, text: raw.trim().slice(0, 140) });
+      }
     }
     if (!SKIP_FILES.has(relative(ROOT, file))) {
       for (const r of FORBIDDEN_RE) {

@@ -4,6 +4,7 @@
  */
 export const ru = {
   nav: {
+    directions: "Направления",
     forWhom: "Для кого",
     courses: "Курсы",
     results: "Результаты",

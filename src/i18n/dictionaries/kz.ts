@@ -7,6 +7,7 @@ import type { Dictionary } from "./ru";
  */
 export const kz: DeepPartial<Dictionary> = {
   nav: {
+    directions: "Бағыттар",
     forWhom: "Кімге",
     courses: "Курстар",
     results: "Нәтижелер",

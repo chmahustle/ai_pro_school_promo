@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Instagram, MessageCircle, Youtube } from "lucide-react";
 import { Logo } from "./Logo";
+import { LOGIN_URL } from "./nav";
 import { site } from "@/lib/site";
 import { company } from "@/data/company";
 import { courses } from "@/data/courses";
@@ -114,14 +115,21 @@ export function Footer() {
                   {a.menuTitle}
                 </FooterLink>
               ))}
-              <FooterLink href="/courses/ai-creator">Новичкам в ИИ</FooterLink>
+              <FooterLink href="/courses/practicum">Новичкам в ИИ</FooterLink>
             </FooterCol>
 
             <FooterCol title="Школа" className="col-span-2 md:col-span-1">
               <FooterLink href="/about">О нас</FooterLink>
               <FooterLink href="/reviews">Результаты и отзывы</FooterLink>
-              <FooterLink href="/blog">Блог</FooterLink>
               <FooterLink href="/contacts">Контакты</FooterLink>
+              <a
+                href={LOGIN_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[15px] text-white/70 transition-colors hover:text-white"
+              >
+                Кабинет Strimmeo
+              </a>
               <a
                 href={`tel:+${site.phones.primaryRaw}`}
                 className="mt-2 whitespace-nowrap text-[19px] font-bold leading-tight tracking-tight text-white transition-colors hover:text-brand-200"

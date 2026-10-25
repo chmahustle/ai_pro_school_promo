@@ -1,4 +1,4 @@
-import { getMenuData } from "@/data/public";
+import { getNavMenu } from "@/data/navMenu";
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -7,7 +7,7 @@ import { Button } from "@/components/ui";
 export default function NotFound() {
   return (
     <>
-      <Header menuAudiences={getMenuData().audiences} />
+      <Header menu={getNavMenu()} />
       <main id="main" className="flex-1 pt-[88px] sm:pt-[96px]">
         <section className="container-site flex min-h-[60vh] flex-col items-center justify-center py-20 text-center">
           <p className="font-display text-7xl text-brand sm:text-8xl">404</p>

@@ -7,9 +7,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, ChevronDown, X, MessageCircle } from "lucide-react";
 import { Logo } from "./Logo";
 import { LangSwitch } from "./LangSwitch";
-import { directionNav, mainNav, LOGIN_URL, PICK_PROGRAM_HREF } from "./nav";
-import type { MenuAudience } from "@/data/public-types";
-import { AudienceIcon, Button } from "@/components/ui";
+import { mainNav, PICK_PROGRAM_HREF } from "./nav";
+import type { PublicNavMenu } from "@/data/public-types";
+import { Button } from "@/components/ui";
+import { NoBreakTerms } from "@/components/ui/NoBreakTerms";
+import { ProductPrice } from "@/components/ui/ProductPrice";
 import { useT } from "@/i18n/LocaleProvider";
 import { site } from "@/lib/site";
 import { track } from "@/lib/analytics";
@@ -17,16 +19,16 @@ import { cn } from "@/lib/utils";
 import { easeOut } from "@/lib/motion";
 
 interface MobileMenuProps {
-  /** Пункты «Для кого» — собираются на сервере (getMenuData) */
-  audiences: MenuAudience[];
+  /** Меню «Направления» — собирается на сервере (data/navMenu.ts → getNavMenu) */
+  menu: PublicNavMenu;
   open: boolean;
   onClose: () => void;
 }
 
-/** Полноэкранное мобильное меню с аккордеоном «Для кого» */
-export function MobileMenu({ audiences: items, open, onClose }: MobileMenuProps) {
+/** Полноэкранное мобильное меню: две секции-аккордеона направлений (то же содержимое, что в выпадающем меню шапки) */
+export function MobileMenu({ menu, open, onClose }: MobileMenuProps) {
   const t = useT();
-  const [forWhomOpen, setForWhomOpen] = useState(true);
+  const [openDir, setOpenDir] = useState<string | null>(menu.columns[0]?.direction ?? null);
 
   useEffect(() => {
     if (!open) return;
@@ -77,60 +79,57 @@ export function MobileMenu({ audiences: items, open, onClose }: MobileMenuProps)
             className="flex-1 overflow-y-auto px-4 pb-6 pt-4 sm:px-6"
           >
             <ul className="flex flex-col gap-2" role="list">
-              <li className="rounded-2xl bg-surface shadow-soft">
-                <button
-                  type="button"
-                  aria-expanded={forWhomOpen}
-                  onClick={() => setForWhomOpen((v) => !v)}
-                  className="flex w-full items-center justify-between px-5 py-4 font-display text-lg"
-                >
-                  {t.nav.forWhom}
-                  <ChevronDown className={cn("size-5 transition-transform", forWhomOpen && "rotate-180")} />
-                </button>
-                <AnimatePresence initial={false}>
-                  {forWhomOpen && (
-                    <motion.ul
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25, ease: easeOut }}
-                      className="overflow-hidden"
-                      role="list"
+              {menu.columns.map((col) => {
+                const isOpen = openDir === col.direction;
+                return (
+                  <li key={col.direction} className="rounded-2xl bg-surface shadow-soft">
+                    <button
+                      type="button"
+                      aria-expanded={isOpen}
+                      aria-controls={`mobile-dir-${col.direction}`}
+                      onClick={() => setOpenDir(isOpen ? null : col.direction)}
+                      className="flex w-full items-center justify-between px-5 py-4 text-left font-display text-lg"
                     >
-                      {items.map((a) => (
-                        <li key={a.slug}>
-                          <Link
-                            href={a.path}
-                            onClick={onClose}
-                            className="flex items-center gap-3 px-5 py-3 hover:bg-soft-100"
-                          >
-                            <span aria-hidden className="grid size-10 place-items-center rounded-xl bg-soft-100 text-xl">
-                              <AudienceIcon slug={a.slug} className="size-7" />
-                            </span>
-                            <span>
-                              <span className="block text-[15px] font-semibold">{a.menuTitle}</span>
-                              <span className="block text-[13px] text-ink-500">{a.menuSubtitle}</span>
-                            </span>
-                          </Link>
-                        </li>
-                      ))}
-                      <li className="px-5 pb-4 pt-1" />
-                    </motion.ul>
-                  )}
-                </AnimatePresence>
-              </li>
+                      <span>
+                        <NoBreakTerms text={col.title} />
+                        <span className="block font-sans text-[12px] font-normal text-ink-500">Ведёт {col.leaderName}</span>
+                      </span>
+                      <ChevronDown className={cn("size-5 shrink-0 transition-transform", isOpen && "rotate-180")} />
+                    </button>
+                    <AnimatePresence initial={false}>
+                      {isOpen && (
+                        <motion.ul
+                          id={`mobile-dir-${col.direction}`}
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25, ease: easeOut }}
+                          className="overflow-hidden"
+                          role="list"
+                        >
+                          <li>
+                            <Link href={col.href} onClick={onClose} className="block px-5 py-3 text-[15px] font-semibold text-ink-700 hover:bg-soft-100">
+                              О направлении →
+                            </Link>
+                          </li>
+                          {col.items.map((item) => (
+                            <li key={item.id}>
+                              <Link href={item.href} onClick={onClose} className="flex items-center justify-between gap-3 px-5 py-3 hover:bg-soft-100">
+                                <span className="min-w-0 text-[15px] font-semibold leading-snug">
+                                  <NoBreakTerms text={item.name} />
+                                </span>
+                                <ProductPrice parts={item.price} className="shrink-0 text-[14px] font-bold text-ink-700" />
+                              </Link>
+                            </li>
+                          ))}
+                          <li className="pb-2" />
+                        </motion.ul>
+                      )}
+                    </AnimatePresence>
+                  </li>
+                );
+              })}
 
-              {directionNav.map((d) => (
-                <li key={d.href}>
-                  <Link
-                    href={d.href}
-                    onClick={onClose}
-                    className="block rounded-2xl bg-surface px-5 py-4 font-display text-lg shadow-soft hover:bg-soft-100"
-                  >
-                    {d.label}
-                  </Link>
-                </li>
-              ))}
               {mainNav.map((item) => (
                 <li key={item.key}>
                   <Link
@@ -179,14 +178,6 @@ export function MobileMenu({ audiences: items, open, onClose }: MobileMenuProps)
               </Button>
               <div className="flex items-center justify-between pt-2">
                 <LangSwitch />
-                <a
-                  href={LOGIN_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[15px] font-semibold text-ink-700 underline-offset-4 hover:underline"
-                >
-                  {t.nav.login}
-                </a>
               </div>
             </div>
           </motion.nav>

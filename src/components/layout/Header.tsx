@@ -5,12 +5,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown, Menu } from "lucide-react";
-import type { MenuAudience } from "@/data/public-types";
+import type { PublicNavMenu } from "@/data/public-types";
 import { Logo } from "./Logo";
 import { MegaMenu } from "./MegaMenu";
 import { MobileMenu } from "./MobileMenu";
 import { LangSwitch } from "./LangSwitch";
-import { mainNav, LOGIN_URL, PICK_PROGRAM_HREF } from "./nav";
+import { mainNav, PICK_PROGRAM_HREF } from "./nav";
 import { Button } from "@/components/ui";
 import { track } from "@/lib/analytics";
 import { useT } from "@/i18n/LocaleProvider";
@@ -18,10 +18,10 @@ import { cn } from "@/lib/utils";
 
 /**
  * Плавающий хедер-«пилюля» (референс ventorme / mindset health).
- * Desktop: лого · [Для кого ▾ · Курсы · Результаты · О нас · Блог] · RU/KZ · Вход · CTA
- * Mobile: лого · CTA · бургер → MobileMenu (аккордеон «Для кого»).
+ * Desktop: лого · [Направления ▾ · Результаты · О нас] · RU/KZ · CTA «Подобрать программу» (→ /#lineup)
+ * Mobile: лого · CTA · бургер → MobileMenu (две секции-аккордеона направлений).
  */
-export function Header({ menuAudiences }: { menuAudiences: MenuAudience[] }) {
+export function Header({ menu }: { menu: PublicNavMenu }) {
   const t = useT();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -30,6 +30,7 @@ export function Header({ menuAudiences }: { menuAudiences: MenuAudience[] }) {
   const [hovered, setHovered] = useState<string | null>(null);
   const megaId = useId();
   const navRef = useRef<HTMLElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -48,7 +49,12 @@ export function Header({ menuAudiences }: { menuAudiences: MenuAudience[] }) {
   // Esc закрывает mega-menu; клик вне — тоже
   useEffect(() => {
     if (!megaOpen) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMegaOpen(false);
+    // Esc закрывает меню и возвращает фокус на кнопку «Направления»
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setMegaOpen(false);
+      triggerRef.current?.focus();
+    };
     const onClick = (e: MouseEvent) => {
       if (navRef.current && !navRef.current.contains(e.target as Node)) setMegaOpen(false);
     };
@@ -60,6 +66,11 @@ export function Header({ menuAudiences }: { menuAudiences: MenuAudience[] }) {
     };
   }, [megaOpen]);
 
+  // После открытия меню с клавиатуры фокус переходит на первую ссылку (меню стоит в DOM после списка пунктов)
+  const focusFirstLink = () => {
+    setTimeout(() => document.getElementById(megaId)?.querySelector<HTMLElement>("a")?.focus(), 60);
+  };
+
   const openMega = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
     setMegaOpen(true);
@@ -69,10 +80,10 @@ export function Header({ menuAudiences }: { menuAudiences: MenuAudience[] }) {
   };
 
   const isActive = (href: string) => pathname === href || (href !== "/" && pathname.startsWith(href));
-  const forWhomActive = pathname.startsWith("/for/");
-  const activeKey = forWhomActive ? "forWhom" : (mainNav.find((i) => isActive(i.href))?.key ?? null);
+  const directionsActive = pathname.startsWith("/courses") || pathname.startsWith("/for/");
+  const activeKey = directionsActive ? "directions" : (mainNav.find((i) => isActive(i.href))?.key ?? null);
   // Плашка-подсветка едет за курсором, а без наведения стоит на текущем пункте
-  const highlighted = hovered ?? (megaOpen ? "forWhom" : activeKey);
+  const highlighted = hovered ?? (megaOpen ? "directions" : activeKey);
 
   return (
     <>
@@ -98,23 +109,39 @@ export function Header({ menuAudiences }: { menuAudiences: MenuAudience[] }) {
           {/* Desktop nav */}
           <nav ref={navRef} aria-label="Основная навигация" className="relative hidden items-center lg:flex">
             <ul className="flex items-center gap-1 rounded-pill bg-ink/[0.06] p-1" role="list" onMouseLeave={() => setHovered(null)}>
-              <li className="relative" onMouseEnter={() => { openMega(); setHovered("forWhom"); }} onMouseLeave={scheduleClose}>
-                <NavPill show={highlighted === "forWhom"} />
+              <li
+                className="relative"
+                onMouseEnter={() => { openMega(); setHovered("directions"); }}
+                onMouseLeave={scheduleClose}
+                // фокус ушёл за пределы пункта и меню — закрываем (навигация с клавиатуры)
+                onBlur={(e) => { if (!e.currentTarget.parentElement?.parentElement?.contains(e.relatedTarget as Node | null)) setMegaOpen(false); }}
+              >
+                <NavPill show={highlighted === "directions"} />
                 <button
+                  ref={triggerRef}
                   type="button"
                   aria-expanded={megaOpen}
                   aria-controls={megaId}
                   aria-haspopup="true"
-                  onClick={() =>
+                  onClick={(e) => {
                     // при наведении меню уже открыто hover-ом: клик не должен его закрывать
-                    setMegaOpen((v) => (window.matchMedia("(hover: hover)").matches ? true : !v))
-                  }
+                    setMegaOpen((v) => (window.matchMedia("(hover: hover)").matches ? true : !v));
+                    // с клавиатуры (Enter/Space) — сразу в меню
+                    if (e.detail === 0) focusFirstLink();
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "ArrowDown") {
+                      e.preventDefault();
+                      setMegaOpen(true);
+                      focusFirstLink();
+                    }
+                  }}
                   className={cn(
                     "relative z-10 flex h-10 items-center gap-1 rounded-pill px-4 text-[14px] font-semibold transition-colors duration-200",
-                    highlighted === "forWhom" ? "text-ink" : "text-ink-700",
+                    highlighted === "directions" ? "text-ink" : "text-ink-700",
                   )}
                 >
-                  {t.nav.forWhom}
+                  {t.nav.directions}
                   <ChevronDown className={cn("size-4 transition-transform duration-200", megaOpen && "rotate-180")} />
                 </button>
               </li>
@@ -136,21 +163,13 @@ export function Header({ menuAudiences }: { menuAudiences: MenuAudience[] }) {
             </ul>
 
             <div onMouseEnter={openMega} onMouseLeave={scheduleClose}>
-              <MegaMenu audiences={menuAudiences} open={megaOpen} onClose={() => setMegaOpen(false)} id={megaId} />
+              <MegaMenu menu={menu} open={megaOpen} onClose={() => setMegaOpen(false)} id={megaId} />
             </div>
           </nav>
 
           {/* Right cluster */}
           <div className="flex items-center gap-2">
             <LangSwitch className="hidden md:inline-flex" />
-            <a
-              href={LOGIN_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden h-10 items-center rounded-pill px-4 text-[14px] font-semibold text-ink-700 transition-colors duration-200 hover:bg-white/70 hover:text-ink hover:shadow-soft md:inline-flex"
-            >
-              {t.nav.login}
-            </a>
             <Button
               variant="dark"
               size="sm"
@@ -176,7 +195,7 @@ export function Header({ menuAudiences }: { menuAudiences: MenuAudience[] }) {
         </div>
       </header>
 
-      <MobileMenu audiences={menuAudiences} open={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <MobileMenu menu={menu} open={mobileOpen} onClose={() => setMobileOpen(false)} />
     </>
   );
 }
