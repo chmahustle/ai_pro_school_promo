@@ -91,6 +91,14 @@ const warnings = [];
 const SKIP_FILES = new Set(["src/data/vocabulary.ts"]);
 const EXT = new Set([".ts", ".tsx", ".mjs", ".js", ".jsx"]);
 
+/** Нормализация для сравнения запретных фраз: без учёта регистра и «ё» → «е» (Шаг 19.1) */
+const norm = (t) => t.toLowerCase().replace(/ё/g, "е");
+/** Регулярки проверяем без учёта регистра и по тексту с «е» вместо «ё» (и по исходному) */
+const reTest = (re, text) => {
+  const r = new RegExp(re.source, re.flags.includes("i") ? re.flags : re.flags + "i");
+  return r.test(text) || r.test(text.replace(/ё/g, "е").replace(/Ё/g, "Е"));
+};
+
 function* walk(dir) {
   for (const name of readdirSync(dir)) {
     const p = join(dir, name);
@@ -140,24 +148,25 @@ for (const file of walk(SRC)) {
     }
     const code = stripComments(raw, state);
     if (dev || raw.includes("copy-check:ignore") || raw.includes("SHOW_PLACEHOLDERS")) return;
+    const ncode = norm(code);
     for (const phrase of [...FORBIDDEN, ...(SKIP_FILES.has(relative(ROOT, file)) ? [] : FORBIDDEN_PHRASES)]) {
-      if (code.includes(phrase)) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase, text: raw.trim().slice(0, 140) });
+      if (ncode.includes(norm(phrase))) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase, text: raw.trim().slice(0, 140) });
     }
     if (PRODUCT_FILES.test(relative(ROOT, file))) {
       for (const phrase of PRODUCT_FORBIDDEN) {
-        if (code.includes(phrase)) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase: `${phrase} (страница продукта)`, text: raw.trim().slice(0, 140) });
+        if (ncode.includes(norm(phrase))) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase: `${phrase} (страница продукта)`, text: raw.trim().slice(0, 140) });
       }
       const m = WARN_RE.exec(code);
       if (m) warnings.push({ file: relative(ROOT, file), line: idx + 1, root: m[0], text: raw.trim().slice(0, 140) });
     }
     if (MENU_FILES.test(relative(ROOT, file))) {
       for (const phrase of MENU_FORBIDDEN) {
-        if (code.includes(phrase)) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase: `${phrase} (меню)`, text: raw.trim().slice(0, 140) });
+        if (ncode.includes(norm(phrase))) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase: `${phrase} (меню)`, text: raw.trim().slice(0, 140) });
       }
     }
     if (!SKIP_FILES.has(relative(ROOT, file))) {
       for (const r of FORBIDDEN_RE) {
-        if (r.re.test(code) && !(r.allow && r.allow.test(code))) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase: r.name, text: raw.trim().slice(0, 140) });
+        if (reTest(r.re, code) && !(r.allow && reTest(r.allow, code))) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase: r.name, text: raw.trim().slice(0, 140) });
       }
     }
   });
