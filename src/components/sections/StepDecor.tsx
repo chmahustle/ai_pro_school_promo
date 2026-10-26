@@ -33,7 +33,7 @@ export function StepDecor({ tier }: { tier: PublicLadderStep["tier"] }) {
     >
       {tier === "try" && (
         <>
-          <svg viewBox="0 0 100 100" fill="#ece9ff" className="step-fig step-fig-try absolute -right-[26px] top-1/2 size-[116px] -translate-y-1/2 sm:-right-[30px] sm:size-[132px]">
+          <svg viewBox="0 0 100 100" fill="#ece9ff" className="step-fig step-fig-try absolute -right-[22px] top-1/2 size-[88px] -translate-y-1/2 sm:-right-[26px] sm:size-[100px]">
             <path d={STAR} />
           </svg>
           <Spark fill="#ffffff" className="right-[46%] top-[22%] w-[14px]" />
@@ -42,7 +42,7 @@ export function StepDecor({ tier }: { tier: PublicLadderStep["tier"] }) {
       )}
       {tier === "project" && (
         <>
-          <svg viewBox="0 0 100 100" fill="none" className="step-fig step-fig-project absolute -right-[34px] top-1/2 size-[112px] -translate-y-1/2 overflow-visible sm:-right-[40px] sm:size-[128px]">
+          <svg viewBox="0 0 100 100" fill="none" className="step-fig step-fig-project absolute -right-[28px] top-1/2 size-[84px] -translate-y-1/2 overflow-visible sm:-right-[32px] sm:size-[96px]">
             <circle cx="50" cy="50" r="42" stroke="#e8307e" strokeOpacity="0.4" strokeWidth="13" vectorEffect="non-scaling-stroke" />
           </svg>
           <Spark fill="#cfc5ff" className="right-[46%] top-[22%] w-[14px]" />
@@ -51,7 +51,7 @@ export function StepDecor({ tier }: { tier: PublicLadderStep["tier"] }) {
       )}
       {tier === "profession" && (
         <>
-          <svg viewBox="0 0 100 100" fill="#b8a6ff" fillOpacity="0.6" className="step-fig step-fig-profession absolute -right-[30px] top-1/2 size-[110px] -translate-y-1/2 sm:-right-[34px] sm:size-[124px]">
+          <svg viewBox="0 0 100 100" fill="#b8a6ff" fillOpacity="0.6" className="step-fig step-fig-profession absolute -right-[24px] top-1/2 size-[84px] -translate-y-1/2 sm:-right-[28px] sm:size-[96px]">
             <path d="M52 3C77 4 97 24 97 48C97 74 77 97 51 97C26 97 3 78 3 52C3 26 28 2 52 3Z" />
           </svg>
           <Spark fill="#ffffff" className="right-[46%] top-[22%] w-[14px]" />

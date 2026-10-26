@@ -122,27 +122,6 @@ export interface PublicLineup {
   entryBadge: string;
 }
 
-export interface PublicAudienceCard {
-  slug: AudienceSlug;
-  title: string;
-  titleNote?: string;
-  pain: string;
-  chips: [string, string];
-  ctaLabel: string;
-  href: string;
-  /** Короткое доказательство — только подтверждённое */
-  proofText: string | null;
-  /** Первый шаг направления и его цена (из products.ts) */
-  firstStep: { name: string; price: { prefix: string; amount: string; unit: string } } | null;
-}
-
-/** «Выберите свой путь»: шапка направления и карточки аудиторий под ней */
-export interface PublicAudienceGroup {
-  direction: "creator" | "vibecoding";
-  title: string;
-  cards: PublicAudienceCard[];
-}
-
 /** Шаг пути в «Как это работает» */
 export interface PublicPathStep {
   n: string;

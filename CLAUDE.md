@@ -49,7 +49,7 @@
 
 ## Ритм главной
 
-Светлые и тёмные панели (`bg-dark`, как футер) чередуются: Hero (mesh) → Logos → **Цифры (dark)** → Продуктовая линейка (#lineup, light; блок «Выберите свой путь» убран, AudienceSwitcher остался в репозитории) → **Результаты (dark)** → Как это работает → **«Хотите так же?» (dark)** → FAQ → Заявка (mesh) → Футер (dark). Шапка секций — единый `SectionIntro` (пилюля · h2 · описание · действие).
+Светлые и тёмные панели (`bg-dark`, как футер) чередуются: Hero (mesh) → Logos → **Цифры (dark)** → Продуктовая линейка (#lineup, light; блок «Выберите свой путь» удалён) → **Результаты (dark)** → Как это работает → **«Хотите так же?» (dark)** → FAQ → Заявка (mesh) → Футер (dark). Шапка секций — единый `SectionIntro` (пилюля · h2 · описание · действие).
 
 ## Видео и автодвижение
 
@@ -121,7 +121,7 @@ src/components
   ui/          Button, Pill, Badge, Card, Input, Accordion, Modal, Lightbox, Counter, Marquee, Reveal,
                Section, Avatar, StoryCard, MediaPlaceholder, PlaceholderBadge, MeshBackdrop, …
   layout/      Header, MegaMenu, MobileMenu, Footer, LandingHeader/Footer, FloatingMessenger, Analytics, LangSwitch
-  sections/    HomeHero, HomeMetrics, HomeStories, AudienceSwitcher, CoursesCatalog, CourseHero/Details,
+  sections/    HomeHero, HomeMetrics, HomeStories, CoursesCatalog, CourseHero/Details,
                Pricing, Programs, Team, FAQ, LeadForm/LeadSection/LeadModal, ReviewsWall/Archive/Sections,
                ResultsGrid, BusinessCasesSection, WorksMarquee, TestimonialsCarousel, landing/*
 src/data       metrics, audiences, courses, results, stories, reviews, testimonials, works, heroResults,

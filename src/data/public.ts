@@ -4,7 +4,7 @@ import "server-only";
  * Правила: фильтрация verified && consent выполняется здесь, до передачи; служебные поля не копируются;
  * dev-пометки (PublicDev, devSource) заполняются только при SHOW_PLACEHOLDERS (т.е. никогда в production-сборке).
  */
-import { audiences, getAudiencesForCards, landingAudiences } from "./audiences";
+import { audiences, landingAudiences } from "./audiences";
 import { company } from "./company";
 import { courses } from "./courses";
 import { getVisibleHeroResults, heroEvent, heroTeachers } from "./heroResults";
@@ -12,14 +12,13 @@ import { getHomeMetrics } from "./metrics";
 import { formConfig } from "./forms";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { audienceGroups, directions, lineup, lineupForWhom, lineupForWhomChips, pathTabs, resultsTabs } from "./lineup";
+import { directions, lineup, lineupForWhom, lineupForWhomChips, pathTabs, resultsTabs } from "./lineup";
 import { getVisiblePartners } from "./partners";
 import {
   formatCohortDate,
   formatEntryLine,
   formatPriceParts,
   getEntryProducts,
-  getEntryStep,
   getEntrySubtitle,
   getNextCohort,
   getCurrentPrice,
@@ -41,13 +40,11 @@ import { getVisibleStories, canShowStoryMedia, isStoryPublishable, stories as al
 import { team } from "./team";
 import { getVisibleTestimonials } from "./testimonials";
 import { getVisibleWorks } from "./works";
-import type { Audience, AudienceSlug, Course, Partner, Review, Story, TeamMember } from "./types";
+import type { Audience, Course, Partner, Review, Story, TeamMember } from "./types";
 import type {
   FooterLegal,
   MenuAudience,
   MenuData,
-  PublicAudienceCard,
-  PublicAudienceGroup,
   PublicDirectionPage,
   PublicProductPage,
   PublicPartner,
@@ -203,38 +200,6 @@ export function getPublicHeroData(): PublicHeroData {
 }
 
 // ───────────── Аудитории, меню, футер ─────────────
-
-/** Направление аудитории: по группам «Выберите свой путь» */
-const directionOfAudience = (slug: AudienceSlug): Direction => (audienceGroups.find((g) => g.slugs.includes(slug as never))?.direction ?? "vibecoding");
-
-export function getPublicAudienceCards(): PublicAudienceCard[] {
-  return getAudiencesForCards().map((a: Audience) => {
-    const step = getEntryStep(directionOfAudience(a.slug));
-    return {
-      slug: a.slug,
-      title: a.card.title,
-      titleNote: a.card.titleNote,
-      pain: a.card.pain,
-      chips: a.card.chips,
-      ctaLabel: a.card.ctaLabel,
-      href: a.card.href,
-      proofText: a.card.proof?.verified === true ? a.card.proof.text : null,
-      firstStep: step ? { name: step.name, price: { prefix: step.price.prefix, amount: step.price.amount, unit: step.price.unit } } : null,
-    };
-  });
-}
-
-/** Карточки аудиторий под двумя шапками-направлениями; пустая группа не возвращается */
-export function getPublicAudienceGroups(): PublicAudienceGroup[] {
-  const cards = getPublicAudienceCards();
-  return audienceGroups
-    .map((g) => ({
-      direction: g.direction,
-      title: g.title,
-      cards: g.slugs.map((slug) => cards.find((c) => c.slug === slug)).filter((c): c is PublicAudienceCard => Boolean(c)),
-    }))
-    .filter((g) => g.cards.length > 0);
-}
 
 // ───────────── «Как это работает»: пути ─────────────
 

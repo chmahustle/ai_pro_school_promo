@@ -38,7 +38,7 @@ export function LineupTabs({ sectionId, tabs, panels }: LineupTabsProps) {
       if (t) setActive(t);
       if (scroll && window.location.hash.startsWith(`#${sectionId}`)) {
         // дождаться применения вкладки, иначе высота блока ещё прежняя
-        requestAnimationFrame(() => document.getElementById(sectionId)?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }));
+        requestAnimationFrame(() => document.getElementById(`${sectionId}-tabs`)?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }));
       }
     },
     [sectionId, reduce],
@@ -63,7 +63,7 @@ export function LineupTabs({ sectionId, tabs, panels }: LineupTabsProps) {
 
   return (
     <div>
-      <div role="tablist" aria-label="Направления школы" className="mb-8 grid gap-2 rounded-[28px] bg-surface p-2 shadow-soft sm:mb-10 md:grid-cols-2">
+      <div id={`${sectionId}-tabs`} role="tablist" aria-label="Направления школы" className="scroll-mt-28 mb-8 grid gap-2 rounded-[28px] bg-surface p-2 shadow-soft sm:mb-10 md:grid-cols-2">
         {tabs.map((t) => {
           const on = t.id === active;
           return (

@@ -41,12 +41,6 @@ export const lineupForWhom: Record<Direction, string> = {
   vibecoding: "Бизнес, фрилансеры и специалисты в найме",
 };
 
-/** «Выберите свой путь»: две шапки-группы; какая аудитория к какому направлению относится */
-export const audienceGroups: { direction: Direction; title: string; slugs: ("beginners" | "business" | "freelancers" | "career")[] }[] = [
-  // Фрилансеров-контентщиков (отдельной карточки и лендинга) в данных нет — не добавляем, пока их нет в audiences.ts
-  { direction: "creator", title: "AI-креаторство", slugs: ["beginners"] },
-  { direction: "vibecoding", title: "Вайб-кодинг", slugs: ["business", "freelancers", "career"] },
-];
 
 /** «Как это работает»: переключатель путей */
 export const pathTabs: { id: Direction; label: string }[] = [
