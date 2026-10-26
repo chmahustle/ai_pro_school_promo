@@ -22,6 +22,7 @@ export function LadderStepCard({ step, entryBadge, showEntry = true, className }
     <article className={cn("step-card relative flex flex-1 flex-col rounded-[32px]", className)}>
       {/* Тело карточки: overflow-hidden обрезает декор краем; тень при hover — у внешнего article (::after), чтобы не обрезалась */}
       <div className={cn("relative isolate flex flex-1 flex-col overflow-hidden rounded-[32px] border p-6 text-ink sm:p-7", tiers[step.tier])}>
+        <StepDecor tier={step.tier} />
         <div className="flex flex-wrap items-center gap-2">
           <span className="inline-flex h-8 items-center rounded-pill bg-surface px-3.5 text-[13px] font-semibold">{step.stepLabel}</span>
           {entry && entryBadge && (
@@ -35,7 +36,6 @@ export function LadderStepCard({ step, entryBadge, showEntry = true, className }
         <p className="mt-3 text-[13px] leading-snug text-ink-500">{step.format}</p>
 
         <div className="relative mt-auto pt-12 sm:pt-20">
-          <StepDecor tier={step.tier} />
           <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
             <ProductPrice parts={step.price} className="font-display text-[32px] font-extrabold leading-none" />
             {step.start && <span className="whitespace-nowrap text-[13px] font-semibold text-ink-700">Старт {step.start}</span>}

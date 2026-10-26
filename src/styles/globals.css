@@ -445,14 +445,14 @@
     }
     .step-card:hover {
       z-index: 10;
-      transform: scale(1.035);
+      transform: translateY(-6px);
     }
     .step-card:hover::after {
       opacity: 1;
     }
     .step-ladder:has(.step-card:hover) .step-card:not(:hover) {
       opacity: 0.85;
-      transform: scale(0.98);
+      transform: scale(0.985);
     }
     .step-fig {
       transform-origin: 50% 50%;
@@ -462,7 +462,7 @@
       transform: rotate(18deg) scale(1.12);
     }
     .step-card:hover .step-fig-project {
-      transform: rotate(14deg) scale(1.08);
+      transform: rotate(40deg) scale(1.08);
     }
     .step-card:hover .step-fig-profession {
       animation: step-breathe 2.4s ease-in-out infinite;
