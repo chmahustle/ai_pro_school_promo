@@ -19,10 +19,22 @@ export function ProductLadder({ direction, className, showHeader = true }: { dir
     <div className={className}>
       {showHeader && (
       <div className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
-        {ladder.forWhom && (
-          <p className="text-[14px] leading-relaxed text-ink-500 sm:text-[15px]">
-            <span className="font-semibold text-ink">Для кого:</span> {ladder.forWhom}
-          </p>
+        {ladder.forWhomLinks.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-[14px] font-semibold text-ink sm:text-[15px]">Для кого:</span>
+            <ul className="flex flex-wrap gap-2" role="list">
+              {ladder.forWhomLinks.map((c) => (
+                <li key={c.href}>
+                  <Link
+                    href={c.href}
+                    className="inline-flex min-h-9 items-center rounded-pill bg-surface px-4 py-1.5 text-[14px] font-semibold text-ink ring-1 ring-ink/10 transition-colors hover:bg-lavender focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-brand"
+                  >
+                    {c.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
         <div className="flex shrink-0 items-center gap-3">
           {ladder.leader.photo && (

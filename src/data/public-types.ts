@@ -98,12 +98,16 @@ export interface PublicLadderStep {
   href: string;
   /** Входная ступень («Начните с этого») */
   isEntry: boolean;
+  /** Ступень лестницы: от неё зависит цвет карточки */
+  tier: "try" | "project" | "profession";
 }
 
 export interface PublicLadder {
   direction: "creator" | "vibecoding";
   /** Строка «для кого» */
   forWhom: string;
+  /** Чипы-ссылки «Для кого» (название и адрес из audiences.ts / products.ts) */
+  forWhomLinks: { label: string; href: string }[];
   leader: { name: string; photo: string | null };
   steps: PublicLadderStep[];
 }

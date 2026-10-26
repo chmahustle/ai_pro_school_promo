@@ -12,7 +12,7 @@ import { getHomeMetrics } from "./metrics";
 import { formConfig } from "./forms";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { audienceGroups, directions, lineup, lineupForWhom, partnerProjectStep, pathTabs, resultsTabs } from "./lineup";
+import { audienceGroups, directions, lineup, lineupForWhom, lineupForWhomChips, partnerProjectStep, pathTabs, resultsTabs } from "./lineup";
 import { getVisiblePartners } from "./partners";
 import {
   formatCohortDate,
@@ -450,6 +450,11 @@ export function getPublicLadder(direction: Direction): PublicLadder {
   return {
     direction,
     forWhom: lineupForWhom[direction],
+    forWhomLinks: lineupForWhomChips[direction].flatMap((c) => {
+      if ("product" in c) return [{ label: c.label, href: getProduct(c.product).landingUrl }];
+      const a = audiences.find((x) => x.slug === c.audience);
+      return a ? [{ label: a.menuTitle, href: a.path }] : [];
+    }),
     leader: { name: leaderName, photo: photoIfExists(member?.photo) },
     steps: steps.map(toLadderStep),
   };
@@ -471,6 +476,7 @@ function toLadderStep(p: (typeof products)[number]): PublicLadderStep {
     ctaLabel: p.ctaLabel,
     href: p.landingUrl,
     isEntry: p.step === "try",
+    tier: p.step,
   };
 }
 

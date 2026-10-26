@@ -26,6 +26,15 @@ export const lineup = {
   entryBadge: "Начните с этого",
 } as const;
 
+/**
+ * Чипы-ссылки «Для кого» в линейке: название и адрес — из audiences.ts (аудитория) или products.ts (продукт).
+ * label — явная подпись, когда она короче названия в меню («Новичкам»).
+ */
+export const lineupForWhomChips: Record<Direction, ({ audience: "business" | "freelancers" | "career" } | { product: "practicum"; label: string })[]> = {
+  creator: [{ product: "practicum", label: "Новичкам" }],
+  vibecoding: [{ audience: "business" }, { audience: "freelancers" }, { audience: "career" }],
+};
+
 /** Строка «для кого» под вкладкой направления */
 export const lineupForWhom: Record<Direction, string> = {
   creator: "Новички и контентщики",

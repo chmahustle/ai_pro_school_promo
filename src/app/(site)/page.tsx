@@ -3,7 +3,6 @@ import { site, SITE_URL } from "@/lib/site";
 import { HomeHero } from "@/components/sections/HomeHero";
 import { LogosMarquee } from "@/components/sections/LogosMarquee";
 import { HomeMetrics } from "@/components/sections/HomeMetrics";
-import { AudienceSwitcher } from "@/components/sections/AudienceSwitcher";
 import { HomeStories } from "@/components/sections/HomeStories";
 import { WantSameCta } from "@/components/sections/WantSameCta";
 import { LineupSection } from "@/components/sections/LineupSection";
@@ -37,9 +36,8 @@ export default function HomePage() {
       <HomeHero />
       <LogosMarquee />
       <HomeMetrics />
-      <AudienceSwitcher />
-      <HomeStories />
       <LineupSection />
+      <HomeStories />
       <HowItWorks />
       <WantSameCta />
       <FAQ items={generalFaq.slice(0, 6)} description="Если не нашли ответ — напишите в WhatsApp, ответим лично." />
