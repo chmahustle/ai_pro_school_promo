@@ -113,7 +113,7 @@ export const stories: Story[] = [
     id: "video-practicum-2_7m",
     direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Ученица практикума",
-    descriptor: "вирусный ИИ-ролик",
+    descriptor: "ИИ-ролик",
     photo: null,
     result: { value: "2,7 млн", unit: "просмотров", text: "на ролике" },
     media: {
@@ -155,7 +155,7 @@ export const stories: Story[] = [
     id: "video-practicum-1_9m",
     direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Ученица практикума",
-    descriptor: "вирусный ИИ-ролик",
+    descriptor: "ИИ-ролик",
     photo: null,
     result: { value: "1,9 млн", unit: "просмотров", text: "на ролике" },
     media: {

@@ -38,6 +38,10 @@ const FORBIDDEN_PHRASES = [
   // Шаг 10: единые глаголы кнопок («Записаться на эфир/практикум», «Забронировать место», «Узнать про курс»)
   "Смотреть эфир",
   "Стать незаменимым",
+  // Шаг 12: практикум — единая подпись кнопки «Записаться на практикум», без обещаний монетизации
+  "Выбрать тариф",
+  "Участвовать в практикуме",
+  "монетизировали навык",
   // старые написания (словарь: «вайб-кодинг», «Курс AI Content Creator», Эфир «Вайб-кодинг вживую»)
   "вайбкодинг",
   "Вайбкодинг",
@@ -59,6 +63,12 @@ const FORBIDDEN_RE = [
 // Файлы меню (шаг 8): шапка, мобильное меню, футер, словари, данные меню — без «Бесплатный эфир», «гайд в подарок», «чек в 2–3 раза»
 const MENU_FILES = /^src\/(components\/layout\/(Header|MegaMenu|MobileMenu|Footer|nav)\.tsx?|data\/navMenu\.ts|i18n\/dictionaries\/.*)$/;
 const MENU_FORBIDDEN = ["Бесплатный эфир", "бесплатный эфир", "гайд в подарок", "Гайд в подарок", "чек в 2–3 раза"];
+// Шаг 12: публичные тексты страниц продуктов (данные курсов и продуктов, компоненты страниц курса/продукта/лестницы).
+// Ошибка — «стабильный доход»; предупреждение (не ошибка, в отчёт для ручной проверки) — корни про заработок и доход.
+const PRODUCT_FILES = /^src\/(data\/(courses|products|lineup|forms)\.ts|components\/sections\/(Course[A-Za-z]*|Pricing[A-Za-z]*|ProductLanding|ProductLadder|LadderStepCard|Programs|RefundTerms|NextSteps|LeaderCard|HeroTitle)\.tsx|app\/\(landing\)\/courses\/.*)$/;
+const PRODUCT_FORBIDDEN = ["стабильный доход"];
+const WARN_RE = /заработ|зарабатыв|доход|монетиз|ежедневно|приводим заказчиков|вирусят/i;
+const warnings = [];
 // Файлы, где старые написания перечислены намеренно (справочник словаря)
 const SKIP_FILES = new Set(["src/data/vocabulary.ts"]);
 const EXT = new Set([".ts", ".tsx", ".mjs", ".js", ".jsx"]);
@@ -115,6 +125,13 @@ for (const file of walk(SRC)) {
     for (const phrase of [...FORBIDDEN, ...(SKIP_FILES.has(relative(ROOT, file)) ? [] : FORBIDDEN_PHRASES)]) {
       if (code.includes(phrase)) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase, text: raw.trim().slice(0, 140) });
     }
+    if (PRODUCT_FILES.test(relative(ROOT, file))) {
+      for (const phrase of PRODUCT_FORBIDDEN) {
+        if (code.includes(phrase)) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase: `${phrase} (страница продукта)`, text: raw.trim().slice(0, 140) });
+      }
+      const m = WARN_RE.exec(code);
+      if (m) warnings.push({ file: relative(ROOT, file), line: idx + 1, root: m[0], text: raw.trim().slice(0, 140) });
+    }
     if (MENU_FILES.test(relative(ROOT, file))) {
       for (const phrase of MENU_FORBIDDEN) {
         if (code.includes(phrase)) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase: `${phrase} (меню)`, text: raw.trim().slice(0, 140) });
@@ -133,5 +150,10 @@ if (violations.length > 0) {
   for (const v of violations) console.error(`  ${v.file}:${v.line}  «${v.phrase}»\n    ${v.text}`);
   console.error("\nУберите фразу, возьмите значение из src/data/products.ts или оберните в dev-блок (SHOW_PLACEHOLDERS / dev-only:start…end).\n");
   process.exit(1);
+}
+if (warnings.length > 0) {
+  console.warn(`\ncheck-copy: ПРЕДУПРЕЖДЕНИЕ — ${warnings.length} мест с корнями про заработок/доход/монетизацию в публичных текстах продуктов (проверить вручную, сборку не роняет):\n`);
+  for (const w of warnings) console.warn(`  ${w.file}:${w.line}  «${w.root}»\n    ${w.text}`);
+  console.warn("");
 }
 console.log("check-copy: ок");

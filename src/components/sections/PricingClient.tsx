@@ -15,6 +15,8 @@ export interface PricingData {
   bonuses: PublicBonuses | null;
   /** Рассрочка включена: в products.ts заполнена цифра платежа */
   installmentEnabled: boolean;
+  /** Подпись кнопки курса (courses.ts → ctaLabel) */
+  ctaLabel: string;
 }
 
 interface PricingProps {
@@ -33,14 +35,16 @@ export function PricingClient({ course, title = "Тарифы", eyebrow = "Ст�
   const [mode, setMode] = useState<"full" | "installment">("full");
 
   if (tariffs.length === 0) return null;
+  // Один тариф: заголовок «Что входит», карточка по центру
+  const single = tariffs.length === 1;
 
   return (
     <Section id="pricing" tone="lavender" rounded className="mt-4 scroll-mt-24">
       <SectionIntro
         id="pricing-title"
-        align="left"
         eyebrow={eyebrow}
-        title={title}
+        title={single ? "Что входит" : title}
+        align={single ? "center" : "left"}
         action={
           hasInstallment ? (
             <div role="tablist" aria-label="Способ оплаты" className="inline-flex rounded-pill bg-surface p-1 shadow-soft">
@@ -61,10 +65,10 @@ export function PricingClient({ course, title = "Тарифы", eyebrow = "Ст�
         }
       />
 
-      <RevealGroup as="ul" className={cn("audience-grid grid gap-5", tariffs.length === 1 ? "max-w-xl" : tariffs.length === 2 ? "md:grid-cols-2" : "md:grid-cols-3")}>
+      <RevealGroup as="ul" className={cn("audience-grid grid gap-5", single ? "mx-auto max-w-xl" : tariffs.length === 2 ? "md:grid-cols-2" : "md:grid-cols-3")}>
         {tariffs.map((t) => (
           <RevealItem as="li" key={t.id}>
-            <TariffCard tariff={t} mode={mode} course={course} />
+            <TariffCard tariff={t} mode={mode} course={course} single={single} />
           </RevealItem>
         ))}
       </RevealGroup>
@@ -93,7 +97,7 @@ export function PricingClient({ course, title = "Тарифы", eyebrow = "Ст�
   );
 }
 
-function TariffCard({ tariff: t, mode, course }: { tariff: PublicTariff; mode: "full" | "installment"; course: PricingData }) {
+function TariffCard({ tariff: t, mode, course, single }: { tariff: PublicTariff; mode: "full" | "installment"; course: PricingData; single: boolean }) {
   const showInstallment = mode === "installment" && t.installment;
   const priceNode = (() => {
     if (t.price === 0) return <span className="font-display text-3xl">Бесплатно</span>;
@@ -160,7 +164,7 @@ function TariffCard({ tariff: t, mode, course }: { tariff: PublicTariff; mode: "
           modalTitle={`${course.shortName} · ${t.name}`}
           modalDescription="Оставьте контакты — пришлём детали тарифа, ссылку на оплату и ответим на вопросы."
         >
-          {t.cta ?? (t.price === 0 ? "Зарегистрироваться" : "Выбрать тариф")}
+          {t.cta ?? (t.price === 0 ? "Зарегистрироваться" : single ? <>{course.ctaLabel} за <span className="whitespace-nowrap">{formatTenge(t.price)}</span></> : course.ctaLabel)}
         </LeadButton>
       </div>
     </article>

@@ -10,7 +10,8 @@ import { Team } from "@/components/sections/Team";
 import { FAQ } from "@/components/sections/FAQ";
 import { LeadSection } from "@/components/sections/LeadSection";
 import { NextSteps } from "@/components/sections/NextSteps";
-import { getNextStep, getRefundTerms } from "@/data/public";
+import { getNextStep, getPublicLadder, getRefundTerms } from "@/data/public";
+import { LeaderCard } from "@/components/sections/LeaderCard";
 import { RefundTerms } from "@/components/sections/RefundTerms";
 import { getCourse } from "@/data/courses";
 import { productForCourseSlug } from "@/data/product-ids";
@@ -59,25 +60,37 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
       <CourseForWhom course={course} />
       <Programs
         modules={course.program}
-        title="Программа курса"
-        description="Пошагово, без перегруза. Всё сразу применимо для заработка."
+        title={course.slug === "practicum" ? "Программа практикума" : "Программа курса"}
+        description="Пошагово, без перегруза. Всё сразу применимо на практике"
       />
       <CourseOutcomes course={course} />
       <CourseMonetization course={course} />
       {/* Результаты учеников этой аудитории — тот же блок, что на главной */}
       <div className="mt-6 sm:mt-10">
-        <HomeStories audience={course.audiences[0]} limit={3} />
+        {course.slug === "practicum" ? (
+          // Практикум: только кейсы про просмотры, без доходов и личных историй (Мадина — только на странице курса AI Content Creator)
+          <HomeStories audience={course.audiences[0]} limit={3} onlyViews description="Люди без технического образования, освоившие ИИ-ролики" showAllLink={false} />
+        ) : (
+          <HomeStories audience={course.audiences[0]} limit={3} />
+        )}
       </div>
       <Pricing course={course} />
       {product && <RefundTerms text={getRefundTerms(product.id)} />}
       {product && <NextSteps id="next" title="Что дальше" steps={nextStep ? [nextStep] : []} />}
-      {courseReviews.length > 0 && <ReviewsWall items={courseReviews} tone="bg" moreHref="/reviews" />}
-      <Team
-        items={team.filter((m) => m.id !== "maidan")}
-        eyebrow="Кто ведёт"
-        title="Кто ведёт курс"
-        layout="grid"
-      />
+      {courseReviews.length > 0 && (
+        <ReviewsWall
+          items={courseReviews}
+          tone="bg"
+          moreHref="/reviews"
+          // Видео работ — без «скриншотов оплат» в подзаголовке
+          {...(courseReviews.every((r) => r.kind === "video") ? { title: "Работы учеников", description: "Видео работ учеников курса." } : {})}
+        />
+      )}
+      {course.slug === "practicum" ? (
+        <LeaderCard id="course-leader-title" leader={getPublicLadder("creator").leader} />
+      ) : (
+        <Team items={team.filter((m) => m.id !== "maidan")} eyebrow="Кто ведёт" title="Кто ведёт курс" layout="grid" />
+      )}
       <FAQ items={course.faq} />
       <LeadSection
         className="mt-10 sm:mt-16"

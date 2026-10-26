@@ -369,7 +369,8 @@ export function getPublicTariffs(course: Course): PublicTariff[] {
       installment: t.installment,
       installmentMonths: t.installmentMonths,
       description: t.description,
-      features: t.features,
+      // Неподтверждённые пункты — только в dev
+      features: SHOW_PLACEHOLDERS ? [...t.features, ...(t.unverifiedFeatures ?? [])] : t.features,
       excluded: t.excluded,
       popular: t.popular,
       cta: t.cta,

@@ -24,6 +24,7 @@ export function CourseHero({ course }: { course: Course }) {
         startFact: start.factValue,
         startFactLabel: start.factLabel,
         price: product ? formatPriceParts(product) : null,
+        ctaWithPrice: course.slug === "practicum",
         paymentNote: product ? getPaymentNote(product) : null,
       }}
     />

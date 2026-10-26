@@ -15,6 +15,10 @@ interface HomeStoriesProps {
   direction?: "creator" | "vibecoding";
   /** «projects» — блок проектов вайб-кодинга (лендинги): свои подписи вместо «Они начали с нуля» */
   variant?: "results" | "projects";
+  /** Только кейсы про просмотры (страница практикума: без доходов и личных историй) */
+  onlyViews?: boolean;
+  /** Подзаголовок шапки (по умолчанию — общий) */
+  description?: string;
   /** Истории с доходом («индивидуальный результат»): только на /reviews */
   includeIndividual?: boolean;
 }
@@ -23,10 +27,11 @@ interface HomeStoriesProps {
  * «Результаты учеников» (серверная часть): отбор verified && consent и сборка публичных карточек —
  * здесь, до передачи в браузер. Меньше 3 подтверждённых кейсов — блок скрыт.
  */
-export function HomeStories({ limit, withFilters, showAllLink, audience, direction, variant, includeIndividual }: HomeStoriesProps = {}) {
-  const stories = getPublicStories(audience, direction, includeIndividual);
+export function HomeStories({ limit, withFilters, showAllLink, audience, direction, variant, includeIndividual, onlyViews, description }: HomeStoriesProps = {}) {
+  const all = getPublicStories(audience, direction, includeIndividual);
+  const stories = onlyViews ? all.filter((s) => s.result.unit.includes("просмотр")) : all;
   if (stories.length < 3) return null;
   // Вкладки направлений: вайб-кодинг — только если есть подтверждённые кейсы этого направления
   const tabs = getPublicResultsTabs(stories).tabs;
-  return <HomeStoriesClient stories={stories} tabs={tabs} variant={variant} limit={limit} withFilters={withFilters} showAllLink={showAllLink} />;
+  return <HomeStoriesClient stories={stories} tabs={tabs} variant={variant} description={description} limit={limit} withFilters={withFilters} showAllLink={showAllLink} />;
 }

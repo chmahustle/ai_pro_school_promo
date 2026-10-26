@@ -23,6 +23,7 @@ export function Pricing({ course, title, eyebrow }: PricingProps) {
         tariffs,
         bonuses: getPublicBonuses(course),
         installmentEnabled: isInstallmentEnabled(course),
+        ctaLabel: course.ctaLabel,
       }}
       title={title}
       eyebrow={eyebrow}

@@ -69,11 +69,14 @@ export function StoryCard({ story, onOpenMedia, className }: StoryCardProps) {
   const showMedia = Boolean(story.media);
   const isReceipt = story.variant === "receipt" || story.media?.type === "receipt";
   const isVideo = story.media?.type === "video";
+  // Карточка без тела (нет до/после, цитаты и медиа) — компактная
+  const compact = !showBeforeAfter && !showQuote && !showMedia;
 
   return (
     <article
       className={cn(
         "relative flex flex-col overflow-hidden rounded-[28px] bg-surface p-5 text-ink shadow-soft sm:p-6",
+        compact && "self-start p-4 sm:p-4",
         className,
       )}
     >

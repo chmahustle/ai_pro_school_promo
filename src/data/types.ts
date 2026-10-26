@@ -184,6 +184,8 @@ export interface Tariff extends Verifiable {
   features: string[];
   /** Чего нет в тарифе */
   excluded?: string[];
+  /** Пункты «что входит», не подтверждённые школой: в проде скрыты, в dev показываются */
+  unverifiedFeatures?: string[];
   popular?: boolean;
   cta?: string;
 }
@@ -222,6 +224,8 @@ export interface Course {
   program: ProgramModule[];
   /** Что продаёте после курса / как зарабатываете */
   monetization?: { title: string; items: string[] }[];
+  /** Шапка блока monetization (по умолчанию — «Как вы зарабатываете…») */
+  monetizationHeading?: { eyebrow: string; title: string };
   tariffs: Tariff[];
   /** verified: false — бонус не подтверждён школой: в проде скрыт, в dev с пометкой (не задано — показывается) */
   bonuses?: { title: string; items: string[]; deadline?: string; verified?: boolean };

@@ -46,6 +46,11 @@ export interface Product {
   /** Пункты «Что соберёте» (страница продукта) */
   deliverables?: Deliverable[];
   format: string;
+  /**
+   * Формат (число эфиров, дни недели) подтверждён школой. false — в проде только «онлайн, живые эфиры, 7 дней»,
+   * детали (3 эфира, Пн/Вт/Ср, потоки) скрыты. Пока только у практикума.
+   */
+  formatVerified?: boolean;
   /** Текущая цена, ₸. 0 — бесплатно. null — не задана (не показываем) */
   price: number | null;
   pricePrefix: "от" | "";
@@ -113,7 +118,9 @@ export const products: Product[] = [
     name: vocabulary.practicum,
     nameApproved: true,
     resultLine: "Первый ИИ-ролик с телефона на бесплатных нейросетях",
-    format: "онлайн, потоки дважды в неделю",
+    // TODO(клиент): подтвердить формат (3 эфира по 90 минут, Пн/Вт/Ср, потоки пн/чт) → formatVerified: true, формат вернуть на подробный
+    formatVerified: false,
+    format: "онлайн, живые эфиры, 7 дней",
     price: 9900,
     pricePrefix: "",
     priceNote: "",

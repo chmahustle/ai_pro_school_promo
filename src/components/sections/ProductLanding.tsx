@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { ArrowRight, Bot, Clock, Flag, MapPin, Send, Store, Users } from "lucide-react";
 import { LandingHeader } from "@/components/layout/LandingHeader";
-import { Avatar, Button, Pill, Section, SectionIntro } from "@/components/ui";
+import { Button, Pill, Section, SectionIntro } from "@/components/ui";
 import { ProductPrice } from "@/components/ui/ProductPrice";
 import { getNextStep, getPublicProductPage } from "@/data/public";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 import { nbspDash } from "@/lib/utils";
 import { PlaceholderBadge } from "@/components/ui/PlaceholderBadge";
+import { LeaderCard } from "./LeaderCard";
 import { LeadSection } from "./LeadSection";
 import { NextSteps } from "./NextSteps";
 import { RefundTerms } from "./RefundTerms";
@@ -141,16 +142,7 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
         </Section>
       )}
 
-      {id === "course" && p.leader && (
-        <Section aria-labelledby="course-leader-title">
-          <div className="flex items-center gap-4 rounded-[28px] bg-surface p-5 shadow-soft sm:p-6">
-            <Avatar name={p.leader.name} src={p.leader.photo} size="lg" />
-            <h2 id="course-leader-title" className="font-display text-[clamp(1.25rem,1rem+1vw,1.75rem)] font-bold leading-tight">
-              Ведёт {p.leader.name}
-            </h2>
-          </div>
-        </Section>
-      )}
+      {id === "course" && p.leader && <LeaderCard id="course-leader-title" leader={p.leader} />}
 
       {id === "offline" && hasVenue && (
         <Section aria-labelledby="offline-venue-title">

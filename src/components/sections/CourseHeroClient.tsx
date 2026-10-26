@@ -41,6 +41,8 @@ export interface CourseHeroData {
   /** Подпись плитки: «Старт» (дата, срок старта) или «Записи эфиров» (пока формат не подтверждён) */
   startFactLabel: string;
   price: PriceParts | null;
+  /** Цена в подписи кнопки: «… за 9 900 ₸» */
+  ctaWithPrice?: boolean;
   /** Условия оплаты из products.ts (сумма рассрочки или «есть рассрочка») */
   paymentNote: string | null;
 }
@@ -92,13 +94,20 @@ export function CourseHeroClient({ course }: { course: CourseHeroData }) {
                 icon={<ArrowRight className="size-5" />}
               >
                 {course.ctaLabel}
+                {/* Практикум: цена в самой кнопке («Записаться на практикум за 9 900 ₸»), цена из products.ts */}
+                {course.ctaWithPrice && course.price && (
+                  <>
+                    {" "}за <ProductPrice parts={course.price} />
+                  </>
+                )}
               </LeadButton>
-              {course.price && (
+              {!course.ctaWithPrice && course.price && (
                 <span className="ml-1 flex flex-col leading-tight">
                   <ProductPrice parts={course.price} className={cn("font-display text-lg", dark ? "text-white" : "text-ink")} />
                   {course.paymentNote && <span className={cn("text-[13px]", dark ? "text-white/65" : "text-ink-500")}>{course.paymentNote}</span>}
                 </span>
               )}
+              {course.ctaWithPrice && course.paymentNote && <span className={cn("ml-1 text-[13px]", dark ? "text-white/65" : "text-ink-500")}>{course.paymentNote}</span>}
             </motion.div>
           </motion.div>
 
