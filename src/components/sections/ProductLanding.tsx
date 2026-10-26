@@ -64,6 +64,11 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
             <li className="rounded-[24px] bg-surface p-5 shadow-soft">
               <p className="text-[11px] font-bold uppercase tracking-wider text-ink-500">Стоимость</p>
               <ProductPrice parts={p.price} className="mt-3 block font-display text-[34px] font-extrabold leading-none" />
+              {p.devOldPrice && (
+                <p className="mt-2 text-[13px] text-danger">
+                  <span className="line-through">{p.devOldPrice.amount}</span> {p.devOldPrice.label} · {p.devOldPrice.note}
+                </p>
+              )}
               {p.installment && <p className="mt-2 text-[14px] text-ink-500">{p.installment}</p>}
               {p.seatsLeft !== null && (
                 <Pill tone="brand" className="mt-3" icon={<Users />}>

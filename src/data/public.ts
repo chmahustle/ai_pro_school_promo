@@ -37,7 +37,7 @@ import {
 import { GENERAL_PRODUCT } from "./product-ids";
 import { vocabulary } from "./vocabulary";
 import { SITE_URL, site } from "@/lib/site";
-import { formatMonthYear, formatNumber, nameInSentence } from "@/lib/utils";
+import { formatMonthYear, formatNumber, formatTenge, nameInSentence } from "@/lib/utils";
 import { getVisibleStories, canShowStoryMedia, isStoryPublishable, stories as allStories } from "./stories";
 import { team } from "./team";
 import { getVisibleTestimonials } from "./testimonials";
@@ -613,6 +613,11 @@ export function getPublicProductPage(id: "offline" | "course"): PublicProductPag
     modules: p.modules,
     refundTerms: p.refundTerms,
     devMissing: SHOW_PLACEHOLDERS ? missing : [],
+    // Старая цена и метка не подтверждены: только в dev с пометкой, в проде null
+    devOldPrice:
+      SHOW_PLACEHOLDERS && p.oldPrice && p.oldPriceVerified !== true
+        ? { amount: formatTenge(p.oldPrice), label: p.priceLabel ?? "", note: "старая цена не подтверждена" }
+        : null,
     seo: { title: id === "course" ? vocabulary.vibecodingCourse : p.name, description: `${p.resultLine}. ${p.format}.` },
   };
 }

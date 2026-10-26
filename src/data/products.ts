@@ -51,6 +51,28 @@ export interface Product {
    * детали (3 эфира, Пн/Вт/Ср, потоки) скрыты. Пока только у практикума.
    */
   formatVerified?: boolean;
+  /**
+   * Данные школы по эфиру, ещё не подтверждённые (scheduleVerified: false): в проде не выводятся и в публичные модели не попадают.
+   * weekday: 0 = вс … 6 = сб (1 = пн).
+   */
+  weekday?: number;
+  time?: string;
+  timezone?: string;
+  /** Сколько дней действует поддержка после эфира */
+  supportDays?: number;
+  /** Сколько дней доступна запись эфира */
+  recordingDays?: number;
+  /** Будущая цена эфира (дата смены неизвестна — priceSchedule не заполняем) */
+  futurePrice?: number;
+  scheduleVerified?: boolean;
+  /** Офлайн: длительность как в формате («3 часа») и альтернатива от школы («3–4 часа»); альтернатива не подтверждена */
+  durationHours?: string;
+  durationAlt?: string;
+  durationVerified?: boolean;
+  /** Курс вайб-кодинга: старая цена и метка («Спеццена»); не подтверждены — в проде не рендерятся, в dev с пометкой */
+  oldPrice?: number;
+  priceLabel?: string;
+  oldPriceVerified?: boolean;
   /** Текущая цена, ₸. 0 — бесплатно. null — не задана (не показываем) */
   price: number | null;
   pricePrefix: "от" | "";
@@ -212,6 +234,14 @@ export const products: Product[] = [
     schedule: null, // TODO(клиент): даты проведения
     modules: null, // TODO(клиент): программа по модулям
     refundTerms: null, // TODO(клиент): условия возврата (текст школы)
+    // Данные школы (шаг 19), не подтверждены — в проде не выводим; priceSchedule не менять (нужна дата от школы)
+    weekday: 1,
+    time: "19:00",
+    timezone: "Asia/Almaty",
+    supportDays: 7,
+    recordingDays: 14,
+    futurePrice: 9900,
+    scheduleVerified: false,
     thanksUrl: thanks("efir"),
     leader: "Майдан",
     verified: true,
@@ -243,6 +273,9 @@ export const products: Product[] = [
     schedule: null, // TODO(клиент): даты проведения
     modules: null, // TODO(клиент): программа по модулям
     refundTerms: null, // TODO(клиент): условия возврата (текст школы)
+    durationHours: "3 часа",
+    durationAlt: "3–4 часа", // не подтверждено: «3 часа» (как в формате) или «3–4 часа» — вопрос школе в TODO.md
+    durationVerified: false,
     thanksUrl: thanks("offline"),
     leader: "Майдан",
     verified: true,
@@ -282,6 +315,9 @@ export const products: Product[] = [
     schedule: null, // TODO(клиент): даты проведения
     modules: null, // TODO(клиент): программа по модулям
     refundTerms: null, // TODO(клиент): условия возврата (текст школы)
+    oldPrice: 700000,
+    priceLabel: "Спеццена", // copy-check:ignore — не подтверждено, в проде не выводить
+    oldPriceVerified: false,
     thanksUrl: thanks("course"),
     leader: "Майдан",
     verified: true,

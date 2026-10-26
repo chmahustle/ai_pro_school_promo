@@ -320,6 +320,8 @@ export interface PublicProductPage {
   refundTerms: string | null;
   /** Только dev: каких данных не хватает для скрытых блоков */
   devMissing: string[];
+  /** Только dev: неподтверждённая старая цена и метка («старая цена не подтверждена») */
+  devOldPrice: { amount: string; label: string; note: string } | null;
   seo: { title: string; description: string };
 }
 
