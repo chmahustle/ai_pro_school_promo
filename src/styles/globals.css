@@ -416,26 +416,62 @@
     }
   }
 
-  /* Карточки лестницы (LadderStepCard): hover только для мыши (hover + fine pointer) и без reduced-motion; transform/opacity, 250 мс */
+  /* Карточки лестницы (LadderStepCard): hover только для мыши (hover + fine pointer) и без reduced-motion.
+     Только transform и opacity: тень — псевдоэлемент, у которого анимируется opacity. Соседи приглушаются через :has. */
+  .step-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 32px;
+    box-shadow: 0 28px 56px -14px rgba(20, 18, 31, 0.32);
+    opacity: 0;
+    pointer-events: none;
+  }
+  @keyframes step-twinkle {
+    0%, 100% { opacity: 0.25; }
+    50% { opacity: 1; }
+  }
+  @keyframes step-breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+  }
   @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
     .step-card {
-      transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 300ms ease;
+    }
+    .step-card::after {
+      transition: opacity 300ms ease;
     }
     .step-card:hover {
-      transform: translateY(-4px);
+      z-index: 10;
+      transform: scale(1.035);
+    }
+    .step-card:hover::after {
+      opacity: 1;
+    }
+    .step-ladder:has(.step-card:hover) .step-card:not(:hover) {
+      opacity: 0.85;
+      transform: scale(0.98);
     }
     .step-fig {
       transform-origin: 50% 50%;
-      transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .step-card:hover .step-fig-try {
-      transform: rotate(10deg) scale(1.07);
+      transform: rotate(18deg) scale(1.12);
     }
     .step-card:hover .step-fig-project {
-      transform: rotate(-8deg) scale(1.06);
+      transform: rotate(14deg) scale(1.08);
     }
     .step-card:hover .step-fig-profession {
-      transform: rotate(8deg) scale(1.08);
+      animation: step-breathe 2.4s ease-in-out infinite;
+    }
+    .step-card:hover .step-spark-a {
+      animation: step-twinkle 1.4s ease-in-out infinite;
+    }
+    .step-card:hover .step-spark-b {
+      animation: step-twinkle 1.4s ease-in-out 0.5s infinite;
     }
     .step-arrow {
       transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);

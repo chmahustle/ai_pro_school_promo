@@ -52,7 +52,7 @@ export function ProductLadder({ direction, className, showHeader = true }: { dir
       </div>
       )}
 
-      <ol className="flex flex-col gap-3 lg:flex-row lg:items-stretch lg:gap-4">
+      <ol className="step-ladder flex flex-col gap-3 lg:flex-row lg:items-stretch lg:gap-4">
         {ladder.steps.map((step, i) => (
           <li key={step.id} className="contents">
             {i > 0 && (
