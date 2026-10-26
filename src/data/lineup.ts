@@ -54,9 +54,6 @@ export const pathTabs: { id: Direction; label: string }[] = [
   { id: "vibecoding", label: "Вайб-кодинг" },
 ];
 
-/** Последний шаг пути вайб-кодинга: проект для компании-партнёра (из описания курса в products.ts → resultLine) */
-export const partnerProjectStep = { title: "Проект для компании-партнёра" } as const;
-
 /** «Результаты учеников»: подписи вкладок */
 export const resultsTabs: { id: Direction; label: string }[] = [
   { id: "creator", label: "Креаторство" },

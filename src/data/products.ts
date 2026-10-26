@@ -20,6 +20,16 @@ export interface PriceStep {
   price: number;
 }
 
+/** Пункт «Что соберёте» (иконка — ключ из ProductLanding). Не подтверждённый пункт в проде заменяется на fallbackTitle или скрывается */
+export interface Deliverable {
+  id: string;
+  title: string;
+  icon: "store" | "send" | "bot" | "flag";
+  verified: boolean;
+  /** Что показывать в проде вместо неподтверждённого пункта */
+  fallbackTitle?: string;
+}
+
 export interface Product {
   id: ProductId;
   direction: Direction;
@@ -31,6 +41,10 @@ export interface Product {
    */
   nameApproved: boolean;
   resultLine: string;
+  /** Рабочее название-уточнение (подпись под H1): в проде только если nameApproved, в dev — с пометкой */
+  workingTitle?: string;
+  /** Пункты «Что соберёте» (страница продукта) */
+  deliverables?: Deliverable[];
   format: string;
   /** Текущая цена, ₸. 0 — бесплатно. null — не задана (не показываем) */
   price: number | null;
@@ -223,7 +237,15 @@ export const products: Product[] = [
     step: "profession",
     name: resolveName(vocabulary.vibecodingCourse, vocabulary.vibecodingCourseFull),
     nameApproved: false, // «(Junior AI Developer)» — рабочее название на утверждении, только в dev
-    resultLine: "Магазин с CRM, Telegram-бот, ИИ-агент и проект для компании-партнёра",
+    // Пункт «проект для компании-партнёра» не подтверждён (deliverables → verified: false): в проде — «итоговый проект»
+    resultLine: "Магазин с CRM, Telegram-бот, ИИ-агент и итоговый проект",
+    workingTitle: "Junior AI Developer",
+    deliverables: [
+      { id: "shop", title: "Магазин с CRM", icon: "store", verified: true },
+      { id: "telegram-bot", title: "Telegram-бот", icon: "send", verified: true },
+      { id: "ai-agent", title: "ИИ-агент", icon: "bot", verified: true },
+      { id: "final-project", title: "Проект для компании-партнёра", icon: "flag", verified: false, fallbackTitle: "Итоговый проект" },
+    ],
     format: "3 месяца",
     price: 400000,
     pricePrefix: "",
@@ -254,6 +276,24 @@ export function getProduct(id: ProductId): Product {
   const p = products.find((x) => x.id === id);
   if (!p) throw new Error(`Unknown product: ${id}`);
   return p;
+}
+
+/**
+ * Пункты «Что соберёте» для показа: подтверждённые — как есть; неподтверждённый в проде заменяется на fallbackTitle
+ * (или пропускается), в dev показывается с пометкой unverified.
+ */
+export function getDeliverables(product: Product): { id: string; title: string; icon: Deliverable["icon"]; unverified: boolean }[] {
+  type Shown = { id: string; title: string; icon: Deliverable["icon"]; unverified: boolean };
+  return (product.deliverables ?? []).flatMap((d): Shown[] => {
+    if (d.verified) return [{ id: d.id, title: d.title, icon: d.icon, unverified: false }];
+    if (SHOW_PLACEHOLDERS) return [{ id: d.id, title: d.title, icon: d.icon, unverified: true }];
+    return d.fallbackTitle ? [{ id: d.id, title: d.fallbackTitle, icon: d.icon, unverified: false }] : [];
+  });
+}
+
+/** Подпись последнего шага пути вайб-кодинга: «Проект для компании-партнёра» только когда он подтверждён, иначе «Итоговый проект» */
+export function getFinalProjectTitle(): string {
+  return getDeliverables(getProduct("course")).find((d) => d.id === "final-project")?.title ?? "Итоговый проект";
 }
 
 /** Цена на момент now: базовая, затем последняя действующая запись расписания (записи с from: null игнорируются). */

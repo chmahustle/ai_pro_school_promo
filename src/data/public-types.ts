@@ -295,7 +295,21 @@ export interface PublicProductPage {
   directionName: string;
   directionPath: string;
   name: string;
+  /** Подпись под H1 («Junior AI Developer»): в проде только когда название утверждено */
+  workingTitle: string | null;
+  /** Только dev: пометка у неутверждённого названия */
+  workingTitleDevNote: string | null;
   resultLine: string;
+  /** «Что соберёте»: пункты с иконками (неподтверждённый в проде заменён на «Итоговый проект») */
+  deliverables: { id: string; title: string; icon: "store" | "send" | "bot" | "flag"; unverified: boolean }[];
+  /** Курс: чипы «Для кого» (название и адрес из audiences.ts) */
+  forWhomLinks?: { label: string; href: string }[];
+  /** Курс: «Путь к курсу» — ступени направления, текущая выделена */
+  path?: { id: string; stepLabel: string; name: string; href: string; current: boolean }[];
+  /** Курс: «Ведёт …» (фото и имя, без биографии) */
+  leader?: { name: string; photo: string | null };
+  /** Заголовок формы заявки (forms.ts) */
+  formTitle: string;
   format: string;
   price: { prefix: string; amount: string; unit: string };
   /** «Рассрочка от … ₸ в месяц» — только если сумма задана */

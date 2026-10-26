@@ -1,10 +1,12 @@
-import { Clock, MapPin, Users } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Bot, Clock, Flag, MapPin, Send, Store, Users } from "lucide-react";
 import { LandingHeader } from "@/components/layout/LandingHeader";
-import { Button, Pill, Section, SectionIntro } from "@/components/ui";
+import { Avatar, Button, Pill, Section, SectionIntro } from "@/components/ui";
 import { ProductPrice } from "@/components/ui/ProductPrice";
 import { getNextStep, getPublicProductPage } from "@/data/public";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 import { nbspDash } from "@/lib/utils";
+import { PlaceholderBadge } from "@/components/ui/PlaceholderBadge";
 import { LeadSection } from "./LeadSection";
 import { NextSteps } from "./NextSteps";
 import { RefundTerms } from "./RefundTerms";
@@ -12,6 +14,9 @@ import { PageHero } from "./PageHero";
 
 /** Заголовок блока результата: у офлайна «Что получите», у курса «Что соберёте» */
 const RESULT_TITLE = { offline: "Что получите", course: "Что соберёте" } as const;
+
+/** Иконки пунктов «Что соберёте» (ключи — из products.ts → deliverables) */
+const DELIVERABLE_ICONS = { store: Store, send: Send, bot: Bot, flag: Flag } as const;
 
 /**
  * Страница продукта вайб-кодинга (офлайн-урок, курс): hero с результатом, форматом и ценой,
@@ -29,6 +34,14 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
         id={`${id}-title`}
         eyebrow={p.directionName}
         title={p.name}
+        titleCaption={
+          p.workingTitle ? (
+            <>
+              {p.workingTitle}
+              {p.workingTitleDevNote && <span className="ml-3 align-middle text-[12px] font-semibold text-danger">{p.workingTitleDevNote}</span>}
+            </>
+          ) : undefined
+        }
         description={p.resultLine}
         actions={
           <>
@@ -61,8 +74,83 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
 
       <Section className="scroll-mt-24" aria-labelledby={`${id}-result-title`}>
         <SectionIntro id={`${id}-result-title`} align="left" eyebrow="Результат" title={RESULT_TITLE[id]} />
-        <p className="max-w-[40ch] rounded-[28px] bg-lavender p-6 font-display text-[clamp(1.25rem,1rem+1.2vw,1.75rem)] font-bold leading-snug sm:p-8">{nbspDash(p.resultLine)}</p>
+        {id === "course" && p.deliverables.length > 0 ? (
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {p.deliverables.map((d) => {
+              const Icon = DELIVERABLE_ICONS[d.icon];
+              return (
+                <li key={d.id} className="relative flex items-start gap-4 rounded-[24px] bg-lavender p-5 sm:p-6">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-full bg-surface text-brand-600">
+                    <Icon className="size-5" aria-hidden />
+                  </span>
+                  <span className="font-display text-[18px] font-bold leading-snug">{nbspDash(d.title)}</span>
+                  {d.unverified && <PlaceholderBadge status="unverified" note="Пункт не подтверждён клиентом: в проде вместо него «Итоговый проект»" />}
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p className="max-w-[40ch] rounded-[28px] bg-lavender p-6 font-display text-[clamp(1.25rem,1rem+1.2vw,1.75rem)] font-bold leading-snug sm:p-8">{nbspDash(p.resultLine)}</p>
+        )}
       </Section>
+
+      {id === "course" && p.forWhomLinks && p.forWhomLinks.length > 0 && (
+        <Section aria-labelledby="course-forwhom-title">
+          <SectionIntro id="course-forwhom-title" align="left" eyebrow="Кому подходит" title="Для кого этот курс" />
+          <ul className="flex flex-wrap gap-3" role="list">
+            {p.forWhomLinks.map((c) => (
+              <li key={c.href}>
+                <Link
+                  href={c.href}
+                  className="inline-flex min-h-11 items-center gap-2 rounded-pill bg-surface px-5 py-2.5 text-[15px] font-semibold text-ink shadow-soft ring-1 ring-ink/5 transition-colors hover:bg-lavender focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-brand"
+                >
+                  {c.label}
+                  <ArrowRight className="size-4" aria-hidden />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
+
+      {id === "course" && p.path && p.path.length > 1 && (
+        <Section aria-labelledby="course-path-title">
+          <SectionIntro id="course-path-title" align="left" eyebrow="Путь" title="Путь к курсу" />
+          <ol className="flex flex-col gap-3 lg:flex-row lg:items-stretch">
+            {p.path.map((s, i) => (
+              <li key={s.id} className="flex flex-1 items-stretch gap-3">
+                {i > 0 && <ArrowRight className="hidden size-5 shrink-0 self-center text-ink-300 lg:block" aria-hidden />}
+                {s.current ? (
+                  <div aria-current="step" className="flex-1 rounded-[24px] bg-dark p-5 text-white sm:p-6">
+                    <p className="text-[12px] font-bold uppercase tracking-wider text-white/60">{s.stepLabel}</p>
+                    <p className="mt-2 font-display text-[19px] font-bold leading-snug">{nbspDash(s.name)}</p>
+                    <p className="mt-2 text-[13px] font-semibold text-white/70">Вы здесь</p>
+                  </div>
+                ) : (
+                  <Link
+                    href={s.href}
+                    className="group flex-1 rounded-[24px] bg-surface p-5 shadow-soft ring-1 ring-ink/5 transition-colors hover:bg-lavender focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-brand sm:p-6"
+                  >
+                    <p className="text-[12px] font-bold uppercase tracking-wider text-ink-500">{s.stepLabel}</p>
+                    <p className="mt-2 font-display text-[19px] font-bold leading-snug">{nbspDash(s.name)}</p>
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ol>
+        </Section>
+      )}
+
+      {id === "course" && p.leader && (
+        <Section aria-labelledby="course-leader-title">
+          <div className="flex items-center gap-4 rounded-[28px] bg-surface p-5 shadow-soft sm:p-6">
+            <Avatar name={p.leader.name} src={p.leader.photo} size="lg" />
+            <h2 id="course-leader-title" className="font-display text-[clamp(1.25rem,1rem+1vw,1.75rem)] font-bold leading-tight">
+              Ведёт {p.leader.name}
+            </h2>
+          </div>
+        </Section>
+      )}
 
       {id === "offline" && hasVenue && (
         <Section aria-labelledby="offline-venue-title">
@@ -119,7 +207,7 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
         className="mt-10 sm:mt-16"
         id="lead"
         formId={`product-${id}`}
-        title={p.name}
+        title={p.formTitle}
         description={p.format}
         defaultProduct={id}
         lockProduct

@@ -12,7 +12,7 @@ import { getHomeMetrics } from "./metrics";
 import { formConfig } from "./forms";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { audienceGroups, directions, lineup, lineupForWhom, lineupForWhomChips, partnerProjectStep, pathTabs, resultsTabs } from "./lineup";
+import { audienceGroups, directions, lineup, lineupForWhom, lineupForWhomChips, pathTabs, resultsTabs } from "./lineup";
 import { getVisiblePartners } from "./partners";
 import {
   formatCohortDate,
@@ -23,6 +23,8 @@ import {
   getEntrySubtitle,
   getNextCohort,
   getCurrentPrice,
+  getDeliverables,
+  getFinalProjectTitle,
   getProduct,
   getProductForCourse,
   products,
@@ -32,6 +34,7 @@ import {
   type Step,
 } from "./products";
 import { GENERAL_PRODUCT } from "./product-ids";
+import { vocabulary } from "./vocabulary";
 import { site } from "@/lib/site";
 import { formatNumber, nameInSentence } from "@/lib/utils";
 import { getVisibleStories, canShowStoryMedia, isStoryPublishable, stories as allStories } from "./stories";
@@ -247,7 +250,7 @@ export function getPublicPaths(): PublicPaths {
       .filter((p) => p.direction === direction)
       .sort((a, b) => STEP_ORDER.indexOf(a.step) - STEP_ORDER.indexOf(b.step))
       .map((p) => ({ title: p.name, text: p.resultLine, price: toPrice(p) }));
-    if (direction === "vibecoding") steps.push({ title: partnerProjectStep.title, text: "", price: null });
+    if (direction === "vibecoding") steps.push({ title: getFinalProjectTitle(), text: "", price: null });
     return steps.map((s, i) => ({ n: String(i + 1).padStart(2, "0"), ...s }));
   };
   return { tabs: pathTabs.map((t) => ({ id: t.id, label: t.label })), paths: { creator: build("creator"), vibecoding: build("vibecoding") } };
@@ -553,8 +556,14 @@ export function getPublicProductPage(id: "offline" | "course"): PublicProductPag
     id: p.id,
     directionName: d.name,
     directionPath: d.path,
-    name: p.name,
+    // H1 — короткое название; рабочее уточнение («Junior AI Developer») идёт отдельной подписью
+    name: id === "course" ? vocabulary.vibecodingCourse : p.name,
+    workingTitle: p.workingTitle && (p.nameApproved || SHOW_PLACEHOLDERS) ? p.workingTitle : null,
+    workingTitleDevNote: SHOW_PLACEHOLDERS && Boolean(p.workingTitle) && !p.nameApproved ? "название на утверждении" : null,
     resultLine: p.resultLine,
+    deliverables: getDeliverables(p),
+    ...(id === "course" ? courseExtras() : {}),
+    formTitle: formConfig.productLeadTitle,
     format: p.format,
     price: { prefix, amount, unit },
     installment: p.installmentFromPerMonth ? `Рассрочка от ${formatNumber(p.installmentFromPerMonth)}${NBSP_}₸ в месяц` : null,
@@ -564,7 +573,17 @@ export function getPublicProductPage(id: "offline" | "course"): PublicProductPag
     modules: p.modules,
     refundTerms: p.refundTerms,
     devMissing: SHOW_PLACEHOLDERS ? missing : [],
-    seo: { title: p.name, description: `${p.resultLine}. ${p.format}.` },
+    seo: { title: id === "course" ? vocabulary.vibecodingCourse : p.name, description: `${p.resultLine}. ${p.format}.` },
+  };
+}
+
+/** Блоки страницы курса из существующих данных: «Для кого» (чипы на /for/*), «Путь к курсу» (эфир → офлайн → курс), «Ведёт …» */
+function courseExtras() {
+  const ladder = getPublicLadder("vibecoding");
+  return {
+    forWhomLinks: ladder.forWhomLinks,
+    path: ladder.steps.map((s) => ({ id: s.id, stepLabel: s.stepLabel, name: s.name, href: s.href, current: s.id === "course" })),
+    leader: ladder.leader,
   };
 }
 
