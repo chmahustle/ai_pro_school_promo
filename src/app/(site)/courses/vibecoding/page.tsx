@@ -1,6 +1,5 @@
 import { getFaq } from "@/data/faq";
 import { CourseForWhom, CourseOutcomes } from "@/components/sections/CourseDetails";
-import { CTA } from "@/components/sections/CTA";
 import { DirectionPage } from "@/components/sections/DirectionPage";
 import { FAQ } from "@/components/sections/FAQ";
 import { Programs } from "@/components/sections/Programs";
@@ -20,7 +19,7 @@ export const metadata = buildMetadata({ title: page.seo.title, description: page
 
 /**
  * Направление «Вайб-кодинг»: общая страница направления + секция #efir — прежнее содержимое страницы эфира
- * (для кого, программа, результаты, «Кто проведёт эфир», FAQ эфира, выбор эфира по аудитории). Карточка эфира в лестнице ведёт к форме записи (#lead) ниже.
+ * (для кого, программа, результаты, «Кто проведёт эфир», FAQ эфира). Карточка эфира в лестнице ведёт к форме записи (#lead) ниже.
  */
 export default function VibecodingPage() {
   const course = getCourse("vibecoding")!;
@@ -32,17 +31,6 @@ export default function VibecodingPage() {
         <CourseOutcomes course={course} />
         <Team items={webinarSpeakers} eyebrow="Спикеры" title="Кто проведёт эфир" layout="wide" />
         <FAQ items={getFaq("vibecoding")} />
-        <CTA
-          title="Выберите свой эфир"
-          description="У каждой аудитории — свой разбор задач и свой гайд в подарок."
-          primaryLabel="Для бизнеса"
-          primaryHref="/for/business"
-          secondaryLabel="Для фрилансеров"
-          secondaryHref="/for/freelancers"
-          tone="mesh"
-          mesh="home"
-          source="course-vibecoding-cta"
-        />
       </div>
     </DirectionPage>
   );
