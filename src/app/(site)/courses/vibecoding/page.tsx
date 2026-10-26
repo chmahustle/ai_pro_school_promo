@@ -5,6 +5,7 @@ import { FAQ } from "@/components/sections/FAQ";
 import { Programs } from "@/components/sections/Programs";
 import { Team } from "@/components/sections/Team";
 import { getCourse } from "@/data/courses";
+import { efirGenitive } from "@/data/efir";
 import { getPublicDirectionPage } from "@/data/public";
 import { webinarSpeakers } from "@/data/team";
 import { buildMetadata } from "@/lib/seo";
@@ -26,7 +27,7 @@ export default function VibecodingPage() {
     <DirectionPage direction="vibecoding">
       <div id="efir" className="scroll-mt-28">
         <CourseForWhom course={course} />
-        <Programs modules={course.program} title="Как устроено обучение" description="Начинаем с бесплатного эфира — дальше полная программа." />
+        <Programs modules={course.program} title="Как устроено обучение" description={`Начинаем с ${efirGenitive()} — дальше полная программа.`} />
         <CourseOutcomes course={course} />
         <Team items={webinarSpeakers} eyebrow="Спикеры" title="Кто проведёт эфир" layout="wide" />
         <FAQ items={course.faq} />

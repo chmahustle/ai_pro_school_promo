@@ -16,7 +16,7 @@ export function StartLine({ start }: { start: PublicNavMenu["cards"][number]["st
     <>
       {start.before}
       {start.free ? (
-        ", бесплатно"
+        `, ${start.freeLabel}`
       ) : (
         <>
           {" за "}

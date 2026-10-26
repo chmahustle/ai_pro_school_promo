@@ -338,7 +338,7 @@ export interface PublicNavMenu {
     /** Кнопка тёмной карточки: входной продукт */
     entry: { href: string; ctaLabel: string };
     /** «Начать с практикума за 9 900 ₸» / «Начать с эфира, бесплатно»: цена и «бесплатно» — из products.ts */
-    start: { before: string; free: boolean; price: { prefix: string; amount: string; unit: string } };
+    start: { before: string; free: boolean; /** «бесплатно» (из products.ts), если free */ freeLabel: string; price: { prefix: string; amount: string; unit: string } };
   }[];
   allCoursesHref: string;
 }

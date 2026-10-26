@@ -1,4 +1,5 @@
 import "server-only";
+import { efirCostValue, efirFormatBadge, efirRegisterTitle, efirSignupCta, efirLow } from "./efir";
 import type { Audience, AudienceSlug } from "./types";
 
 /**
@@ -11,10 +12,10 @@ import type { Audience, AudienceSlug } from "./types";
 export const audienceCardOrder: AudienceSlug[] = ["beginners", "business", "freelancers", "career"];
 
 /**
- * Главная кнопка лендингов эфира: «действие + что получу». Есть подарок (лид-магнит, гайд) — «…и получить гайд»,
- * иначе «…бесплатно». Текст задаётся здесь, правило одно для всех страниц (применяется ниже к hero.primaryCta).
+ * Главная кнопка лендингов эфира: «действие + что получу» — строка из efir.ts (меняется вместе с ценой эфира).
+ * Применяется ниже к hero.primaryCta как геттер, чтобы цена считалась во время рендера.
  */
-export const efirCta = (hasGift: boolean): string => (hasGift ? "Записаться на эфир и получить гайд" : "Записаться на эфир бесплатно");
+export const efirCta = (hasGift: boolean): string => efirSignupCta(hasGift);
 
 export const audiences: Audience[] = [
   /* ---------------------------------------------------------------- БИЗНЕС */
@@ -29,19 +30,23 @@ export const audiences: Audience[] = [
     card: {
       title: "Бизнесу",
       pain: "Разработчики дорого, а рутина съедает время",
-      chips: ["Гайд: 25 задач бизнеса", "Бесплатный эфир · 1,5 часа"],
+      get chips() {
+        return ["Гайд: 25 задач бизнеса", efirFormatBadge()] as [string, string];
+      },
       ctaLabel: "Записаться на эфир",
       href: "/for/business",
       mesh: "business",
       proof: { text: "TODO: короткое доказательство без URL", verified: false },
     },
     hero: {
-      eyebrow: "Бесплатный эфир · 1,5 часа",
+      get eyebrow() {
+        return efirFormatBadge();
+      },
       title: "Автоматизируйте бизнес и сократите расходы на разработку",
       highlight: "сократите расходы",
       subtitle:
         "За 1,5 часа увидите вживую, какие задачи бизнеса решают с вайб-кодингом и сколько это стоит на рынке по сравнению с разработчиком.",
-      primaryCta: "Зарегистрироваться бесплатно",
+      primaryCta: "Записаться на эфир", // переопределяется геттером ниже (efirCta)
       secondaryCta: "Программа эфира",
       floatingCards: [
         { label: "Нужен опыт в коде", value: "нет", sub: "достаточно знать свой бизнес" },
@@ -86,7 +91,12 @@ export const audiences: Audience[] = [
       items: [
         { label: "Длительность", value: "1,5 часа" },
         { label: "Формат", value: "Онлайн, вживую на экране" },
-        { label: "Стоимость", value: "Бесплатно" },
+        {
+          label: "Стоимость",
+          get value() {
+            return efirCostValue();
+          },
+        },
         { label: "Ссылка", value: "Придёт в WhatsApp" },
       ],
     },
@@ -111,13 +121,17 @@ export const audiences: Audience[] = [
       { id: "after", q: "Что я получу после эфира?", a: "Гайд «25 задач бизнеса с вайб-кодингом» и понимание, какие процессы автоматизировать первыми." },
     ],
     form: {
-      title: "Зарегистрируйтесь и получите гайд бесплатно",
+      get title() {
+        return efirRegisterTitle();
+      },
       description: "Оставьте имя и номер WhatsApp. После регистрации бот пришлёт ссылку на эфир и гайд «25 задач бизнеса с вайб-кодингом».",
       submitLabel: "Получить доступ",
       interest: "business",
     },
     seo: {
-      title: "Вайб-кодинг для бизнеса — бесплатный эфир",
+      get title() {
+        return `Вайб-кодинг для бизнеса — ${efirLow()}`;
+      },
       description: "Как предпринимателю автоматизировать бизнес и сократить расходы на разработку. За 1,5 часа вживую: задачи, инструменты, цены. Гайд «25 задач бизнеса» в подарок.",
     },
     source: "https://business.ai-pro-school.kz/",
@@ -136,19 +150,23 @@ export const audiences: Audience[] = [
       title: "Фрилансерам",
       titleNote: "и специалистам",
       pain: "Рынок меняется, а чек не растёт",
-      chips: ["Гайд: 10 способов дохода", "Бесплатный эфир · 1,5 часа"],
+      get chips() {
+        return ["Гайд: 10 способов дохода", efirFormatBadge()] as [string, string];
+      },
       ctaLabel: "Записаться на эфир",
       href: "/for/freelancers",
       mesh: "freelance",
       proof: { text: "TODO: короткое доказательство без URL", verified: false },
     },
     hero: {
-      eyebrow: "Бесплатный эфир · 1,5 часа",
+      get eyebrow() {
+        return efirFormatBadge();
+      },
       title: "Добавьте AI-разработку в свои услуги",
       highlight: "AI-разработку",
       subtitle:
         "За 1,5 часа увидите вживую, как фрилансеры и специалисты без технического образования создают AI-продукты для клиентов — и сколько за это платят.",
-      primaryCta: "Зарегистрироваться бесплатно",
+      primaryCta: "Записаться на эфир", // переопределяется геттером ниже (efirCta)
       secondaryCta: "Что будет на эфире",
       floatingCards: [
         { label: "Новая услуга", value: "Telegram-бот", sub: "для текущих клиентов" },
@@ -180,7 +198,12 @@ export const audiences: Audience[] = [
       items: [
         { label: "Длительность", value: "1,5 часа" },
         { label: "Формат", value: "Онлайн, вживую на экране" },
-        { label: "Стоимость", value: "Бесплатно" },
+        {
+          label: "Стоимость",
+          get value() {
+            return efirCostValue();
+          },
+        },
         { label: "Ссылка", value: "Придёт в WhatsApp" },
       ],
     },
@@ -205,13 +228,17 @@ export const audiences: Audience[] = [
       { id: "after", q: "Что после эфира?", a: "Гайд «10 способов дохода с вайб-кодингом» и понимание, какую услугу добавить первой." },
     ],
     form: {
-      title: "Зарегистрируйтесь и получите гайд бесплатно",
+      get title() {
+        return efirRegisterTitle();
+      },
       description: "Оставьте имя и номер WhatsApp. После регистрации бот пришлёт ссылку на эфир и гайд «10 способов получать доход с вайб-кодингом».",
       submitLabel: "Получить доступ",
       interest: "freelancers",
     },
     seo: {
-      title: "Вайб-кодинг для фрилансеров и специалистов — бесплатный эфир",
+      get title() {
+        return `Вайб-кодинг для фрилансеров и специалистов — ${efirLow()}`;
+      },
       description: "Как добавить AI-разработку в свои услуги. Боты, сайты, автоматизация без техобразования. Гайд «10 способов дохода» в подарок.",
     },
     source: "https://freelance.ai-pro-school.kz/",
@@ -230,19 +257,23 @@ export const audiences: Audience[] = [
       title: "Специалистам",
       titleNote: "в найме",
       pain: "Рутина съедает время, а коллеги уже используют ИИ",
-      chips: ["Гайд: 25 задач в работе", "Бесплатный эфир · 1,5 часа"],
+      get chips() {
+        return ["Гайд: 25 задач в работе", efirFormatBadge()] as [string, string];
+      },
       ctaLabel: "Записаться на эфир",
       href: "/for/career",
       mesh: "career",
       proof: { text: "TODO: короткое доказательство без URL", verified: false },
     },
     hero: {
-      eyebrow: "Бесплатный эфир · 1,5 часа",
+      get eyebrow() {
+        return efirFormatBadge();
+      },
       title: "Автоматизируйте свою работу и станьте незаменимым с помощью AI",
       highlight: "незаменимым",
       subtitle:
         "За 1,5 часа увидите вживую, какую рутину уже сейчас автоматизируют с помощью AI — и что это даёт специалисту в карьере и доходе.",
-      primaryCta: "Зарегистрироваться бесплатно",
+      primaryCta: "Записаться на эфир", // переопределяется геттером ниже (efirCta)
       secondaryCta: "Что будет на эфире",
       floatingCards: [
         { label: "Еженедельный отчёт", value: "5 минут", sub: "вместо 3 часов" },
@@ -275,7 +306,12 @@ export const audiences: Audience[] = [
       items: [
         { label: "Длительность", value: "1,5 часа" },
         { label: "Формат", value: "Онлайн, вживую на экране" },
-        { label: "Стоимость", value: "Бесплатно" },
+        {
+          label: "Стоимость",
+          get value() {
+            return efirCostValue();
+          },
+        },
         { label: "Ссылка", value: "Придёт в WhatsApp" },
       ],
     },
@@ -300,13 +336,17 @@ export const audiences: Audience[] = [
       { id: "after", q: "Что после эфира?", a: "Гайд «25 задач, которые можно автоматизировать» и понимание, с чего начать на своей работе." },
     ],
     form: {
-      title: "Зарегистрируйтесь и получите гайд бесплатно",
+      get title() {
+        return efirRegisterTitle();
+      },
       description: "Оставьте имя и номер WhatsApp. После регистрации бот пришлёт ссылку на эфир и гайд «25 задач в вашей работе, которые можно автоматизировать с помощью ИИ».",
       submitLabel: "Получить доступ",
       interest: "career",
     },
     seo: {
-      title: "Вайб-кодинг для специалистов в найме — бесплатный эфир",
+      get title() {
+        return `Вайб-кодинг для специалистов в найме — ${efirLow()}`;
+      },
       description: "Как автоматизировать свою работу и стать незаменимым с помощью AI. Отчёты, переписка, документы — без IT-образования. Гайд «25 задач» в подарок.",
     },
     source: "https://career.ai-pro-school.kz/",
@@ -362,4 +402,8 @@ export function getAudiencesForCards(): Audience[] {
 /** ЦА с отдельными лендингами (/for/*) */
 export const landingAudiences = audiences.filter((a) => a.path.startsWith("/for/"));
 
-for (const a of audiences) a.hero.primaryCta = a.path.startsWith("/for/") ? efirCta(Boolean(a.leadMagnet)) : a.hero.primaryCta;
+// Кнопка лендингов эфира считается при чтении (во время рендера), а не при старте сервера
+for (const a of audiences) {
+  if (!a.path.startsWith("/for/")) continue;
+  Object.defineProperty(a.hero, "primaryCta", { get: () => efirCta(Boolean(a.leadMagnet)), enumerable: true, configurable: true });
+}

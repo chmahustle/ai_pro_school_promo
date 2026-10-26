@@ -1,6 +1,6 @@
 import "server-only";
 import { directions, lineupForWhom } from "./lineup";
-import { catalogUrl, directionPages, formatPriceParts, getEntryProducts, getCurrentPrice } from "./products";
+import { catalogUrl, directionPages, formatPriceParts, FREE_WORD, getEntryProducts, getCurrentPrice } from "./products";
 import { vocabulary } from "./vocabulary";
 import type { PublicNavMenu } from "./public-types";
 
@@ -28,6 +28,7 @@ export function getNavMenu(): PublicNavMenu {
       start: {
         before: `Начать с ${entry ? (GEN[entry.id] ?? entry.name) : d.name}`,
         free: entry ? getCurrentPrice(entry) === 0 : false,
+        freeLabel: FREE_WORD,
         price: { prefix, amount, unit },
       },
     };

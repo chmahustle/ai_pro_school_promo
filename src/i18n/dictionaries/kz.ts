@@ -24,7 +24,6 @@ export const kz: DeepPartial<Dictionary> = {
   common: {
     learnMore: "Толығырақ",
     apply: "Өтінім қалдыру",
-    free: "Тегін",
   },
 };
 

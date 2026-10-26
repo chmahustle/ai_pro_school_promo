@@ -1,5 +1,6 @@
 import { renderOg, OG_SIZE, OG_CONTENT_TYPE } from "@/lib/og";
 import { getAudience, landingAudiences } from "@/data/audiences";
+import { efirFormatBadge } from "@/data/efir";
 
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
@@ -14,7 +15,7 @@ export default async function Image({ params }: { params: Promise<{ audience: st
   return renderOg({
     title: a?.hero.title ?? "AI Pro School",
     subtitle: a?.hero.subtitle,
-    eyebrow: "Бесплатный эфир · 1,5 часа",
+    eyebrow: efirFormatBadge(),
     theme: a?.accent === "ink" ? "dark" : a?.accent === "peach" ? "peach" : "light",
   });
 }

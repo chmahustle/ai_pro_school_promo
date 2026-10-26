@@ -24,8 +24,13 @@ for (const f of [".env", ".env.local", ".env.production", ".env.production.local
   }
 }
 
+// Шаг 13: тестовые переменные подмены даты/цены эфира (check-copy --at) не должны попасть в боевую сборку
+for (const t of ["APS_TEST_NOW", "APS_TEST_EFIR_PAID_FROM"]) {
+  if (process.env[t]) hits.push(`${t} (только для check-copy --at)`);
+}
+
 if (hits.length > 0) {
-  console.error(`\ncheck-env: ${NAME}=true запрещён в production-сборке (${hits.join(", ")}).\nУдалите переменную: заглушки показываются только в dev.\n`);
+  console.error(`\ncheck-env: запрещено в production-сборке: ${hits.join(", ")}.\nУдалите переменную: заглушки показываются только в dev, APS_TEST_* — только для check-copy --at.\n`);
   process.exit(1);
 }
 console.log("check-env: ок");

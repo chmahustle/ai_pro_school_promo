@@ -13,6 +13,14 @@ import { join, relative, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
+
+// Шаг 13: `check-copy --at <YYYY-MM-DD>` — сборка с подменённой датой после смены цены эфира и проверка HTML (scripts/check-efir-at.mjs)
+const atIdx = process.argv.indexOf("--at");
+if (atIdx >= 0) {
+  const { spawnSync } = await import("node:child_process");
+  const r = spawnSync(process.execPath, [join(ROOT, "scripts/check-efir-at.mjs"), process.argv[atIdx + 1] ?? ""], { stdio: "inherit" });
+  process.exit(r.status ?? 1);
+}
 const SRC = join(ROOT, "src");
 
 const FORBIDDEN = ["Цена уточняется", "TODO(клиент)", "Старт 20 апреля", "20 апреля"];

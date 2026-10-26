@@ -91,6 +91,15 @@ export interface Product {
   asOf: string;
 }
 
+/**
+ * «Сейчас» для расчёта цен. Только для проверки смены цены эфира (check-copy --at): APS_TEST_NOW подменяет дату,
+ * APS_TEST_EFIR_PAID_FROM задаёт дату начала платной цены эфира. check-env запрещает их в боевой сборке.
+ */
+export const currentDate = (): Date => (process.env.APS_TEST_NOW ? new Date(process.env.APS_TEST_NOW) : new Date());
+
+/** Слово «бесплатно» живёт только здесь и в efir.ts: остальной код берёт строки из efirPriceLabel() и efir.ts */
+export const FREE_WORD = "бесплатно";
+
 const SOURCE = "разбор сайта 22.10.2026";
 const AS_OF = "2026-10-22";
 
@@ -188,7 +197,7 @@ export const products: Product[] = [
     priceNote: "",
     installmentFromPerMonth: null,
     // Эфир станет платным (9 900 ₸), но дату не назвали: запись с from: null не действует, пока не появится дата.
-    priceSchedule: [{ from: null, price: 9900 }],
+    priceSchedule: [{ from: process.env.APS_TEST_EFIR_PAID_FROM ?? null, price: 9900 }],
     cohortWeekdays: null,
     cohortVerified: false,
     nextStart: null,
@@ -304,7 +313,7 @@ export function getFinalProjectTitle(): string {
 }
 
 /** Цена на момент now: базовая, затем последняя действующая запись расписания (записи с from: null игнорируются). */
-export function getCurrentPrice(product: Product, now: Date = new Date()): number | null {
+export function getCurrentPrice(product: Product, now: Date = currentDate()): number | null {
   let price = product.price;
   const active = product.priceSchedule
     .filter((s): s is { from: string; price: number } => s.from !== null && new Date(s.from).getTime() <= now.getTime())
@@ -327,10 +336,10 @@ export interface PriceParts {
 const NBSP = " ";
 
 /** Составные части цены для вёрстки (единица мельче и в nowrap — см. ProductPrice). null-цена → пустые части. */
-export function formatPriceParts(product: Product, now: Date = new Date()): PriceParts {
+export function formatPriceParts(product: Product, now: Date = currentDate()): PriceParts {
   const price = getCurrentPrice(product, now);
   if (price === null) return { prefix: "", amount: "", unit: "", text: "" };
-  if (price === 0) return { prefix: "", amount: "бесплатно", unit: "", text: "бесплатно" };
+  if (price === 0) return { prefix: "", amount: FREE_WORD, unit: "", text: FREE_WORD };
   const prefix = product.pricePrefix;
   const amount = formatNumber(price);
   return {
@@ -342,7 +351,7 @@ export function formatPriceParts(product: Product, now: Date = new Date()): Pric
 }
 
 /** «9 900 ₸», «от 249 000 ₸», «бесплатно» — с неразрывными пробелами. Пустая строка, если цены нет. */
-export function formatPrice(product: Product, now: Date = new Date()): string {
+export function formatPrice(product: Product, now: Date = currentDate()): string {
   return formatPriceParts(product, now).text;
 }
 
@@ -361,7 +370,7 @@ const ALMATY_OFFSET_MS = 5 * 60 * 60 * 1000; // UTC+5
  * Ближайший день потока по cohortWeekdays (включая сегодня, время суток не учитывается). Календарь — по Астане.
  * null, если у продукта нет расписания потоков — тогда дату не показываем.
  */
-export function getNextCohort(id: ProductId, now: Date = new Date()): Cohort | null {
+export function getNextCohort(id: ProductId, now: Date = currentDate()): Cohort | null {
   const p = getProduct(id);
   if (!p.cohortWeekdays || p.cohortWeekdays.length === 0) return null;
   const local = new Date(now.getTime() + ALMATY_OFFSET_MS);
@@ -415,31 +424,48 @@ export function getEntryProducts(): Product[] {
 const entryShortName: Partial<Record<ProductId, string>> = { practicum: vocabulary.practicumShort, efir: vocabulary.efirShort };
 
 /** Строка под кнопкой входа: «Практикум от 9 900 ₸», «Эфир бесплатно». Цена — из конфига, не хардкод. */
-export function formatEntryLine(product: Product, now: Date = new Date()): string {
+export function formatEntryLine(product: Product, now: Date = currentDate()): string {
   const price = getCurrentPrice(product, now);
   const name = entryShortName[product.id] ?? product.name;
   if (price === null) return name;
-  if (price === 0) return `${name} бесплатно`;
+  if (price === 0) return `${name} ${FREE_WORD}`;
   return `${name}${NBSP}${formatNumber(price)}${NBSP}₸`;
 }
 
 /**
- * Подзаголовок первого экрана: «Без техобразования. Начать можно с {минимальная платная входная цена} или с бесплатного эфира».
- * Цена и «бесплатного» считаются по конфигу: пока эфир бесплатный — вторая половина есть, станет платным — исчезнет.
+ * Эфир сейчас бесплатный? Считается по priceSchedule эфира (дата, с которой он платный, пока неизвестна — запись не действует).
  */
-export function getEntrySubtitle(now: Date = new Date()): { before: string; price: string; after: string } {
+export function efirIsFree(now: Date = currentDate()): boolean {
+  return getCurrentPrice(getProduct("efir"), now) === 0;
+}
+
+/**
+ * Цена эфира строкой для любых текстов сайта: «бесплатно» пока цена 0, иначе «9 900 ₸» (неразрывные пробелы).
+ * Пустая строка, если цены нет. Руками «бесплатно» про эфир нигде не писать — только эта функция и efir.ts.
+ */
+export function efirPriceLabel(now: Date = currentDate()): string {
+  return formatPriceParts(getProduct("efir"), now).text;
+}
+
+/**
+ * Подзаголовок первого экрана: «Без техобразования. Начать можно с {минимальная платная входная цена} или с эфира».
+ * Слово «бесплатного» — только пока эфир бесплатный (цена 0 в priceSchedule), потом «с эфира».
+ */
+export function getEntrySubtitle(now: Date = currentDate()): { before: string; price: string; after: string } {
   const entries = getEntryProducts();
   const priced = entries.map((p) => getCurrentPrice(p, now));
   const paid = priced.filter((v): v is number => v !== null && v > 0);
   const hasFree = priced.some((v) => v === 0);
+  const hasEfir = entries.some((p) => p.id === "efir");
   const min = paid.length ? Math.min(...paid) : null;
   const before = "Без техобразования. Начать можно с ";
-  if (min === null) return { before: hasFree ? `${before}бесплатного эфира` : "Без техобразования", price: "", after: "" };
-  return { before, price: `${formatNumber(min)}${NBSP}₸`, after: hasFree ? " или с бесплатного эфира" : "" };
+  const efirWord = hasFree ? "бесплатного эфира" : "эфира";
+  if (min === null) return { before: hasEfir ? `${before}${efirWord}` : "Без техобразования", price: "", after: "" };
+  return { before, price: `${formatNumber(min)}${NBSP}₸`, after: hasEfir ? ` или с ${efirWord}` : "" };
 }
 
 /** Первый шаг направления для карточек: короткое название и цена (из конфига) */
-export function getEntryStep(direction: Direction, now: Date = new Date()): { name: string; price: PriceParts } | null {
+export function getEntryStep(direction: Direction, now: Date = currentDate()): { name: string; price: PriceParts } | null {
   const p = getEntryProducts().find((x) => x.direction === direction);
   if (!p) return null;
   return { name: entryShortName[p.id] ?? p.name, price: formatPriceParts(p, now) };

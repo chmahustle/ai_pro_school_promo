@@ -1,5 +1,6 @@
 import "server-only";
-import { getProduct } from "./products";
+import { efirFreeGenPrefix, efirLow, efirTitle } from "./efir";
+import { getCurrentPrice, getProduct } from "./products";
 import type { Course, CourseSlug } from "./types";
 
 /** Формат практикума (число эфиров, дни недели) подтверждён школой — products.ts → formatVerified */
@@ -286,15 +287,20 @@ export const courses: Course[] = [
     name: "Вайб-кодинг: AI-разработка без программиста",
     shortName: "Вайб-кодинг",
     tagline: "Сайты, Telegram-боты, CRM и AI-агенты — своими руками, без кода и подрядчиков",
-    description:
-      "Направление для бизнеса, фрилансеров и специалистов в найме. Начинается с бесплатного 1,5-часового эфира, где вживую показываем, как ставить задачу ИИ и получать работающий продукт.",
+    get description() {
+      return `Направление для бизнеса, фрилансеров и специалистов в найме. Начинается с ${efirFreeGenPrefix()}1,5-часового эфира, где вживую показываем, как ставить задачу ИИ и получать работающий продукт.`;
+    },
     cover: null,
     accent: "ink",
-    format: "Бесплатный эфир 1,5 часа → программа",
+    get format() {
+      return `${efirTitle()} 1,5 часа → программа`;
+    },
     duration: "Эфир — 1,5 часа",
     level: "Без опыта в разработке",
     startNote: "Ближайший эфир — по регистрации",
-    priceFrom: 0,
+    get priceFrom() {
+      return getCurrentPrice(getProduct("efir")) ?? 0;
+    },
     priceStatus: "verified",
     forWhom: [
       { title: "Предприниматель", text: "платите за сайты, ботов и автоматизацию — хотите дешевле и быстрее" },
@@ -313,7 +319,9 @@ export const courses: Course[] = [
       {
         id: "webinar",
         eyebrow: "Эфир",
-        title: "Бесплатный эфир: вайб-кодинг вживую",
+        get title() {
+          return `${efirTitle()}: вайб-кодинг вживую`;
+        },
         lessons: [
           "Что такое вайб-кодинг — показываем на экране",
           "Какие задачи уже автоматизируют: заявки, CRM, боты, сайты",
@@ -326,8 +334,12 @@ export const courses: Course[] = [
     tariffs: [
       {
         id: "webinar",
-        name: "Бесплатный эфир",
-        price: 0,
+        get name() {
+          return efirTitle();
+        },
+        get price() {
+          return getCurrentPrice(getProduct("efir")) ?? 0;
+        },
         description: "Регистрация по имени и WhatsApp. Ссылка и гайд придут в бот.",
         features: ["1,5 часа вживую", "Гайд под вашу аудиторию в подарок", "Ответы на вопросы"],
         status: "verified",
@@ -342,9 +354,13 @@ export const courses: Course[] = [
     audiences: ["business", "freelancers", "career"],
     seo: {
       title: "Вайб-кодинг — AI-разработка без программиста",
-      description: "Бесплатный эфир: как бизнесу, фрилансерам и специалистам создавать сайты, ботов и автоматизации с помощью ИИ без кода. AI Pro School.",
+      get description() {
+        return `${efirTitle()}: как бизнесу, фрилансерам и специалистам создавать сайты, ботов и автоматизации с помощью ИИ без кода. AI Pro School.`;
+      },
     },
-    ctaLabel: "Записаться на бесплатный эфир",
+    get ctaLabel() {
+      return `Записаться на ${efirLow()}`;
+    },
     source: "https://business.ai-pro-school.kz/",
   },
 ];

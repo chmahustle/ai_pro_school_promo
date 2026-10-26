@@ -1,5 +1,5 @@
 import type { Course } from "@/data/types";
-import { formatCohortDate, getNextCohort } from "@/data/products";
+import { currentDate, formatCohortDate, getNextCohort } from "@/data/products";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 
 export interface CourseStart {
@@ -16,7 +16,7 @@ export interface CourseStart {
  * в проде неподтверждённую дату не показываем (остаётся startNote курса или ничего), в dev — с пометкой.
  * Остальные курсы — пояснение из данных курса (startNote), конкретные даты не выдумываем.
  */
-export function getCourseStart(course: Pick<Course, "slug" | "startNote">, now: Date = new Date()): CourseStart {
+export function getCourseStart(course: Pick<Course, "slug" | "startNote">, now: Date = currentDate()): CourseStart {
   if (course.slug === "practicum") {
     const cohort = getNextCohort("practicum", now);
     if (cohort && (cohort.verified || SHOW_PLACEHOLDERS)) {

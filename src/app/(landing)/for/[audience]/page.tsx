@@ -1,3 +1,4 @@
+import { efirNoHiddenConditions } from "@/data/efir";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { LandingHeader } from "@/components/layout/LandingHeader";
@@ -103,7 +104,7 @@ export default async function AudienceLandingPage({ params }: { params: Promise<
         submitLabel={a.form.submitLabel}
         hint="Ссылка на эфир и гайд придут в WhatsApp"
         thanksPath="/thanks/efir"
-        bullets={a.leadMagnet ? [a.leadMagnet.title, "Ссылка на эфир — в WhatsApp", "Бесплатно, без скрытых условий"] : undefined}
+        bullets={a.leadMagnet ? [a.leadMagnet.title, "Ссылка на эфир — в WhatsApp", efirNoHiddenConditions()] : undefined}
       />
     </>
   );
