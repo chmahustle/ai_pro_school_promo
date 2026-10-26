@@ -8,7 +8,7 @@ import { LogosMarquee } from "@/components/sections/LogosMarquee";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { FAQ } from "@/components/sections/FAQ";
 import { LeadSection } from "@/components/sections/LeadSection";
-import { generalFaq } from "@/data/faq";
+import { getFaq } from "@/data/faq";
 import { team } from "@/data/team";
 import { site } from "@/lib/site";
 import { cn, nbspDash } from "@/lib/utils";
@@ -111,7 +111,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <FAQ items={generalFaq} />
+      <FAQ items={getFaq("about")} />
       <LeadSection
         className="mt-10 sm:mt-16"
         formId="about-footer"

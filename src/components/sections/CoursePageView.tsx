@@ -1,3 +1,4 @@
+import { getFaq } from "@/data/faq";
 import { notFound } from "next/navigation";
 import { LandingHeader } from "@/components/layout/LandingHeader";
 import { CourseHero } from "@/components/sections/CourseHero";
@@ -91,7 +92,7 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
       ) : (
         <Team items={team.filter((m) => m.id !== "maidan")} eyebrow="Кто ведёт" title="Кто ведёт курс" layout="grid" />
       )}
-      <FAQ items={course.faq} />
+      <FAQ items={getFaq(course.slug)} />
       <LeadSection
         className="mt-10 sm:mt-16"
         formId={`course-${course.slug}`}

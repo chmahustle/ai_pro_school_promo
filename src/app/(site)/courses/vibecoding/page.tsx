@@ -1,3 +1,4 @@
+import { getFaq } from "@/data/faq";
 import { CourseForWhom, CourseOutcomes } from "@/components/sections/CourseDetails";
 import { CTA } from "@/components/sections/CTA";
 import { DirectionPage } from "@/components/sections/DirectionPage";
@@ -30,7 +31,7 @@ export default function VibecodingPage() {
         <Programs modules={course.program} title="Как устроено обучение" description={`Начинаем с ${efirGenitive()} — дальше полная программа.`} />
         <CourseOutcomes course={course} />
         <Team items={webinarSpeakers} eyebrow="Спикеры" title="Кто проведёт эфир" layout="wide" />
-        <FAQ items={course.faq} />
+        <FAQ items={getFaq("vibecoding")} />
         <CTA
           title="Выберите свой эфир"
           description="У каждой аудитории — свой разбор задач и свой гайд в подарок."

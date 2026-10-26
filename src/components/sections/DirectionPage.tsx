@@ -4,6 +4,8 @@ import { Button, Pill, Section, SectionIntro } from "@/components/ui";
 import { getPublicDirectionPage, getPublicLineup } from "@/data/public";
 import type { Direction } from "@/data/products";
 import { nbspDash } from "@/lib/utils";
+import { getFaq } from "@/data/faq";
+import { FAQ } from "./FAQ";
 import { HomeStories } from "./HomeStories";
 import { LeadSection } from "./LeadSection";
 import { PageHero } from "./PageHero";
@@ -59,6 +61,9 @@ export function DirectionPage({ direction, children }: { direction: Direction; c
       <div className="mt-6 sm:mt-10">
         <HomeStories direction={direction} limit={3} />
       </div>
+
+      {/* FAQ направления: скрыт, пока нет подтверждённых вопросов (getFaq вернёт пусто) */}
+      {direction === "creator" && <FAQ items={getFaq("creator")} />}
 
       <LeadSection
         className="mt-10 sm:mt-16"

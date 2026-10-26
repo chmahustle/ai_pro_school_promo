@@ -1,3 +1,4 @@
+import { getFaq, type FaqPage } from "@/data/faq";
 import { efirNoHiddenConditions } from "@/data/efir";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -149,7 +150,7 @@ function LandingBlock({ block, audience }: { block: Block; audience: Audience })
       // «Что дальше после эфира»: офлайн-урок и курс (карточки из products.ts)
       return <NextSteps id="after-efir" title="Что дальше после эфира" steps={getPublicSteps(["offline", "course"])} />;
     case "faq":
-      return <FAQ items={audience.faq} title="Частые вопросы" />;
+      return <FAQ items={getFaq(`for-${audience.slug}` as FaqPage)} title="Частые вопросы" />;
     default:
       return null;
   }

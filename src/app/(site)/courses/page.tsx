@@ -4,7 +4,7 @@ import { CatalogSection } from "@/components/sections/CatalogSection";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { FAQ } from "@/components/sections/FAQ";
 import { LeadSection } from "@/components/sections/LeadSection";
-import { generalFaq } from "@/data/faq";
+import { getFaq } from "@/data/faq";
 import { getPublicCatalog } from "@/data/public";
 
 /** В каталоге есть «ближайший старт» практикума — зависит от даты; обновляем раз в час. */
@@ -22,7 +22,7 @@ export default function CoursesPage() {
       <CoursesHero />
       <CatalogSection />
       <HowItWorks />
-      <FAQ items={generalFaq.slice(0, 5)} />
+      <FAQ items={getFaq("courses", { limit: 5 })} />
       <LeadSection
         formId="courses-footer"
         title="Поможем выбрать программу"

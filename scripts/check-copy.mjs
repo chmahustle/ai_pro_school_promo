@@ -78,7 +78,7 @@ const MENU_FILES = /^src\/(components\/layout\/(Header|MegaMenu|MobileMenu|Foote
 const MENU_FORBIDDEN = ["Бесплатный эфир", "бесплатный эфир", "гайд в подарок", "Гайд в подарок", "чек в 2–3 раза"];
 // Шаг 12: публичные тексты страниц продуктов (данные курсов и продуктов, компоненты страниц курса/продукта/лестницы).
 // Ошибка — «стабильный доход»; предупреждение (не ошибка, в отчёт для ручной проверки) — корни про заработок и доход.
-const PRODUCT_FILES = /^src\/(data\/(courses|products|lineup|forms)\.ts|components\/sections\/(Course[A-Za-z]*|Pricing[A-Za-z]*|ProductLanding|ProductLadder|LadderStepCard|Programs|RefundTerms|NextSteps|LeaderCard|HeroTitle)\.tsx|app\/\(landing\)\/courses\/.*)$/;
+const PRODUCT_FILES = /^src\/(data\/(courses|products|lineup|forms|faq)\.ts|components\/sections\/(Course[A-Za-z]*|Pricing[A-Za-z]*|ProductLanding|ProductLadder|LadderStepCard|Programs|RefundTerms|NextSteps|LeaderCard|HeroTitle)\.tsx|app\/\(landing\)\/courses\/.*)$/;
 const PRODUCT_FORBIDDEN = ["стабильный доход"];
 const WARN_RE = /заработ|зарабатыв|доход|монетиз|ежедневно|приводим заказчиков|вирусят/i;
 const warnings = [];

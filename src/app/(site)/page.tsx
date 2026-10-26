@@ -9,7 +9,7 @@ import { LineupSection } from "@/components/sections/LineupSection";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { FAQ } from "@/components/sections/FAQ";
 import { LeadSection } from "@/components/sections/LeadSection";
-import { generalFaq } from "@/data/faq";
+import { getFaq } from "@/data/faq";
 /** В блоке «Продуктовая линейка» есть «ближайший старт» (зависит от даты) и цены; обновляем раз в час. */
 export const revalidate = 3600;
 
@@ -40,7 +40,7 @@ export default function HomePage() {
       <HomeStories />
       <HowItWorks />
       <WantSameCta />
-      <FAQ items={generalFaq.slice(0, 6)} description="Если не нашли ответ — напишите в WhatsApp, ответим лично." />
+      <FAQ items={getFaq("home", { limit: 6 })} description="Если не нашли ответ — напишите в WhatsApp, ответим лично." />
       <LeadSection
         id="webinar-form"
         formId="home-footer"

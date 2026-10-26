@@ -161,14 +161,6 @@ export interface Partner {
   note?: string;
 }
 
-export interface FaqItem {
-  id: string;
-  q: string;
-  a: string;
-  /** false — ответа от школы нет: вопрос скрыт в проде, в dev показан с пометкой */
-  verified?: boolean;
-}
-
 export interface Tariff extends Verifiable {
   id: string;
   name: string;
@@ -229,7 +221,6 @@ export interface Course {
   tariffs: Tariff[];
   /** verified: false — бонус не подтверждён школой: в проде скрыт, в dev с пометкой (не задано — показывается) */
   bonuses?: { title: string; items: string[]; deadline?: string; verified?: boolean };
-  faq: FaqItem[];
   audiences: AudienceSlug[];
   seo: { title: string; description: string };
   /** Какой CTA в hero */
@@ -312,7 +303,6 @@ export interface Audience {
     afterLabel: string;
   };
 
-  faq: FaqItem[];
 
   form: {
     title: string;

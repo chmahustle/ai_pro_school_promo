@@ -7,6 +7,8 @@ import { getNextStep, getPublicProductPage } from "@/data/public";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 import { nbspDash } from "@/lib/utils";
 import { PlaceholderBadge } from "@/components/ui/PlaceholderBadge";
+import { getFaq } from "@/data/faq";
+import { FAQ } from "./FAQ";
 import { LeaderCard } from "./LeaderCard";
 import { LeadSection } from "./LeadSection";
 import { NextSteps } from "./NextSteps";
@@ -192,6 +194,8 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
       )}
 
       <RefundTerms text={p.refundTerms} />
+
+      <FAQ items={getFaq(id === "offline" ? "vibecoding-offline" : "vibecoding-course")} />
 
       <NextSteps id="next" title="Что дальше" steps={nextStep ? [nextStep] : []} />
 

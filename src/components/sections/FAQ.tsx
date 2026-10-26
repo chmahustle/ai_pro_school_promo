@@ -1,9 +1,9 @@
 import { Accordion, Section, SectionHead } from "@/components/ui";
-import type { FaqItem } from "@/data/types";
-import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
+import type { PublicFaqItem } from "@/data/faq";
 
 interface FAQProps {
-  items: FaqItem[];
+  /** Вопросы страницы из getFaq(page): в проде только подтверждённые, в dev — ещё и неподтверждённые (с devNote) */
+  items: PublicFaqItem[];
   eyebrow?: string;
   title?: string;
   description?: string;
@@ -22,15 +22,15 @@ export function FAQ({
   bare,
   withSchema = true,
 }: FAQProps) {
-  // Вопросы без подтверждённого ответа школы — только в dev
-  const list = items.filter((i) => i.verified !== false || SHOW_PLACEHOLDERS);
+  const list = items;
   if (list.length === 0) return null;
 
   const schema = withSchema
     ? {
         "@context": "https://schema.org",
         "@type": "FAQPage",
-        mainEntity: list.filter((i) => i.a).map((i) => ({
+        // Только видимые подтверждённые вопросы: неподтверждённые (devNote, только dev) в разметку не попадают
+        mainEntity: list.filter((i) => i.a && !i.devNote).map((i) => ({
           "@type": "Question",
           name: i.q,
           acceptedAnswer: { "@type": "Answer", text: i.a },
@@ -41,7 +41,12 @@ export function FAQ({
   const body = (
     <>
       <Accordion
-        items={list.map((i) => ({ id: i.id, title: i.q, content: <p>{i.a || "Ответ школы не получен — вопрос виден только в dev"}</p> }))}
+        items={list.map((i) => ({ id: i.id, title: i.q, content: (
+            <>
+              {i.devNote && <p className="mb-1 text-[12px] font-semibold text-danger">{i.devNote}</p>}
+              <p>{i.a}</p>
+            </>
+          ) }))}
         tone={tone === "white" ? "lavender" : "white"}
       />
       {schema && (
