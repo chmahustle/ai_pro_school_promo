@@ -14,18 +14,18 @@ function Spark({ fill, className }: { fill: string; className: string }) {
 }
 
 /**
- * Декор карточки по её роли — те же фигуры и приёмы, что в плитках «Хотите так же?» (WantSameCta):
- * входная — крупная лавандовая четырёхконечная звезда у правого края; вторая — толстая изогнутая линия;
- * флагман — контурный круг (белая обводка) с двумя искрами. Фигуры позади текста (-z-10 в isolate-карточке),
- * обрезаются краем карточки. Один раз плавно появляются при входе в экран, при reduced-motion — сразу.
- * Движение при hover (подъём карточки, поворот/сдвиг фигур) — в globals.css (.step-card), только для мыши.
+ * Декор карточки по её роли, живёт только в «зоне декора» (между описанием и ценой, см. LadderStepCard):
+ * входная — крупная лавандовая четырёхконечная звезда; вторая — кольцо с толстой линией; флагман — мягкий блоб.
+ * Рядом маленькие светлые звёздочки. Зона обрезает фигуры (overflow-hidden, по ширине — до края карточки),
+ * поэтому они не заходят на текст ни в покое, ни при hover. Один раз плавно появляются при входе в экран,
+ * при reduced-motion — сразу. Движение при hover — в globals.css (.step-card).
  */
 export function StepDecor({ tier }: { tier: PublicLadderStep["tier"] }) {
   const reduce = useReducedMotion();
   return (
     <motion.span
       aria-hidden
-      className="pointer-events-none absolute inset-0 -z-10"
+      className="pointer-events-none absolute inset-0"
       initial={reduce ? false : { opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, amount: 0.25 }}
@@ -33,28 +33,29 @@ export function StepDecor({ tier }: { tier: PublicLadderStep["tier"] }) {
     >
       {tier === "try" && (
         <>
-          <svg viewBox="0 0 100 100" fill="#ece9ff" className="step-fig step-fig-try absolute -right-[14%] top-1/2 aspect-square w-[62%] max-w-[230px] -translate-y-1/2 opacity-90">
+          <svg viewBox="0 0 100 100" fill="#ece9ff" className="step-fig step-fig-try absolute -right-[26px] top-1/2 size-[116px] -translate-y-1/2 sm:-right-[30px] sm:size-[132px]">
             <path d={STAR} />
           </svg>
-          <Spark fill="#ffffff" className="right-[8%] top-[16%] w-[7%]" />
+          <Spark fill="#ffffff" className="right-[46%] top-[22%] w-[14px]" />
+          <Spark fill="#ffffff" className="right-[36%] bottom-[18%] w-[9px]" />
         </>
       )}
       {tier === "project" && (
         <>
-          <svg viewBox="0 0 200 140" fill="none" className="step-fig step-fig-project absolute -bottom-[6%] -right-[12%] w-[92%] max-w-[340px] overflow-visible">
-            <path d="M0 128C60 132 130 104 196 14" stroke="#e8307e" strokeOpacity="0.32" strokeWidth="16" strokeLinecap="round" />
+          <svg viewBox="0 0 100 100" fill="none" className="step-fig step-fig-project absolute -right-[34px] top-1/2 size-[112px] -translate-y-1/2 overflow-visible sm:-right-[40px] sm:size-[128px]">
+            <circle cx="50" cy="50" r="42" stroke="#e8307e" strokeOpacity="0.4" strokeWidth="13" vectorEffect="non-scaling-stroke" />
           </svg>
-          <Spark fill="#e8307e" className="right-[12%] top-[40%] w-[7%]" />
-          <Spark fill="#ffffff" className="right-[34%] top-[47%] w-[5%]" />
+          <Spark fill="#cfc5ff" className="right-[46%] top-[22%] w-[14px]" />
+          <Spark fill="#cfc5ff" className="right-[36%] bottom-[18%] w-[9px]" />
         </>
       )}
       {tier === "profession" && (
         <>
-          <svg viewBox="0 0 200 200" fill="none" className="step-fig step-fig-profession absolute -bottom-[14%] -right-[14%] aspect-square w-[92%] max-w-[310px] opacity-90">
-            <circle cx="100" cy="100" r="78" stroke="#ffffff" strokeWidth="10" />
+          <svg viewBox="0 0 100 100" fill="#b8a6ff" fillOpacity="0.6" className="step-fig step-fig-profession absolute -right-[30px] top-1/2 size-[110px] -translate-y-1/2 sm:-right-[34px] sm:size-[124px]">
+            <path d="M52 3C77 4 97 24 97 48C97 74 77 97 51 97C26 97 3 78 3 52C3 26 28 2 52 3Z" />
           </svg>
-          <Spark fill="#14121f" className="right-[28%] top-[44%] w-[10%]" />
-          <Spark fill="#e8307e" className="right-[8%] top-[38%] w-[7%]" />
+          <Spark fill="#ffffff" className="right-[46%] top-[22%] w-[14px]" />
+          <Spark fill="#ffffff" className="right-[36%] bottom-[18%] w-[9px]" />
         </>
       )}
     </motion.span>

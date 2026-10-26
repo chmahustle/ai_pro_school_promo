@@ -6,13 +6,13 @@ import { cn, nbspDash } from "@/lib/utils";
 import { StepDecor } from "./StepDecor";
 
 /**
- * Цвет по ступени: входная — розовая (brand-100), средняя — светлая лавандовая, флагман — лавандовая с тонкой тёмной рамкой.
+ * Цвет по ступени: входная — розовая (brand-100), средняя — светлая лавандовая, флагман — лавандовая со светлой рамкой 1px (тон темнее фона).
  * Текст ink / ink-700 / ink-500 на всех трёх ≥ 4.6:1 (AA); бейдж brand-600 + белый 5.3:1.
  */
 const tiers: Record<PublicLadderStep["tier"], string> = {
   try: "border-brand-200 bg-brand-100",
   project: "border-ink/5 bg-soft-100",
-  profession: "border-ink bg-lavender",
+  profession: "border-[#d3cdf7] bg-lavender",
 };
 
 /** Карточка продукта (ступень лестницы): пилюля ступени, название, результат, формат, цена, старт, кнопка */
@@ -22,7 +22,6 @@ export function LadderStepCard({ step, entryBadge, showEntry = true, className }
     <article className={cn("step-card relative flex flex-1 flex-col rounded-[32px]", className)}>
       {/* Тело карточки: overflow-hidden обрезает декор краем; тень при hover — у внешнего article (::after), чтобы не обрезалась */}
       <div className={cn("relative isolate flex flex-1 flex-col overflow-hidden rounded-[32px] border p-6 text-ink sm:p-7", tiers[step.tier])}>
-        <StepDecor tier={step.tier} />
         <div className="flex flex-wrap items-center gap-2">
           <span className="inline-flex h-8 items-center rounded-pill bg-surface px-3.5 text-[13px] font-semibold">{step.stepLabel}</span>
           {entry && entryBadge && (
@@ -35,7 +34,12 @@ export function LadderStepCard({ step, entryBadge, showEntry = true, className }
         <p className="mt-2 text-[14px] leading-snug text-ink-700">{nbspDash(step.resultLine)}</p>
         <p className="mt-3 text-[13px] leading-snug text-ink-500">{step.format}</p>
 
-        <div className="relative mt-auto pt-12 sm:pt-20">
+        {/* Зона декора: между описанием и ценой, тянется (flex-1), обрезает фигуры; по ширине — до краёв карточки */}
+        <div aria-hidden className="relative -mx-6 min-h-[128px] flex-1 overflow-hidden sm:-mx-7 sm:min-h-[148px]">
+          <StepDecor tier={step.tier} />
+        </div>
+
+        <div className="relative">
           <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
             <ProductPrice parts={step.price} className="font-display text-[32px] font-extrabold leading-none" />
             {step.start && <span className="whitespace-nowrap text-[13px] font-semibold text-ink-700">Старт {step.start}</span>}

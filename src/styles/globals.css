@@ -448,13 +448,13 @@
       transition: transform 200ms ease-out;
     }
     .step-card:hover .step-fig-try {
-      transform: rotate(12deg);
+      transform: rotate(12deg) scale(1.08);
     }
     .step-card:hover .step-fig-project {
-      transform: translate(-10px, -10px) rotate(-6deg) scale(1.06);
+      transform: rotate(-10deg) scale(1.08);
     }
     .step-card:hover .step-fig-profession {
-      transform: translate(-10px, -8px) scale(1.08);
+      transform: scale(1.1);
     }
     .step-card:hover .step-spark {
       transform: rotate(12deg);
