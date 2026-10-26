@@ -3,56 +3,54 @@ import assert from "node:assert/strict";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 
-// Дата, с которой эфир платный, в тесте задаётся переменной (в products.ts реальной даты нет — школа не назвала).
-// Переменные читаются при импорте products.ts и при каждом вызове currentDate().
-const PAID_FROM = "2030-01-01";
-process.env.APS_TEST_EFIR_PAID_FROM = PAID_FROM;
-const BEFORE = "2029-12-31T12:00:00+05:00";
-const AFTER = "2030-01-02T12:00:00+05:00";
-
+// Эфир платный (9 900 ₸, products.ts). Ветка «бесплатно» проверяется переменной APS_TEST_EFIR_FREE (читается при каждом обращении к цене).
 let products, efir, audiences, courses;
 before(async () => {
-  process.env.APS_TEST_NOW = BEFORE;
+  delete process.env.APS_TEST_EFIR_FREE;
   products = await import("../src/data/products.ts");
   efir = await import("../src/data/efir.ts");
   audiences = await import("../src/data/audiences.ts");
   courses = await import("../src/data/courses.ts");
 });
-const at = (when) => {
-  process.env.APS_TEST_NOW = when;
+const free = (on) => {
+  if (on) process.env.APS_TEST_EFIR_FREE = "1";
+  else delete process.env.APS_TEST_EFIR_FREE;
 };
 // Неразрывные пробелы (U+00A0, U+202F) сравниваем как обычные
 const norm = (s) => s.replace(/[\u00a0\u202f]/g, " ");
 const EFIR_FREE = /бесплатн[а-яё]*[^.]{0,60}эфир|эфир[^.]{0,60}бесплатн/i;
 
-test("efirPriceLabel: «бесплатно» до даты смены цены, «9 900 ₸» после", () => {
-  at(BEFORE);
-  assert.equal(products.efirIsFree(), true);
-  assert.equal(products.efirPriceLabel(), "бесплатно");
-  at(AFTER);
+test("efirPriceLabel: эфир платный — «9 900 ₸»; ветка «бесплатно» работает по цене 0", () => {
+  free(false);
   assert.equal(products.efirIsFree(), false);
   assert.equal(norm(products.efirPriceLabel()), "9 900 ₸");
+  free(true);
+  assert.equal(products.efirIsFree(), true);
+  assert.equal(products.efirPriceLabel(), "бесплатно");
+  free(false);
 });
 
-test("подзаголовок hero: «бесплатного» только пока цена 0", () => {
-  at(BEFORE);
-  const free = products.getEntrySubtitle();
-  assert.match(free.before + free.price + free.after, /с бесплатного эфира$/);
-  at(AFTER);
+test("подзаголовок hero: «Начать можно с 9 900 ₸ или с эфира»; «бесплатного» только при цене 0", () => {
+  free(false);
   const paid = products.getEntrySubtitle();
   assert.equal(norm(paid.before + paid.price + paid.after), "Без техобразования. Начать можно с 9 900 ₸ или с эфира");
+  free(true);
+  const f = products.getEntrySubtitle();
+  assert.match(f.before + f.price + f.after, /с бесплатного эфира$/);
+  free(false);
 });
 
-test("подпись под кнопкой hero: «Эфир бесплатно» → «Эфир 9 900 ₸»", () => {
+test("подпись под кнопкой hero: «Эфир 9 900 ₸» (при цене 0 — «Эфир бесплатно»)", () => {
   const efirProduct = products.getProduct("efir");
-  at(BEFORE);
-  assert.equal(products.formatEntryLine(efirProduct), "Эфир бесплатно");
-  at(AFTER);
+  free(false);
   assert.equal(norm(products.formatEntryLine(efirProduct)), "Эфир 9 900 ₸");
+  free(true);
+  assert.equal(products.formatEntryLine(efirProduct), "Эфир бесплатно");
+  free(false);
 });
 
-test("тексты efir.ts, лендинги /for/* и курс вайб-кодинга: после смены цены нет «бесплатн» рядом с эфиром", () => {
-  at(AFTER);
+test("тексты efir.ts, лендинги /for/* и курс вайб-кодинга: при платном эфире нет «бесплатн» рядом с эфиром", () => {
+  free(false);
   const texts = [
     efir.efirTitle(),
     efir.efirLow(),
@@ -66,10 +64,11 @@ test("тексты efir.ts, лендинги /for/* и курс вайб-код�
     JSON.stringify(courses.courses.find((c) => c.slug === "vibecoding")),
   ];
   for (const t of texts) assert.doesNotMatch(t, EFIR_FREE, t.slice(0, 80));
-  // и обратная проверка: до смены цены слово на месте
-  at(BEFORE);
+  // ветка «бесплатно»: слово на месте
+  free(true);
   assert.match(efir.efirSignupCta(false), /бесплатно$/);
   assert.match(JSON.stringify(audiences.audiences), /Бесплатный эфир/);
+  free(false);
 });
 
 test("исходники: слова «бесплатн» про эфир не написаны руками вне products.ts и efir.ts", () => {

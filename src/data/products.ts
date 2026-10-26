@@ -92,8 +92,8 @@ export interface Product {
 }
 
 /**
- * «Сейчас» для расчёта цен. Только для проверки смены цены эфира (check-copy --at): APS_TEST_NOW подменяет дату,
- * APS_TEST_EFIR_PAID_FROM задаёт дату начала платной цены эфира. check-env запрещает их в боевой сборке.
+ * «Сейчас» для расчёта цен. Только для проверок (check-copy --at): APS_TEST_NOW подменяет дату, APS_TEST_EFIR_FREE
+ * включает ветку «эфир бесплатный» в тестах. check-env запрещает их в боевой сборке.
  */
 export const currentDate = (): Date => (process.env.APS_TEST_NOW ? new Date(process.env.APS_TEST_NOW) : new Date());
 
@@ -192,12 +192,14 @@ export const products: Product[] = [
     nameApproved: true,
     resultLine: "Увидеть, как без кода собирается сайт с заявками",
     format: "онлайн, 1,5 часа",
-    price: 0, // сейчас бесплатно
+    // Эфир платный: 9 900 ₸ (подтвердил владелец). APS_TEST_EFIR_FREE — только для тестов ветки «бесплатно» (tests/efir-price.test.mjs)
+    get price() {
+      return process.env.APS_TEST_EFIR_FREE ? 0 : 9900;
+    },
     pricePrefix: "",
     priceNote: "",
     installmentFromPerMonth: null,
-    // Эфир станет платным (9 900 ₸), но дату не назвали: запись с from: null не действует, пока не появится дата.
-    priceSchedule: [{ from: process.env.APS_TEST_EFIR_PAID_FROM ?? null, price: 9900 }],
+    priceSchedule: [],
     cohortWeekdays: null,
     cohortVerified: false,
     nextStart: null,
@@ -437,7 +439,7 @@ export function formatEntryLine(product: Product, now: Date = currentDate()): st
 }
 
 /**
- * Эфир сейчас бесплатный? Считается по priceSchedule эфира (дата, с которой он платный, пока неизвестна — запись не действует).
+ * Эфир бесплатный? Считается по цене эфира в products.ts (сейчас платный, 9 900 ₸); ветка «бесплатно» оставлена для тестов и на случай акций.
  */
 export function efirIsFree(now: Date = currentDate()): boolean {
   return getCurrentPrice(getProduct("efir"), now) === 0;
@@ -453,7 +455,7 @@ export function efirPriceLabel(now: Date = currentDate()): string {
 
 /**
  * Подзаголовок первого экрана: «Без техобразования. Начать можно с {минимальная платная входная цена} или с эфира».
- * Слово «бесплатного» — только пока эфир бесплатный (цена 0 в priceSchedule), потом «с эфира».
+ * Слово «бесплатного» — только если эфир бесплатный (цена 0), иначе «с эфира».
  */
 export function getEntrySubtitle(now: Date = currentDate()): { before: string; price: string; after: string } {
   const entries = getEntryProducts();

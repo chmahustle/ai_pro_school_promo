@@ -76,7 +76,6 @@ export const faqEntries: FaqEntry[] = [
   { id: "practicum-time", q: "Сколько времени занимает практикум?", a: "Поначалу 3–4 часа, потом 2–3 часа в день. Некоторые ученики делают ролик за 20 минут.", pages: ["practicum"], verified: true },
   { id: "practicum-record", q: "Будет ли запись? Я не смогу быть онлайн", a: "Да, записи всех эфиров доступны 30 дней.", pages: ["practicum"], verified: true },
   { id: "practicum-vpn", q: "Работают ли бесплатные нейросети в Казахстане и других странах?", a: "Да, с VPN. У нас много учеников из других стран.", pages: ["practicum"], verified: true },
-  { id: "practicum-income", q: "Сколько я смогу зарабатывать после практикума?", a: "", pages: ["practicum"], verified: false, needsSchoolReview: true },
   { id: "ai-creator-edu", q: "Нужно ли техническое образование?", a: "Нет. Курс рассчитан на людей без IT-опыта. Всё показываем пошагово.", pages: ["ai-creator"], verified: true },
   { id: "ai-creator-tools", q: "На каких нейросетях проходит обучение?", a: "На понятных и доступных инструментах. Большую часть задач можно делать без платных подписок.", pages: ["ai-creator"], verified: true },
   { id: "ai-creator-time", q: "Сколько времени нужно в день?", a: "Минимум 2–3 часа в день, чтобы проходить уроки и выполнять практику.", pages: ["ai-creator"], verified: true },

@@ -3,9 +3,9 @@
  * Проверка «бесплатно» перед сменой цены эфира: `node scripts/check-copy.mjs --at 2026-12-01`
  * (или `npm run check:efir -- 2026-12-01`).
  *
- * Собирает копию проекта в /tmp с подменой даты (APS_TEST_NOW) и датой начала платной цены эфира (APS_TEST_EFIR_PAID_FROM = эта же дата),
+ * Собирает копию проекта в /tmp с подменой даты (APS_TEST_NOW) — эфир платный (9 900 ₸, products.ts),
  * затем читает собранный HTML (страницы, metadata, og:description, JSON-LD) и падает, если рядом с «эфир» осталось «бесплатн…».
- * Реальный priceSchedule в products.ts не меняется (пока школа не назвала дату); боевая сборка с APS_TEST_* запрещена check-env.
+ * Страховка от «бесплатно» про эфир в любых текстах; боевая сборка с APS_TEST_* запрещена check-env.
  * «бесплатные нейросети / версии / тарифы» — не про эфир, такие места пропускаются.
  */
 import { spawnSync } from "node:child_process";
@@ -32,7 +32,7 @@ symlinkSync(join(ROOT, "node_modules"), join(COPY, "node_modules"));
 console.log(`check-efir-at: сборка с датой ${date} (эфир платный с этого дня)…`);
 const build = spawnSync(process.execPath, [join(COPY, "node_modules/next/dist/bin/next"), "build"], {
   cwd: COPY,
-  env: { ...process.env, APS_TEST_NOW: `${date}T12:00:00+05:00`, APS_TEST_EFIR_PAID_FROM: date, NODE_ENV: "production" },
+  env: { ...process.env, APS_TEST_NOW: `${date}T12:00:00+05:00`, NODE_ENV: "production" },
   encoding: "utf8",
 });
 if (build.status !== 0) {
