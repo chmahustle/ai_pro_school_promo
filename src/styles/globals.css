@@ -416,6 +416,35 @@
     }
   }
 
+  /* Карточки лестницы (LadderStepCard): hover только для мыши (hover + fine pointer) и без reduced-motion; transform/opacity, 250 мс */
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .step-card {
+      transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .step-card:hover {
+      transform: translateY(-4px);
+    }
+    .step-fig {
+      transform-origin: 50% 50%;
+      transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .step-card:hover .step-fig-try {
+      transform: rotate(10deg) scale(1.07);
+    }
+    .step-card:hover .step-fig-project {
+      transform: rotate(-8deg) scale(1.06);
+    }
+    .step-card:hover .step-fig-profession {
+      transform: rotate(8deg) scale(1.08);
+    }
+    .step-arrow {
+      transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .step-card:hover .step-arrow {
+      transform: translateX(2px);
+    }
+  }
+
   /* Декор карточек аудиторий: фоновая анимация + реакция на наведение */
   @keyframes decor-breathe {
     0%, 100% { transform: scale(1) rotate(0deg); }
