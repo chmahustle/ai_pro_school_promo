@@ -43,6 +43,8 @@ export interface PublicMetric {
   decimals?: number;
   featured?: boolean;
   pills?: string[];
+  /** Подпись на карточке («Данные школы») */
+  source?: string;
   /** Подпись источника — только в dev */
   devSource?: string;
   devUnverified?: boolean;

@@ -178,7 +178,7 @@ export const stories: Story[] = [
     name: "Оплата за ролик",
     descriptor: "ученик практикума",
     photo: null,
-    result: { value: "30 000", unit: "₸", text: "· средний чек за ролик" },
+    result: { value: "", unit: "", text: "Оплата за ролик от заказчика" },
     media: {
       type: "receipt",
       src: "/stories/practicum/receipt-1.png",
@@ -191,7 +191,7 @@ export const stories: Story[] = [
     verified: true,
     consent: true,
     variant: "receipt",
-    note: "Скрин оплаты с практикума; сумма в заголовке — средний чек со страницы, не привязка к конкретному чеку",
+    note: "Скрин оплаты с практикума (сумму и средний чек в заголовке не указываем)",
   },
   {
     id: "receipt-practicum-2",

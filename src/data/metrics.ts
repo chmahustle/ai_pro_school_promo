@@ -42,33 +42,42 @@ export interface HomeMetric {
 export const metrics: Metric[] = [
   {
     id: "students",
-    value: 3000,
+    value: 4500,
     prefix: "",
     suffix: "+",
-    label: "учеников по миру",
+    label: "учеников",
     hint: "прошли программы школы",
-    status: "unverified",
-    note: "Источники: 1000+ (ai2026), 2000+ (практикум), 3000+ (лендинги вайб-кодинга, 2026). Берём последнюю.",
+    status: "verified",
+    note: "Данные школы, 2026-10. Формулировку «учеников/участников» уточнить (TODO.md → «Школа в цифрах»).",
   },
   {
     id: "views",
     value: 70_000_000,
     suffix: "+",
-    label: "просмотров ИИ-роликов",
+    label: "органических просмотров",
     hint: "в Instagram, TikTok и YouTube",
     format: "compact",
-    status: "unverified",
-    note: "Источники: 50 млн (главная, ai2026, практикум), 70 млн+ (лендинги вайб-кодинга). Берём последнюю.",
+    status: "verified",
+    note: "Данные школы, 2026-10.",
+  },
+  {
+    id: "streams",
+    value: 45,
+    suffix: "+",
+    label: "потоков практикума",
+    hint: "прошли живые эфиры практикума",
+    status: "verified",
+    note: "Данные школы, 2026-10. Новый показатель блока.",
   },
   {
     id: "followers",
-    value: 90_000,
+    value: 96_300,
     suffix: "+",
     label: "подписчиков в соцсетях",
     hint: "Instagram, TikTok, YouTube",
     format: "compact",
     status: "unverified",
-    note: "Источники: 70 000 (главная), 90 000 (практикум).",
+    note: "96,3 тыс.+: ждём подтверждения единицы измерения и охвата (TODO.md). Не показывать в продакшене.",
   },
   {
     id: "years",
@@ -78,23 +87,6 @@ export const metrics: Metric[] = [
     hint: "учим только тому, что используем в проектах",
     status: "verified",
     note: "Одинаково на всех страницах: «более 2 лет в сфере ИИ».",
-  },
-  {
-    id: "avg-check",
-    value: 30_000,
-    suffix: "\u00a0₸",
-    label: "средний чек за ИИ-ролик",
-    hint: "разовые заказы и пакеты до 1 000 000 ₸",
-    status: "unverified",
-    note: "Источник: страница практикума. Подтвердить у клиента.",
-  },
-  {
-    id: "countries",
-    value: 4,
-    label: "региона клиентов",
-    hint: "Казахстан, Россия, Европа, США",
-    status: "unverified",
-    note: "Источник: практикум («клиенты из Казахстана, России, Европы и Америки»).",
   },
   {
     id: "rating",
@@ -117,11 +109,14 @@ export const metrics: Metric[] = [
 ];
 
 /**
- * «4 региона» (Казахстан, Россия, Европа, США) из блока убраны по решению владельца (шаг 3b) — не показывать, пока не подтвердят.
  */
 /** Значение показателя берётся из `metrics` ниже: одно значение на показатель, дублей чисел нет */
 const M = (id: string) => metrics.find((m) => m.id === id)!;
 const confirmed = (id: string) => M(id).status === "verified";
+
+/** Источник и дата подтверждения цифр блока «Школа в цифрах» */
+const SCHOOL_SOURCE = "Данные школы";
+const SCHOOL_AS_OF = "2026-10";
 
 export const homeMetrics: HomeMetric[] = [
   {
@@ -129,45 +124,44 @@ export const homeMetrics: HomeMetric[] = [
     value: M("students").value,
     suffix: "+",
     label: "Учеников",
-    hint: "Прошли программы школы по всему миру",
-    source: "Лендинги вайб-кодинга",
+    hint: "Прошли программы школы",
+    source: SCHOOL_SOURCE,
     sourceUrl: null,
-    asOf: null,
+    asOf: SCHOOL_AS_OF,
     verified: confirmed("students"),
     featured: true,
-    // TODO: 1000+ / 2000+ / 3000+ — расходятся
   },
   {
     id: "views",
     value: M("views").value / 1_000_000,
     suffix: "\u00a0млн+",
-    label: "Просмотры контента",
-    source: "Instagram · TikTok · YouTube",
+    label: "Органических просмотров",
+    source: SCHOOL_SOURCE,
     sourceUrl: null,
-    asOf: null,
+    asOf: SCHOOL_AS_OF,
     verified: confirmed("views"),
-    // TODO: 50 или 70 млн
   },
   {
     id: "followers",
     value: M("followers").value / 1000,
     suffix: "\u00a0тыс.+",
-    label: "Подписчики в соцсетях",
-    source: "Соцсети школы",
+    decimals: 1,
+    label: "Подписчиков в соцсетях",
+    source: SCHOOL_SOURCE,
     sourceUrl: null,
-    asOf: null,
+    asOf: SCHOOL_AS_OF,
+    // verified:false — ждём подтверждения единицы измерения и охвата; в проде карточка скрыта
     verified: confirmed("followers"),
-    // TODO: 70 или 90 тыс.
   },
   {
-    id: "avg-check",
-    value: M("avg-check").value,
-    suffix: "\u00a0₸",
-    label: "Средний чек ученика за ролик",
-    source: "Страница практикума",
+    id: "streams",
+    value: M("streams").value,
+    suffix: "+",
+    label: "Потоков практикума",
+    source: SCHOOL_SOURCE,
     sourceUrl: null,
-    asOf: null,
-    verified: confirmed("avg-check"),
+    asOf: SCHOOL_AS_OF,
+    verified: confirmed("streams"),
   },
 ];
 
@@ -205,6 +199,6 @@ export const astanaHub = {
 
 /** Метрики спикеров (для карточек команды) — из лендингов вайб-кодинга */
 export const founderMetrics = {
-  students: { value: M("students").value, suffix: "+", label: "учеников по миру", status: M("students").status },
+  students: { value: M("students").value, suffix: "+", label: "учеников", status: M("students").status },
   views: { value: M("views").value, suffix: "+", label: "просмотров", status: M("views").status },
 };

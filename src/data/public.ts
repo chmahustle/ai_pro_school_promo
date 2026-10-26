@@ -35,7 +35,7 @@ import {
 import { GENERAL_PRODUCT } from "./product-ids";
 import { vocabulary } from "./vocabulary";
 import { site } from "@/lib/site";
-import { formatNumber, nameInSentence } from "@/lib/utils";
+import { formatMonthYear, formatNumber, nameInSentence } from "@/lib/utils";
 import { getVisibleStories, canShowStoryMedia, isStoryPublishable, stories as allStories } from "./stories";
 import { team } from "./team";
 import { getVisibleTestimonials } from "./testimonials";
@@ -126,8 +126,18 @@ export function getPublicMetrics(): PublicMetric[] {
     decimals: m.decimals,
     featured: m.featured,
     pills: m.pills,
+    // «Данные школы» — осознанная подпись на карточке; дата — в подзаголовке блока
+    source: m.source,
     devSource: SHOW_PLACEHOLDERS ? `Источник · ${m.source}${m.asOf ? ` · ${m.asOf}` : ""}` : undefined,
+    devUnverified: SHOW_PLACEHOLDERS && !m.verified ? true : undefined,
   }));
+}
+
+/** Подзаголовок «Школа в цифрах»: «Данные школы на октябрь 2026» — дата из asOf показанных метрик (самая поздняя) */
+export function getMetricsDescription(): string {
+  const dates = getHomeMetrics().map((m) => m.asOf).filter((d): d is string => Boolean(d)).sort();
+  const last = dates[dates.length - 1];
+  return last ? `Данные школы на ${formatMonthYear(last)}` : "Данные школы";
 }
 
 // ───────────── Команда и hero ─────────────

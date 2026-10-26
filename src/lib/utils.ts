@@ -48,6 +48,14 @@ export function formatTenge(n: number) {
   return `${formatNumber(n)}\u00a0₸`;
 }
 
+/** "2026-10" → "октябрь 2026" (для подписи даты данных); иначе строка как есть */
+export function formatMonthYear(asOf: string): string {
+  const m = /^(\d{4})-(\d{2})$/.exec(asOf);
+  const months = ["январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"];
+  const name = m ? months[Number(m[2]) - 1] : undefined;
+  return name ? `${name} ${m![1]}` : asOf;
+}
+
 /** 50_000_000 → "50 млн", 70_000 → "70 тыс." */
 export function compactNumber(n: number): string {
   if (n >= 1_000_000) {
