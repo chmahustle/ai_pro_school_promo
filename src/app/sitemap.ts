@@ -22,7 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }));
   // Страницы направлений и продуктов вайб-кодинга (шаг 5a); /courses/vibecoding уже в списке курсов
-  const newPages: MetadataRoute.Sitemap = ["/courses/creator", "/courses/vibecoding-offline", "/courses/vibecoding-course"].map((path) => ({
+  const newPages: MetadataRoute.Sitemap = ["/courses/creator", "/courses/vibecoding-efir", "/courses/vibecoding-offline", "/courses/vibecoding-course"].map((path) => ({
     url: `${SITE_URL}${path}`,
     lastModified: now,
     changeFrequency: "weekly",

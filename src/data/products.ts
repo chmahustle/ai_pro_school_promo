@@ -226,7 +226,7 @@ export const products: Product[] = [
     cohortVerified: false,
     nextStart: null,
     ctaLabel: "Записаться на эфир",
-    landingUrl: "/courses/vibecoding#lead",
+    landingUrl: "/courses/vibecoding-efir",
     whatsappText: wa(vocabulary.efir),
     whatsappKeyword: null,
     seatsLeft: null,

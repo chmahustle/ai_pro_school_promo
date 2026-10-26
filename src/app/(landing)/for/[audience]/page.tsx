@@ -1,3 +1,4 @@
+import { getProduct } from "@/data/products";
 import { getFaq, type FaqPage } from "@/data/faq";
 import { efirNoHiddenConditions } from "@/data/efir";
 import { notFound } from "next/navigation";
@@ -38,6 +39,8 @@ export async function generateMetadata({ params }: { params: Promise<{ audience:
     title: a.seo.title,
     description: a.seo.description,
     path: a.path,
+    // Лендинги /for/* дублируют предложение эфира: canonical на нейтральную страницу эфира (products.ts), чтобы не делить выдачу
+    canonicalPath: getProduct("efir").landingUrl,
     image: null, // file-based opengraph-image.tsx в этом сегменте
   });
 }

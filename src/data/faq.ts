@@ -14,6 +14,7 @@ export type FaqPage =
   | "courses"
   | "creator"
   | "vibecoding"
+  | "vibecoding-efir"
   | "practicum"
   | "for-business"
   | "for-freelancers"
@@ -68,7 +69,7 @@ export const faqEntries: FaqEntry[] = [
   { id: "directions-diff", q: "Чем отличаются направления?", a: "", pages: ["home", "courses"], verified: false },
   { id: "kaspi", q: "Есть ли рассрочка Kaspi и какой платёж?", a: "", pages: ["home", "courses", "vibecoding-course"], verified: false },
   { id: "no-result", q: "Что если не получится / условия возврата?", a: "", pages: ["home", "courses", "vibecoding-offline", "vibecoding-course"], verified: false },
-  { id: "laptop", q: "Нужен ли мощный ноутбук?", a: "", pages: ["vibecoding"], verified: false },
+  { id: "laptop", q: "Нужен ли мощный ноутбук?", a: "", pages: ["vibecoding", "vibecoding-efir"], verified: false },
   { id: "offline-where", q: "Где проходит офлайн-урок?", a: "Офлайн-урок проходит в Astana Hub.", pages: ["vibecoding", "vibecoding-offline"], verified: true },
   { id: "practicum-vs-ai-creator", q: "Чем практикум отличается от курса AI Content Creator?", a: "", pages: ["creator"], verified: false },
   { id: "practicum-blog", q: "Нужно ли вести личный аккаунт?", a: "Нет. Можно делать ролики как услугу для клиентов, без ведения блога и съёмки себя. Мы расскажем, как находить клиентов без блога.", pages: ["practicum"], verified: true },
@@ -83,10 +84,10 @@ export const faqEntries: FaqEntry[] = [
   { id: "ai-creator-money", q: "Когда можно получить первые деньги?", a: "Первые заказы ученики берут уже во время обучения, всё зависит от вашей активности.", pages: ["ai-creator"], verified: false, needsSchoolReview: true },
   { id: "ai-creator-orders", q: "Вы помогаете с заказами?", a: "Да. В курсе есть поддержка школы и доступ к возможностям брать проекты.", pages: ["ai-creator"], verified: false, needsSchoolReview: true },
   { id: "ai-creator-passive", q: "Это пассивный доход?", a: "Нет. Это навык, который продаётся как услуга. Зато результат — реальный доход и понятный рост, а не случайные заказы.", pages: ["ai-creator"], verified: true },
-  { id: "vibecoding-what", q: "Что такое вайб-кодинг?", a: "Способ создавать рабочие продукты — сайты, ботов, автоматизации — описывая задачу ИИ на обычном языке, без написания кода вручную.", pages: ["vibecoding"], verified: true },
-  { id: "vibecoding-edu", q: "Нужно ли уметь программировать?", a: "Нет. Достаточно понимать свой бизнес или свою работу и уметь формулировать задачу. Остальное показываем.", pages: ["vibecoding"], verified: true },
-  { id: "vibecoding-participation", q: "Что нужно для участия?", a: "Ноутбук и желание. Все инструменты — доступные, многие с бесплатным тарифом.", pages: ["vibecoding"], verified: true },
-  { id: "vibecoding-after", q: "Что после эфира?", a: afterEfirAnswer, pages: ["vibecoding"], verified: true },
+  { id: "vibecoding-what", q: "Что такое вайб-кодинг?", a: "Способ создавать рабочие продукты — сайты, ботов, автоматизации — описывая задачу ИИ на обычном языке, без написания кода вручную.", pages: ["vibecoding", "vibecoding-efir"], verified: true },
+  { id: "vibecoding-edu", q: "Нужно ли уметь программировать?", a: "Нет. Достаточно понимать свой бизнес или свою работу и уметь формулировать задачу. Остальное показываем.", pages: ["vibecoding", "vibecoding-efir"], verified: true },
+  { id: "vibecoding-participation", q: "Что нужно для участия?", a: "Ноутбук и желание. Все инструменты — доступные, многие с бесплатным тарифом.", pages: ["vibecoding", "vibecoding-efir"], verified: true },
+  { id: "vibecoding-after", q: "Что после эфира?", a: afterEfirAnswer, pages: ["vibecoding", "vibecoding-efir"], verified: true },
   { id: "business-code", q: "Нужно ли уметь программировать?", a: "Нет. Достаточно понимать свой бизнес и его задачи. На эфире покажем, как ставить задачу ИИ, чтобы получить работающий результат.", pages: ["for-business"], verified: true },
   { id: "business-real", q: "Это реально работает или маркетинг?", a: "Покажем вживую на экране: от задачи до рабочего бота или сайта. Вы сами увидите, где вайб-кодинг подходит, а где нужен разработчик.", pages: ["for-business"], verified: false, needsSchoolReview: true },
   { id: "business-who", q: "Кто проводит эфир?", a: "Надира Батырбаева — основатель школы, и Майдан Найманов — ML-инженер и AI-архитектор со 100+ коммерческими проектами.", pages: ["for-business"], verified: true },
