@@ -8,7 +8,7 @@ export function CourseForWhom({ course }: { course: Course }) {
   if (course.forWhom.length === 0) return null;
   return (
     <Section>
-      <SectionIntro id="for-whom-title" align="left" eyebrow="Кому подходит" title="Курс для вас, если вы" />
+      <SectionIntro id="for-whom-title" align="left" eyebrow="Кому подходит" title="Это для вас, если вы" />
       <div className={cn("grid gap-5", course.notForWhom ? "lg:grid-cols-[1.6fr_1fr]" : "")}>
         <RevealGroup as="ul" className="audience-grid grid gap-4 sm:grid-cols-2">
           {course.forWhom.map((f) => (

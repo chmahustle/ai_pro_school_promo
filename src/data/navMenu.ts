@@ -1,6 +1,6 @@
 import "server-only";
 import { directions, lineupForWhom } from "./lineup";
-import { formatPriceParts, getEntryProducts, getCurrentPrice } from "./products";
+import { catalogUrl, directionPages, formatPriceParts, getEntryProducts, getCurrentPrice } from "./products";
 import { vocabulary } from "./vocabulary";
 import type { PublicNavMenu } from "./public-types";
 
@@ -22,9 +22,9 @@ export function getNavMenu(): PublicNavMenu {
       title: d.name,
       pitch: d.pitch,
       forWhom: lineupForWhom[direction],
-      href: d.path,
+      href: directionPages[direction],
       teaser: entry?.resultLine ?? "",
-      entry: { href: entry?.landingUrl ?? d.path, ctaLabel: entry?.ctaLabel ?? d.name },
+      entry: { href: entry?.landingUrl ?? directionPages[direction], ctaLabel: entry?.ctaLabel ?? d.name },
       start: {
         before: `Начать с ${entry ? (GEN[entry.id] ?? entry.name) : d.name}`,
         free: entry ? getCurrentPrice(entry) === 0 : false,
@@ -32,5 +32,5 @@ export function getNavMenu(): PublicNavMenu {
       },
     };
   });
-  return { cards, allCoursesHref: "/courses" };
+  return { cards, allCoursesHref: catalogUrl };
 }

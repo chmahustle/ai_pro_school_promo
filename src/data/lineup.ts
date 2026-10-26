@@ -1,10 +1,10 @@
 import "server-only";
-import type { Direction } from "./products";
+import { directionPages, type Direction } from "./products";
 
 /** Направления школы: название, подзаголовок и страница направления (шаг 5a) */
 export const directions: Record<Direction, { name: string; tagline: string; path: string; pitch: string }> = {
-  creator: { name: "AI-креаторство", tagline: "ИИ-ролики и контент на заказ", path: "/courses/creator", pitch: "Делать ИИ-ролики и контент на заказ" },
-  vibecoding: { name: "Вайб-кодинг", tagline: "сайты, боты и автоматизации без кода", path: "/courses/vibecoding", pitch: "Собирать сайты, ботов и автоматизации без кода" },
+  creator: { name: "AI-креаторство", tagline: "ИИ-ролики и контент на заказ", path: directionPages.creator, pitch: "Делать ИИ-ролики и контент на заказ" },
+  vibecoding: { name: "Вайб-кодинг", tagline: "сайты, боты и автоматизации без кода", path: directionPages.vibecoding, pitch: "Собирать сайты, ботов и автоматизации без кода" },
 };
 
 /**

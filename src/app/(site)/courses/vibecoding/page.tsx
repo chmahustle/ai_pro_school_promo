@@ -24,7 +24,7 @@ export default function VibecodingPage() {
   const course = getCourse("vibecoding")!;
   return (
     <DirectionPage direction="vibecoding">
-      <div id="efir" className="scroll-mt-24">
+      <div id="efir" className="scroll-mt-28">
         <CourseForWhom course={course} />
         <Programs modules={course.program} title="Как устроено обучение" description="Начинаем с бесплатного эфира — дальше полная программа." />
         <CourseOutcomes course={course} />

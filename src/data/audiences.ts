@@ -137,7 +137,7 @@ export const audiences: Audience[] = [
       titleNote: "и специалистам",
       pain: "Рынок меняется, а чек не растёт",
       chips: ["Гайд: 10 способов дохода", "Бесплатный эфир · 1,5 часа"],
-      ctaLabel: "Поднять чек",
+      ctaLabel: "Добавить AI в услуги",
       href: "/for/freelancers",
       mesh: "freelance",
       proof: { text: "TODO: короткое доказательство без URL", verified: false },

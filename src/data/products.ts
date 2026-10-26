@@ -84,6 +84,13 @@ function resolveName(publicName: string, fullWorkingName: string): string {
   return SHOW_PLACEHOLDERS ? fullWorkingName : publicName;
 }
 
+/**
+ * Адреса страниц направлений и каталога — единственный источник для меню, лестниц и sitemap
+ * (адреса самих продуктов — поле landingUrl у каждого продукта ниже).
+ */
+export const directionPages: Record<Direction, string> = { creator: "/courses/creator", vibecoding: "/courses/vibecoding" };
+export const catalogUrl = "/courses";
+
 export const products: Product[] = [
   {
     id: "practicum",
