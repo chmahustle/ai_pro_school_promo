@@ -21,6 +21,8 @@ import {
   getEntryProducts,
   getEntrySubtitle,
   getNextCohort,
+  catalogUrl,
+  currentDate,
   getCurrentPrice,
   getDeliverables,
   getPartnerProjectStep,
@@ -34,7 +36,7 @@ import {
 } from "./products";
 import { GENERAL_PRODUCT } from "./product-ids";
 import { vocabulary } from "./vocabulary";
-import { site } from "@/lib/site";
+import { SITE_URL, site } from "@/lib/site";
 import { formatMonthYear, formatNumber, nameInSentence } from "@/lib/utils";
 import { getVisibleStories, canShowStoryMedia, isStoryPublishable, stories as allStories } from "./stories";
 import { team } from "./team";
@@ -42,7 +44,7 @@ import { getVisibleTestimonials } from "./testimonials";
 import { getVisibleWorks } from "./works";
 import type { Audience, Course, Partner, Review, Story, TeamMember } from "./types";
 import type {
-  FooterLegal,
+  PublicFooter,
   MenuAudience,
   MenuData,
   PublicDirectionPage,
@@ -275,12 +277,73 @@ export function getMenuData(): MenuData {
   };
 }
 
-/** Футер: полный список ЦА с лендингами (включая бизнес) */
-export function getFooterData(): { audiences: MenuAudience[]; courses: MenuData["courses"]; legal: FooterLegal } {
+/** Ссылка принадлежит домену сайта: относительная («/offer») или абсолютная на хост SITE_URL */
+function isOwnDomainUrl(url: string): boolean {
+  if (url.startsWith("/") && !url.startsWith("//")) return true;
+  try {
+    return new URL(url).hostname === new URL(SITE_URL).hostname;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Ссылки «Политика конфиденциальности» и «Оферта» для футеров: только утверждённые (company.ts → privacyApproved / offerApproved)
+ * и только на страницы домена сайта. Иначе ссылки нет.
+ */
+export function getLegalLinks(): { label: string; href: string }[] {
+  const links: { label: string; href: string }[] = [];
+  if (company.privacyApproved) links.push({ label: "Политика конфиденциальности", href: "/privacy" });
+  if (company.offerApproved && company.offerUrl && isOwnDomainUrl(company.offerUrl)) links.push({ label: "Публичная оферта", href: company.offerUrl });
+  return links;
+}
+
+/**
+ * Футер: колонки направлений (названия и URL из products.ts), «Для кого», «Школа», контакты и юридическая строка.
+ * Реквизиты — только подтверждённые; пустые соцсети/телефон не отдаются (иконки нет).
+ */
+export function getFooterData(): PublicFooter {
+  const order: Step[] = ["try", "project", "profession"];
+  const directionColumn = (d: Direction) => ({
+    id: d,
+    title: directions[d].name,
+    href: directions[d].path,
+    links: products
+      .filter((p) => p.direction === d)
+      .sort((a, b) => order.indexOf(a.step) - order.indexOf(b.step))
+      .map((p) => ({ label: p.id === "practicum" ? vocabulary.practicumShort : p.name, href: p.landingUrl })),
+  });
+  const beginners = audiences.find((a) => a.slug === "beginners");
+  const c = company.contacts;
+  const legalOk = company.legal.verified && company.legal.name.trim() !== "" && company.legal.bin.trim() !== "";
+  const year = currentDate().getFullYear();
   return {
-    audiences: landingAudiences.map(toMenuAudience),
-    courses: courses.map((c) => ({ slug: c.slug, shortName: c.shortName })),
-    legal: { legalName: company.legalName, bin: company.bin, address: company.address },
+    description: company.description,
+    directions: [directionColumn("creator"), directionColumn("vibecoding")],
+    audiences: [
+      ...landingAudiences.map((a) => ({ label: a.menuTitle, href: a.path })),
+      { label: beginners?.menuTitle ?? "Новичкам в ИИ", href: getProduct("practicum").landingUrl },
+    ],
+    school: [
+      { label: "О нас", href: "/about" },
+      { label: "Результаты и отзывы", href: "/reviews" },
+      { label: "Контакты", href: "/contacts" },
+      { label: "Все курсы", href: catalogUrl },
+    ],
+    contacts: {
+      whatsapp: c.whatsapp.trim() || null,
+      phone: c.phone.trim() && c.phoneRaw.trim() ? { label: c.phone, href: `tel:+${c.phoneRaw}` } : null,
+      socials: (
+        [
+          { id: "instagram", label: "Instagram", href: c.social.instagram },
+          { id: "tiktok", label: "TikTok", href: c.social.tiktok },
+          { id: "youtube", label: "YouTube", href: c.social.youtube },
+        ] as const
+      ).filter((x) => x.href.trim() !== "").map((x) => ({ ...x, href: x.href.trim() })),
+    },
+    copyright: legalOk ? `© ${year} ${company.legal.name.trim()}. Все права защищены.` : `© ${year} AI Pro School`,
+    requisites: legalOk ? [`БИН ${company.legal.bin.trim()}`, company.legal.address.trim()].filter(Boolean) : [],
+    legalLinks: getLegalLinks(),
   };
 }
 

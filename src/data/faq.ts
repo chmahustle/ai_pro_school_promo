@@ -69,7 +69,7 @@ export const faqEntries: FaqEntry[] = [
   { id: "kaspi", q: "Есть ли рассрочка Kaspi и какой платёж?", a: "", pages: ["home", "courses", "vibecoding-course"], verified: false },
   { id: "no-result", q: "Что если не получится / условия возврата?", a: "", pages: ["home", "courses", "vibecoding-offline", "vibecoding-course"], verified: false },
   { id: "laptop", q: "Нужен ли мощный ноутбук?", a: "", pages: ["vibecoding"], verified: false },
-  { id: "offline-where", q: "Где проходит офлайн-урок?", a: "", pages: ["vibecoding", "vibecoding-offline"], verified: false },
+  { id: "offline-where", q: "Где проходит офлайн-урок?", a: "Офлайн-урок проходит в Astana Hub.", pages: ["vibecoding", "vibecoding-offline"], verified: true },
   { id: "practicum-vs-ai-creator", q: "Чем практикум отличается от курса AI Content Creator?", a: "", pages: ["creator"], verified: false },
   { id: "practicum-blog", q: "Нужно ли вести личный аккаунт?", a: "Нет. Можно делать ролики как услугу для клиентов, без ведения блога и съёмки себя. Мы расскажем, как находить клиентов без блога.", pages: ["practicum"], verified: true },
   { id: "practicum-paid", q: "Нужны ли платные нейросети?", a: "Нет. На старте работаем на бесплатных версиях — этого достаточно, чтобы делать 1 ролик в день.", pages: ["practicum"], verified: true },

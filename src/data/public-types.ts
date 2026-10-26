@@ -178,10 +178,23 @@ export interface MenuData {
   courses: MenuCourse[];
 }
 
-export interface FooterLegal {
-  legalName: string;
-  bin: string;
-  address: string;
+export interface PublicFooter {
+  description: string;
+  /** Колонки направлений: заголовок-ссылка и продукты (названия и URL из products.ts) */
+  directions: { id: string; title: string; href: string; links: { label: string; href: string }[] }[];
+  audiences: { label: string; href: string }[];
+  school: { label: string; href: string }[];
+  contacts: {
+    whatsapp: string | null;
+    phone: { label: string; href: string } | null;
+    socials: { id: "instagram" | "tiktok" | "youtube"; label: string; href: string }[];
+  };
+  /** «© 2026 AI Pro School» или «© 2026 {юрлицо}. Все права защищены.» (только подтверждённые реквизиты) */
+  copyright: string;
+  /** БИН, адрес — только подтверждённые */
+  requisites: string[];
+  /** Политика и оферта: только утверждённые и только на домене сайта */
+  legalLinks: { label: string; href: string }[];
 }
 
 export interface PublicTestimonial {
