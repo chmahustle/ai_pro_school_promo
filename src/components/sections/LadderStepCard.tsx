@@ -35,7 +35,7 @@ export function LadderStepCard({ step, entryBadge, showEntry = true, className }
         <p className="mt-3 text-[13px] leading-snug text-ink-500">{step.format}</p>
 
         {/* Зона декора: между описанием и ценой, тянется (flex-1), обрезает фигуры; по ширине — до краёв карточки */}
-        <div aria-hidden className="relative -mx-6 min-h-[128px] flex-1 overflow-hidden sm:-mx-7 sm:min-h-[148px]">
+        <div aria-hidden className="step-zone relative -mx-6 flex-1 overflow-hidden sm:-mx-7">
           <StepDecor tier={step.tier} />
         </div>
 
