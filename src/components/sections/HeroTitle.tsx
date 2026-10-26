@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 /** Меняющееся слово после «Учим создавать с ИИ» (не кликабельное) */
-const WORDS = ["ролики", "сайты", "ботов", "автоматизации"] as const;
+const WORDS = ["ролики", "сайты", "ботов", "автоматизацию"] as const;
 const INTERVAL_MS = 3000;
 
 const lineIn = (i: number) => ({
@@ -33,14 +33,13 @@ export function HeroTitle() {
   return (
     <div className="relative w-full">
       <h1 id="hero-title" className="sr-only">
-        Учим создавать с ИИ ролики, сайты, ботов и автоматизации. Без техобразования. С результатом.
+        Учим создавать с ИИ ролики, сайты, ботов и автоматизацию.
       </h1>
 
       <div
-        className="flex w-full flex-col items-center font-display font-extrabold leading-[1.08] tracking-[-0.015em] text-ink"
-        style={{ fontSize: "clamp(32px, 3.8vw, 52px)" }}
+        className="flex w-full flex-col items-center font-display text-[length:clamp(28px,8.5vw,32px)] font-extrabold leading-[1.08] tracking-[-0.015em] text-ink sm:text-[length:clamp(32px,3.8vw,52px)]"
       >
-        <motion.span aria-hidden className="block sm:whitespace-nowrap" {...lineIn(0)}>
+        <motion.span aria-hidden className="block whitespace-nowrap" {...lineIn(0)}>
           Учим создавать с ИИ
         </motion.span>
 
@@ -65,10 +64,6 @@ export function HeroTitle() {
               </motion.span>
             </AnimatePresence>
           </span>
-        </motion.span>
-
-        <motion.span aria-hidden className="mt-1 block text-[0.62em] font-bold text-ink-500 sm:whitespace-nowrap" {...lineIn(2)}>
-          Без техобразования. <span className="text-brand-700">С&nbsp;результатом.</span>
         </motion.span>
       </div>
     </div>

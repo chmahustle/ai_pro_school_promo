@@ -377,7 +377,7 @@ export function formatEntryLine(product: Product, now: Date = new Date()): strin
 }
 
 /**
- * Подзаголовок первого экрана: «Два направления, начать можно с {минимальная платная входная цена} или с бесплатного эфира».
+ * Подзаголовок первого экрана: «Без техобразования. Начать можно с {минимальная платная входная цена} или с бесплатного эфира».
  * Цена и «бесплатного» считаются по конфигу: пока эфир бесплатный — вторая половина есть, станет платным — исчезнет.
  */
 export function getEntrySubtitle(now: Date = new Date()): { before: string; price: string; after: string } {
@@ -386,8 +386,8 @@ export function getEntrySubtitle(now: Date = new Date()): { before: string; pric
   const paid = priced.filter((v): v is number => v !== null && v > 0);
   const hasFree = priced.some((v) => v === 0);
   const min = paid.length ? Math.min(...paid) : null;
-  const before = "Два направления, начать можно с ";
-  if (min === null) return { before: hasFree ? `${before}бесплатного эфира` : "Два направления", price: "", after: "" };
+  const before = "Без техобразования. Начать можно с ";
+  if (min === null) return { before: hasFree ? `${before}бесплатного эфира` : "Без техобразования", price: "", after: "" };
   return { before, price: `${formatNumber(min)}${NBSP}₸`, after: hasFree ? " или с бесплатного эфира" : "" };
 }
 

@@ -17,8 +17,8 @@ function footerVisibleNow() {
 }
 
 /**
- * WhatsApp: на мобильных — пилюля 48px с текстом;
- * на ≥lg после скролла — круглая иконка 56px без текста.
+ * WhatsApp: круглая иконка без текста — 52px на мобильных (<lg, с учётом safe-area), 56px на ≥lg;
+ * появляется после прокрутки ниже первого экрана (мобильные: > 80% высоты окна, ≥lg: > 400px).
  * Скрывается, когда в зоне видимости футер (#site-footer) или блок с data-hide-floating, и на /thanks/*.
  * Кнопка «наверх» (ScrollControls) стоит над ней с зазором 12px — размеры и отступы держать согласованными.
  */
@@ -33,10 +33,18 @@ export function FloatingMessenger({ className }: { className?: string }) {
   }, []);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 400);
+    // Мобильные (<lg): после первого экрана (80% высоты окна); ≥lg: после 400px
+    const onScroll = () => {
+      const mobile = !window.matchMedia("(min-width: 1024px)").matches;
+      setScrolled(window.scrollY > (mobile ? window.innerHeight * 0.8 : 400));
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -61,6 +69,7 @@ export function FloatingMessenger({ className }: { className?: string }) {
   }, []);
 
   const hiddenByFooter = footerInView;
+  const hidden = hiddenByFooter || !scrolled;
 
   // На «Спасибо» своя кнопка WhatsApp — плавающая не нужна
   if (onThanks) return null;
@@ -71,25 +80,16 @@ export function FloatingMessenger({ className }: { className?: string }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Написать в WhatsApp"
-      aria-hidden={hiddenByFooter || undefined}
-      tabIndex={hiddenByFooter ? -1 : undefined}
+      aria-hidden={hidden || undefined}
+      tabIndex={hidden ? -1 : undefined}
       className={cn(
-        "fixed bottom-4 right-4 z-40 flex items-center justify-center bg-[#25D366] font-semibold text-white shadow-float transition-[transform,opacity,width,padding] duration-300 hover:scale-105 sm:bottom-6 sm:right-6",
-        "h-12 gap-2 rounded-pill pl-3.5 pr-4",
-        "lg:size-14 lg:gap-0 lg:rounded-full lg:p-0",
-        hiddenByFooter
-          ? "pointer-events-none translate-y-4 opacity-0"
-          : cn(
-              "max-lg:translate-y-0 max-lg:opacity-100",
-              scrolled
-                ? "lg:translate-y-0 lg:opacity-100"
-                : "lg:pointer-events-none lg:translate-y-8 lg:opacity-0",
-            ),
+        "fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-40 flex size-[52px] items-center justify-center rounded-full bg-[#25D366] text-white shadow-float transition-[transform,opacity] duration-300 hover:scale-105 motion-reduce:transition-none",
+        "sm:bottom-[max(1.5rem,env(safe-area-inset-bottom))] sm:right-[max(1.5rem,env(safe-area-inset-right))] lg:size-14",
+        hidden ? "pointer-events-none translate-y-4 opacity-0" : "translate-y-0 opacity-100",
         className,
       )}
     >
       <MessageCircle className="size-6 shrink-0" aria-hidden />
-      <span className="text-[15px] lg:hidden">WhatsApp</span>
     </a>
   );
 }

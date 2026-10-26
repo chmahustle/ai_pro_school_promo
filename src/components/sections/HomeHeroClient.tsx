@@ -70,7 +70,7 @@ export function HomeHeroClient({ data }: { data: PublicHeroData }) {
         ref={heroRef}
         className={cn(
           "relative mx-auto overflow-hidden rounded-3xl",
-          "flex min-h-[calc(100dvh-7.25rem)] flex-col sm:min-h-[calc(100dvh-7.75rem)]",
+          "flex flex-col sm:min-h-[calc(100dvh-7.75rem)]",
           "lg:block lg:h-[calc(100dvh-7.75rem)] lg:min-h-[560px] lg:max-h-[900px]",
         )}
       >
@@ -123,21 +123,21 @@ export function HomeHeroClient({ data }: { data: PublicHeroData }) {
         </div>
 
         {/* Текст: на ≥lg ровно по центру контейнера hero, на мобильных — обычный поток сверху */}
-        <div className="relative z-20 px-4 pb-4 pt-8 sm:pt-12 lg:pointer-events-none lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-center lg:p-4">
+        <div className="relative z-20 px-4 pb-3 pt-5 sm:pb-4 sm:pt-12 lg:pointer-events-none lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-center lg:p-4">
           <div className="mx-auto flex w-full max-w-[34rem] flex-col items-center text-center lg:pointer-events-auto lg:max-w-[42rem]">
-            <Pill tone="brand" dot className="mb-4">
+            <Pill tone="brand" dot className="mb-3 sm:mb-4">
               Онлайн-школа ИИ · Казахстан
             </Pill>
 
             <HeroTitle />
 
-            <p className="mt-4 max-w-[40ch] text-center text-[14px] leading-relaxed text-ink-500 sm:text-[15px]">
+            <p className="mt-3 max-w-[40ch] text-center text-[14px] leading-snug text-ink-500 sm:mt-4 sm:text-[15px] sm:leading-relaxed">
               {data.entry.subtitle.before}
               <span className="whitespace-nowrap">{data.entry.subtitle.price}</span>
               {data.entry.subtitle.after}
             </p>
 
-            <div className="mt-6 grid w-full grid-cols-1 gap-4 sm:w-auto sm:grid-cols-2 sm:gap-5">
+            <div className="mt-4 grid w-full grid-cols-1 gap-3 sm:mt-6 sm:w-auto sm:grid-cols-2 sm:gap-5">
               <HeroChoice href="/#lineup?tab=creator" direction="creator" label="Делать ИИ-ролики" note={data.entry.creator} location="home-hero-creator" />
               <HeroChoice href="/#lineup?tab=vibecoding" direction="vibecoding" label="Собирать сайты и ботов" note={data.entry.vibecoding} location="home-hero-vibecoding" />
             </div>
@@ -147,12 +147,12 @@ export function HomeHeroClient({ data }: { data: PublicHeroData }) {
         {/* Мобильный скролл карточек — под центром, внизу hero */}
         {results.length > 0 && (
           <ul
-            className="relative z-20 mt-auto flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-4 no-scrollbar lg:hidden"
+            className="relative z-20 mt-auto flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-3 no-scrollbar sm:pb-4 lg:hidden"
             aria-label="Результаты учеников"
           >
             {results.map((r) => (
-              <li key={r.id} className="w-[240px] shrink-0 snap-start">
-                <ResultCard result={r} onOpen={(el) => openModal({ type: "result", result: r }, el)} />
+              <li key={r.id} className="w-[calc(100%-1.5rem)] max-w-[320px] shrink-0 snap-start sm:w-[240px] sm:max-w-none">
+                <ResultCard compact result={r} onOpen={(el) => openModal({ type: "result", result: r }, el)} />
               </li>
             ))}
           </ul>
@@ -180,12 +180,16 @@ function HeroChoice({ href, label, note, location, direction }: { href: string; 
           window.history.pushState(null, "", `${window.location.pathname}?tab=${direction}#lineup`);
           window.dispatchEvent(new HashChangeEvent("hashchange"));
         }}
-        className="group inline-flex h-14 w-full items-center justify-center gap-2.5 whitespace-nowrap rounded-pill bg-ink px-7 text-base font-semibold text-white shadow-pill transition-[background-color,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-ink-700 hover:shadow-float active:scale-[0.98] motion-reduce:hover:translate-y-0 sm:w-auto"
+        className="group inline-flex h-16 w-full flex-col items-center justify-center gap-0.5 whitespace-nowrap rounded-pill bg-ink px-7 text-base font-semibold text-white shadow-pill sm:h-14 sm:flex-row sm:gap-2.5 transition-[background-color,transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-ink-700 hover:shadow-float active:scale-[0.98] motion-reduce:hover:translate-y-0 sm:w-auto"
       >
-        {label}
-        <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" aria-hidden />
+        <span className="inline-flex items-center gap-2.5">
+          {label}
+          <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" aria-hidden />
+        </span>
+        {/* На мобильном подпись внутри кнопки, на ≥sm — под ней */}
+        <span className="text-[12px] font-medium leading-none text-white/70 sm:hidden">{note}</span>
       </a>
-      <span className="text-[12px] font-medium text-ink-500">{note}</span>
+      <span className="hidden text-[12px] font-medium text-ink-500 sm:block">{note}</span>
     </div>
   );
 }
@@ -277,14 +281,15 @@ function ResultLine({ text }: { text: string }) {
   );
 }
 
-function ResultCard({ result, onOpen, delay = 0.8 }: { result: PublicHeroResult; onOpen: (el: HTMLElement) => void; delay?: number }) {
+/** compact — мобильная карточка: до 76px, без подписи и полоски прогресса */
+function ResultCard({ result, onOpen, delay = 0.8, compact = false }: { result: PublicHeroResult; onOpen: (el: HTMLElement) => void; delay?: number; compact?: boolean }) {
   const reduce = useReducedMotion();
   return (
     <button
       type="button"
       onClick={(e) => onOpen(e.currentTarget)}
       aria-haspopup="dialog"
-      className="relative block w-full cursor-pointer rounded-xl bg-surface p-3.5 text-left text-ink shadow-float focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+      className={cn("relative block w-full cursor-pointer rounded-xl bg-surface p-3.5 text-left text-ink shadow-float focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand", compact && "flex h-[76px] max-h-[76px] items-center overflow-hidden p-3")}
     >
       <div className="flex items-start gap-2.5">
         <Avatar name={result.name} src={result.photo} size="sm" className="ring-2 ring-brand-100" />
@@ -293,7 +298,7 @@ function ResultCard({ result, onOpen, delay = 0.8 }: { result: PublicHeroResult;
           <ResultLine text={result.result} />
         </div>
       </div>
-      <div className="mt-2.5">
+      <div className={cn("mt-2.5", compact && "hidden")}>
         <p className="mb-1 text-[11px] font-semibold text-ink-500">{result.label}</p>
         <div className="h-1.5 overflow-hidden rounded-pill bg-ink-100">
           <motion.div
