@@ -24,7 +24,7 @@ import {
   getNextCohort,
   getCurrentPrice,
   getDeliverables,
-  getFinalProjectTitle,
+  getPartnerProjectStep,
   getProduct,
   getProductForCourse,
   products,
@@ -243,17 +243,18 @@ const toPrice = (p: (typeof products)[number]) => {
   return amount ? { prefix, amount, unit } : null;
 };
 
-/** Два пути: креаторство (практикум → курс) и вайб-кодинг (эфир → офлайн → курс → проект для партнёра) */
+/** Два пути: креаторство (практикум → курс) и вайб-кодинг (эфир → офлайн → курс; четвёртый шаг «проект для партнёра» — только при verified) */
 export function getPublicPaths(): PublicPaths {
   const build = (direction: Direction): PublicPathStep[] => {
     const steps = products
       .filter((p) => p.direction === direction)
       .sort((a, b) => STEP_ORDER.indexOf(a.step) - STEP_ORDER.indexOf(b.step))
-      .map((p) => ({ title: p.name, text: p.resultLine, price: toPrice(p) }));
-    if (direction === "vibecoding") steps.push({ title: getFinalProjectTitle(), text: "", price: null });
+      .map((p) => ({ title: p.name, text: p.resultLine, price: toPrice(p), isEntry: p.step === "try" }));
+    const partner = direction === "vibecoding" ? getPartnerProjectStep() : null;
+    if (partner) steps.push({ title: partner.title, text: "", price: null, isEntry: false });
     return steps.map((s, i) => ({ n: String(i + 1).padStart(2, "0"), ...s }));
   };
-  return { tabs: pathTabs.map((t) => ({ id: t.id, label: t.label })), paths: { creator: build("creator"), vibecoding: build("vibecoding") } };
+  return { entryBadge: lineup.entryBadge, tabs: pathTabs.map((t) => ({ id: t.id, label: t.label })), paths: { creator: build("creator"), vibecoding: build("vibecoding") } };
 }
 
 // ───────────── Где нас видели ─────────────

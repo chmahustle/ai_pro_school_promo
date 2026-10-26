@@ -307,9 +307,13 @@ export function getDeliverables(product: Product): { id: string; title: string; 
   });
 }
 
-/** Подпись последнего шага пути вайб-кодинга: «Проект для компании-партнёра» только когда он подтверждён, иначе «Итоговый проект» */
-export function getFinalProjectTitle(): string {
-  return getDeliverables(getProduct("course")).find((d) => d.id === "final-project")?.title ?? "Итоговый проект";
+/**
+ * Шаг 04 пути вайб-кодинга «Проект для компании-партнёра»: показывается только при deliverables[final-project].verified === true
+ * (флаг в данных, по умолчанию false). Пока false — в пути три шага, «итоговый проект» остаётся в описании курса.
+ */
+export function getPartnerProjectStep(): { title: string } | null {
+  const d = getProduct("course").deliverables?.find((x) => x.id === "final-project");
+  return d?.verified ? { title: d.title } : null;
 }
 
 /** Цена на момент now: базовая, затем последняя действующая запись расписания (записи с from: null игнорируются). */

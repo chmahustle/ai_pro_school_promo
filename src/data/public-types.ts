@@ -150,9 +150,13 @@ export interface PublicPathStep {
   text: string;
   /** Цена шага, если у шага есть продукт */
   price: { prefix: string; amount: string; unit: string } | null;
+  /** Входная ступень: розовая карточка с меткой entryBadge */
+  isEntry: boolean;
 }
 
 export interface PublicPaths {
+  /** Метка входной ступени («Начните с этого», как в линейке) */
+  entryBadge: string;
   tabs: { id: "creator" | "vibecoding"; label: string }[];
   paths: Record<"creator" | "vibecoding", PublicPathStep[]>;
 }
