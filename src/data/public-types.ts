@@ -110,7 +110,8 @@ export interface PublicLadder {
   forWhom: string;
   /** Чипы-ссылки «Для кого» (название и адрес из audiences.ts / products.ts) */
   forWhomLinks: { label: string; href: string }[];
-  leader: { name: string; photo: string | null };
+  /** role — одна строка из team.ts, только подтверждённая (status verified); иначе null */
+  leader: { name: string; photo: string | null; role: string | null };
   steps: PublicLadderStep[];
 }
 

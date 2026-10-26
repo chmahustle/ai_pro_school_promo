@@ -25,6 +25,11 @@ export function efirGenitive(now: Date = currentDate()): string {
   return efirIsFree(now) ? "бесплатного эфира" : "эфира";
 }
 
+/** «эфире» / «бесплатном эфире» (предложный: «на эфире покажем…») */
+export function efirPrep(now: Date = currentDate()): string {
+  return efirIsFree(now) ? "бесплатном эфире" : "эфире";
+}
+
 /** «бесплатного » (с пробелом) пока эфир бесплатный, иначе пустая строка: «с {…}1,5-часового эфира» */
 export function efirFreeGenPrefix(now: Date = currentDate()): string {
   return efirIsFree(now) ? "бесплатного " : "";

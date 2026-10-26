@@ -1,6 +1,7 @@
 import "server-only";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 import { formatPrice, products } from "./products";
+import { vibeFaq } from "./vibecodingBlocks";
 
 /**
  * Единая модель FAQ: { id, q, a, pages, verified }. Все вопросы сайта — здесь; страницы берут свои через getFaq(page).
@@ -84,10 +85,7 @@ export const faqEntries: FaqEntry[] = [
   { id: "ai-creator-money", q: "Когда можно получить первые деньги?", a: "Первые заказы ученики берут уже во время обучения, всё зависит от вашей активности.", pages: ["ai-creator"], verified: false, needsSchoolReview: true },
   { id: "ai-creator-orders", q: "Вы помогаете с заказами?", a: "Да. В курсе есть поддержка школы и доступ к возможностям брать проекты.", pages: ["ai-creator"], verified: false, needsSchoolReview: true },
   { id: "ai-creator-passive", q: "Это пассивный доход?", a: "Нет. Это навык, который продаётся как услуга. Зато результат — реальный доход и понятный рост, а не случайные заказы.", pages: ["ai-creator"], verified: true },
-  { id: "vibecoding-what", q: "Что такое вайб-кодинг?", a: "Способ создавать рабочие продукты — сайты, ботов, автоматизации — описывая задачу ИИ на обычном языке, без написания кода вручную.", pages: ["vibecoding", "vibecoding-efir"], verified: true },
-  { id: "vibecoding-edu", q: "Нужно ли уметь программировать?", a: "Нет. Достаточно понимать свой бизнес или свою работу и уметь формулировать задачу. Остальное показываем.", pages: ["vibecoding", "vibecoding-efir"], verified: true },
-  { id: "vibecoding-participation", q: "Что нужно для участия?", a: "Ноутбук и желание. Все инструменты — доступные, многие с бесплатным тарифом.", pages: ["vibecoding", "vibecoding-efir"], verified: true },
-  { id: "vibecoding-after", q: "Что после эфира?", a: afterEfirAnswer, pages: ["vibecoding", "vibecoding-efir"], verified: true },
+  // Четыре вопроса вайб-кодинга живут в vibecodingBlocks.ts (vibeFaq) и подмешиваются ниже
   { id: "business-code", q: "Нужно ли уметь программировать?", a: "Нет. Достаточно понимать свой бизнес и его задачи. На эфире покажем, как ставить задачу ИИ, чтобы получить работающий результат.", pages: ["for-business"], verified: true },
   { id: "business-real", q: "Это реально работает или маркетинг?", a: "Покажем вживую на экране: от задачи до рабочего бота или сайта. Вы сами увидите, где вайб-кодинг подходит, а где нужен разработчик.", pages: ["for-business"], verified: false, needsSchoolReview: true },
   { id: "business-who", q: "Кто проводит эфир?", a: "Надира Батырбаева — основатель школы, и Майдан Найманов — ML-инженер и AI-архитектор со 100+ коммерческими проектами.", pages: ["for-business"], verified: true },
@@ -100,6 +98,15 @@ export const faqEntries: FaqEntry[] = [
   { id: "career-job", q: "Не заменит ли AI меня самого?", a: "Заменит тех, кто им не пользуется. Специалист, который автоматизирует рутину и берёт на себя больше, становится ценнее.", pages: ["for-career"], verified: true },
   { id: "career-tools", q: "Какие инструменты понадобятся?", a: "Ноутбук и доступные AI-сервисы, многие с бесплатным тарифом. Всё покажем на эфире.", pages: ["for-career"], verified: true },
   { id: "career-after", q: "Что после эфира?", a: afterEfirAnswer, pages: ["for-career"], verified: true },
+  ...vibeFaq.map(
+    (q): FaqEntry => ({
+      id: `vibecoding-${q.id}`,
+      q: q.q,
+      a: q.dynamic === "after-efir" ? afterEfirAnswer : q.a,
+      pages: q.id === "after" ? ["vibecoding", "vibecoding-efir"] : ["vibecoding", "vibecoding-efir", "vibecoding-course"],
+      verified: q.verified,
+    }),
+  ),
 ];
 
 const resolve = (a: FaqEntry["a"]): string => (typeof a === "function" ? a() : a);

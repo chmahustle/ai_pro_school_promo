@@ -5,9 +5,11 @@ import { Button, Pill, Section, SectionIntro } from "@/components/ui";
 import { ProductPrice } from "@/components/ui/ProductPrice";
 import { getNextStep, getPublicProductPage } from "@/data/public";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
-import { nbspDash } from "@/lib/utils";
+import { cn, nbspDash } from "@/lib/utils";
 import { PlaceholderBadge } from "@/components/ui/PlaceholderBadge";
 import { getFaq } from "@/data/faq";
+import { getCourseOutcomes, getVibecodingBlocks } from "@/data/vibecodingBlocks";
+import { ForWhomTiles, OutcomeTiles } from "./BlockTiles";
 import { FAQ } from "./FAQ";
 import { LeaderCard } from "./LeaderCard";
 import { LeadSection } from "./LeadSection";
@@ -31,7 +33,7 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
   const hasVenue = Boolean(p.venue.address || p.venue.schedule);
 
   return (
-    <div className="calm-hover pt-[88px] sm:pt-[96px]">
+    <div className={cn("calm-hover pt-[88px] sm:pt-[96px]", id === "course" && "tight-sections")}>
       <LandingHeader ctaLabel={p.ctaLabel} interest={id} formAnchor="lead" />
       <PageHero
         id={`${id}-title`}
@@ -101,6 +103,10 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
           <p className="max-w-[40ch] rounded-[28px] bg-lavender p-6 font-display text-[clamp(1.25rem,1rem+1.2vw,1.75rem)] font-bold leading-snug sm:p-8">{nbspDash(p.resultLine)}</p>
         )}
       </Section>
+
+      {/* Лендинг курса: «Кому подходит» и «Чему научитесь» — без обещаний дохода и трудоустройства */}
+      {id === "course" && <ForWhomTiles id="course-forwhom-tiles-title" items={getVibecodingBlocks().forWhom} />}
+      {id === "course" && <OutcomeTiles id="course-outcomes-title" items={getCourseOutcomes()} title="Чему научитесь на курсе" />}
 
       {id === "course" && p.forWhomLinks && p.forWhomLinks.length > 0 && (
         <Section aria-labelledby="course-forwhom-title">
@@ -205,7 +211,7 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
       <NextSteps id="next" title="Что дальше" steps={nextStep ? [nextStep] : []} />
 
       <LeadSection
-        className="mt-10 sm:mt-16"
+        className={id === "course" ? "mt-0" : "mt-10 sm:mt-16"}
         id="lead"
         formId={`product-${id}`}
         title={p.formTitle}

@@ -498,7 +498,7 @@ export function getPublicLadder(direction: Direction): PublicLadder {
       const a = audiences.find((x) => x.slug === c.audience);
       return a ? [{ label: a.menuTitle, href: a.path }] : [];
     }),
-    leader: { name: leaderName, photo: photoIfExists(member?.photo) },
+    leader: { name: leaderName, photo: photoIfExists(member?.photo), role: member?.status === "verified" ? member.role : null },
     steps: steps.map(toLadderStep),
   };
 }

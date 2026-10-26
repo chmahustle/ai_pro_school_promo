@@ -8,6 +8,7 @@
  *     (их нет в коде интерфейса — значит, в чанк попали данные);
  *   • секреты: имя META_CAPI_TOKEN (серверный токен Meta Conversions API) не должно встречаться ни в HTML, ни в чанках;
  *     если токен задан в окружении сборки, ищем и его значение.
+ *   • dev-пометки и TODO в HTML/RSC страниц («TODO», «ответ не подтверждён», «не подтверждено», PLACEHOLDER, UNVERIFIED и т.п.).
  * Нашли — сборка падает с указанием файла и контекста.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
@@ -19,6 +20,17 @@ const NEXT = join(ROOT, ".next");
 
 const KEYS = ["priceStatus", "consent", "verified", "piiBlurred", "logoPermission"];
 const PHRASES = ["с действующего сайта", "требует утверждения", "META_CAPI_TOKEN"];
+// Шаг 21: dev-пометки и служебные тексты — только в HTML/RSC страниц (в клиентских чанках библиотек возможны посторонние совпадения)
+const PAGE_PHRASES = [
+  "TODO",
+  "ответ не подтверждён",
+  "не подтверждено",
+  "старая цена не подтверждена",
+  "название на утверждении",
+  "Блоки скрыты",
+  "PLACEHOLDER",
+  "UNVERIFIED",
+];
 const CHUNK_IDENTIFIERS = ["priceStatus", "piiBlurred", "logoPermission"];
 
 function* walk(dir, exts) {
@@ -48,7 +60,7 @@ for (const file of walk(join(NEXT, "server", "app"), [".html", ".rsc"])) {
     const m = re.exec(text);
     if (m) hits.push({ file, what: `ключ "${key}"`, ctx: ctx(text, m.index, key.length + 4) });
   }
-  for (const phrase of PHRASES) {
+  for (const phrase of [...PHRASES, ...PAGE_PHRASES]) {
     const i = text.indexOf(phrase);
     if (i !== -1) hits.push({ file, what: `фраза «${phrase}»`, ctx: ctx(text, i, phrase.length) });
   }

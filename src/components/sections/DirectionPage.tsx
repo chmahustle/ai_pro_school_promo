@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Button, Pill, Section, SectionIntro } from "@/components/ui";
 import { getPublicDirectionPage, getPublicLineup } from "@/data/public";
 import type { Direction } from "@/data/products";
-import { nbspDash } from "@/lib/utils";
+import { cn, nbspDash } from "@/lib/utils";
 import { getFaq } from "@/data/faq";
 import { FAQ } from "./FAQ";
 import { HomeStories } from "./HomeStories";
@@ -22,7 +22,7 @@ export function DirectionPage({ direction, children }: { direction: Direction; c
   const lineup = getPublicLineup();
 
   return (
-    <div className="calm-hover">
+    <div className={cn("calm-hover", direction === "vibecoding" && "tight-sections")}>
       <PageHero
         id={`${direction}-title`}
         eyebrow="Направление"
@@ -66,7 +66,7 @@ export function DirectionPage({ direction, children }: { direction: Direction; c
       {direction === "creator" && <FAQ items={getFaq("creator")} />}
 
       <LeadSection
-        className="mt-10 sm:mt-16"
+        className={direction === "vibecoding" ? "mt-0" : "mt-10 sm:mt-16"}
         id="lead"
         formId={`direction-${direction}`}
         title={`Записаться: ${page.name}`}
