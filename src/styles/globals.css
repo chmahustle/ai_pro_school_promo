@@ -416,14 +416,30 @@
     }
   }
 
-  /* Карточки лестницы (LadderStepCard): как плитки «Хотите так же?» — подъём карточки на 4px и поворот/сдвиг фигур, 200 мс ease-out.
+  /* Карточки лестницы (LadderStepCard): как плитки «Хотите так же?» — подъём карточки на 8px с лёгким увеличением и тенью, поворот/сдвиг фигур.
      Только для мыши (hover + fine pointer) и без reduced-motion; только transform. */
   @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
     .step-card {
-      transition: transform 200ms ease-out;
+      transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
     }
     .step-card:hover {
-      transform: translateY(-4px);
+      z-index: 10;
+      transform: translateY(-8px) scale(1.02);
+    }
+    /* Тень — псевдоэлемент: анимируется только opacity (overflow карточки обрезал бы собственную тень) */
+    .step-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: 32px;
+      box-shadow: 0 30px 50px -18px rgba(20, 18, 31, 0.34);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 280ms ease;
+    }
+    .step-card:hover::after {
+      opacity: 1;
     }
     .step-fig,
     .step-spark {
