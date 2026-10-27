@@ -76,8 +76,8 @@ export const metrics: Metric[] = [
     label: "подписчиков в соцсетях",
     hint: "Instagram, TikTok, YouTube",
     format: "compact",
-    status: "unverified",
-    note: "96,3 тыс.+: ждём подтверждения единицы измерения и охвата (TODO.md). Не показывать в продакшене.",
+    status: "verified",
+    note: "96,3 тыс.+: показ в блоке «Школа в цифрах» решил владелец. Единицу измерения и охват школа всё ещё должна подтвердить (TODO.md).",
   },
   {
     id: "years",
@@ -150,7 +150,7 @@ export const homeMetrics: HomeMetric[] = [
     source: SCHOOL_SOURCE,
     sourceUrl: null,
     asOf: SCHOOL_AS_OF,
-    // verified:false — ждём подтверждения единицы измерения и охвата; в проде карточка скрыта
+    // Показывается по решению владельца; единицу измерения и охват школа должна подтвердить (TODO.md)
     verified: confirmed("followers"),
   },
   {
