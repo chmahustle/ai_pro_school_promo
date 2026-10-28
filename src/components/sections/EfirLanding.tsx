@@ -6,13 +6,12 @@ import { formConfig } from "@/data/forms";
 import { getPublicLadder } from "@/data/public";
 import { getVibecodingBlocks } from "@/data/vibecodingBlocks";
 import { cn } from "@/lib/utils";
-import { ForWhomTiles, OutcomeTiles } from "./BlockTiles";
+import { AgendaDark, ColorfulForWhom, ColorfulOutcomes } from "./EfirBlocks";
 import { FAQ } from "./FAQ";
 import { LeaderCard } from "./LeaderCard";
 import { LeadSection } from "./LeadSection";
 import { NextSteps } from "./NextSteps";
 import { PageHero } from "./PageHero";
-import { Programs } from "./Programs";
 
 /** Иконки и цвета плиток фактов (как в hero курсов) */
 const FACT_ICONS = { duration: Clock, format: MonitorPlay, level: Signal, start: Calendar } as const;
@@ -61,15 +60,11 @@ export function EfirLanding() {
         }
       />
 
-      <ForWhomTiles id="efir-forwhom-title" items={blocks.forWhom} />
+      <ColorfulForWhom id="efir-forwhom-title" items={blocks.forWhom} />
 
-      <Programs
-        modules={[{ id: "efir", eyebrow: "Эфир", title: efir.name, lessons: blocks.efirAgenda.map((a) => (a.devNote ? `${a.text} (${a.devNote})` : a.text)) }]}
-        title="Что будет на эфире"
-        eyebrow="Программа эфира"
-      />
+      <AgendaDark id="efir-agenda-title" items={blocks.efirAgenda} />
 
-      <OutcomeTiles id="efir-outcomes-title" items={blocks.outcomes} title="Чему научитесь" />
+      <ColorfulOutcomes id="efir-outcomes-title" items={blocks.outcomes} />
 
       <LeaderCard id="efir-leader-title" leader={ladder.leader} />
 
