@@ -94,6 +94,8 @@ export interface PublicLadderStep {
   price: { prefix: string; amount: string; unit: string; /** зачёркнутая старая цена */ old?: string };
   /** Ближайший старт: только подтверждённый, иначе null */
   start: string | null;
+  /** «Рассрочка Kaspi на 12 месяцев» (плашка на карточке); null — не показываем */
+  kaspi: string | null;
   ctaLabel: string;
   href: string;
   /** Входная ступень («Начните с этого») */

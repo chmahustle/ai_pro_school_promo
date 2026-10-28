@@ -17,6 +17,7 @@ export { PlaceholderBadge, Placeholder } from "./PlaceholderBadge";
 export { MeshBackdrop, MeshDivider, type MeshVariant } from "./MeshBackdrop";
 export { SectionIntro } from "./SectionIntro";
 export { ArrowLink } from "./ArrowLink";
+export { KaspiBadge } from "./KaspiBadge";
 export { AudienceIcon } from "./AudienceIcon";
 export { AudienceIllustration } from "./AudienceIllustration";
 export { TileDecor, type TileDecorTone } from "./TileDecor";

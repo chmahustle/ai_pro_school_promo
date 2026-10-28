@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, Clock, Calendar, Signal, MonitorPlay } from "lucide-react";
-import { MeshBackdrop, Pill, Ribbon } from "@/components/ui";
+import { KaspiBadge, MeshBackdrop, Pill, Ribbon } from "@/components/ui";
 import { ProductPrice } from "@/components/ui/ProductPrice";
 import { LeadButton } from "@/components/ui/LeadButton";
 import { productForCourseSlug } from "@/data/product-ids";
@@ -45,6 +45,8 @@ export interface CourseHeroData {
   ctaWithPrice?: boolean;
   /** Условия оплаты из products.ts (сумма рассрочки или «есть рассрочка») */
   paymentNote: string | null;
+  /** «Рассрочка Kaspi на 12 месяцев» (плашка); null — не показываем */
+  kaspi: string | null;
 }
 
 export function CourseHeroClient({ course }: { course: CourseHeroData }) {
@@ -104,10 +106,10 @@ export function CourseHeroClient({ course }: { course: CourseHeroData }) {
               {!course.ctaWithPrice && course.price && (
                 <span className="ml-1 flex flex-col leading-tight">
                   <ProductPrice parts={course.price} className={cn("font-display text-lg", dark ? "text-white" : "text-ink")} />
-                  {course.paymentNote && <span className={cn("text-[13px]", dark ? "text-white/65" : "text-ink-500")}>{course.paymentNote}</span>}
+                  {course.kaspi ? <KaspiBadge label={course.kaspi} className="mt-2 self-start text-[13px]" /> : course.paymentNote && <span className={cn("text-[13px]", dark ? "text-white/65" : "text-ink-500")}>{course.paymentNote}</span>}
                 </span>
               )}
-              {course.ctaWithPrice && course.paymentNote && <span className={cn("ml-1 text-[13px]", dark ? "text-white/65" : "text-ink-500")}>{course.paymentNote}</span>}
+              {course.ctaWithPrice && (course.kaspi ? <KaspiBadge label={course.kaspi} className="text-[13px]" /> : course.paymentNote && <span className={cn("ml-1 text-[13px]", dark ? "text-white/65" : "text-ink-500")}>{course.paymentNote}</span>)}
             </motion.div>
           </motion.div>
 

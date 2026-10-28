@@ -1,5 +1,5 @@
 import type { Course } from "@/data/types";
-import { formatPriceParts, getPaymentNote, getProductForCourse } from "@/data/products";
+import { formatPriceParts, getKaspiInstallmentLabel, getPaymentNote, getProductForCourse } from "@/data/products";
 import { getCourseStart } from "@/lib/course-start";
 import { CourseHeroClient } from "./CourseHeroClient";
 
@@ -26,6 +26,7 @@ export function CourseHero({ course }: { course: Course }) {
         price: product ? formatPriceParts(product) : null,
         ctaWithPrice: course.slug === "practicum",
         paymentNote: product ? getPaymentNote(product) : null,
+        kaspi: product ? getKaspiInstallmentLabel(product) : null,
       }}
     />
   );

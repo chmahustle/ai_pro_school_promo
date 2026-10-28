@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui";
+import { Button, KaspiBadge } from "@/components/ui";
 import { ProductPrice } from "@/components/ui/ProductPrice";
 import type { PublicLadderStep } from "@/data/public-types";
 import { cn, nbspDash } from "@/lib/utils";
@@ -43,6 +43,7 @@ export function LadderStepCard({ step, entryBadge, showEntry = true, className }
             <ProductPrice parts={step.price} className="font-display text-[32px] font-extrabold leading-none" />
             {step.start && <span className="whitespace-nowrap text-[13px] font-semibold text-ink-700">Старт {step.start}</span>}
           </div>
+          {step.kaspi && <KaspiBadge label={step.kaspi} className="mt-3 text-[13px]" />}
           <Button variant="dark" size="md" fillTone="dark" href={step.href} fullWidth icon={<ArrowRight className="step-arrow size-4" />} className="mt-4">
             {step.ctaLabel}
           </Button>

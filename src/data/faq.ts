@@ -1,7 +1,8 @@
 import "server-only";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 import { courseFaq } from "./courseContent";
-import { formatPrice, getKaspiInstallmentLabel, getProduct, products } from "./products";
+import { getSpeakerRole } from "./speakers";
+import { formatPrice, getKaspiInstallmentLabel, getProduct, products, type ProductId } from "./products";
 import { vibeFaq } from "./vibecodingBlocks";
 
 /**
@@ -50,6 +51,26 @@ function kaspiAnswer(): string {
   return label ? `Да, есть ${label.charAt(0).toLowerCase()}${label.slice(1)}.` : "";
 }
 
+/** «Есть рассрочка Kaspi на 12 месяцев» (для ответов о цене): срок — из products.ts, пусто — если рассрочки нет */
+function kaspiSentence(id: ProductId): string {
+  const label = getKaspiInstallmentLabel(getProduct(id));
+  return label ? `Есть ${label.charAt(0).toLowerCase()}${label.slice(1)}.` : "";
+}
+
+/** Офлайн-урок: «Сколько стоит и есть ли рассрочка?» — цена и рассрочка из products.ts */
+function offlinePriceAnswer(): string {
+  const price = formatPrice(getProduct("offline"));
+  return price ? [`${price}.`, kaspiSentence("offline")].filter(Boolean).join(" ") : "";
+}
+
+/** Офлайн-урок: «Что дальше?» — курс и его цена из products.ts */
+function offlineNextAnswer(): string {
+  const course = getProduct("course");
+  const price = formatPrice(course);
+  if (!price) return "";
+  return `Дальше можно перейти на курс «${course.name}» — ${price}. ${kaspiSentence("course")}`.trim();
+}
+
 /**
  * «Что после эфира?»: следующие ступени направления вайб-кодинга с названием и ценой из products.ts (порядок ступеней по конфигу).
  */
@@ -77,8 +98,15 @@ export const faqEntries: FaqEntry[] = [
   { id: "directions-diff", q: "Чем отличаются направления?", a: "", pages: ["home", "courses"], verified: false },
   // Курс «Вайбкодинг с нуля»: вопросы и ответы — courseContent.ts
   ...courseFaq.map((q): FaqEntry => ({ id: `course-${q.id}`, q: q.q, a: q.a, pages: ["vibecoding-course"], verified: q.verified })),
-  { id: "kaspi", q: "Есть ли рассрочка Kaspi?", a: kaspiAnswer, pages: ["home", "courses", "vibecoding-course"], verified: true },
+  { id: "kaspi", q: "Есть ли рассрочка Kaspi?", a: kaspiAnswer, pages: ["home", "courses", "vibecoding-course", "practicum", "ai-creator"], verified: true },
   { id: "offline-where", q: "Где проходит офлайн-урок?", a: "Офлайн-урок проходит в Astana Hub.", pages: ["vibecoding", "vibecoding-offline"], verified: true },
+  { id: "offline-experience", q: "Нужен ли опыт программирования?", a: "Нет. Достаточно понимать свою задачу и уметь её сформулировать — остальное покажем на уроке.", pages: ["vibecoding-offline"], verified: true },
+  { id: "offline-bring", q: "Что взять с собой?", a: "Ноутбук. Cursor установим вместе на уроке.", pages: ["vibecoding-offline"], verified: true },
+  { id: "offline-group", q: "Сколько человек будет в группе?", a: "До 10 человек, поэтому место лучше забронировать заранее.", pages: ["vibecoding-offline"], verified: true },
+  { id: "offline-result", q: "Что я получу после урока?", a: "Вы поймёте, что такое вайб-кодинг и что с его помощью можно сделать, а что нельзя; установите Cursor и увидите, что работать с ним так же просто, как с ChatGPT; придумаете и упакуете идею и разработаете её на уроке; познакомитесь с рабочим циклом вайб-кодинга. Домой уйдёте с пониманием, что делать дальше.", pages: ["vibecoding-offline"], verified: true },
+  { id: "offline-leader", q: "Кто ведёт урок?", a: () => { const role = getSpeakerRole("maidan"); return role ? `Майдан Найманов — ${role.charAt(0).toLowerCase()}${role.slice(1)}.` : ""; }, pages: ["vibecoding-offline"], verified: true },
+  { id: "offline-price", q: "Сколько стоит урок и есть ли рассрочка?", a: offlinePriceAnswer, pages: ["vibecoding-offline"], verified: true },
+  { id: "offline-next", q: "Что дальше после урока?", a: offlineNextAnswer, pages: ["vibecoding-offline"], verified: true },
   { id: "practicum-vs-ai-creator", q: "Чем практикум отличается от курса AI Content Creator?", a: "", pages: ["creator"], verified: false },
   { id: "practicum-blog", q: "Нужно ли вести личный аккаунт?", a: "Нет. Можно делать ролики как услугу для клиентов, без ведения блога и съёмки себя. Мы расскажем, как находить клиентов без блога.", pages: ["practicum"], verified: true },
   { id: "practicum-paid", q: "Нужны ли платные нейросети?", a: "Нет. На старте работаем на бесплатных версиях — этого достаточно, чтобы делать 1 ролик в день.", pages: ["practicum"], verified: true },

@@ -48,7 +48,7 @@ function visible<T extends { verified: boolean }>(items: T[]): (T & { devNote?: 
 
 const forWhom = (): VibeItem[] => [
   { id: "business", title: "Предприниматель", text: "платите за сайты, ботов и автоматизацию", verified: true, source: SRC, asOf: AS_OF },
-  { id: "freelance", title: "Фрилансер или специалист", text: "хотите добавить AI-продукты в услуги", verified: true, source: SRC, asOf: AS_OF },
+  { id: "freelance", title: "Фрилансер", text: "хотите добавить AI-продукты в услуги", verified: true, source: SRC, asOf: AS_OF },
   { id: "career", title: "Специалист в найме", text: "хотите забрать рутину у ИИ", verified: true, source: SRC, asOf: AS_OF },
   { id: "ai-user", title: "Уже используете AI", text: "хотите перейти от запросов к созданию продуктов", verified: true, source: SRC, asOf: AS_OF },
   // По запросу владельца: плитки про новичков; тексты — из подтверждённых ответов FAQ
