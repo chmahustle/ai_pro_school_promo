@@ -129,12 +129,12 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
         </div>
       )}
 
-      <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      {/* items-start: карточки разной высоты (видео, до/после, только результат) не растягиваются по строке и не оставляют пустых белых полей */}
+      <ul className="grid items-start gap-5 md:grid-cols-2 xl:grid-cols-3">
         {stories.map((story) => (
           <li key={story.id}>
             <StoryCard
               story={story}
-              className="h-full"
               onOpenMedia={story.media ? () => openMedia(story) : undefined}
             />
           </li>
