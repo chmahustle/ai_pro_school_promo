@@ -71,6 +71,8 @@ export interface Product {
   pricePrefix: "от" | "";
   /** Условия оплаты кратко («есть рассрочка») */
   priceNote: string;
+  /** Рассрочка Kaspi: срок в месяцах (плашка в hero); null — рассрочки Kaspi нет/не подтверждена */
+  kaspiInstallmentMonths?: number | null;
   /** Платёж в рассрочку ₸/мес. null — цифры нет, блок скрыт */
   installmentFromPerMonth: number | null;
   /** Будущие изменения цены; записи с from: null пока не действуют */
@@ -280,7 +282,8 @@ export const products: Product[] = [
       { id: "final-project", title: "Проект для компании-партнёра", icon: "flag", verified: false, fallbackTitle: "Итоговый проект" },
     ],
     format: "3 месяца",
-    durationVerified: false, // TODO(клиент): подтвердить срок «3 месяца» → true; пока в проде показывается, в dev с пометкой
+    durationVerified: true,
+    kaspiInstallmentMonths: 12,
     price: 400000,
     pricePrefix: "",
     priceNote: "есть рассрочка",
@@ -505,4 +508,12 @@ export function getEntryStep(direction: Direction, now: Date = currentDate()): {
 export function getPaymentNote(product: Product): string | null {
   if (product.installmentFromPerMonth) return `Рассрочка от ${formatNumber(product.installmentFromPerMonth)}${NBSP}₸ в месяц`;
   return product.priceNote || null;
+}
+
+/** Плашка «Рассрочка Kaspi на 12 месяцев»: срок — из products.ts → kaspiInstallmentMonths; нет срока — null */
+export function getKaspiInstallmentLabel(product: Product): string | null {
+  const n = product.kaspiInstallmentMonths;
+  if (!n) return null;
+  const word = n % 10 === 1 && n % 100 !== 11 ? "месяц" : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? "месяца" : "месяцев";
+  return `Рассрочка Kaspi на\u00a0${n}\u00a0${word}`;
 }

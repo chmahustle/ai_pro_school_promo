@@ -19,6 +19,7 @@ import { getVisiblePartners } from "./partners";
 import {
   formatCohortDate,
   formatEntryLine,
+  getKaspiInstallmentLabel,
   formatPriceParts,
   getEntryProducts,
   getEntrySubtitle,
@@ -606,6 +607,7 @@ export function getPublicProductPage(id: "offline" | "course"): PublicProductPag
     // Срок («3 месяца») показываем; пока не подтверждён школой — в dev с пометкой
     devFormatNote: SHOW_PLACEHOLDERS && p.durationVerified === false ? "не подтверждено" : null,
     start: startLabel(p),
+    kaspi: getKaspiInstallmentLabel(p),
     price: { prefix, amount, unit, ...(old ? { old } : {}) },
     installment: p.installmentFromPerMonth ? `Рассрочка от ${formatNumber(p.installmentFromPerMonth)}${NBSP_}₸ в месяц` : null,
     ctaLabel: p.ctaLabel,

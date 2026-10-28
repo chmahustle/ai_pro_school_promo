@@ -75,13 +75,15 @@ export const courseDelivery: CourseDeliveryItem[] = [
 
 /** Строка формата для hero */
 export const courseHeroFormat = "Онлайн, уроки в записи";
-export const courseHeroLevel = "Без опыта программирования";
+export const courseHeroLevel = "Без опыта";
 
 // ───────────── Что получится по этапам ─────────────
 
 export interface CourseMilestone extends Checked {
   id: string;
   text: string;
+  /** Плитка-акцент: другой фон, без порядкового номера */
+  highlight?: boolean;
 }
 
 export const courseMilestones: CourseMilestone[] = [
@@ -93,7 +95,7 @@ export const courseMilestones: CourseMilestone[] = [
   { id: "automation", text: "Автоматизация различных задач: n8n и другие инструменты", verified: true, source: SOURCE, asOf: AS_OF },
   { id: "orders", text: "Выполните реальные заказы и научитесь интеграции WhatsApp, Instagram, Битрикс24 и других сервисов", verified: true, source: SOURCE, asOf: AS_OF },
   { id: "publish", text: "Публикация проекта на своём домене и сервере", verified: true, source: SOURCE, asOf: AS_OF },
-  { id: "more", text: "+ более 20 проектов", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "more", text: "+ более 20 проектов", highlight: true, verified: true, source: SOURCE, asOf: AS_OF },
 ];
 
 // ───────────── Что понадобится кроме курса ─────────────
@@ -213,7 +215,7 @@ export const courseFaq: CourseFaq[] = [
 export interface PublicCourseContent {
   program: { part: 1 | 2; partTitle: string; modules: { id: string; number: string; title: string; goal: string; lessons: string[]; optional: boolean; devNote?: string }[] }[];
   delivery: { id: string; title: string; text: string; devNote?: string }[];
-  milestones: { id: string; text: string; devNote?: string }[];
+  milestones: { id: string; text: string; highlight: boolean; devNote?: string }[];
   costs: { payer: string; items: { id: string; name: string; amount: string; hint?: string; devNote?: string }[]; devNote?: string };
   forWhom: { id: string; text: string; title: string; devNote?: string }[];
   /** Только dev: что скрыто как неподтверждённое */
@@ -241,7 +243,7 @@ export function getCourseContent(): PublicCourseContent {
   return {
     program,
     delivery: visible(courseDelivery).map((d) => ({ id: d.id, title: d.title, text: d.text, devNote: d.devNote })),
-    milestones: visible(courseMilestones).map((m) => ({ id: m.id, text: m.text, devNote: m.devNote })),
+    milestones: visible(courseMilestones).map((m) => ({ id: m.id, text: m.text, highlight: Boolean(m.highlight), devNote: m.devNote })),
     costs: {
       payer: courseCosts.payer,
       items: costItems.map((c) => ({ id: c.id, name: c.name, amount: c.amount, hint: c.hint, devNote: c.devNote })),

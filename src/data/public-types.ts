@@ -304,6 +304,8 @@ export interface PublicProductPage {
   devFormatNote: string | null;
   /** Ближайший старт: только подтверждённый, иначе null */
   start: string | null;
+  /** «Рассрочка Kaspi на 12 месяцев»: плашка в hero; null — не показываем */
+  kaspi: string | null;
   price: { prefix: string; amount: string; unit: string; old?: string };
   /** «Рассрочка от … ₸ в месяц» — только если сумма задана */
   installment: string | null;

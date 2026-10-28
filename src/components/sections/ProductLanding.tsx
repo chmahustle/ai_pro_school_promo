@@ -2,14 +2,15 @@ import Link from "next/link";
 import { ArrowRight, Clock, MapPin, Users } from "lucide-react";
 import { LandingHeader } from "@/components/layout/LandingHeader";
 import { Button, Pill, Section, SectionIntro } from "@/components/ui";
+import { KaspiIcon } from "@/components/ui/KaspiIcon";
 import { ProductPrice } from "@/components/ui/ProductPrice";
 import { getCourseTeachers, getNextStep, getPublicProductPage } from "@/data/public";
 import { cn, nbspDash } from "@/lib/utils";
 import { getFaq } from "@/data/faq";
 import { getCourseContent } from "@/data/courseContent";
-import { ForWhomTiles, OutcomeTiles } from "./BlockTiles";
+import { ForWhomTiles } from "./BlockTiles";
 import { courseHeroFormat, courseHeroLevel } from "@/data/courseContent";
-import { CourseCosts, CourseDelivery, CourseProgram, CourseTeachers } from "./CourseBlocks";
+import { CourseCosts, CourseDelivery, CourseMilestones, CourseProgram, CourseTeachers } from "./CourseBlocks";
 import { FAQ } from "./FAQ";
 import { VideoReviews } from "./VideoReviews";
 import { LeadSection } from "./LeadSection";
@@ -46,26 +47,37 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
           </>
         }
         aside={
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1" aria-label="Коротко о программе">
-            <li className="rounded-[24px] bg-dark p-5 text-white">
-              <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-white/55">
-                <Clock className="size-4" aria-hidden /> Формат
-              </p>
-              {id === "course" ? (
-                <ul className="mt-3 flex flex-col gap-1.5 font-display text-[clamp(1.0625rem,0.95rem+0.5vw,1.375rem)] font-bold leading-tight">
-                  <li>{courseHeroFormat}</li>
-                  <li>{courseHeroLevel}</li>
-                  <li>
+          <div className="flex flex-col gap-4">
+            {id === "course" ? (
+              <ul className="grid grid-cols-2 gap-4" aria-label="Коротко о программе">
+                <li className="col-span-2 rounded-[24px] bg-dark p-5 text-white">
+                  <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-white/55">
+                    <Clock className="size-4" aria-hidden /> Формат
+                  </p>
+                  <p className="mt-3 font-display text-[clamp(1.0625rem,0.95rem+0.5vw,1.375rem)] font-bold leading-tight">{courseHeroFormat}</p>
+                </li>
+                <li className="rounded-[24px] bg-surface p-5 shadow-soft">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-ink-500">Уровень</p>
+                  <p className="mt-3 font-display text-[clamp(1.0625rem,0.95rem+0.5vw,1.375rem)] font-bold leading-tight">{courseHeroLevel}</p>
+                </li>
+                <li className="rounded-[24px] bg-lavender p-5">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-ink-500">Срок</p>
+                  <p className="mt-3 font-display text-[clamp(1.0625rem,0.95rem+0.5vw,1.375rem)] font-bold leading-tight">
                     {p.format}
                     {p.devFormatNote && <span className="ml-2 align-middle text-[12px] font-semibold text-danger">{p.devFormatNote}</span>}
-                  </li>
-                  {p.start && <li>Старт: {p.start}</li>}
-                </ul>
-              ) : (
+                  </p>
+                  {p.start && <p className="mt-1 text-[14px] text-ink-500">Старт: {p.start}</p>}
+                </li>
+              </ul>
+            ) : (
+              <div className="rounded-[24px] bg-dark p-5 text-white">
+                <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-white/55">
+                  <Clock className="size-4" aria-hidden /> Формат
+                </p>
                 <p className="mt-3 font-display text-[clamp(1.0625rem,0.95rem+0.5vw,1.375rem)] font-bold leading-tight">{nbspDash(p.format)}</p>
-              )}
-            </li>
-            <li className="rounded-[24px] bg-surface p-5 shadow-soft">
+              </div>
+            )}
+            <div className="rounded-[24px] bg-surface p-5 shadow-soft">
               <p className="text-[11px] font-bold uppercase tracking-wider text-ink-500">Стоимость</p>
               <ProductPrice parts={p.price} className="mt-3 block font-display text-[34px] font-extrabold leading-none" />
               {p.devOldPrice && (
@@ -73,19 +85,25 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
                   <span className="line-through">{p.devOldPrice.amount}</span> {p.devOldPrice.label} · {p.devOldPrice.note}
                 </p>
               )}
+              {p.kaspi && (
+                <span className="mt-3 inline-flex items-center gap-2 rounded-pill bg-kaspi py-1.5 pl-1.5 pr-4 text-[14px] font-bold leading-none text-white">
+                  <KaspiIcon className="size-6 shrink-0" />
+                  {p.kaspi}
+                </span>
+              )}
               {p.installment && <p className="mt-2 text-[14px] text-ink-500">{p.installment}</p>}
               {p.seatsLeft !== null && (
                 <Pill tone="brand" className="mt-3" icon={<Users />}>
                   Осталось мест: {p.seatsLeft}
                 </Pill>
               )}
-            </li>
-          </ul>
+            </div>
+          </div>
         }
       />
 
       {content ? (
-        <OutcomeTiles id="course-milestones-title" items={content.milestones} title="Что вы сделаете" />
+        <CourseMilestones id="course-milestones-title" items={content.milestones} />
       ) : (
         <Section className="scroll-mt-24" aria-labelledby={`${id}-result-title`}>
           <SectionIntro id={`${id}-result-title`} align="left" eyebrow="Результат" title={OFFLINE_RESULT_TITLE} />
