@@ -7,7 +7,7 @@ import { ProductPrice } from "@/components/ui/ProductPrice";
 import { getCourseTeachers, getNextStep, getPublicProductPage } from "@/data/public";
 import { cn, nbspDash } from "@/lib/utils";
 import { getFaq } from "@/data/faq";
-import { getCourseContent } from "@/data/courseContent";
+import { getCourseContent, getOfflineMilestones } from "@/data/courseContent";
 import { ForWhomTiles } from "./BlockTiles";
 import { courseHeroFormat, courseHeroLevel } from "@/data/courseContent";
 import { CourseCosts, CourseDelivery, CourseMilestones, CourseProgram, CourseTeachers } from "./CourseBlocks";
@@ -19,7 +19,7 @@ import { RefundTerms } from "./RefundTerms";
 import { PageHero } from "./PageHero";
 
 /** Заголовок блока результата у офлайна */
-const OFFLINE_RESULT_TITLE = "Что получите";
+const OFFLINE_RESULT_TITLE = "Что вы получите";
 
 /**
  * Страница продукта вайб-кодинга (офлайн-урок, курс): hero с результатом, форматом и ценой,
@@ -105,10 +105,7 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
       {content ? (
         <CourseMilestones id="course-milestones-title" items={content.milestones} />
       ) : (
-        <Section className="scroll-mt-24" aria-labelledby={`${id}-result-title`}>
-          <SectionIntro id={`${id}-result-title`} align="left" eyebrow="Результат" title={OFFLINE_RESULT_TITLE} />
-          <p className="max-w-[40ch] rounded-[28px] bg-lavender p-6 font-display text-[clamp(1.25rem,1rem+1.2vw,1.75rem)] font-bold leading-snug sm:p-8">{nbspDash(p.resultLine)}</p>
-        </Section>
+        <CourseMilestones id="offline-result-title" items={getOfflineMilestones()} title={OFFLINE_RESULT_TITLE} />
       )}
 
       {content && <CourseProgram program={content.program} />}

@@ -98,6 +98,21 @@ export const courseMilestones: CourseMilestone[] = [
   { id: "more", text: "+ более 20 проектов", highlight: true, verified: true, source: SOURCE, asOf: AS_OF },
 ];
 
+// ───────────── Офлайн-урок: «Что вы получите» ─────────────
+
+export const offlineMilestones: CourseMilestone[] = [
+  { id: "what", text: "Поймёте, что такое вайб-кодинг: что с его помощью можно сделать по-настоящему, а что нельзя", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "cursor", text: "Установите Cursor и поймёте, как с ним работать: убедитесь, что это так же просто, как общаться с ChatGPT", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "idea", text: "Поймёте, как придумать и упаковать идею, и разработаете её прямо на уроке", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "cycle", text: "Научитесь работать с вайб-кодингом по специальному циклу", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "next", text: "Уйдёте домой, понимая, что делать дальше", highlight: true, verified: true, source: SOURCE, asOf: AS_OF },
+];
+
+/** Публичный список «Что вы получите» для страницы офлайн-урока: только verified (dev — с пометкой) */
+export function getOfflineMilestones(): PublicCourseContent["milestones"] {
+  return visible(offlineMilestones).map((m) => ({ id: m.id, text: m.text, highlight: Boolean(m.highlight), devNote: m.devNote }));
+}
+
 // ───────────── Что понадобится кроме курса ─────────────
 
 export interface CourseCost extends Checked {

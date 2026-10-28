@@ -92,7 +92,7 @@ export interface Product {
    */
   whatsappKeyword: string | null;
   thanksUrl: string;
-  /** Сколько мест осталось (офлайн-формат). null — счётчик скрыт; «до 8 мест» в формате — вместимость, не остаток */
+  /** Сколько мест осталось (офлайн-формат). null — счётчик скрыт; «до 10 мест» в формате — вместимость, не остаток */
   seatsLeft: number | null;
   /** Адрес проведения (офлайн). null — блок «Где и когда» скрыт */
   address: string | null;
@@ -241,7 +241,7 @@ export const products: Product[] = [
     step: "project",
     name: vocabulary.offline,
     resultLine: "Демо сайта, бота или агента под свою задачу за 3 часа",
-    format: "Астана, до 8 мест",
+    format: "Астана, до 10 мест",
     price: 35000,
     pricePrefix: "",
     priceNote: "",

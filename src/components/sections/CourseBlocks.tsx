@@ -54,12 +54,12 @@ export function CourseProgram({ program }: { program: PublicCourseContent["progr
 }
 
 /** «Что вы сделаете»: нумерованные плитки; плитка-акцент («+ более 20 проектов») — на тёмном фоне и без номера */
-export function CourseMilestones({ id, items }: { id: string; items: PublicCourseContent["milestones"] }) {
+export function CourseMilestones({ id, items, title = "Что вы сделаете" }: { id: string; items: PublicCourseContent["milestones"]; title?: string }) {
   if (items.length === 0) return null;
   let n = 0;
   return (
     <Section aria-labelledby={id}>
-      <SectionIntro id={id} align="left" eyebrow="Результат" title="Что вы сделаете" />
+      <SectionIntro id={id} align="left" eyebrow="Результат" title={title} />
       <RevealGroup as="ul" className="audience-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((m) => (
           <RevealItem as="li" key={m.id} className="flex">
