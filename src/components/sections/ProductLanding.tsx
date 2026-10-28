@@ -1,8 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Clock, MapPin, Users } from "lucide-react";
 import { LandingHeader } from "@/components/layout/LandingHeader";
 import { Button, Pill, Section, SectionIntro } from "@/components/ui";
-import { KaspiIcon } from "@/components/ui/KaspiIcon";
 import { ProductPrice } from "@/components/ui/ProductPrice";
 import { getCourseTeachers, getNextStep, getPublicProductPage } from "@/data/public";
 import { cn, nbspDash } from "@/lib/utils";
@@ -86,8 +86,8 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
                 </p>
               )}
               {p.kaspi && (
-                <span className="mt-3 inline-flex items-center gap-2 rounded-pill bg-kaspi py-1.5 pl-1.5 pr-4 text-[14px] font-bold leading-none text-white">
-                  <KaspiIcon className="size-6 shrink-0" />
+                <span className="mt-3 inline-flex items-center gap-2 rounded-pill bg-kaspi py-1 pl-1 pr-4 text-[14px] font-bold leading-none text-white">
+                  <Image src="/kaspi-kz.webp" alt="" width={28} height={28} className="size-7 shrink-0 rounded-full" />
                   {p.kaspi}
                 </span>
               )}
