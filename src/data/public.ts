@@ -533,6 +533,8 @@ function photoIfExists(photo: string | null | undefined): string | null {
 }
 
 function startLabel(p: (typeof products)[number]): string | null {
+  // Практикум: дату начала не показываем (решение владельца)
+  if (p.id === "practicum") return null;
   if (p.nextStart) {
     const [y, m, d] = p.nextStart.split("-").map(Number);
     const weekday = new Date(Date.UTC(y ?? 1970, (m ?? 1) - 1, d ?? 1)).getUTCDay();
