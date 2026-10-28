@@ -272,7 +272,7 @@ export const products: Product[] = [
     step: "profession",
     name: vocabulary.vibecodingCourse, // verified, source: программа курса и приветствие студентам
     // Пункт «проект для компании-партнёра» не подтверждён (deliverables → verified: false): в проде — «итоговый проект»
-    resultLine: "Магазин с CRM, Telegram-бот, ИИ-агент и итоговый проект",
+    resultLine: "Магазин с CRM, Telegram-бот, ИИ-агент и 30 готовых проектов для портфолио",
     deliverables: [
       { id: "shop", title: "Магазин с CRM", icon: "store", verified: true },
       { id: "telegram-bot", title: "Telegram-бот", icon: "send", verified: true },
