@@ -32,7 +32,7 @@ export const leadSchema = z.object({
   ttclid: z.string().max(300).optional(),
   /** utm_* и click-id первого захода */
   utm: z.record(z.string(), z.string().optional()).optional(),
-  /** Honeypot — боты заполняют, люди нет. Непустое значение не ошибка валидации: /api/lead отвечает успехом и не передаёт заявку */
+  /** Honeypot - боты заполняют, люди нет. Непустое значение не ошибка валидации: /api/lead отвечает успехом и не передаёт заявку */
   website: z.string().max(500).optional(),
 });
 

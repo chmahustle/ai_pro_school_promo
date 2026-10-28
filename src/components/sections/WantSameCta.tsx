@@ -5,7 +5,7 @@ import { webinarCta } from "@/data/heroResults";
 import { Ribbon } from "@/components/ui";
 import { cn, noBreakHyphen } from "@/lib/utils";
 
-/** Четырёхконечная искра — форма как в логотипе */
+/** Четырёхконечная искра - форма как в логотипе */
 function Spark({
   className,
   fill = "#E8307E",
@@ -44,7 +44,7 @@ const titleClass =
   "relative z-10 max-w-[12ch] font-display text-[22px] font-bold leading-tight tracking-[-0.02em] sm:text-[24px] lg:text-[26px]";
 
 /**
- * Финальный CTA «Хотите так же?» — три плитки после отзывов/кейсов.
+ * Финальный CTA «Хотите так же?» - три плитки после отзывов/кейсов.
  */
 export function WantSameCta() {
   return (

@@ -6,8 +6,8 @@ const PINK_L = "#F7B0CF";
 const LAV = "#ECE9FF";
 
 /**
- * Иллюстрации тёмной карточки меню (сцены 420×180). Ролики — телефон, плеер и таймлайн из простых форм;
- * вайб-кодинг — готовая сцена «чат → форма/CRM → график» из прежнего меню (AudienceIllustration, бизнес).
+ * Иллюстрации тёмной карточки меню (сцены 420×180). Ролики - телефон, плеер и таймлайн из простых форм;
+ * вайб-кодинг - готовая сцена «чат → форма/CRM → график» из прежнего меню (AudienceIllustration, бизнес).
  */
 export function DirectionIllustration({ direction }: { direction: "creator" | "vibecoding" }) {
   if (direction === "vibecoding") return <AudienceIllustration slug="business" className="absolute inset-0" />;

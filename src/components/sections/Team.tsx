@@ -12,7 +12,7 @@ interface TeamProps {
   description?: string;
   tone?: "bg" | "white" | "dark" | "lavender";
   bare?: boolean;
-  /** grid — карточки в ряд; wide — фото слева (спикеры эфира); feature — первый участник крупно, остальные под ним */
+  /** grid - карточки в ряд; wide - фото слева (спикеры эфира); feature - первый участник крупно, остальные под ним */
   layout?: "grid" | "wide" | "feature";
 }
 
@@ -30,12 +30,12 @@ const socialMeta = {
   telegram: { label: "Telegram", Icon: Send },
 } as const;
 
-/** Команда / спикеры. Фото — из данных; без фото — крупные инициалы на фирменном градиенте (в dev с бейджем). */
+/** Команда / спикеры. Фото - из данных; без фото - крупные инициалы на фирменном градиенте (в dev с бейджем). */
 export function Team({
   items = team,
   eyebrow = "Команда",
   title = "Кто учит",
-  description = "Практики, которые сами зарабатывают на ИИ и строят AI-решения — и учат этому других.",
+  description = "Практики, которые сами зарабатывают на ИИ и строят AI-решения - и учат этому других.",
   tone = "bg",
   bare,
   layout = "grid",
@@ -83,7 +83,7 @@ export function Team({
 /** Цвета карточек в ряду: тёмная, сиреневая, белая (как плитки главной) */
 const gridTints = ["dark", "lavender", "white"] as const;
 
-/** Фото участника; нет фото — блок не рисуем (ни инициалов, ни плашки) */
+/** Фото участника; нет фото - блок не рисуем (ни инициалов, ни плашки) */
 function MemberPhoto({ member, className, sizes }: { member: TeamMember; className?: string; sizes: string }) {
   if (!member.photo) return null;
   return (
@@ -106,7 +106,7 @@ function Socials({ member, onDark }: { member: TeamMember; onDark?: boolean }) {
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`${member.name} — ${label}`}
+            aria-label={`${member.name} - ${label}`}
             className={cn(
               "inline-flex h-10 items-center gap-2 rounded-pill px-4 text-[13px] font-semibold transition-colors duration-200 hover:bg-brand hover:text-white",
               onDark ? "bg-white/10 text-white" : "bg-ink/[0.06] text-ink",
@@ -121,7 +121,7 @@ function Socials({ member, onDark }: { member: TeamMember; onDark?: boolean }) {
   );
 }
 
-/** Основатель: тёмная карточка во всю ширину — фото слева, текст и факты справа */
+/** Основатель: тёмная карточка во всю ширину - фото слева, текст и факты справа */
 function FeatureCard({ member }: { member: TeamMember }) {
   return (
     <article className={cn("relative grid overflow-hidden rounded-[32px] bg-dark text-white", member.photo && "lg:grid-cols-[minmax(0,400px)_1fr]")}>

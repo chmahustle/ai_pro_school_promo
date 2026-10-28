@@ -20,7 +20,7 @@ const free = (on) => {
 const norm = (s) => s.replace(/[\u00a0\u202f]/g, " ");
 const EFIR_FREE = /бесплатн[а-яё]*[^.]{0,60}эфир|эфир[^.]{0,60}бесплатн/i;
 
-test("efirPriceLabel: эфир платный — «9 900 ₸»; ветка «бесплатно» работает по цене 0", () => {
+test("efirPriceLabel: эфир платный - «9 900 ₸»; ветка «бесплатно» работает по цене 0", () => {
   free(false);
   assert.equal(products.efirIsFree(), false);
   assert.equal(norm(products.efirPriceLabel()), "9 900 ₸");
@@ -40,7 +40,7 @@ test("подзаголовок hero: «Начать можно с 9 900 ₸ ил
   free(false);
 });
 
-test("подпись под кнопкой hero: «Эфир от 9 900 ₸» (при цене 0 — «Эфир бесплатно»)", () => {
+test("подпись под кнопкой hero: «Эфир от 9 900 ₸» (при цене 0 - «Эфир бесплатно»)", () => {
   const efirProduct = products.getProduct("efir");
   free(false);
   assert.equal(norm(products.formatEntryLine(efirProduct)), "Эфир от 9 900 ₸");
@@ -103,7 +103,7 @@ test("исходники: слова «бесплатн» про эфир не �
         if (/^бесплатн[а-яё]*\s+(нейросет|верси|тариф|сервис|инструмент)/i.test(line.slice(m.index))) continue;
         if (/^бесплатн[а-яё]*\s+(использовать топовые|т)/i.test(line.slice(m.index))) continue;
         const win = line.slice(Math.max(0, m.index - 60), m.index + 60);
-        // PricingClient: «Бесплатно» при price === 0 у тарифа — из данных; остальное про эфир запрещено
+        // PricingClient: «Бесплатно» при price === 0 у тарифа - из данных; остальное про эфир запрещено
         if (/эфир/i.test(win) || rel.endsWith("PricingClient.tsx")) offenders.push(`${rel}:${i + 1}`);
       }
     }

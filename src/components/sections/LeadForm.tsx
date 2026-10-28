@@ -19,7 +19,7 @@ import { useT } from "@/i18n/LocaleProvider";
 import { cn } from "@/lib/utils";
 
 export interface LeadFormProps {
-  /** Публичные настройки формы (список продуктов, согласие, обещание ответа) — собираются на сервере */
+  /** Публичные настройки формы (список продуктов, согласие, обещание ответа) - собираются на сервере */
   config: FormConfig;
   /** Идентификатор формы для аналитики (hero, footer, modal, landing-business…) */
   formId: string;
@@ -82,7 +82,7 @@ export function LeadForm({
     mode: "onBlur",
   });
 
-  // lead_start — один раз при первом взаимодействии
+  // lead_start - один раз при первом взаимодействии
   const markStarted = () => {
     if (startedRef.current) return;
     startedRef.current = true;
@@ -142,7 +142,7 @@ export function LeadForm({
       aria-busy={isSubmitting}
       onFocusCapture={markStarted}
     >
-      {/* Служебные поля — без register не попадают в submit (RHF) */}
+      {/* Служебные поля - без register не попадают в submit (RHF) */}
       <input type="hidden" {...register("formId")} />
       <input type="hidden" {...register("page")} />
       {/* Honeypot */}

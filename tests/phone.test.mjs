@@ -73,7 +73,7 @@ test("лишние цифры сверх 10 после +7 игнорируютс
   assert.equal(normalizePhone(formatPhoneInput("+7701123456789999")), "77011234567");
 });
 
-test("«+» без цифр остаётся «+», пустое поле — пустым", () => {
+test("«+» без цифр остаётся «+», пустое поле - пустым", () => {
   assert.equal(formatPhoneInput("+"), "+");
   assert.equal(formatPhoneInput(""), "");
 });

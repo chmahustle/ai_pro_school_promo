@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 interface FloatingCardProps {
   children: ReactNode;
   className?: string;
-  /** @deprecated — оставлен для совместимости вызовов, не влияет на видимость */
+  /** @deprecated - оставлен для совместимости вызовов, не влияет на видимость */
   delay?: number;
   rotate?: number;
   float?: "normal" | "slow" | "none";
@@ -17,7 +17,7 @@ const tones = {
   brand: "bg-brand-50 text-ink shadow-card",
 };
 
-/** Всегда видима (без framer opacity:0). Парение — CSS transform. */
+/** Всегда видима (без framer opacity:0). Парение - CSS transform. */
 export function FloatingCard({
   children,
   className,

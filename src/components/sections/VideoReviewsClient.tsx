@@ -9,7 +9,7 @@ import { track } from "@/lib/analytics";
 /**
  * Видеоотзывы: горизонтальная лента вертикальных роликов. Видео не стартует само: постер и кнопка «Смотреть»,
  * по нажатию играет inline со звуком и элементами управления; одновременно играет один ролик.
- * preload="none" — пока не нажали, видеофайл не скачивается (только лёгкий постер WebP).
+ * preload="none" - пока не нажали, видеофайл не скачивается (только лёгкий постер WebP).
  */
 export function VideoReviewsClient({ items }: { items: PublicVideoReview[] }) {
   const [active, setActive] = useState<string | null>(null);

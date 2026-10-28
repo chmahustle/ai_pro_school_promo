@@ -7,7 +7,7 @@ interface LogoProps {
   invert?: boolean;
   /** Только знак, без текста */
   markOnly?: boolean;
-  /** false — логотип без ссылки (минимальная шапка лендингов) */
+  /** false - логотип без ссылки (минимальная шапка лендингов) */
   asLink?: boolean;
 }
 
@@ -28,7 +28,7 @@ export function Logo({ className, invert, markOnly, asLink = true }: LogoProps) 
   const cls = cn("inline-flex items-center gap-2.5 rounded-pill", className);
   if (!asLink) return <span className={cls}>{content}</span>;
   return (
-    <Link href="/" aria-label="AI Pro School — на главную" className={cls}>
+    <Link href="/" aria-label="AI Pro School - на главную" className={cls}>
       {content}
     </Link>
   );

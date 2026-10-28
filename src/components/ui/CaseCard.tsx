@@ -8,7 +8,7 @@ import { cn, nbspDash } from "@/lib/utils";
 
 interface CaseCardProps {
   item: PublicCase;
-  /** Открыть видео в модалке (по клику); получает нажатую кнопку — вернуть на неё фокус после закрытия */
+  /** Открыть видео в модалке (по клику); получает нажатую кнопку - вернуть на неё фокус после закрытия */
   onOpenVideo?: (trigger: HTMLButtonElement) => void;
   className?: string;
 }
@@ -19,9 +19,9 @@ const LINK = "mt-2 inline-flex items-center gap-1.5 text-[13px] font-semibold te
 /**
  * Единая карточка кейса (flex-col, футер mt-auto). Ряд автора: фото 56 px (только если есть), имя/«История {имя}», роль.
  * result: метрика розовым + подпись, До/После (до 3 строк), цитата (до 3 строк). video: нейтральная строка и дата публикации.
- * Нет До/После/цитаты, но есть видео — постер 16:9 на всё свободное место (min 160 px) с большой кнопкой play.
- * Любое необязательное поле не рендерится, если пустое. До клика запросов к YouTube нет: постер локальный, плеер — в модалке.
- * Dev-плашки — абсолютно по верхнему/нижнему краю карточки, вне потока текста (в prod их нет).
+ * Нет До/После/цитаты, но есть видео - постер 16:9 на всё свободное место (min 160 px) с большой кнопкой play.
+ * Любое необязательное поле не рендерится, если пустое. До клика запросов к YouTube нет: постер локальный, плеер - в модалке.
+ * Dev-плашки - абсолютно по верхнему/нижнему краю карточки, вне потока текста (в prod их нет).
  */
 export function CaseCard({ item, onOpenVideo, className }: CaseCardProps) {
   const isVideoKind = item.kind === "video";
@@ -38,7 +38,7 @@ export function CaseCard({ item, onOpenVideo, className }: CaseCardProps) {
       {/* dev-плашки: на краях карточки, не перекрывают аватар, имя и текст */}
       {devTop && <PlaceholderBadge status="unverified" variant="note" note={devTop} className="left-4 top-0 max-w-[calc(100%-2rem)] -translate-y-1/2 truncate" />}
 
-      {/* Автор: аватар — только если есть фото (миниатюры видео с play и инициалов нет: play — на большом постере и в «Смотреть ролик») */}
+      {/* Автор: аватар - только если есть фото (миниатюры видео с play и инициалов нет: play - на большом постере и в «Смотреть ролик») */}
       <div className="flex items-center gap-3">
         {item.photoSrc && (
           <div className={PHOTO}>

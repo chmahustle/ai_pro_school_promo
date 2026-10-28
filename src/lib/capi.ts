@@ -1,10 +1,10 @@
 import "server-only";
 /**
- * Meta Conversions API (серверная отправка событий). Токен и тестовый код — только из env на сервере:
- *   META_CAPI_TOKEN        — токен доступа (обязателен для отправки)
- *   META_TEST_EVENT_CODE   — необязательный код из Events Manager → Test Events (только для проверки)
- *   NEXT_PUBLIC_META_PIXEL_ID — ID пикселя (тот же, что в браузере)
- * Нет токена или ID пикселя — событие тихо пропускается, без ошибок.
+ * Meta Conversions API (серверная отправка событий). Токен и тестовый код - только из env на сервере:
+ *   META_CAPI_TOKEN        - токен доступа (обязателен для отправки)
+ *   META_TEST_EVENT_CODE   - необязательный код из Events Manager → Test Events (только для проверки)
+ *   NEXT_PUBLIC_META_PIXEL_ID - ID пикселя (тот же, что в браузере)
+ * Нет токена или ID пикселя - событие тихо пропускается, без ошибок.
  */
 import { buildCapiEvent, type CapiEventInput } from "./capi-core";
 

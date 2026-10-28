@@ -163,7 +163,7 @@ function TariffCard({ tariff: t, mode, course, single }: { tariff: PublicTariff;
           source={`pricing:${course.slug}:${t.id}`}
           interest={productForCourseSlug(course.slug)}
           modalTitle={`${course.shortName} · ${t.name}`}
-          modalDescription="Оставьте контакты — пришлём детали тарифа, ссылку на оплату и ответим на вопросы."
+          modalDescription="Оставьте контакты - пришлём детали тарифа, ссылку на оплату и ответим на вопросы."
         >
           {t.cta ?? (t.price === 0 ? "Зарегистрироваться" : single ? <>{course.ctaLabel} за <span className="whitespace-nowrap">{formatTenge(t.price)}</span></> : course.ctaLabel)}
         </LeadButton>

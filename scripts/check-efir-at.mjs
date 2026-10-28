@@ -3,10 +3,10 @@
  * Проверка «бесплатно» перед сменой цены эфира: `node scripts/check-copy.mjs --at 2026-12-01`
  * (или `npm run check:efir -- 2026-12-01`).
  *
- * Собирает копию проекта в /tmp с подменой даты (APS_TEST_NOW) — эфир платный (9 900 ₸, products.ts),
+ * Собирает копию проекта в /tmp с подменой даты (APS_TEST_NOW) - эфир платный (9 900 ₸, products.ts),
  * затем читает собранный HTML (страницы, metadata, og:description, JSON-LD) и падает, если рядом с «эфир» осталось «бесплатн…».
  * Страховка от «бесплатно» про эфир в любых текстах; боевая сборка с APS_TEST_* запрещена check-env.
- * «бесплатные нейросети / версии / тарифы» — не про эфир, такие места пропускаются.
+ * «бесплатные нейросети / версии / тарифы» - не про эфир, такие места пропускаются.
  */
 import { spawnSync } from "node:child_process";
 import { cpSync, readdirSync, readFileSync, rmSync, statSync, symlinkSync, mkdirSync } from "node:fs";
@@ -75,9 +75,9 @@ rmSync(COPY, { recursive: true, force: true });
 
 console.log(`check-efir-at: проверено страниц: ${pages}`);
 if (findings.length > 0) {
-  console.error(`\ncheck-efir-at: после смены цены (${date}) «бесплатн…» рядом с эфиром — ${findings.length} мест:\n`);
+  console.error(`\ncheck-efir-at: после смены цены (${date}) «бесплатн…» рядом с эфиром - ${findings.length} мест:\n`);
   for (const f of findings) console.error(`  ${f.page}\n    …${f.ctx}…`);
   process.exit(1);
 }
-if (!sawPaidLabel) console.warn("check-efir-at: предупреждение — «9 900 ₸» нигде не найдено, проверьте, что дата подмены применилась");
-console.log("check-efir-at: ок — после смены цены «бесплатно» рядом с эфиром нет");
+if (!sawPaidLabel) console.warn("check-efir-at: предупреждение - «9 900 ₸» нигде не найдено, проверьте, что дата подмены применилась");
+console.log("check-efir-at: ок - после смены цены «бесплатно» рядом с эфиром нет");

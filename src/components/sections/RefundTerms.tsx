@@ -1,7 +1,7 @@
 import { Section, SectionIntro } from "@/components/ui";
 import { nbspDash } from "@/lib/utils";
 
-/** Блок «Условия возврата»: только текст школы. Нет текста — блока нет. */
+/** Блок «Условия возврата»: только текст школы. Нет текста - блока нет. */
 export function RefundTerms({ text }: { text: string | null }) {
   if (!text) return null;
   return (

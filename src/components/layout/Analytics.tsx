@@ -12,10 +12,10 @@ import { captureUtm } from "@/lib/utm";
 const WHATSAPP_HOSTS = new Set(["wa.me", "api.whatsapp.com", "web.whatsapp.com"]);
 
 /**
- * Подключение систем аналитики. Каждая — только если задан её ID в env; все скрипты — только в production
+ * Подключение систем аналитики. Каждая - только если задан её ID в env; все скрипты - только в production
  * (в dev не грузятся), через next/script, strategy="afterInteractive".
  *   Meta Pixel · TikTok Pixel · GA4 · Яндекс.Метрика (с вебвизором; поля ввода скрыты классом ym-disable-keys).
- * Стартовый просмотр страницы отправляют сами скрипты инициализации; при смене маршрута — track("page_view").
+ * Стартовый просмотр страницы отправляют сами скрипты инициализации; при смене маршрута - track("page_view").
  * Также захват UTM и событие Contact по клику на любую ссылку WhatsApp.
  */
 export function Analytics() {
@@ -26,7 +26,7 @@ export function Analytics() {
     captureUtm();
   }, []);
 
-  // Первый просмотр уже отправил скрипт инициализации; дальше — только смена маршрута
+  // Первый просмотр уже отправил скрипт инициализации; дальше - только смена маршрута
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
@@ -35,7 +35,7 @@ export function Analytics() {
     track({ name: "page_view", params: { path: pathname } });
   }, [pathname]);
 
-  // Contact: клик по любой ссылке/кнопке WhatsApp. product — из data-product ссылки или из страницы.
+  // Contact: клик по любой ссылке/кнопке WhatsApp. product - из data-product ссылки или из страницы.
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
       const a = (e.target as Element | null)?.closest?.("a[href]") as HTMLAnchorElement | null;

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Предупреждение перед production-сборкой (prebuild): политика конфиденциальности не утверждена юристом школы.
- * Не валит сборку — только печатает предупреждение, пока в src/data/company.ts стоит privacyApproved: false.
+ * Не валит сборку - только печатает предупреждение, пока в src/data/company.ts стоит privacyApproved: false.
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";

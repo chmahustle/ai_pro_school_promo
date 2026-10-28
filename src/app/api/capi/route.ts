@@ -31,7 +31,7 @@ function cookie(header: string | null, name: string): string | undefined {
 }
 
 /**
- * POST /api/capi — серверная копия браузерного события для Meta Conversions API.
+ * POST /api/capi - серверная копия браузерного события для Meta Conversions API.
  * Всегда отвечает 200 {ok:true}: нет токена, ошибка Meta или неверный запрос не должны влиять на сайт.
  */
 export async function POST(req: Request) {

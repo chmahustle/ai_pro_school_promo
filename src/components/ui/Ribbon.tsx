@@ -8,18 +8,18 @@ export type RibbonVariant = "pair" | "left" | "right" | "card";
 
 interface RibbonProps {
   variant?: RibbonVariant;
-  /** dark — тональная белая лента (12%) на тёмной панели, не сливается с фоном страницы и не режет текст; light — мягкий след на mesh */
+  /** dark - тональная белая лента (12%) на тёмной панели, не сливается с фоном страницы и не режет текст; light - мягкий след на mesh */
   tone?: "dark" | "light";
   className?: string;
   /** Прорисовка линии при появлении (hero) */
   draw?: boolean;
   /** Своя непрозрачность линий (по умолчанию: dark 0.12, light 0.6) */
   opacity?: number;
-  /** Цвет линий (по умолчанию белый); для светлых фонов — сиреневый и т.п. */
+  /** Цвет линий (по умолчанию белый); для светлых фонов - сиреневый и т.п. */
   color?: string;
 }
 
-/** Толстые S-кривые, выходящие за края панели (родитель — relative + overflow-hidden) */
+/** Толстые S-кривые, выходящие за края панели (родитель - relative + overflow-hidden) */
 const PATHS: Record<Exclude<RibbonVariant, "pair">, string[]> = {
   /** Для небольших карточек (~600×400): две пересекающие S-кривые */
   card: [
@@ -31,7 +31,7 @@ const PATHS: Record<Exclude<RibbonVariant, "pair">, string[]> = {
 };
 
 /**
- * Фоновая лента — слой за карточками. Лёгкий параллакс при скролле,
+ * Фоновая лента - слой за карточками. Лёгкий параллакс при скролле,
  * при prefers-reduced-motion статична. На мобильном тоньше (stroke в единицах viewBox).
  */
 export function Ribbon({ variant = "pair", tone = "dark", className, draw, opacity, color }: RibbonProps) {

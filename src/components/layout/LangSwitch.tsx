@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * Переключатель RU/KZ. Неактивные локали (нет перевода) показываются disabled
- * с подсказкой — структура готова, перевод добавляется в i18n/dictionaries/kz.ts.
+ * с подсказкой - структура готова, перевод добавляется в i18n/dictionaries/kz.ts.
  */
 export function LangSwitch({ className, invert }: { className?: string; invert?: boolean }) {
   const { locale, setLocale, t } = useLocale();

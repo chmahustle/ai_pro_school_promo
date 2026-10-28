@@ -19,7 +19,7 @@ interface LeadSectionProps extends Omit<LeadFormProps, "className" | "config"> {
 
 /**
  * Финальный CTA: mesh-фон + текст на ink/surface, форма на белой карточке.
- * Основной CTA формы — ink (не magenta).
+ * Основной CTA формы - ink (не magenta).
  */
 export function LeadSection({
   id = "lead",

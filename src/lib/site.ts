@@ -5,7 +5,7 @@ export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://ai-pro-school.kz"
 ).replace(/\/$/, "");
 
-/** Хосты, которые разрешено индексировать. Любой другой (test., tests., localhost) — noindex. */
+/** Хосты, которые разрешено индексировать. Любой другой (test., tests., localhost) - noindex. */
 const INDEXABLE_HOSTS = ["ai-pro-school.kz", "www.ai-pro-school.kz"];
 export const IS_INDEXABLE = (() => {
   try {

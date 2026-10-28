@@ -6,9 +6,9 @@ import type { AudienceSlug } from "./types";
 
 /**
  * Кейсы блока «Результаты учеников» (главная, /for/*, страницы направлений, /reviews): единый шаблон карточки CaseCard.
- * Прод: только verified && consent. Dev: остальные — с красной пометкой.
- * Источник на карточке — не внутренний домен, а «Данные аккаунта ученицы/ученика, {месяц год}» или «Данные школы, {месяц год}» (sourceKind + asOf).
- * YouTube — только youtubeId (плеер по клику, без запросов до него). Квитанции оплат сюда не входят (вкладка «Чеки и переписки» на /reviews).
+ * Прод: только verified && consent. Dev: остальные - с красной пометкой.
+ * Источник на карточке - не внутренний домен, а «Данные аккаунта ученицы/ученика, {месяц год}» или «Данные школы, {месяц год}» (sourceKind + asOf).
+ * YouTube - только youtubeId (плеер по клику, без запросов до него). Квитанции оплат сюда не входят (вкладка «Чеки и переписки» на /reviews).
  *
  * TODO(клиент): согласия учеников, постеры и скриншоты статистики для карточек без медиа, актуальные asOf.
  */
@@ -22,13 +22,13 @@ export interface Case {
   authorName: string;
   /** Роль/описание одной строкой */
   authorRole: string;
-  /** Число: «2,7 млн», «500 000 ₸» (обязательно с цифрой; нечисловой заголовок метрикой не считается). Пусто — используется headline */
+  /** Число: «2,7 млн», «500 000 ₸» (обязательно с цифрой; нечисловой заголовок метрикой не считается). Пусто - используется headline */
   metric: string;
   /** Подпись к цифре: «просмотров на ролике» */
   metricLabel: string;
   /** Заголовок вместо метрики, если результат не числом (одна строка) */
   headline?: string;
-  /** Фото автора (56 px в ряду автора); нет — миниатюра постера видео, иначе инициалы */
+  /** Фото автора (56 px в ряду автора); нет - миниатюра постера видео, иначе инициалы */
   photoSrc: string | null;
   /** Постер видео (next/image): миниатюра 56 px с play */
   posterSrc: string | null;
@@ -36,9 +36,9 @@ export interface Case {
   before?: string;
   /** «После»: дословно из источника; необязательно */
   after?: string;
-  /** Цитата — только дословная; необязательно */
+  /** Цитата - только дословная; необязательно */
   quote?: string;
-  /** Тексты before/after/quote подтверждены: false — в prod не показываются, в dev с красной пометкой */
+  /** Тексты before/after/quote подтверждены: false - в prod не показываются, в dev с красной пометкой */
   textsVerified: boolean;
   /** id ролика YouTube: плеер открывается в модалке по клику (youtube-nocookie.com), ссылок youtube.com в данных нет */
   youtubeId?: string;
@@ -84,7 +84,7 @@ export const cases: Case[] = [
     audiences: ["beginners", "freelancers", "business", "career"],
     authorName: "Мадина",
     authorRole: "мама двоих детей в декрете",
-    // Нечисловой результат: вместо метрики — заголовок (тексты подтверждены владельцем)
+    // Нечисловой результат: вместо метрики - заголовок (тексты подтверждены владельцем)
     metric: "",
     metricLabel: "",
     headline: "Школа сама заказывает у неё ролики",
@@ -174,7 +174,7 @@ export const cases: Case[] = [
 /** Можно ли показать в проде */
 export const isCasePublishable = (c: Case): boolean => c.verified && c.consent;
 
-/** Метрика — число с подписью: есть хотя бы одна цифра */
+/** Метрика - число с подписью: есть хотя бы одна цифра */
 /** Метрика допустима, если пустая (тогда нужен headline) или с цифрой; нечисловой непустой заголовок («Клиенты-компании») метрикой не считается */
 export const isNumericMetric = (metric: string): boolean => metric === "" || /\d/.test(metric);
 
@@ -184,7 +184,7 @@ export function caseSourceCaption(c: Case): string {
   return `${who}, ${formatMonthYear(c.asOf)}`;
 }
 
-/** Список для UI: прод — verified && consent; dev — все (неподтверждённые с пометкой) */
+/** Список для UI: прод - verified && consent; dev - все (неподтверждённые с пометкой) */
 export function getVisibleCases(): Case[] {
   return SHOW_PLACEHOLDERS ? cases : cases.filter(isCasePublishable);
 }
@@ -194,19 +194,19 @@ export function getVisibleCases(): Case[] {
 /**
  * Карточка «видео»: нейтральный текст («История {имя}», роль, дата публикации), без сумм и сроков.
  * Суммы и сроки из заголовков роликов на сайте не показываем. Согласия учениц на видео подтверждены владельцем.
- * Превью — локальный файл из public/cases/ (до клика запросов к YouTube и Google нет).
+ * Превью - локальный файл из public/cases/ (до клика запросов к YouTube и Google нет).
  */
 export interface VideoCase {
   id: string;
   youtubeId: string;
   authorName: string;
-  /** Роль одной строкой; null — не уточнена (dev-пометка «уточнить у школы») */
+  /** Роль одной строкой; null - не уточнена (dev-пометка «уточнить у школы») */
   authorRole: string | null;
-  /** На каких продуктовых страницах показывать; пусто — только /reviews */
+  /** На каких продуктовых страницах показывать; пусто - только /reviews */
   relatedProducts: ProductId[];
   /** Превью (public/cases/) */
   posterSrc: string;
-  /** Дата публикации видео, YYYY-MM-DD; null — не показываем */
+  /** Дата публикации видео, YYYY-MM-DD; null - не показываем */
   publishedAt: string | null;
   consent: boolean;
   verified: boolean;
@@ -255,7 +255,7 @@ export const videoCases: VideoCase[] = [
 
 export const isVideoCasePublishable = (v: VideoCase): boolean => v.verified && v.consent;
 
-/** Прод — verified && consent; dev — все с пометками */
+/** Прод - verified && consent; dev - все с пометками */
 export function getVisibleVideoCases(): VideoCase[] {
   return SHOW_PLACEHOLDERS ? videoCases : videoCases.filter(isVideoCasePublishable);
 }

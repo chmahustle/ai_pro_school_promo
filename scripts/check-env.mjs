@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Проверка окружения перед production-сборкой (prebuild): сборка падает, если выставлен
- * NEXT_PUBLIC_SHOW_PLACEHOLDERS=true — переменная, из-за которой в проде оказывались заглушки.
+ * NEXT_PUBLIC_SHOW_PLACEHOLDERS=true - переменная, из-за которой в проде оказывались заглушки.
  * Смотрим process.env и файлы .env, .env.local, .env.production, .env.production.local (но не .env.example).
  */
 import { existsSync, readFileSync } from "node:fs";
@@ -30,7 +30,7 @@ for (const t of ["APS_TEST_NOW", "APS_TEST_EFIR_FREE"]) {
 }
 
 if (hits.length > 0) {
-  console.error(`\ncheck-env: запрещено в production-сборке: ${hits.join(", ")}.\nУдалите переменную: заглушки показываются только в dev, APS_TEST_* — только для check-copy --at.\n`);
+  console.error(`\ncheck-env: запрещено в production-сборке: ${hits.join(", ")}.\nУдалите переменную: заглушки показываются только в dev, APS_TEST_* - только для check-copy --at.\n`);
   process.exit(1);
 }
 console.log("check-env: ок");

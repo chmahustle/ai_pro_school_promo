@@ -8,7 +8,7 @@ import { LadderStepCard } from "./LadderStepCard";
 
 /**
  * Лестница продуктов одного направления: «для кого», ведущий и карточки ступеней слева направо со стрелками
- * (на мобильных вертикально, стрелки вниз). Данные — products.ts через getPublicLadder; пустую ступень не дорисовываем.
+ * (на мобильных вертикально, стрелки вниз). Данные - products.ts через getPublicLadder; пустую ступень не дорисовываем.
  * Переиспользуется на страницах направлений (шаг 5).
  */
 export function ProductLadder({ direction, className, showHeader = true }: { direction: Direction; className?: string; /** Строка «Для кого» и ведущий над лестницей (на страницах направлений они уже в hero) */ showHeader?: boolean }) {

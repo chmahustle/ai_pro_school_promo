@@ -15,7 +15,7 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 /**
  * Страница направления: hero (название, «для кого», ведущий), лестница продуктов, [дополнительные секции],
- * кейсы направления (verified && consent, меньше 3 — скрыты), форма. FAQ направления нет в данных — блока нет.
+ * кейсы направления (verified && consent, меньше 3 - скрыты), форма. FAQ направления нет в данных - блока нет.
  */
 export function DirectionPage({ direction, children }: { direction: Direction; children?: ReactNode }) {
   const page = getPublicDirectionPage(direction);

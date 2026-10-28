@@ -64,7 +64,7 @@ export async function renderOg({ title, subtitle, eyebrow, theme = "light" }: Og
           position: "relative",
         }}
       >
-        {/* Mesh-подобные пятна без blur (satori) — полупрозрачные круги */}
+        {/* Mesh-подобные пятна без blur (satori) - полупрозрачные круги */}
         <div
           style={{
             position: "absolute",

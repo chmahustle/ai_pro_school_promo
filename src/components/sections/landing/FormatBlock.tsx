@@ -9,13 +9,13 @@ const icons: LucideIcon[] = [Clock, MonitorPlay, Wallet, MessageCircle];
 
 interface FormatBlockProps {
   format: Audience["format"];
-  /** Якорь формы заявки на странице — для кнопки в блоке */
+  /** Якорь формы заявки на странице - для кнопки в блоке */
   formAnchor?: string;
   ctaLabel?: string;
 }
 
 /**
- * Формат эфира: сиреневая панель — слева заголовок и кнопка записи, справа плитки 2×2
+ * Формат эфира: сиреневая панель - слева заголовок и кнопка записи, справа плитки 2×2
  * с крупными значениями (длительность / формат / стоимость / как получить ссылку).
  */
 export function FormatBlock({ format, formAnchor, ctaLabel }: FormatBlockProps) {

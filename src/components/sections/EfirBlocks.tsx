@@ -27,7 +27,7 @@ function DevNote({ note }: { note?: string }) {
   return note ? <p className="mb-1 text-[12px] font-semibold text-danger">{note}</p> : null;
 }
 
-/** «Кому подходит»: цветные карточки с фигурами (данные — vibecodingBlocks.ts) */
+/** «Кому подходит»: цветные карточки с фигурами (данные - vibecodingBlocks.ts) */
 export function ColorfulForWhom({ id, items }: { id: string; items: PublicVibeItem[] }) {
   if (items.length === 0) return null;
   return (

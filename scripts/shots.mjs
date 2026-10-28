@@ -12,7 +12,7 @@
  *
  * Для каждой страницы и ширины: <имя>-<ширина>-top.png и (если не --no-extra) -form.png (последняя форма по центру экрана)
  * и -bottom.png (низ страницы: футер, плавающие кнопки). Папка tmp/shots в .gitignore.
- * Первый запуск и подробности — в CLAUDE.md («Скриншоты»): scripts/shots-setup.sh, scripts/shots-serve.sh.
+ * Первый запуск и подробности - в CLAUDE.md («Скриншоты»): scripts/shots-setup.sh, scripts/shots-serve.sh.
  * Не снимайте с dev-сервера, который работает на общем .next: используйте scripts/shots-serve.sh (отдельная копия, свой порт).
  */
 import { createRequire } from "node:module";
@@ -93,7 +93,7 @@ for (const w of widths) {
   const page = await ctx.newPage();
   for (const path of paths) {
     await page.goto(base + path, { waitUntil: "load", timeout: 60000 });
-    // плавная прокрутка сбивает кадры — отключаем
+    // плавная прокрутка сбивает кадры - отключаем
     await page.addStyleTag({ content: "html{scroll-behavior:auto!important}" });
     await page.waitForTimeout(1500);
     const name = `${slug(path)}-${w}`;
@@ -104,7 +104,7 @@ for (const w of widths) {
         prodProblems += found.length;
         console.error(`✗ ${path} @${w}: в prod-странице найдено: ${found.join(", ")}`);
       }
-      // Блок результатов на главной — отдельным снимком
+      // Блок результатов на главной - отдельным снимком
       const block = page.locator("#results");
       if (path === "/" && (await block.count())) {
         await block.scrollIntoViewIfNeeded();

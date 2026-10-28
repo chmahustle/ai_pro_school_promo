@@ -4,7 +4,7 @@ import { ReviewsWallClient } from "./ReviewsWallClient";
 
 type WallProps = Omit<React.ComponentProps<typeof ReviewsWallClient>, "items">;
 
-/** Стена отзывов (серверная часть): в браузер уходят только публичные поля отзывов — без status, note и прочего. */
+/** Стена отзывов (серверная часть): в браузер уходят только публичные поля отзывов - без status, note и прочего. */
 export function ReviewsWall({ items, ...rest }: WallProps & { items: Review[] }) {
   return <ReviewsWallClient items={items.map(toPublicReview)} {...rest} />;
 }

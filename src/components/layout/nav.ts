@@ -5,7 +5,7 @@ export interface NavLink {
   href: string;
 }
 
-/** Основные пункты хедера (кроме «Направления» — оно отдельное, с выпадающим меню) */
+/** Основные пункты хедера (кроме «Направления» - оно отдельное, с выпадающим меню) */
 export const mainNav: NavLink[] = [
   { key: "results", href: "/reviews" },
   { key: "about", href: "/about" },

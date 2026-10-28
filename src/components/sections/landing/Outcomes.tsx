@@ -16,7 +16,7 @@ const tones: { tile: string; text: string; num: string; decor: TileDecorTone }[]
   { tile: "bg-lavender text-ink", text: "text-ink-500", num: "text-ink/20", decor: "lavender" },
 ];
 
-/** «За 1,5 часа вы поймёте» — цветные нумерованные плитки + плашка лид-магнита */
+/** «За 1,5 часа вы поймёте» - цветные нумерованные плитки + плашка лид-магнита */
 export function Outcomes({ audience, title = "За 1,5 часа вы поймёте", eyebrow = "Программа эфира" }: OutcomesProps) {
   return (
     <Section id="program" className="scroll-mt-24">

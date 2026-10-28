@@ -29,7 +29,7 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
   if (!course) notFound();
 
   const courseReviews = getPublishedReviews().filter((r) => r.course === course.slug).slice(0, 6);
-  // Цена для разметки — из products.ts (единственный источник)
+  // Цена для разметки - из products.ts (единственный источник)
   const product = getProductForCourse(course.slug);
   const offerPrice = product ? getCurrentPrice(product) : null;
   // Следующая ступень лестницы (у последней ступени блока нет)
@@ -66,10 +66,10 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
       />
       <CourseOutcomes course={course} />
       <CourseMonetization course={course} />
-      {/* Результаты учеников этой аудитории — тот же блок, что на главной */}
+      {/* Результаты учеников этой аудитории - тот же блок, что на главной */}
       <div className="mt-6 sm:mt-10">
         {course.slug === "practicum" ? (
-          // Практикум: только кейсы про просмотры, без доходов и личных историй (Мадина — только на странице курса AI Content Creator)
+          // Практикум: только кейсы про просмотры, без доходов и личных историй (Мадина - только на странице курса AI Content Creator)
           <HomeStories audience={course.audiences[0]} limit={3} onlyViews description="Люди без технического образования, освоившие ИИ-ролики" showAllLink={false} />
         ) : (
           <HomeStories audience={course.audiences[0]} limit={3} />
@@ -83,7 +83,7 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
           items={courseReviews}
           tone="bg"
           moreHref="/reviews"
-          // Видео работ — без «скриншотов оплат» в подзаголовке
+          // Видео работ - без «скриншотов оплат» в подзаголовке
           {...(courseReviews.every((r) => r.kind === "video") ? { title: "Работы учеников", description: "Видео работ учеников курса." } : {})}
         />
       )}

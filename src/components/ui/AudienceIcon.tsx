@@ -6,7 +6,7 @@ const PINK = "#E8307E";
 const LAV = "#ECE9FF";
 const PEACH = "#FFB088";
 
-/** Фирменные SVG-иллюстрации ЦА вместо эмодзи: бизнес — здание, фриланс — ноутбук, найм — рост, новичок — ракета */
+/** Фирменные SVG-иллюстрации ЦА вместо эмодзи: бизнес - здание, фриланс - ноутбук, найм - рост, новичок - ракета */
 export function AudienceIcon({ slug, className }: { slug: AudienceSlug; className?: string }) {
   return (
     <svg viewBox="0 0 48 48" fill="none" aria-hidden className={cn("size-8", className)}>

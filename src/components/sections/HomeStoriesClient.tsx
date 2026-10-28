@@ -10,19 +10,19 @@ import { youtubeEmbedUrl } from "@/lib/youtube";
 
 const HOME_LIMIT = 3;
 type FilterId = "all" | AudienceSlug;
-/** Меньше подтверждённых кейсов — блок скрывается */
+/** Меньше подтверждённых кейсов - блок скрывается */
 const MIN_STORIES = 3;
 
 interface HomeStoriesClientProps {
   /** Уже отфильтрованные на сервере (verified && consent) публичные карточки */
   stories: PublicCase[];
-  /** Вкладки направлений (только те, где есть кейсы). Одна вкладка или фильтр по аудитории — полоса вкладок не рисуется */
-  /** «projects» — проекты вайб-кодинга: другие подписи шапки */
+  /** Вкладки направлений (только те, где есть кейсы). Одна вкладка или фильтр по аудитории - полоса вкладок не рисуется */
+  /** «projects» - проекты вайб-кодинга: другие подписи шапки */
   variant?: "results" | "projects";
   /** Подзаголовок шапки */
   description?: string;
   tabs?: { id: "creator" | "vibecoding"; label: string }[];
-  /** Сколько карточек показать; null — все (страница /reviews) */
+  /** Сколько карточек показать; null - все (страница /reviews) */
   limit?: number | null;
   /** Фильтр по аудитории над карточками */
   withFilters?: boolean;
@@ -31,8 +31,8 @@ interface HomeStoriesClientProps {
 }
 
 /**
- * «Результаты учеников»: тёмная панель с лентами. На главной — 3 карточки и ссылка на /reviews,
- * на /reviews — все карточки с фильтром по аудитории (тот же стиль).
+ * «Результаты учеников»: тёмная панель с лентами. На главной - 3 карточки и ссылка на /reviews,
+ * на /reviews - все карточки с фильтром по аудитории (тот же стиль).
  */
 export function HomeStoriesClient({ stories: all, tabs = [], variant = "results", description, limit = HOME_LIMIT, withFilters = false, showAllLink = true }: HomeStoriesClientProps) {
   const [filter, setFilter] = useState<FilterId>("all");
@@ -142,8 +142,8 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
         </div>
       )}
 
-      {/* Одинаковая высота карточек (items-stretch). ≥1024 — 3 колонки, ≥768 — 2; на мобильном горизонтальный scroll-snap, карточка 84% ширины.
-          Меньше 3 карточек после фильтра: две — по 50%, одна — по центру с max-w, без пустых зон. */}
+      {/* Одинаковая высота карточек (items-stretch). ≥1024 - 3 колонки, ≥768 - 2; на мобильном горизонтальный scroll-snap, карточка 84% ширины.
+          Меньше 3 карточек после фильтра: две - по 50%, одна - по центру с max-w, без пустых зон. */}
       <ul
         className={cn(
           "-mt-4 sm:-mt-6 -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:-mx-6 sm:px-6 md:mx-0 md:grid md:snap-none md:items-stretch md:gap-5 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden",

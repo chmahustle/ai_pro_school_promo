@@ -9,7 +9,6 @@ import type { PublicNavMenu } from "@/data/public-types";
 import { Logo } from "./Logo";
 import { MegaMenu } from "./MegaMenu";
 import { MobileMenu } from "./MobileMenu";
-import { LangSwitch } from "./LangSwitch";
 import { mainNav, PICK_PROGRAM_HREF } from "./nav";
 import { Button } from "@/components/ui";
 import { track } from "@/lib/analytics";
@@ -46,7 +45,7 @@ export function Header({ menu }: { menu: PublicNavMenu }) {
     setMobileOpen(false);
   }, [pathname]);
 
-  // Esc закрывает mega-menu; клик вне — тоже
+  // Esc закрывает mega-menu; клик вне - тоже
   useEffect(() => {
     if (!megaOpen) return;
     // Esc закрывает меню и возвращает фокус на кнопку «Направления»
@@ -96,7 +95,7 @@ export function Header({ menu }: { menu: PublicNavMenu }) {
 
       <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
         <div className="container-site relative flex h-16 items-center justify-between gap-3 rounded-pill px-3 pl-4 sm:px-4 sm:pl-5">
-          {/* Стеклянный фон — отдельным слоем: меню «Для кого» не вложено в backdrop-filter и блюрит страницу само */}
+          {/* Стеклянный фон - отдельным слоем: меню «Для кого» не вложено в backdrop-filter и блюрит страницу само */}
           <div
             aria-hidden
             className={cn(
@@ -113,7 +112,7 @@ export function Header({ menu }: { menu: PublicNavMenu }) {
                 className="relative"
                 onMouseEnter={() => { openMega(); setHovered("directions"); }}
                 onMouseLeave={scheduleClose}
-                // фокус ушёл за пределы пункта и меню — закрываем (навигация с клавиатуры)
+                // фокус ушёл за пределы пункта и меню - закрываем (навигация с клавиатуры)
                 onBlur={(e) => { if (!e.currentTarget.parentElement?.parentElement?.contains(e.relatedTarget as Node | null)) setMegaOpen(false); }}
               >
                 <NavPill show={highlighted === "directions"} />
@@ -126,7 +125,7 @@ export function Header({ menu }: { menu: PublicNavMenu }) {
                   onClick={(e) => {
                     // при наведении меню уже открыто hover-ом: клик не должен его закрывать
                     setMegaOpen((v) => (window.matchMedia("(hover: hover)").matches ? true : !v));
-                    // с клавиатуры (Enter/Space) — сразу в меню
+                    // с клавиатуры (Enter/Space) - сразу в меню
                     if (e.detail === 0) focusFirstLink();
                   }}
                   onKeyDown={(e) => {
@@ -169,7 +168,6 @@ export function Header({ menu }: { menu: PublicNavMenu }) {
 
           {/* Right cluster */}
           <div className="flex items-center gap-2">
-            <LangSwitch className="hidden md:inline-flex" />
             <Button
               variant="dark"
               size="sm"
@@ -200,7 +198,7 @@ export function Header({ menu }: { menu: PublicNavMenu }) {
   );
 }
 
-/** Плавающая плашка под пунктом меню: общий layoutId — перетекает между пунктами за курсором */
+/** Плавающая плашка под пунктом меню: общий layoutId - перетекает между пунктами за курсором */
 function NavPill({ show }: { show: boolean }) {
   if (!show) return null;
   return (

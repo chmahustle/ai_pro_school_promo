@@ -1,7 +1,7 @@
 import { Clapperboard, Code2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/** Круглая иконка направления (lucide, палитра сайта): ролики — розовая, вайб-кодинг — сиреневая */
+/** Круглая иконка направления (lucide, палитра сайта): ролики - розовая, вайб-кодинг - сиреневая */
 export function DirectionIcon({ direction, className }: { direction: "creator" | "vibecoding"; className?: string }) {
   const Icon = direction === "creator" ? Clapperboard : Code2;
   return (

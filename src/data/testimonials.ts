@@ -14,19 +14,19 @@ export interface Testimonial {
   consent: boolean;
   /** Локальный mp4 (если есть) */
   videoSrc?: string | null;
-  /** YouTube/embed — открывается в лайтбоксе по клику */
+  /** YouTube/embed - открывается в лайтбоксе по клику */
   embedUrl?: string | null;
   imageSrc?: string | null;
   poster: string;
   verified: boolean;
-  /** «2,7 млн» — бейдж вверху слева, если verified */
+  /** «2,7 млн» - бейдж вверху слева, если verified */
   views?: { value: string; verified: boolean };
   note?: string;
 }
 
 /**
  * Карусель «Что говорят ученики».
- * Только testimonial / receipt / chat. Работы учеников — в works.ts.
+ * Только testimonial / receipt / chat. Работы учеников - в works.ts.
  */
 export const testimonials: Testimonial[] = [
   {
@@ -150,7 +150,7 @@ function assertCarouselTypes(list: Testimonial[]) {
   for (const item of list) {
     if (!ALLOWED.includes(item.type)) {
       console.error(
-        `[testimonials] запись ${item.id} имеет type="${String((item as { type: string }).type)}" — в карусель допускаются только testimonial | receipt | chat`,
+        `[testimonials] запись ${item.id} имеет type="${String((item as { type: string }).type)}" - в карусель допускаются только testimonial | receipt | chat`,
       );
     }
   }

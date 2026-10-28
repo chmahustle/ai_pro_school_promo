@@ -29,7 +29,7 @@ export function Comparison({ data }: ComparisonProps) {
                 </div>
               </div>
 
-              {/* «После» — в закруглённой плитке, как иконки в меню */}
+              {/* «После» - в закруглённой плитке, как иконки в меню */}
               <div className="flex min-h-16 w-full flex-col justify-center rounded-2xl bg-dark px-5 py-3 text-white">
                 <p className="text-[10px] font-bold uppercase tracking-wider text-brand-200">{data.afterLabel}</p>
                 <p className="font-display text-[17px] font-extrabold leading-tight">{row.after}</p>

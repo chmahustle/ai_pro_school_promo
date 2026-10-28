@@ -2,21 +2,21 @@
 
 /**
  * Единый модуль аналитики. Пиксели подключаются в <Analytics/> (layout, только production),
- * события отправляются через track(). Если ID системы не задан или скрипт не загружен — вызов молча игнорируется.
+ * события отправляются через track(). Если ID системы не задан или скрипт не загружен - вызов молча игнорируется.
  *
  * События:
- *   page_view        — просмотр страницы (авто, из <Analytics/>)
- *   view_landing     — просмотр ЦА-лендинга {audience}
- *   cta_click        — клик по CTA {label, location}
- *   lead_start       — пользователь начал заполнять форму
- *   lead_submit      — форма отправлена (кастомное событие, не стандартный Lead)
- *   lead_success     — заявка принята (кастомное событие)
- *   lead             — Lead: подтверждённая заявка (trackLead; подключается на /thanks)
- *   contact          — Contact: клик по ссылке/кнопке WhatsApp (авто, из <Analytics/>; trackContact)
+ *   page_view        - просмотр страницы (авто, из <Analytics/>)
+ *   view_landing     - просмотр ЦА-лендинга {audience}
+ *   cta_click        - клик по CTA {label, location}
+ *   lead_start       - пользователь начал заполнять форму
+ *   lead_submit      - форма отправлена (кастомное событие, не стандартный Lead)
+ *   lead_success     - заявка принята (кастомное событие)
+ *   lead             - Lead: подтверждённая заявка (trackLead; подключается на /thanks)
+ *   contact          - Contact: клик по ссылке/кнопке WhatsApp (авто, из <Analytics/>; trackContact)
  *
  * Contact уходит во все подключённые системы и дублируется на сервер в Meta Conversions API (/api/capi).
- * Lead: серверное событие отправляет /api/lead при приёме заявки, браузерное — trackLead() на /thanks/[productId];
- * у обоих один event_id (генерируется при отправке формы) — Meta дедуплицирует.
+ * Lead: серверное событие отправляет /api/lead при приёме заявки, браузерное - trackLead() на /thanks/[productId];
+ * у обоих один event_id (генерируется при отправке формы) - Meta дедуплицирует.
  */
 import type { ProductId } from "@/data/product-ids";
 
@@ -75,7 +75,7 @@ const GA4_MAP: Partial<Record<AnalyticsEvent["name"], string>> = {
   lead: "generate_lead",
 };
 
-/** Идентификатор события — общий у браузерного пикселя и CAPI (дедупликация) */
+/** Идентификатор события - общий у браузерного пикселя и CAPI (дедупликация) */
 export function newEventId(): string {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
@@ -90,7 +90,7 @@ function send(event: AnalyticsEvent, eventId: string) {
     console.debug("[analytics]", name, params, eventId);
   }
 
-  // Meta Pixel: eventID — для дедупликации с Conversions API
+  // Meta Pixel: eventID - для дедупликации с Conversions API
   if (window.fbq && analyticsIds.metaPixel) {
     const std = META_MAP[name];
     if (name === "page_view") window.fbq("track", "PageView", {}, { eventID: eventId });
@@ -127,7 +127,7 @@ export function track(arg: AnalyticsEvent | AnalyticsEvent["name"], params?: unk
   send(event, newEventId());
 }
 
-/** Серверная копия Contact для Meta CAPI. Если токена на сервере нет — /api/capi тихо пропустит. */
+/** Серверная копия Contact для Meta CAPI. Если токена на сервере нет - /api/capi тихо пропустит. */
 function sendContactToCapi(payload: { eventId: string; url: string; product?: ProductId | null }) {
   // Только production и только если подключён Meta Pixel (event_id имеет смысл лишь вместе с браузерным событием)
   if (process.env.NODE_ENV !== "production" || typeof window === "undefined" || !analyticsIds.metaPixel) return;
@@ -143,7 +143,7 @@ function sendContactToCapi(payload: { eventId: string; url: string; product?: Pr
   }
 }
 
-/** Contact: клик по ссылке/кнопке WhatsApp. product — id из products.ts. */
+/** Contact: клик по ссылке/кнопке WhatsApp. product - id из products.ts. */
 export function trackContact(params: ContactParams): string {
   const eventId = newEventId();
   send({ name: "contact", params }, eventId);
@@ -153,7 +153,7 @@ export function trackContact(params: ContactParams): string {
 
 /**
  * Lead в браузерные пиксели: вызывается на /thanks/[productId] один раз за заявку.
- * eventId — тот же, что сервер использовал при отправке Lead в Conversions API (дедупликация в Meta).
+ * eventId - тот же, что сервер использовал при отправке Lead в Conversions API (дедупликация в Meta).
  * Имя и телефон сюда не передаются; серверное событие Lead отправляет /api/lead при приёме заявки.
  */
 export function trackLead(params: LeadParams, eventId: string): void {

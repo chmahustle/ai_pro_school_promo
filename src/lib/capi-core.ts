@@ -1,11 +1,11 @@
 /**
- * Чистые функции Meta Conversions API: нормализация, SHA-256, сборка события. Без секретов и без сети —
- * поэтому тестируются отдельно. Отправка и токен — в capi.ts (server-only).
+ * Чистые функции Meta Conversions API: нормализация, SHA-256, сборка события. Без секретов и без сети -
+ * поэтому тестируются отдельно. Отправка и токен - в capi.ts (server-only).
  *
  * Правила Meta (developers.facebook.com → Conversions API → Customer Information Parameters):
- *   ph — убрать символы, буквы и ведущие нули, обязателен код страны (у нас 7XXXXXXXXXX); хэш SHA-256;
- *   fn/ln — нижний регистр, без знаков препинания; хэш SHA-256;
- *   client_ip_address, client_user_agent, fbc, fbp — НЕ хэшируются.
+ *   ph - убрать символы, буквы и ведущие нули, обязателен код страны (у нас 7XXXXXXXXXX); хэш SHA-256;
+ *   fn/ln - нижний регистр, без знаков препинания; хэш SHA-256;
+ *   client_ip_address, client_user_agent, fbc, fbp - НЕ хэшируются.
  */
 import { createHash } from "node:crypto";
 import { normalizePhone } from "./phone";
@@ -14,7 +14,7 @@ export const sha256 = (value: string): string => createHash("sha256").update(val
 
 export { normalizePhone };
 
-/** Имя → {fn, ln}: нижний регистр, без знаков препинания; первое слово — имя, последнее (если слов больше одного) — фамилия */
+/** Имя → {fn, ln}: нижний регистр, без знаков препинания; первое слово - имя, последнее (если слов больше одного) - фамилия */
 export function normalizeName(raw: string | undefined | null): { fn?: string; ln?: string } {
   if (!raw) return {};
   const words = raw
@@ -28,7 +28,7 @@ export function normalizeName(raw: string | undefined | null): { fn?: string; ln
 
 export interface CapiEventInput {
   eventName: "Lead" | "Contact";
-  /** Общий с браузерным событием — Meta дедуплицирует по event_id + event_name */
+  /** Общий с браузерным событием - Meta дедуплицирует по event_id + event_name */
   eventId: string;
   eventSourceUrl?: string;
   ip?: string;
@@ -39,7 +39,7 @@ export interface CapiEventInput {
   name?: string;
   phone?: string;
   customData?: Record<string, string | number | undefined>;
-  /** Unix-время в секундах; по умолчанию — сейчас */
+  /** Unix-время в секундах; по умолчанию - сейчас */
   eventTime?: number;
 }
 

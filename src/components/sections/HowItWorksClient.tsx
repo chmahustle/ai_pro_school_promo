@@ -35,9 +35,9 @@ function buildPath(n: number): string {
 }
 
 /**
- * Путь ученика на толстой линии слева направо, переключатель «Креаторство / Вайб-кодинг». Розовым выделена только входная ступень (метка «Начните с этого»), остальные — белые или лавандовые, одинаково в обеих вкладках.
+ * Путь ученика на толстой линии слева направо, переключатель «Креаторство / Вайб-кодинг». Розовым выделена только входная ступень (метка «Начните с этого»), остальные - белые или лавандовые, одинаково в обеих вкладках.
  * Линия прорисовывается по мере прокрутки, узлы-номера загораются, когда линия до них доходит; карточки чередуются
- * сверху и снизу (≥lg), на мобильном — вертикальная линия слева. Оба пути лежат стопкой в одной ячейке сетки (неактивный скрыт visibility + inert),
+ * сверху и снизу (≥lg), на мобильном - вертикальная линия слева. Оба пути лежат стопкой в одной ячейке сетки (неактивный скрыт visibility + inert),
  * поэтому высота блока по максимуму из путей и не прыгает при переключении вкладок.
  */
 export function HowItWorksClient({
@@ -103,7 +103,7 @@ export function HowItWorksClient({
         })}
       </div>
 
-      {/* Оба пути в одной ячейке сетки: высота блока — по самому высокому, переключение вкладок без прыжка */}
+      {/* Оба пути в одной ячейке сетки: высота блока - по самому высокому, переключение вкладок без прыжка */}
       <div ref={trackRef} className="relative grid">
         {data.tabs.map((tab) => {
           const steps = data.paths[tab.id];
@@ -112,7 +112,7 @@ export function HowItWorksClient({
           const reached = (i: number) => reduce || progress >= (i + 0.5) / steps.length - 0.04;
           return (
             <div key={tab.id} aria-hidden={!active || undefined} inert={!active || undefined} className={cn("relative [grid-area:1/1]", !active && "invisible pointer-events-none")}>
-              {/* Линия: на ≥lg горизонтальная через центры колонок, на мобильном — вертикальная слева (декор, без содержимого) */}
+              {/* Линия: на ≥lg горизонтальная через центры колонок, на мобильном - вертикальная слева (декор, без содержимого) */}
               <svg aria-hidden viewBox="0 0 1200 400" preserveAspectRatio="none" className="pointer-events-none absolute left-0 top-0 hidden h-[400px] w-full overflow-visible lg:block">
                 <path d={path} fill="none" stroke={invert ? "rgba(255,255,255,0.10)" : "rgba(255,255,255,0.85)"} strokeWidth="26" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
                 <motion.path d={path} fill="none" stroke="#B8A6FF" strokeWidth="26" strokeLinecap="round" vectorEffect="non-scaling-stroke" style={{ pathLength: reduce ? 1 : draw }} />
@@ -124,7 +124,7 @@ export function HowItWorksClient({
                 style={{ scaleY: reduce ? 1 : draw }}
               />
 
-              {/* Список шагов: на мобильном колонка с узлом слева, на ≥lg — колонки по числу шагов, карточки выше/ниже линии */}
+              {/* Список шагов: на мобильном колонка с узлом слева, на ≥lg - колонки по числу шагов, карточки выше/ниже линии */}
               <ol className="relative flex flex-col gap-4 lg:grid lg:h-[400px] lg:gap-0" style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}>
                 {steps.map((st, i) => {
                   const above = i % 2 === 0;

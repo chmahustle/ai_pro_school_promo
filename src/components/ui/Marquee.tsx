@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 interface MarqueeProps {
   children: ReactNode;
   className?: string;
-  /** Длительность одного круга (пресеты); точнее — через durationSec */
+  /** Длительность одного круга (пресеты); точнее - через durationSec */
   speed?: "slow" | "normal" | "fast";
   /** Длительность круга в секундах: переопределяет speed (держите ~6–8 с на элемент, чтобы скорость не зависела от числа копий) */
   durationSec?: number;
@@ -19,7 +19,7 @@ interface MarqueeProps {
 const speeds = { slow: 60, normal: 40, fast: 24 };
 
 /**
- * Бесконечная лента: содержимое повторяется `repeat` раз в каждой из двух половин, цикл сдвигает ровно на половину —
+ * Бесконечная лента: содержимое повторяется `repeat` раз в каждой из двух половин, цикл сдвигает ровно на половину -
  * шва не видно. Повторы и вторая половина aria-hidden. Анимация CSS, при reduced-motion глобально отключается.
  */
 export function Marquee({

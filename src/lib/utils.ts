@@ -4,8 +4,8 @@ import { extendTailwindMerge } from "tailwind-merge";
 
 /**
  * Название продукта внутри предложения: «Курс AI Content Creator» → «Курс AI Content Creator» в кавычках,
- * а если в названии уже есть кавычки («Практикум «Вирусные ИИ-ролики»») — без внешних, чтобы не получить ««…»».
- * Первая буква общего слова («Практикум», «Курс») — строчная, аббревиатуры не трогаем.
+ * а если в названии уже есть кавычки («Практикум «Вирусные ИИ-ролики»») - без внешних, чтобы не получить ««…»».
+ * Первая буква общего слова («Практикум», «Курс») - строчная, аббревиатуры не трогаем.
  */
 export function nameInSentence(name: string): string {
   const lowered = /^\p{Lu}\p{Ll}/u.test(name) ? name.charAt(0).toLowerCase() + name.slice(1) : name;
@@ -13,12 +13,12 @@ export function nameInSentence(name: string): string {
 }
 
 /**
- * Неразрывный пробел перед длинным тире: « — » → «\u00A0— », чтобы тире не оказывалось в начале строки.
- * Применять к заголовкам и подзаголовкам (SectionIntro, hero, карточки) — не править тексты вручную.
+ * Неразрывный пробел перед длинным тире: « - » → «\u00A0- », чтобы тире не оказывалось в начале строки.
+ * Применять к заголовкам и подзаголовкам (SectionIntro, hero, карточки) - не править тексты вручную.
  * Не строки (ReactNode с разметкой) возвращаются как есть.
  */
 export function nbspDash<T extends ReactNode>(value: T): T {
-  return (typeof value === "string" ? noBreakHyphen(value.replace(/ — /g, "\u00A0— ")) : value) as T;
+  return (typeof value === "string" ? noBreakHyphen(value.replace(/ - /g, "\u00A0- ")) : value) as T;
 }
 
 /** «вайб-кодинг» не переносится по дефису: обычный дефис → неразрывный (U+2011) внутри слова. Только для вывода, не для SEO/мета. */

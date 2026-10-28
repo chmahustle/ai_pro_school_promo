@@ -33,7 +33,7 @@ interface ReviewsWallProps {
   tone?: "bg" | "white" | "lavender";
   bare?: boolean;
   limit?: number;
-  /** Компактнее карточки — для главной */
+  /** Компактнее карточки - для главной */
   compact?: boolean;
 }
 
@@ -44,7 +44,7 @@ export function ReviewsWallClient({
   items,
   eyebrow = "Отзывы",
   title = "Что говорят ученики",
-  description = "Видео, скриншоты переписок и оплат — всё, что присылают нам после обучения.",
+  description = "Видео, скриншоты переписок и оплат - всё, что присылают нам после обучения.",
   filters = false,
   moreHref,
   moreLabel = "Смотреть все результаты",

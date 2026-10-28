@@ -20,7 +20,7 @@ const FACT_TILES = ["bg-brand text-white", "bg-dark text-white", "bg-lavender te
 
 /**
  * Нейтральная страница эфира «Вайб-кодинг вживую» (шаблон лендинга /for/*: минимальная шапка, одна главная кнопка, форма →
- * /thanks/efir). Блоки — vibecodingBlocks.ts (только verified); цена и слово «бесплатно» (если появится) — products.ts / efir.ts.
+ * /thanks/efir). Блоки - vibecodingBlocks.ts (только verified); цена и слово «бесплатно» (если появится) - products.ts / efir.ts.
  * Без обещаний дохода.
  */
 export function EfirLanding() {

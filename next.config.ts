@@ -21,8 +21,8 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react", "framer-motion"],
   },
-  // noindex на тестовом домене: (1) если сайт собран под не-боевой NEXT_PUBLIC_SITE_URL — на все ответы;
-  // (2) в любом случае — по заголовку Host test.* / tests.* (на случай, если переменную на сервере забыли).
+  // noindex на тестовом домене: (1) если сайт собран под не-боевой NEXT_PUBLIC_SITE_URL - на все ответы;
+  // (2) в любом случае - по заголовку Host test.* / tests.* (на случай, если переменную на сервере забыли).
   async headers() {
     return [
       ...(INDEXABLE_HOSTS.includes(siteHost) ? [] : [{ source: "/:path*", headers: [NOINDEX] }]),

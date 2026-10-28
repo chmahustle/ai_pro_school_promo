@@ -16,7 +16,7 @@ const socialIcons = { instagram: Instagram, tiktok: TikTokIcon, youtube: Youtube
 
 export function Footer() {
   const f = getFooterData();
-  // Иконки: WhatsApp (если есть ссылка) и соцсети с непустым URL; пустой URL — иконки нет
+  // Иконки: WhatsApp (если есть ссылка) и соцсети с непустым URL; пустой URL - иконки нет
   const contactPills = [
     ...(f.contacts.whatsapp ? [{ id: "whatsapp", label: "WhatsApp", href: f.contacts.whatsapp, icon: MessageCircle, tone: "brand" as const }] : []),
     ...f.contacts.socials.map((x) => ({ id: x.id, label: x.label, href: x.href, icon: socialIcons[x.id], tone: "ghost" as const })),

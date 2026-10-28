@@ -3,7 +3,7 @@ import { CoursePageView } from "@/components/sections/CoursePageView";
 import { getCourse } from "@/data/courses";
 import { buildMetadata } from "@/lib/seo";
 
-/** «Ближайший старт» зависит от текущей даты — пересобираем раз в час */
+/** «Ближайший старт» зависит от текущей даты - пересобираем раз в час */
 export const revalidate = 3600;
 
 export function generateMetadata(): Metadata {

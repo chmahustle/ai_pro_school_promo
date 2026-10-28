@@ -14,7 +14,7 @@ export const metadata = buildMetadata({
 export default function ContactsPage() {
   return (
     <Section>
-      <SectionHead size="lg" eyebrow="Контакты" title="Напишите нам" description="Быстрее всего — в WhatsApp. Или оставьте заявку, и мы свяжемся сами." />
+      <SectionHead size="lg" eyebrow="Контакты" title="Напишите нам" description="Быстрее всего - в WhatsApp. Или оставьте заявку, и мы свяжемся сами." />
       <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
         <Reveal className="flex flex-col gap-4">
           <ContactRow icon={MessageCircle} label="WhatsApp" value={site.phones.primary} href={site.whatsapp} primary />

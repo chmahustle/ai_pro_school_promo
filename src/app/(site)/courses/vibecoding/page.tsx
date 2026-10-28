@@ -5,7 +5,7 @@ import { FAQ } from "@/components/sections/FAQ";
 import { getPublicDirectionPage } from "@/data/public";
 import { buildMetadata } from "@/lib/seo";
 
-/** Лестница показывает ближайший старт — зависит от даты; обновляем раз в час */
+/** Лестница показывает ближайший старт - зависит от даты; обновляем раз в час */
 export const revalidate = 3600;
 
 const page = getPublicDirectionPage("vibecoding");
@@ -14,7 +14,7 @@ export const metadata = buildMetadata({ title: page.seo.title, description: page
 
 /**
  * Направление «Вайб-кодинг»: hero, линейка (карточка эфира ведёт на /courses/vibecoding-efir), результаты и FAQ направления.
- * Подробности эфира (для кого, программа, ведущий, FAQ, «что дальше») — на странице эфира.
+ * Подробности эфира (для кого, программа, ведущий, FAQ, «что дальше») - на странице эфира.
  */
 export default function VibecodingPage() {
   return (

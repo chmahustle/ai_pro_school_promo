@@ -5,7 +5,7 @@
  * Пишем в sessionStorage при первом заходе и не перезаписываем внутри сессии (first-touch в рамках сессии).
  * Хранятся: utm_source/medium/campaign/content/term, referrer, первая страница, fbclid/ttclid/gclid/yclid.
  * Cookies _fbp и _fbc читаются в момент отправки заявки (пиксель выставляет их уже после первого захода).
- * Любые обращения к sessionStorage/cookie — в try/catch (приватный режим, запрет cookie).
+ * Любые обращения к sessionStorage/cookie - в try/catch (приватный режим, запрет cookie).
  */
 
 export const UTM_KEYS = [
@@ -86,7 +86,7 @@ export interface Attribution {
 
 /**
  * Атрибуция на момент отправки: сохранённые first-touch данные + свежие cookies _fbp/_fbc.
- * Нет cookie _fbc, но заход был с fbclid — собираем fbc в формате Meta: fb.1.<время захода, мс>.<fbclid>.
+ * Нет cookie _fbc, но заход был с fbclid - собираем fbc в формате Meta: fb.1.<время захода, мс>.<fbclid>.
  */
 export function getAttribution(): Attribution {
   const stored = getUtm();

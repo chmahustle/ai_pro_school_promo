@@ -37,7 +37,7 @@ export default function BlogPage() {
             Разборы, инструкции, <span className="text-gradient-brand">кейсы</span>
           </>
         }
-        description="Раздел в разработке. Первые материалы появятся скоро — пока подпишитесь на соцсети школы, там мы уже делимся разборами."
+        description="Раздел в разработке. Первые материалы появятся скоро - пока подпишитесь на соцсети школы, там мы уже делимся разборами."
         actions={
           <>
             <Button variant="dark" size="md" href={site.socials.instagram} icon={<ArrowUpRight className="size-4" />}>
@@ -74,7 +74,7 @@ export default function BlogPage() {
         </RevealGroup>
       </Section>
 
-      <CTA title="Пока статьи готовятся — выберите программу" primaryLabel="Смотреть курсы" primaryHref="/courses" tone="lines" source="blog-cta" />
+      <CTA title="Пока статьи готовятся - выберите программу" primaryLabel="Смотреть курсы" primaryHref="/courses" tone="lines" source="blog-cta" />
     </>
   );
 }

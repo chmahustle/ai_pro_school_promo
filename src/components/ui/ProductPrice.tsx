@@ -2,9 +2,9 @@ import type { PriceParts } from "@/data/products";
 import { cn } from "@/lib/utils";
 
 /**
- * Цена: «9 900 ₸», «от 249 000 ₸», «бесплатно»; при подтверждённой старой цене рядом зачёркнутая (parts.old). Части приходят готовыми с сервера (formatPriceParts) —
+ * Цена: «9 900 ₸», «от 249 000 ₸», «бесплатно»; при подтверждённой старой цене рядом зачёркнутая (parts.old). Части приходят готовыми с сервера (formatPriceParts) -
  * компонент ничего не знает о данных продуктов. Неразрывные пробелы + nowrap, «от» и «₸» мельче числа.
- * Нет цены (пустое amount) — ничего не рендерит.
+ * Нет цены (пустое amount) - ничего не рендерит.
  */
 export function ProductPrice({ parts, className }: { parts: Pick<PriceParts, "prefix" | "amount" | "unit"> & { old?: string }; className?: string }) {
   if (!parts.amount) return null;

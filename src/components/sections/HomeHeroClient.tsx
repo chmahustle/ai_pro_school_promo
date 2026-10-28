@@ -12,15 +12,15 @@ import type { PublicHeroData, PublicHeroResult } from "@/data/public-types";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
-/** Сдвиг слоёв за курсором (--px/--py задаёт HomeHero). Классы литеральные — Tailwind не видит динамические */
+/** Сдвиг слоёв за курсором (--px/--py задаёт HomeHero). Классы литеральные - Tailwind не видит динамические */
 const SHIFT_BASE = "transition-transform duration-300 ease-out";
 const SHIFT_MESH = `${SHIFT_BASE} [transform:translate3d(calc(var(--px,0)*-6px),calc(var(--py,0)*-4px),0)]`;
 const SHIFT_RIBBON = `${SHIFT_BASE} [transform:translate3d(calc(var(--px,0)*10px),calc(var(--py,0)*6px),0)]`;
 const SHIFT_CARDS = `${SHIFT_BASE} [transform:translate3d(calc(var(--px,0)*-14px),calc(var(--py,0)*-10px),0)]`;
 
 /**
- * Текст — absolute inset-0 + flex center → геометрический центр hero.
- * Карточки — absolute по краям, вне потока текста.
+ * Текст - absolute inset-0 + flex center → геометрический центр hero.
+ * Карточки - absolute по краям, вне потока текста.
  */
 export function HomeHeroClient({ data }: { data: PublicHeroData }) {
   const results = data.results;
@@ -36,7 +36,7 @@ export function HomeHeroClient({ data }: { data: PublicHeroData }) {
     setModal(target);
   };
 
-  // Лёгкий параллакс за курсором: только мышь и без reduced-motion; значения — через CSS-переменные, без ререндера
+  // Лёгкий параллакс за курсором: только мышь и без reduced-motion; значения - через CSS-переменные, без ререндера
   useEffect(() => {
     const el = heroRef.current;
     if (!el) return;
@@ -122,7 +122,7 @@ export function HomeHeroClient({ data }: { data: PublicHeroData }) {
           </div>
         </div>
 
-        {/* Текст: на ≥lg ровно по центру контейнера hero, на мобильных — обычный поток сверху */}
+        {/* Текст: на ≥lg ровно по центру контейнера hero, на мобильных - обычный поток сверху */}
         <div className="relative z-20 px-4 pb-3 pt-5 sm:pb-4 sm:pt-12 lg:pointer-events-none lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-center lg:p-4">
           <div className="mx-auto flex w-full max-w-[34rem] flex-col items-center text-center lg:pointer-events-auto lg:max-w-[42rem]">
             <Pill tone="brand" dot className="mb-3 sm:mb-4">
@@ -144,7 +144,7 @@ export function HomeHeroClient({ data }: { data: PublicHeroData }) {
           </div>
         </div>
 
-        {/* Мобильный скролл карточек — под центром, внизу hero */}
+        {/* Мобильный скролл карточек - под центром, внизу hero */}
         {results.length > 0 && (
           <ul
             className="relative z-20 mt-auto flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-3 no-scrollbar sm:pb-4 lg:hidden"
@@ -165,7 +165,7 @@ export function HomeHeroClient({ data }: { data: PublicHeroData }) {
 
 /**
  * Один из двух равных по весу входов: кнопка к вкладке блока «Продуктовая линейка» + мелкая строка с ценой входа.
- * Ссылка (не next/link) с href для открытия без JS; по клику URL меняется без перезагрузки и шлётся hashchange — LineupTabs открывает вкладку и скроллит к #lineup.
+ * Ссылка (не next/link) с href для открытия без JS; по клику URL меняется без перезагрузки и шлётся hashchange - LineupTabs открывает вкладку и скроллит к #lineup.
  */
 function HeroChoice({ href, label, note, location, direction }: { href: string; label: string; note: string; location: string; direction: "creator" | "vibecoding" }) {
   return (
@@ -186,7 +186,7 @@ function HeroChoice({ href, label, note, location, direction }: { href: string; 
           {label}
           <ArrowRight className="size-5 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none" aria-hidden />
         </span>
-        {/* На мобильном подпись внутри кнопки, на ≥sm — под ней */}
+        {/* На мобильном подпись внутри кнопки, на ≥sm - под ней */}
         <span className="text-[12px] font-medium leading-none text-white/70 sm:hidden">{note}</span>
       </a>
       <span className="hidden text-[12px] font-medium text-ink-500 sm:block">{note}</span>
@@ -214,7 +214,7 @@ function FloatCard({
   from?: "left" | "right";
   /** Задержка появления, с */
   delay?: number;
-  /** Сдвиг фазы парения, с — карточки не качаются в унисон */
+  /** Сдвиг фазы парения, с - карточки не качаются в унисон */
   phase?: number;
   /** Метка для RoamingCursor */
   target?: string;
@@ -281,7 +281,7 @@ function ResultLine({ text }: { text: string }) {
   );
 }
 
-/** compact — мобильная карточка: до 76px, без подписи и полоски прогресса */
+/** compact - мобильная карточка: до 76px, без подписи и полоски прогресса */
 function ResultCard({ result, onOpen, delay = 0.8, compact = false }: { result: PublicHeroResult; onOpen: (el: HTMLElement) => void; delay?: number; compact?: boolean }) {
   const reduce = useReducedMotion();
   return (

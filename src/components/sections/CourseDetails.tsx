@@ -38,7 +38,7 @@ export function CourseForWhom({ course }: { course: Course }) {
               ))}
             </ul>
             <p className="mt-auto rounded-2xl bg-brand p-4 text-[14px] font-semibold text-white">
-              Зато результат — реальный доход и понятный рост, а не случайные заказы.
+              Зато результат - реальный доход и понятный рост, а не случайные заказы.
             </p>
           </RevealItem>
         )}
@@ -47,7 +47,7 @@ export function CourseForWhom({ course }: { course: Course }) {
   );
 }
 
-/** «Чему научитесь» — нумерованные плитки */
+/** «Чему научитесь» - нумерованные плитки */
 export function CourseOutcomes({ course }: { course: Course }) {
   if (course.outcomes.length === 0) return null;
   return (
@@ -67,7 +67,7 @@ export function CourseOutcomes({ course }: { course: Course }) {
   );
 }
 
-/** «Как вы зарабатываете» — тёмная панель главной со стеклянными плитками */
+/** «Как вы зарабатываете» - тёмная панель главной со стеклянными плитками */
 export function CourseMonetization({ course }: { course: Course }) {
   if (!course.monetization || course.monetization.length === 0) return null;
   return (
@@ -77,7 +77,7 @@ export function CourseMonetization({ course }: { course: Course }) {
         tone="dark"
         align="left"
         eyebrow={course.monetizationHeading?.eyebrow ?? "Как вы зарабатываете"}
-        title={course.monetizationHeading?.title ?? "Курс — это не только навыки: мы показываем, как применять ИИ в работе"}
+        title={course.monetizationHeading?.title ?? "Курс - это не только навыки: мы показываем, как применять ИИ в работе"}
       />
       <RevealGroup as="ul" className={cn("audience-grid grid gap-4", course.monetization.length >= 4 ? "md:grid-cols-2 lg:grid-cols-4" : "md:grid-cols-2")}>
         {course.monetization.map((m, i) => (

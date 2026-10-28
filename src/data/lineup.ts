@@ -8,12 +8,12 @@ export const directions: Record<Direction, { name: string; tagline: string; path
 };
 
 /**
- * Тексты блока «Продуктовая линейка» на главной (шаг 3a). Названия продуктов, цены, форматы и ссылки — в products.ts.
+ * Тексты блока «Продуктовая линейка» на главной (шаг 3a). Названия продуктов, цены, форматы и ссылки - в products.ts.
  * Подписи вкладок, заголовок и текст кнопки помощи заданы в ТЗ шага 3a.
  */
 export const lineup = {
   id: "lineup",
-  title: "Два направления — выберите своё",
+  title: "Два направления - выберите своё",
   subtitle: "У каждого своя лестница: начните с первой ступени",
   tabs: [
     { id: "creator", label: `${directions.creator.name}: ${directions.creator.tagline}` },
@@ -27,8 +27,8 @@ export const lineup = {
 } as const;
 
 /**
- * Чипы-ссылки «Для кого» в линейке: название и адрес — из audiences.ts (аудитория) или products.ts (продукт).
- * label — явная подпись, когда она короче названия в меню («Новичкам»).
+ * Чипы-ссылки «Для кого» в линейке: название и адрес - из audiences.ts (аудитория) или products.ts (продукт).
+ * label - явная подпись, когда она короче названия в меню («Новичкам»).
  */
 export const lineupForWhomChips: Record<Direction, ({ audience: "business" | "freelancers" | "career" } | { product: "practicum"; label: string })[]> = {
   creator: [{ product: "practicum", label: "Новичкам" }],

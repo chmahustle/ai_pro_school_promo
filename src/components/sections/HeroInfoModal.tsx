@@ -19,7 +19,7 @@ interface HeroInfoModalProps {
 
 /** Окно с подробностями карточки hero. Весь текст приходит в props (data/public.ts → getPublicHeroData). */
 export function HeroInfoModal({ data, target, onClose, origin }: HeroInfoModalProps) {
-  // Пока окно сворачивается, содержимое не должно пропадать — помним последнюю цель
+  // Пока окно сворачивается, содержимое не должно пропадать - помним последнюю цель
   const lastTarget = useRef<HeroModalTarget | null>(target);
   if (target) lastTarget.current = target;
   const shown = target ?? lastTarget.current;
@@ -117,7 +117,7 @@ function EventBody({ data, onClose }: { data: PublicHeroData; onClose: () => voi
 }
 
 function ResultBody({ data, result, onClose }: { data: PublicHeroData; result: PublicHeroResult; onClose: () => void }) {
-  // Детали кейса сервер передаёт только подтверждённые (verified && consent); в dev — все, с пометкой
+  // Детали кейса сервер передаёт только подтверждённые (verified && consent); в dev - все, с пометкой
   const details = data.details[result.id] ?? null;
   return (
     <div className="relative flex flex-col gap-5">

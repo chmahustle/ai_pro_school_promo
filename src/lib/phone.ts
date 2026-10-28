@@ -1,12 +1,12 @@
 /**
- * Телефон: маска ввода, нормализация, формат для плейсхолдера. Модуль без зависимостей — его проверяет tests/phone.test.mjs.
- * Формат: +7 (XXX) XXX-XX-XX — 10 цифр после +7; в заявке и в Meta CAPI уходит 7XXXXXXXXXX (11 цифр).
+ * Телефон: маска ввода, нормализация, формат для плейсхолдера. Модуль без зависимостей - его проверяет tests/phone.test.mjs.
+ * Формат: +7 (XXX) XXX-XX-XX - 10 цифр после +7; в заявке и в Meta CAPI уходит 7XXXXXXXXXX (11 цифр).
  */
 
 export const PHONE_PLACEHOLDER = "+7 (XXX) XXX-XX-XX";
 export const PHONE_FORMAT_ERROR = "Введите номер в формате +7 (XXX) XXX-XX-XX";
 
-/** Номер → 7XXXXXXXXXX (11 цифр). 8XXXXXXXXXX и 10 цифр без кода страны приводятся к 7…; не получилось — null */
+/** Номер → 7XXXXXXXXXX (11 цифр). 8XXXXXXXXXX и 10 цифр без кода страны приводятся к 7…; не получилось - null */
 export function normalizePhone(raw: string | undefined | null): string | null {
   if (!raw) return null;
   let d = raw.replace(/\D/g, "");
@@ -18,7 +18,7 @@ export function normalizePhone(raw: string | undefined | null): string | null {
 /**
  * Маска ввода: любой ввод → «+7 (XXX) XXX-XX-XX».
  * Поле при фокусе уже содержит «+7» (LeadForm), поэтому набираются 10 цифр номера; ведущая 8 после «+7» отбрасывается.
- * Вставка без «+»: 11 цифр с 7/8 — код страны отбрасывается, 10 цифр — национальный номер.
+ * Вставка без «+»: 11 цифр с 7/8 - код страны отбрасывается, 10 цифр - национальный номер.
  */
 export function formatPhoneInput(raw: string): string {
   const d = raw.replace(/\D/g, "");
@@ -43,10 +43,10 @@ export function formatPhoneInput(raw: string): string {
 }
 
 /**
- * Обработка одного события ввода. Если человек вручную напечатал «+» — поле сбрасывается и разбирается заново:
+ * Обработка одного события ввода. Если человек вручную напечатал «+» - поле сбрасывается и разбирается заново:
  * всё, что было слева от нового «+», отбрасывается, остаётся «+» и то, что справа от каретки
  * («+7» + «+» + «77011234567» → «+7 (701) 123-45-67», а не «+7 (770) …»).
- * value — значение поля после ввода, typed — вставленный символ (InputEvent.data), caret — позиция каретки после него.
+ * value - значение поля после ввода, typed - вставленный символ (InputEvent.data), caret - позиция каретки после него.
  */
 export function applyPhoneInput(value: string, typed: string | null | undefined, caret: number): string {
   if (typed === "+") return formatPhoneInput(`+${value.slice(caret)}`);

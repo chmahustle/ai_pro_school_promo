@@ -6,7 +6,7 @@ import { getPublicLineup } from "@/data/public";
 
 /**
  * Hero страницы «Курсы»: заголовок, подзаголовок и две кнопки на mesh-фоне с лёгкой лентой, как hero главной.
- * Список программ — ниже, в каталоге (#courses), справа в hero его нет.
+ * Список программ - ниже, в каталоге (#courses), справа в hero его нет.
  */
 export function CoursesHero() {
   const lineup = getPublicLineup();

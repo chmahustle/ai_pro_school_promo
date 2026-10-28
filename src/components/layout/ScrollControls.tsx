@@ -10,7 +10,7 @@ const SHOW_AFTER = 800;
 
 /**
  * Одна кнопка «наверх» у правого края: появляется после прокрутки на 800px и стоит над плавающей кнопкой WhatsApp
- * с зазором 12px (WhatsApp: 52px на мобильных, 56px на lg; отступы снизу — как в FloatingMessenger).
+ * с зазором 12px (WhatsApp: 52px на мобильных, 56px на lg; отступы снизу - как в FloatingMessenger).
  * При reduced-motion прокрутка мгновенная.
  */
 export function ScrollControls() {

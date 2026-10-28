@@ -6,9 +6,9 @@ import { vocabulary } from "./vocabulary";
 
 /**
  * Содержание лендинга курса «Вайбкодинг с нуля» (/courses/vibecoding-course): программа, формат обучения, этапы результата,
- * расходы на сервисы, «кому подходит», преподаватели, FAQ. Тексты — своими словами по программе курса (внутренний документ
- * в репозиторий и сборку не попадает). Цены курса, названия и ссылки — только products.ts / vocabulary.ts.
- * В проде показываются только verified:true; в dev остальное — с красной пометкой.
+ * расходы на сервисы, «кому подходит», преподаватели, FAQ. Тексты - своими словами по программе курса (внутренний документ
+ * в репозиторий и сборку не попадает). Цены курса, названия и ссылки - только products.ts / vocabulary.ts.
+ * В проде показываются только verified:true; в dev остальное - с красной пометкой.
  */
 interface Checked {
   verified: boolean;
@@ -24,7 +24,7 @@ const AS_OF = "2026-10";
 
 export interface CourseModule extends Checked {
   id: string;
-  /** Часть программы: 1 — основная (модули 1–9 и доп. 2.2), 2 — «Месяц поддержки» (10–14) */
+  /** Часть программы: 1 - основная (модули 1–9 и доп. 2.2), 2 - «Месяц поддержки» (10–14) */
   part: 1 | 2;
   /** Номер модуля как в программе: «1», «2.2», «12» */
   number: string;
@@ -43,9 +43,9 @@ export const coursePartTitles: Record<1 | 2, string> = {
 };
 
 /**
- * TODO(клиент): программа по 14 модулям (названия, цели, уроки). Источник — внутренний документ с описанием курса,
- * в репозитории его нет: пока пусто, блок «Программа» скрыт. Уже известно: модуль 12 — «по желанию»,
- * 13 — «Сайт для продукта и приём платежей», 14 — «Воронка продаж и публичный запуск».
+ * TODO(клиент): программа по 14 модулям (названия, цели, уроки). Источник - внутренний документ с описанием курса,
+ * в репозитории его нет: пока пусто, блок «Программа» скрыт. Уже известно: модуль 12 - «по желанию»,
+ * 13 - «Сайт для продукта и приём платежей», 14 - «Воронка продаж и публичный запуск».
  */
 export const courseProgram: CourseModule[] = [];
 
@@ -69,7 +69,7 @@ export const courseDelivery: CourseDeliveryItem[] = [
     source: SOURCE,
     asOf: AS_OF,
   },
-  { id: "chat", title: "Чат курса", text: "Вопросы и обсуждение — в общем чате студентов.", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "chat", title: "Чат курса", text: "Вопросы и обсуждение - в общем чате студентов.", verified: true, source: SOURCE, asOf: AS_OF },
   { id: "offline", title: "Офлайн-урок раз в месяц", text: "Один раз в месяц проходит офлайн-урок.", verified: true, source: SOURCE, asOf: AS_OF },
 ];
 
@@ -108,7 +108,7 @@ export const offlineMilestones: CourseMilestone[] = [
   { id: "next", text: "Уйдёте домой, понимая, что делать дальше", highlight: true, verified: true, source: SOURCE, asOf: AS_OF },
 ];
 
-/** Публичный список «Что вы получите» для страницы офлайн-урока: только verified (dev — с пометкой) */
+/** Публичный список «Что вы получите» для страницы офлайн-урока: только verified (dev - с пометкой) */
 export function getOfflineMilestones(): PublicCourseContent["milestones"] {
   return visible(offlineMilestones).map((m) => ({ id: m.id, text: m.text, highlight: Boolean(m.highlight), devNote: m.devNote }));
 }
@@ -190,7 +190,7 @@ export const courseFaq: CourseFaq[] = [
     id: "extra-costs",
     q: "Что понадобится кроме курса и сколько это стоит?",
     a: `Ноутбук и два сервиса, которые оплачивает студент: ${courseCosts.items
-      .map((c) => `${c.name} — ${c.amount}${c.hint ? ` (${c.hint})` : ""}`)
+      .map((c) => `${c.name} - ${c.amount}${c.hint ? ` (${c.hint})` : ""}`)
       .join("; ")}.`,
     verified: true,
     source: SOURCE,
@@ -215,7 +215,7 @@ export const courseFaq: CourseFaq[] = [
   {
     id: "vs-creator",
     q: `Чем ${nameInSentence(vocabulary.vibecodingCourse)} отличается от курса ${creatorShort}?`,
-    a: `Курс ${creatorShort} — про контент: ИИ-ролики, портфолио и прайс. ${vocabulary.vibecodingCourse} — про продукт: вы собираете магазин, Telegram-бота и ИИ-агента и запускаете свой проект.`,
+    a: `Курс ${creatorShort} - про контент: ИИ-ролики, портфолио и прайс. ${vocabulary.vibecodingCourse} - про продукт: вы собираете магазин, Telegram-бота и ИИ-агента и запускаете свой проект.`,
     verified: true,
     source: SOURCE,
     asOf: AS_OF,
@@ -266,7 +266,7 @@ export function getCourseContent(): PublicCourseContent {
   };
 }
 
-/** Преподаватели курса (единый источник — speakers.ts): только подтверждённые строки */
+/** Преподаватели курса (единый источник - speakers.ts): только подтверждённые строки */
 export function getCourseTeacherIds(): ("maidan" | "nadira")[] {
   return speakers.filter((s) => s.verified).map((s) => s.id);
 }

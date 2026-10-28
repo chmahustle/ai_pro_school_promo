@@ -14,7 +14,7 @@ const lineIn = (i: number) => ({
 });
 
 /**
- * H1 hero с меняющимся словом. Для скринридеров — статичный полный заголовок (sr-only);
+ * H1 hero с меняющимся словом. Для скринридеров - статичный полный заголовок (sr-only);
  * смена стоит на паузе по hover, при reduced-motion не крутится.
  */
 export function HeroTitle() {
@@ -44,7 +44,7 @@ export function HeroTitle() {
         </motion.span>
 
         <motion.span aria-hidden className="relative block" {...lineIn(1)} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
-          {/* Ширина фиксирована по самому длинному слову — строка не «прыгает» при смене */}
+          {/* Ширина фиксирована по самому длинному слову - строка не «прыгает» при смене */}
           <span className="relative inline-grid h-[1.3em] overflow-hidden text-center">
             {WORDS.map((w) => (
               <span key={w} className="invisible whitespace-nowrap [grid-area:1/1]">

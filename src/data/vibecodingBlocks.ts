@@ -4,10 +4,10 @@ import { efirPrep } from "./efir";
 import { getProduct } from "./products";
 
 /**
- * Содержательные блоки страниц вайб-кодинга (страница эфира, лендинг курса). Тексты — из прежней версии страницы
+ * Содержательные блоки страниц вайб-кодинга (страница эфира, лендинг курса). Тексты - из прежней версии страницы
  * (courses.ts / faq.ts, git-история), переписаны без обещаний дохода и трудоустройства. У каждого пункта verified / source / asOf:
- * в проде показываются только verified:true, в dev остальные — с красной пометкой «не подтверждено».
- * Слово «эфир» в падежах и цена — только через efir.ts / products.ts; «бесплатно» руками не пишем.
+ * в проде показываются только verified:true, в dev остальные - с красной пометкой «не подтверждено».
+ * Слово «эфир» в падежах и цена - только через efir.ts / products.ts; «бесплатно» руками не пишем.
  */
 export interface VibeItem {
   id: string;
@@ -23,7 +23,7 @@ export interface VibeFaq {
   id: string;
   q: string;
   a: string;
-  /** Ответ строится из products.ts при рендере (следующие ступени с ценой) — см. faq.ts */
+  /** Ответ строится из products.ts при рендере (следующие ступени с ценой) - см. faq.ts */
   dynamic?: "after-efir";
   verified: boolean;
   source: string;
@@ -51,7 +51,7 @@ const forWhom = (): VibeItem[] => [
   { id: "freelance", title: "Фрилансер", text: "хотите добавить AI-продукты в услуги", verified: true, source: SRC, asOf: AS_OF },
   { id: "career", title: "Специалист в найме", text: "хотите забрать рутину у ИИ", verified: true, source: SRC, asOf: AS_OF },
   { id: "ai-user", title: "Уже используете AI", text: "хотите перейти от запросов к созданию продуктов", verified: true, source: SRC, asOf: AS_OF },
-  // По запросу владельца: плитки про новичков; тексты — из подтверждённых ответов FAQ
+  // По запросу владельца: плитки про новичков; тексты - из подтверждённых ответов FAQ
   { id: "newbie", title: "Даже если вы новичок", text: "программировать не нужно: достаточно понимать свою работу и уметь поставить задачу", verified: true, source: "faq: «Нужно ли уметь программировать?»", asOf: AS_OF },
   { id: "no-ai", title: "Даже если вы не работали с ИИ", text: `на ${efirPrep()} покажем, как ставить задачу ИИ, чтобы получить работающий результат`, verified: true, source: "лендинг для бизнеса (faq)", asOf: AS_OF },
 ];
@@ -65,17 +65,17 @@ const outcomes = (): VibeItem[] => [
 ];
 
 const efirAgenda = (): VibeItem[] => [
-  { id: "demo", text: "Что такое вайб-кодинг — показываем на экране", verified: true, source: SRC, asOf: AS_OF },
+  { id: "demo", text: "Что такое вайб-кодинг - показываем на экране", verified: true, source: SRC, asOf: AS_OF },
   { id: "tasks", text: "Какие задачи уже автоматизируют: заявки, CRM, боты, сайты", verified: true, source: SRC, asOf: AS_OF },
   { id: "cost", text: "Сколько стоит разработка на рынке и как сделать дешевле", verified: true, source: SRC, asOf: AS_OF },
   { id: "guide", text: "Гайд в подарок после регистрации", verified: true, source: SRC, asOf: AS_OF },
 ];
 
-/** Вопросы страницы эфира (общая модель FAQ — faq.ts подмешивает их с pages vibecoding / vibecoding-efir / vibecoding-course) */
+/** Вопросы страницы эфира (общая модель FAQ - faq.ts подмешивает их с pages vibecoding / vibecoding-efir / vibecoding-course) */
 export const vibeFaq: VibeFaq[] = [
-  { id: "what", q: "Что такое вайб-кодинг?", a: "Способ создавать рабочие продукты — сайты, ботов, автоматизации — описывая задачу ИИ на обычном языке, без написания кода вручную.", verified: true, source: SRC, asOf: AS_OF },
+  { id: "what", q: "Что такое вайб-кодинг?", a: "Способ создавать рабочие продукты - сайты, ботов, автоматизации - описывая задачу ИИ на обычном языке, без написания кода вручную.", verified: true, source: SRC, asOf: AS_OF },
   { id: "edu", q: "Нужно ли уметь программировать?", a: "Нет. Достаточно понимать свой бизнес или свою работу и уметь формулировать задачу. Остальное показываем.", verified: true, source: SRC, asOf: AS_OF },
-  { id: "participation", q: "Что нужно для участия?", a: "Ноутбук и желание. Все инструменты — доступные.", verified: true, source: SRC, asOf: AS_OF },
+  { id: "participation", q: "Что нужно для участия?", a: "Ноутбук и желание. Все инструменты - доступные.", verified: true, source: SRC, asOf: AS_OF },
   { id: "after", q: "Что после эфира?", a: "", dynamic: "after-efir", verified: true, source: "products.ts (следующие ступени)", asOf: AS_OF },
 ];
 
@@ -92,7 +92,7 @@ const heroFacts = (): { id: string; label: string; value: string; verified: bool
   ];
 };
 
-/** Публичные блоки: только verified (dev — с пометкой) */
+/** Публичные блоки: только verified (dev - с пометкой) */
 export function getVibecodingBlocks() {
   const pub = (x: VibeItem & { devNote?: string }): PublicVibeItem => ({ id: x.id, title: x.title, text: x.text, devNote: x.devNote });
   return {
@@ -114,7 +114,7 @@ export function getCourseOutcomes(): PublicVibeItem[] {
   return (getProduct("course").deliverables ?? []).flatMap((d) => {
     if (!d.verified && !SHOW_PLACEHOLDERS && !d.fallbackTitle) return [];
     const unverified = !d.verified;
-    // Неподтверждённый «проект партнёра» в проде заменён на «итоговый проект» (fallbackTitle) — глагол общий
+    // Неподтверждённый «проект партнёра» в проде заменён на «итоговый проект» (fallbackTitle) - глагол общий
     return [{ id: d.id, text: verb[d.id] ?? d.title, devNote: unverified && SHOW_PLACEHOLDERS ? "не подтверждено" : undefined }];
   });
 }

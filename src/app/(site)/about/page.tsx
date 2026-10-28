@@ -14,14 +14,14 @@ import { cn, nbspDash } from "@/lib/utils";
 
 export const metadata = buildMetadata({
   title: "О школе",
-  description: "AI Pro School — онлайн-школа ИИ из Казахстана. Учим зарабатывать на ИИ людей без технического образования: контент, вайб-кодинг, автоматизация.",
+  description: "AI Pro School - онлайн-школа ИИ из Казахстана. Учим зарабатывать на ИИ людей без технического образования: контент, вайб-кодинг, автоматизация.",
   path: "/about",
 });
 
 const principles = [
-  { title: "Учим только тому, что используем сами", text: "Все инструменты и подходы — из реальных проектов школы и платформы Strimmeo. Никакой теории ради теории." },
+  { title: "Учим только тому, что используем сами", text: "Все инструменты и подходы - из реальных проектов школы и платформы Strimmeo. Никакой теории ради теории." },
   { title: "Для обычных людей, не для айтишников", text: "Мы сами не из IT-среды. Поэтому выбираем нейросети, с которыми справится человек любого возраста без техобразования." },
-  { title: "Честно про деньги", text: "Это не пассивный доход и не «кнопка бабло». Это навык, который продаётся как услуга — и мы показываем, как именно." },
+  { title: "Честно про деньги", text: "Это не пассивный доход и не «кнопка бабло». Это навык, который продаётся как услуга - и мы показываем, как именно." },
   { title: "Доводим до первых заказов", text: "Платформа с заказами, Telegram-сообщества, поддержка на старте. Ученики берут первые заказы ещё во время курса." },
 ];
 
@@ -45,7 +45,7 @@ export default function AboutPage() {
             Школа, которая выросла из <span className="text-gradient-brand">собственных ИИ-роликов</span>
           </>
         }
-        description="Мы потратили десятки миллионов тенге на таргет и увидели, как реклама дорожает. Вирусные ролики через ИИ стали альтернативой — и мы начали учить этому других. Сегодня AI Pro School — это практикум, курс AI Content Creator и направление вайб-кодинга для бизнеса и специалистов."
+        description="Мы потратили десятки миллионов тенге на таргет и увидели, как реклама дорожает. Вирусные ролики через ИИ стали альтернативой - и мы начали учить этому других. Сегодня AI Pro School - это практикум, курс AI Content Creator и направление вайб-кодинга для бизнеса и специалистов."
         aside={
           founder?.photo ? (
             <figure className="relative mx-auto aspect-[4/5] w-full max-w-[420px] overflow-hidden rounded-[32px] bg-dark shadow-float">
@@ -86,7 +86,7 @@ export default function AboutPage() {
       <Team />
       <LogosMarquee title="Площадки и партнёры" className="pb-12 sm:pb-16" />
 
-      {/* Strimmeo — компактная тёмная полоса той же ширины, что и соседние панели */}
+      {/* Strimmeo - компактная тёмная полоса той же ширины, что и соседние панели */}
       <section id="strimmeo" aria-labelledby="platform-title" className="mt-4 px-2 sm:px-4">
         <div className="relative overflow-hidden rounded-2xl bg-dark text-white sm:rounded-3xl">
           <svg viewBox="0 0 100 100" aria-hidden className="audience-spark pointer-events-none absolute -right-6 -top-10 size-44 fill-white/[0.05]">
@@ -96,7 +96,7 @@ export default function AboutPage() {
             <div className="min-w-0 max-w-3xl">
               <p className="text-[12px] font-bold uppercase tracking-wider text-brand-200">Платформа</p>
               <h2 id="platform-title" className="mt-1 font-display text-[clamp(1.375rem,1.1rem+1vw,1.875rem)] font-bold leading-tight">
-                {nbspDash("Strimmeo — своя платформа ИИ-креаторов")}
+                {nbspDash("Strimmeo - своя платформа ИИ-креаторов")}
               </h2>
               <p className="mt-1.5 max-w-[62ch] text-[14px] leading-snug text-white/65">
                 Ученики размещают портфолио, а школа приводит заказчиков. Разработана при поддержке Astana Hub.
@@ -114,7 +114,7 @@ export default function AboutPage() {
         className="mt-10 sm:mt-16"
         formId="about-footer"
         title="Познакомимся?"
-        description="Оставьте контакты — расскажем о школе и подберём программу."
+        description="Оставьте контакты - расскажем о школе и подберём программу."
       />
     </>
   );

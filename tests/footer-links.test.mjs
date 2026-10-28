@@ -19,7 +19,7 @@ const pageExists = (url) => {
   });
 };
 
-test("футер: колонки направлений — заголовок и ссылки равны URL из products.ts", () => {
+test("футер: колонки направлений - заголовок и ссылки равны URL из products.ts", () => {
   const f = getFooterData();
   assert.deepEqual(f.directions.map((d) => d.id), ["creator", "vibecoding"]);
   for (const d of f.directions) {
@@ -48,7 +48,7 @@ test("футер: все внутренние ссылки ведут на су�
   for (const u of urls) assert.ok(pageExists(u), `нет страницы для ${u}`);
 });
 
-test("футер: соцсети и телефон из company.ts, пустой URL — без иконки; нет «#» и пустых href", () => {
+test("футер: соцсети и телефон из company.ts, пустой URL - без иконки; нет «#» и пустых href", () => {
   const f = getFooterData();
   assert.equal(f.contacts.phone?.href, `tel:+${company.contacts.phoneRaw}`);
   assert.equal(f.contacts.whatsapp, company.contacts.whatsapp);
@@ -57,7 +57,7 @@ test("футер: соцсети и телефон из company.ts, пустой
   for (const h of all) assert.ok(h && h !== "#" && !h.startsWith("#"), `плохой href: ${h}`);
 });
 
-test("футер: политика и оферта — только утверждённые и на домене сайта; юр. строка — только подтверждённые реквизиты", () => {
+test("футер: политика и оферта - только утверждённые и на домене сайта; юр. строка - только подтверждённые реквизиты", () => {
   const f = getFooterData();
   if (!company.privacyApproved) assert.ok(!f.legalLinks.some((l) => l.href === "/privacy"));
   if (!company.offerApproved) assert.ok(!f.legalLinks.some((l) => l.label.includes("оферта")));

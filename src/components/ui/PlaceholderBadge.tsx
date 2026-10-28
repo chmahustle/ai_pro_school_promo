@@ -6,7 +6,7 @@ interface PlaceholderBadgeProps {
   status?: Exclude<VerificationStatus, "verified">;
   note?: string;
   className?: string;
-  /** «note» — красная пунктирная плашка (как остальные dev-пометки, со словом UNVERIFIED/PLACEHOLDER и пояснением) */
+  /** «note» - красная пунктирная плашка (как остальные dev-пометки, со словом UNVERIFIED/PLACEHOLDER и пояснением) */
   variant?: "badge" | "note";
 }
 

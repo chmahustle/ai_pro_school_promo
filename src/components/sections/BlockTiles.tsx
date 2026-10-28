@@ -8,7 +8,7 @@ function DevNote({ note }: { note?: string }) {
   return note ? <p className="mb-1 text-[12px] font-semibold text-danger">{note}</p> : null;
 }
 
-/** «Кому подходит»: карточки с галочкой (данные — vibecodingBlocks.ts) */
+/** «Кому подходит»: карточки с галочкой (данные - vibecodingBlocks.ts) */
 export function ForWhomTiles({ id, items, title = "Это для вас, если вы" }: { id: string; items: PublicVibeItem[]; title?: string }) {
   if (items.length === 0) return null;
   return (

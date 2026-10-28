@@ -13,7 +13,7 @@ export interface LightboxItem {
   kind?: "image" | "receipt" | "chat" | "video";
   /** Для видео: ссылка на embed (YouTube/Instagram) */
   embedUrl?: string;
-  /** Для видео: локальный MP4 (вертикальный ролик) — родной плеер */
+  /** Для видео: локальный MP4 (вертикальный ролик) - родной плеер */
   videoSrc?: string;
   /** Вертикальный ролик 9:16 (embed): высота до 85vh, без автозапуска */
   vertical?: boolean;
@@ -51,7 +51,7 @@ export function Lightbox({ items, index, onClose, onChange }: LightboxProps) {
   }, [open, prev, next]);
 
   return (
-    // Вертикальный ролик: без прокрутки — панель не скроллится, высота плеера подогнана под экран
+    // Вертикальный ролик: без прокрутки - панель не скроллится, высота плеера подогнана под экран
     <Modal open={open} onClose={onClose} size="full" bare title={item?.alt} className={item?.vertical || item?.videoSrc ? "overflow-visible" : undefined}>
       {item && (
         <div className="flex flex-col items-center gap-4 px-2 pb-6 pt-12 sm:px-14">

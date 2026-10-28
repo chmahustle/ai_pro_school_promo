@@ -1,5 +1,5 @@
 /**
- * Публичные модели данных — то, что можно отправлять в браузер.
+ * Публичные модели данных - то, что можно отправлять в браузер.
  * Никаких служебных полей: note, status, priceStatus, verified, consent, source, asOf, piiBlurred, logoPermission.
  * Собираются на сервере функциями из data/public.ts; клиентские компоненты получают только эти объекты через props.
  */
@@ -36,7 +36,7 @@ export interface PublicStory {
 /** Карточка кейса блока «Результаты учеников» (единый шаблон CaseCard) */
 export interface PublicCase {
   id: string;
-  /** «result» — результат ученика; «video» — видео-отзыв (нейтральный текст, без цифр) */
+  /** «result» - результат ученика; «video» - видео-отзыв (нейтральный текст, без цифр) */
   kind: "result" | "video";
   /** video: «История {имя}» */
   title?: string;
@@ -83,7 +83,7 @@ export interface PublicMetric {
   pills?: string[];
   /** Подпись на карточке («Данные школы») */
   source?: string;
-  /** Подпись источника — только в dev */
+  /** Подпись источника - только в dev */
   devSource?: string;
   devUnverified?: boolean;
 }
@@ -113,7 +113,7 @@ export interface PublicHeroData {
   teacher: { name: string; role: string; emoji: string; photo: string | null } | null;
   teacherMember: PublicTeamMember | null;
   event: { title: string; duration: string; tags: string[]; dateText: string; modalDateText: string; href: string; ctaLabel: string };
-  /** Подробности кейса для окна по клику (по id карточки); null — только то, что есть в самой карточке */
+  /** Подробности кейса для окна по клику (по id карточки); null - только то, что есть в самой карточке */
   details: Record<string, { descriptor: string; before?: string; after?: string; quote?: string; photo: string | null; dev?: PublicDev } | null>;
   business: { subtitle: string; outcomes: { title: string; text: string }[] } | null;
   /** Вход в направления: подзаголовок и подписи под кнопками (цены из products.ts) */
@@ -146,7 +146,7 @@ export interface PublicLadder {
   forWhom: string;
   /** Чипы-ссылки «Для кого» (название и адрес из audiences.ts / products.ts) */
   forWhomLinks: { label: string; href: string }[];
-  /** role — одна строка из team.ts, только подтверждённая (status verified); иначе null */
+  /** role - одна строка из team.ts, только подтверждённая (status verified); иначе null */
   leader: { name: string; photo: string | null; role: string | null };
   steps: PublicLadderStep[];
 }
@@ -183,7 +183,7 @@ export interface PublicPaths {
 export interface PublicPartner {
   id: string;
   name: string;
-  /** Файл логотипа; null — только в dev (в проде без логотипа записи нет) */
+  /** Файл логотипа; null - только в dev (в проде без логотипа записи нет) */
   logo: string | null;
   relationLabel: string;
   /** Только dev: чего не хватает для показа */
@@ -228,7 +228,7 @@ export interface PublicFooter {
   };
   /** «© 2026 AI Pro School» или «© 2026 {юрлицо}. Все права защищены.» (только подтверждённые реквизиты) */
   copyright: string;
-  /** БИН, адрес — только подтверждённые */
+  /** БИН, адрес - только подтверждённые */
   requisites: string[];
   /** Политика и оферта: только утверждённые и только на домене сайта */
   legalLinks: { label: string; href: string }[];
@@ -237,7 +237,7 @@ export interface PublicFooter {
 export interface PublicTestimonial {
   id: string;
   type: "testimonial" | "receipt" | "chat";
-  /** Подпись с именем — только при согласии автора */
+  /** Подпись с именем - только при согласии автора */
   label: string | null;
   poster: string;
   imageSrc: string | null;
@@ -253,7 +253,7 @@ export interface PublicWork {
   poster: string;
   platformUrl: string | null;
   label: string | null;
-  /** Бейдж просмотров — только подтверждённый */
+  /** Бейдж просмотров - только подтверждённый */
   badge: string | null;
 }
 
@@ -306,7 +306,7 @@ export interface FormConfig {
 /** Данные страницы /thanks/[productId] */
 export interface ThanksPageData {
   productId: string;
-  /** Название продукта для фразы «про …» (уже с нужными кавычками, nameInSentence); у «general» — null */
+  /** Название продукта для фразы «про …» (уже с нужными кавычками, nameInSentence); у «general» - null */
   productName: string | null;
   /** Ссылка wa.me с текстом сообщения */
   whatsappHref: string;
@@ -336,7 +336,7 @@ export interface PublicProductPage {
   resultLine: string;
   /** «Что соберёте»: пункты с иконками (неподтверждённый в проде заменён на «Итоговый проект») */
   deliverables: { id: string; title: string; icon: "store" | "send" | "bot" | "flag"; unverified: boolean }[];
-  /** Курс: «Путь к курсу» — ступени направления, текущая выделена */
+  /** Курс: «Путь к курсу» - ступени направления, текущая выделена */
   path?: { id: string; stepLabel: string; name: string; href: string; current: boolean }[];
   /** Заголовок формы заявки (forms.ts) */
   formTitle: string;
@@ -345,16 +345,16 @@ export interface PublicProductPage {
   devFormatNote: string | null;
   /** Ближайший старт: только подтверждённый, иначе null */
   start: string | null;
-  /** «Рассрочка Kaspi на 12 месяцев»: плашка в hero; null — не показываем */
+  /** «Рассрочка Kaspi на 12 месяцев»: плашка в hero; null - не показываем */
   kaspi: string | null;
   price: { prefix: string; amount: string; unit: string; old?: string };
-  /** «Рассрочка от … ₸ в месяц» — только если сумма задана */
+  /** «Рассрочка от … ₸ в месяц» - только если сумма задана */
   installment: string | null;
   ctaLabel: string;
   seatsLeft: number | null;
   venue: { address: string | null; schedule: string | null };
   modules: { title: string; items: string[] }[] | null;
-  /** Условия возврата (текст школы); null — блок скрыт */
+  /** Условия возврата (текст школы); null - блок скрыт */
   refundTerms: string | null;
   /** Только dev: каких данных не хватает для скрытых блоков */
   devMissing: string[];
@@ -375,7 +375,7 @@ export interface PublicNavMenu {
     teaser: string;
     /** Кнопка тёмной карточки: входной продукт */
     entry: { href: string; ctaLabel: string };
-    /** «Начать с практикума за 9 900 ₸» / «Начать с эфира, бесплатно»: цена и «бесплатно» — из products.ts */
+    /** «Начать с практикума за 9 900 ₸» / «Начать с эфира, бесплатно»: цена и «бесплатно» - из products.ts */
     start: { before: string; free: boolean; /** «бесплатно» (из products.ts), если free */ freeLabel: string; price: { prefix: string; amount: string; unit: string } };
   }[];
   allCoursesHref: string;

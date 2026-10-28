@@ -4,8 +4,8 @@ import { filterForPublish } from "@/lib/placeholders";
 
 /**
  * Стена отзывов:
- * — практикум (ai-pro-school.kz/prakticum): video 17, receipt 12, chat 82
- * — курс ai2026 (ai-pro-school.kz/ai2026): video 8, chat 18
+ * - практикум (ai-pro-school.kz/prakticum): video 17, receipt 12, chat 82
+ * - курс ai2026 (ai-pro-school.kz/ai2026): video 8, chat 18
  */
 export const reviews: Review[] = [
   // ===== ПРАКТИКУМ: видео учеников =====

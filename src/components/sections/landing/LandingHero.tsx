@@ -32,7 +32,7 @@ interface HeroTheme {
   tag: string;
 }
 
-/** Цвета hero по аудитории: бизнес — чёрный, фрилансеры — светлый персиково-розовый mesh, специалисты в найме — сиреневый */
+/** Цвета hero по аудитории: бизнес - чёрный, фрилансеры - светлый персиково-розовый mesh, специалисты в найме - сиреневый */
 const themes: Record<"dark" | "brand" | "light", HeroTheme> = {
   dark: {
     panel: "bg-dark text-white",
@@ -123,7 +123,7 @@ interface LandingHeroProps {
 
 /**
  * Hero ЦА-лендинга: компактная тёмная панель (#171717) с тональными лентами, белый заголовок с розовым акцентом,
- * кнопки со стрелками, бегущая строка тегов внизу. Тёмный — чтобы лендинг выглядел солидно, особенно для бизнеса.
+ * кнопки со стрелками, бегущая строка тегов внизу. Тёмный - чтобы лендинг выглядел солидно, особенно для бизнеса.
  */
 export function LandingHero({ audience, formAnchor }: LandingHeroProps) {
   const { hero } = audience;
@@ -139,7 +139,7 @@ export function LandingHero({ audience, formAnchor }: LandingHeroProps) {
         {th.mesh && <MeshBackdrop variant={th.mesh} rounded="rounded-3xl" />}
         <Ribbon variant="pair" tone={th.ribbon.tone} opacity={th.ribbon.opacity} />
 
-        {/* Летающие карточки с утверждениями: пока данные не подтверждены — только в dev, и только на широких экранах */}
+        {/* Летающие карточки с утверждениями: пока данные не подтверждены - только в dev, и только на широких экранах */}
         {SHOW_PLACEHOLDERS && (
           <div className="pointer-events-none absolute inset-0 z-10 hidden xl:block">
             {hero.floatingCards.slice(0, cardSlots.length).map((c, i) => {
@@ -211,7 +211,7 @@ export function LandingHero({ audience, formAnchor }: LandingHeroProps) {
           {audience.leadMagnet && (
             <motion.p variants={fadeUp} className={cn("mt-5 inline-flex items-center gap-2 rounded-pill px-4 py-2 text-[13px] font-medium ring-1", th.magnet)}>
               <Gift className="size-4 text-brand" aria-hidden />
-              {audience.leadMagnet.title} — в подарок
+              {audience.leadMagnet.title} - в подарок
             </motion.p>
           )}
 

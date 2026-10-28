@@ -7,7 +7,7 @@ import { LeadSection } from "@/components/sections/LeadSection";
 import { getFaq } from "@/data/faq";
 import { getPublicCatalog } from "@/data/public";
 
-/** В каталоге есть «ближайший старт» практикума — зависит от даты; обновляем раз в час. */
+/** В каталоге есть «ближайший старт» практикума - зависит от даты; обновляем раз в час. */
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
@@ -26,7 +26,7 @@ export default function CoursesPage() {
       <LeadSection
         formId="courses-footer"
         title="Поможем выбрать программу"
-        description="Напишите, какая у вас цель — подскажем, с чего начать и сколько это займёт."
+        description="Напишите, какая у вас цель - подскажем, с чего начать и сколько это займёт."
       />
     </>
   );

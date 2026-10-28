@@ -12,7 +12,7 @@ import { fadeUp, stagger } from "@/lib/motion";
 import { meshForAccent } from "@/lib/mesh";
 import { cn, nbspDash } from "@/lib/utils";
 
-/** Цвета плиток фактов — те же, что у карточек главной */
+/** Цвета плиток фактов - те же, что у карточек главной */
 const tiles = [
   { tile: "bg-brand text-white", label: "text-white/70", icon: "bg-white/20 text-white" },
   { tile: "bg-dark text-white", label: "text-white/55", icon: "bg-brand text-white" },
@@ -34,9 +34,9 @@ export interface CourseHeroData {
   duration: string;
   format: string;
   level: string;
-  /** Дата для бейджа «Старт …» (нет — бейджа нет) */
+  /** Дата для бейджа «Старт …» (нет - бейджа нет) */
   badgeDate: string | null;
-  /** Значение плитки «Старт» (нет — плитки нет) */
+  /** Значение плитки «Старт» (нет - плитки нет) */
   startFact: string | null;
   /** Подпись плитки: «Старт» (дата, срок старта) или «Записи эфиров» (пока формат не подтверждён) */
   startFactLabel: string;
@@ -45,7 +45,7 @@ export interface CourseHeroData {
   ctaWithPrice?: boolean;
   /** Условия оплаты из products.ts (сумма рассрочки или «есть рассрочка») */
   paymentNote: string | null;
-  /** «Рассрочка Kaspi на 12 месяцев» (плашка); null — не показываем */
+  /** «Рассрочка Kaspi на 12 месяцев» (плашка); null - не показываем */
   kaspi: string | null;
 }
 

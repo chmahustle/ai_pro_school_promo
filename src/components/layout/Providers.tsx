@@ -7,7 +7,7 @@ import { LeadModalProvider } from "@/components/sections/LeadModal";
 
 export function Providers({ children, formConfig }: { children: React.ReactNode; formConfig: FormConfig }) {
   return (
-    // reducedMotion="user" — framer-motion отключает transform/layout-анимации при prefers-reduced-motion
+    // reducedMotion="user" - framer-motion отключает transform/layout-анимации при prefers-reduced-motion
     <MotionConfig reducedMotion="user">
       <LocaleProvider>
         <LeadModalProvider config={formConfig}>{children}</LeadModalProvider>

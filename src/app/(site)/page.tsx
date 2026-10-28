@@ -14,7 +14,7 @@ import { getFaq } from "@/data/faq";
 export const revalidate = 3600;
 
 export const metadata = buildMetadata({
-  title: `${site.name} — ${site.tagline}`,
+  title: `${site.name} - ${site.tagline}`,
   description: site.description,
   path: "/",
 });
@@ -40,12 +40,12 @@ export default function HomePage() {
       <HomeStories />
       <HowItWorks />
       <WantSameCta />
-      <FAQ items={getFaq("home", { limit: 6 })} description="Если не нашли ответ — напишите в WhatsApp, ответим лично." />
+      <FAQ items={getFaq("home", { limit: 6 })} description="Если не нашли ответ - напишите в WhatsApp, ответим лично." />
       <LeadSection
         id="webinar-form"
         formId="home-footer"
         title="Не знаете, с чего начать? Подберём программу"
-        description="Оставьте заявку — расскажем, какой формат подходит под вашу цель, время и опыт. Без навязывания."
+        description="Оставьте заявку - расскажем, какой формат подходит под вашу цель, время и опыт. Без навязывания."
         bullets={["Ответим в течение рабочего дня", "Расскажем честно, подойдёт ли вам", "Поможем выбрать между практикумом, курсом и вайб-кодингом"]}
         tone="mesh"
         mesh="home"

@@ -2,7 +2,7 @@ import { getMetricsDescription, getPublicMetrics } from "@/data/public";
 import { HomeMetricsClient } from "./HomeMetricsClient";
 
 /**
- * «Школа в цифрах» (серверная часть): только публичные поля метрик. Меньше 3 подтверждённых цифр — блока нет.
+ * «Школа в цифрах» (серверная часть): только публичные поля метрик. Меньше 3 подтверждённых цифр - блока нет.
  */
 export function HomeMetrics() {
   const items = getPublicMetrics();

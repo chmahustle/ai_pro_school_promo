@@ -10,10 +10,10 @@ function productLabel(id: string): string {
  * Серверные адаптеры доставки заявок. Выбирается через LEADS_ADAPTER в .env.
  * Все адаптеры принимают нормализованный Lead и возвращают { ok, id? }.
  *
- *  mock      — логирует в консоль (dev / до подключения CRM)
- *  webhook   — POST JSON на LEADS_WEBHOOK_URL (amoCRM/Bitrix24 через Make/n8n/Albato,
+ *  mock      - логирует в консоль (dev / до подключения CRM)
+ *  webhook   - POST JSON на LEADS_WEBHOOK_URL (amoCRM/Bitrix24 через Make/n8n/Albato,
  *              либо напрямую в вебхук CRM)
- *  telegram  — сообщение в чат через бота
+ *  telegram  - сообщение в чат через бота
  *
  * TODO(клиент): выбрать адаптер и заполнить переменные окружения.
  */

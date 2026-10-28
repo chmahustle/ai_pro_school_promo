@@ -4,13 +4,13 @@ import { isPublishable, SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 
 /**
  * Метрики для bento на главной.
- * На сайте — только verified: true; unverified — только в dev (SHOW_PLACEHOLDERS).
+ * На сайте - только verified: true; unverified - только в dev (SHOW_PLACEHOLDERS).
  * TODO(клиент): подтвердить цифры → verified: true; подставить value/source/asOf.
  */
 export interface HomeMetric {
   id: string;
   value: number;
-  /** «+», « ₸», « млн» — рисуются цветом brand */
+  /** «+», « ₸», « млн» - рисуются цветом brand */
   suffix?: string;
   prefix?: string;
   label: string;
@@ -32,10 +32,10 @@ export interface HomeMetric {
  * Ключевые метрики школы (для /about, лендингов, /reviews).
  *
  * ВАЖНО: источники расходятся. Ниже каждая цифра со статусом:
- *   verified    — одинаково на всех страницах / подтверждено клиентом → показывается
- *   unverified  — есть в источниках, но значения отличаются → НЕ показывается
+ *   verified    - одинаково на всех страницах / подтверждено клиентом → показывается
+ *   unverified  - есть в источниках, но значения отличаются → НЕ показывается
  *                 без явного флага (см. publishedMetrics)
- *   placeholder — выдумано под вёрстку → заменить
+ *   placeholder - выдумано под вёрстку → заменить
  *
  * TODO(клиент): подтвердить каждую цифру и поменять status на "verified".
  */
@@ -165,18 +165,18 @@ export const homeMetrics: HomeMetric[] = [
   },
 ];
 
-/** verified всегда; unverified — только в dev / SHOW_PLACEHOLDERS */
+/** verified всегда; unverified - только в dev / SHOW_PLACEHOLDERS */
 export function getHomeMetrics(): HomeMetric[] {
   return homeMetrics.filter((m) => m.verified || SHOW_PLACEHOLDERS);
 }
 
 /**
- * Явный флаг: показывать ли unverified-метрики. По умолчанию — нет.
+ * Явный флаг: показывать ли unverified-метрики. По умолчанию - нет.
  * Включить можно только осознанно здесь, не через env.
  */
 export const SHOW_UNVERIFIED_METRICS = false;
 
-/** Метрики для вывода на сайт: verified всегда, unverified — только по флагу, placeholder — только в dev */
+/** Метрики для вывода на сайт: verified всегда, unverified - только по флагу, placeholder - только в dev */
 export function getPublishedMetrics(opts?: { includeDevPlaceholders?: boolean }): Metric[] {
   return metrics.filter((m) => {
     if (isPublishable(m)) return true;
@@ -197,7 +197,7 @@ export const astanaHub = {
   note: "ai2026: «в процессе получения резидентства»; остальные страницы: «резидент». Уточнить.",
 };
 
-/** Метрики спикеров (для карточек команды) — из лендингов вайб-кодинга */
+/** Метрики спикеров (для карточек команды) - из лендингов вайб-кодинга */
 export const founderMetrics = {
   students: { value: M("students").value, suffix: "+", label: "учеников", status: M("students").status },
   views: { value: M("views").value, suffix: "+", label: "просмотров", status: M("views").status },

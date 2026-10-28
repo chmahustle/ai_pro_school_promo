@@ -9,7 +9,7 @@ import { IS_INDEXABLE, SITE_URL, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: `${site.name} — ${site.tagline}`, template: `%s — ${site.name}` },
+  title: { default: `${site.name} - ${site.tagline}`, template: `%s - ${site.name}` },
   description: site.description,
   applicationName: site.name,
   icons: {
@@ -34,7 +34,7 @@ export const viewport: Viewport = {
 };
 
 /**
- * Все страницы — статические (SSG). Локаль читается из cookie на клиенте в LocaleProvider,
+ * Все страницы - статические (SSG). Локаль читается из cookie на клиенте в LocaleProvider,
  * чтобы не превращать layout в динамический рендер.
  */
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -11,7 +11,7 @@ const tones: Record<SectionTone, string> = {
   lavender: "bg-lavender",
   soft: "bg-soft-100",
   dark: "bg-dark text-white",
-  /** Мягкий brand-tint — не solid magenta */
+  /** Мягкий brand-tint - не solid magenta */
   brand: "bg-brand-50 text-ink",
 };
 

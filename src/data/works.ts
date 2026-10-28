@@ -143,7 +143,7 @@ export function getHomeWorks(): Work[] {
   const list = getVisibleWorks().filter((w) => {
     const ok = Boolean(w.videoSrc || w.platformUrl);
     if (!ok && process.env.NODE_ENV !== "production") {
-      console.warn(`[works] ${w.id}: нет videoSrc и platformUrl — скрыта из ленты`);
+      console.warn(`[works] ${w.id}: нет videoSrc и platformUrl - скрыта из ленты`);
     }
     return ok;
   });

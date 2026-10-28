@@ -5,7 +5,7 @@ import type { ProductId } from "./product-ids";
 import { vocabulary } from "./vocabulary";
 
 /**
- * Единый конфиг продуктов школы: цены, даты, названия, CTA и ссылки — только отсюда.
+ * Единый конфиг продуктов школы: цены, даты, названия, CTA и ссылки - только отсюда.
  * Две линейки: creator и vibecoding; ступени: try → project → profession. Интенсив и VIP на сайте не упоминаем.
  * Ничего не выдумывать: неизвестное значение = null, и тогда оно на сайте не показывается.
  */
@@ -13,14 +13,14 @@ export type Direction = "creator" | "vibecoding";
 export type Step = "try" | "project" | "profession";
 export type { ProductId } from "./product-ids";
 
-/** Изменение цены с даты. from: null — дата пока неизвестна, запись не действует. */
+/** Изменение цены с даты. from: null - дата пока неизвестна, запись не действует. */
 export interface PriceStep {
   /** ISO-дата начала действия цены (YYYY-MM-DD) или null */
   from: string | null;
   price: number;
 }
 
-/** Пункт «Что соберёте» (иконка — ключ из ProductLanding). Не подтверждённый пункт в проде заменяется на fallbackTitle или скрывается */
+/** Пункт «Что соберёте» (иконка - ключ из ProductLanding). Не подтверждённый пункт в проде заменяется на fallbackTitle или скрывается */
 export interface Deliverable {
   id: string;
   title: string;
@@ -40,7 +40,7 @@ export interface Product {
   deliverables?: Deliverable[];
   format: string;
   /**
-   * Формат (число эфиров, дни недели) подтверждён школой. false — в проде только «онлайн, живые эфиры, 7 дней»,
+   * Формат (число эфиров, дни недели) подтверждён школой. false - в проде только «онлайн, живые эфиры, 7 дней»,
    * детали (3 эфира, Пн/Вт/Ср, потоки) скрыты. Пока только у практикума.
    */
   formatVerified?: boolean;
@@ -55,52 +55,52 @@ export interface Product {
   supportDays?: number;
   /** Сколько дней доступна запись эфира */
   recordingDays?: number;
-  /** Будущая цена эфира (дата смены неизвестна — priceSchedule не заполняем) */
+  /** Будущая цена эфира (дата смены неизвестна - priceSchedule не заполняем) */
   futurePrice?: number;
   scheduleVerified?: boolean;
   /** Офлайн: длительность как в формате («3 часа») и альтернатива от школы («3–4 часа»); альтернатива не подтверждена */
   durationHours?: string;
   durationAlt?: string;
   durationVerified?: boolean;
-  /** Курс вайб-кодинга: старая цена и метка («Спеццена»); не подтверждены — в проде не рендерятся, в dev с пометкой */
+  /** Курс вайб-кодинга: старая цена и метка («Спеццена»); не подтверждены - в проде не рендерятся, в dev с пометкой */
   oldPrice?: number;
   priceLabel?: string;
   oldPriceVerified?: boolean;
-  /** Текущая цена, ₸. 0 — бесплатно. null — не задана (не показываем) */
+  /** Текущая цена, ₸. 0 - бесплатно. null - не задана (не показываем) */
   price: number | null;
   pricePrefix: "от" | "";
   /** Условия оплаты кратко («есть рассрочка») */
   priceNote: string;
-  /** Рассрочка Kaspi: срок в месяцах (плашка в hero); null — рассрочки Kaspi нет/не подтверждена */
+  /** Рассрочка Kaspi: срок в месяцах (плашка в hero); null - рассрочки Kaspi нет/не подтверждена */
   kaspiInstallmentMonths?: number | null;
-  /** Платёж в рассрочку ₸/мес. null — цифры нет, блок скрыт */
+  /** Платёж в рассрочку ₸/мес. null - цифры нет, блок скрыт */
   installmentFromPerMonth: number | null;
   /** Будущие изменения цены; записи с from: null пока не действуют */
   priceSchedule: PriceStep[];
-  /** Дни потока, 0 = вс … 6 = сб (как Date.getDay). null — потоков по расписанию нет */
+  /** Дни потока, 0 = вс … 6 = сб (как Date.getDay). null - потоков по расписанию нет */
   cohortWeekdays: number[] | null;
   /** Подтверждены ли дни потока */
   cohortVerified: boolean;
-  /** Дата ближайшего старта (ISO) — только если известна */
+  /** Дата ближайшего старта (ISO) - только если известна */
   nextStart: string | null;
   ctaLabel: string;
   landingUrl: string;
   whatsappText: string;
   /**
-   * Ключевое слово для WhatsApp («УРОК», «VIBE») — пока null и нигде не используется: школа не подтвердила,
+   * Ключевое слово для WhatsApp («УРОК», «VIBE») - пока null и нигде не используется: школа не подтвердила,
    * какое слово к какому продукту относится.
    */
   whatsappKeyword: string | null;
   thanksUrl: string;
-  /** Сколько мест осталось (офлайн-формат). null — счётчик скрыт; «до 10 мест» в формате — вместимость, не остаток */
+  /** Сколько мест осталось (офлайн-формат). null - счётчик скрыт; «до 10 мест» в формате - вместимость, не остаток */
   seatsLeft: number | null;
-  /** Адрес проведения (офлайн). null — блок «Где и когда» скрыт */
+  /** Адрес проведения (офлайн). null - блок «Где и когда» скрыт */
   address: string | null;
-  /** Даты проведения (офлайн). null — блок «Где и когда» скрыт */
+  /** Даты проведения (офлайн). null - блок «Где и когда» скрыт */
   schedule: string | null;
-  /** Условия возврата — только текст школы; null — блок скрыт (на страницах курсов) */
+  /** Условия возврата - только текст школы; null - блок скрыт (на страницах курсов) */
   refundTerms: string | null;
-  /** Программа по модулям; null — блок скрыт (данных в проекте нет) */
+  /** Программа по модулям; null - блок скрыт (данных в проекте нет) */
   modules: { title: string; items: string[] }[] | null;
   leader: "Надира" | "Майдан";
   verified: boolean;
@@ -120,13 +120,13 @@ export const FREE_WORD = "бесплатно";
 const SOURCE = "разбор сайта 22.10.2026";
 const AS_OF = "2026-10-22";
 
-/** Заготовка текста для WhatsApp и страницы «спасибо» — единая для всех продуктов */
+/** Заготовка текста для WhatsApp и страницы «спасибо» - единая для всех продуктов */
 const wa = (name: string) => `Здравствуйте! Хочу узнать про ${nameInSentence(name)}`;
 const thanks = (id: ProductId) => `/thanks/${id}`;
 
 /**
- * Адреса страниц направлений и каталога — единственный источник для меню, лестниц и sitemap
- * (адреса самих продуктов — поле landingUrl у каждого продукта ниже).
+ * Адреса страниц направлений и каталога - единственный источник для меню, лестниц и sitemap
+ * (адреса самих продуктов - поле landingUrl у каждого продукта ниже).
  */
 export const directionPages: Record<Direction, string> = { creator: "/courses/creator", vibecoding: "/courses/vibecoding" };
 export const catalogUrl = "/courses";
@@ -176,7 +176,7 @@ export const products: Product[] = [
     pricePrefix: "от",
     priceNote: "есть рассрочка",
     kaspiInstallmentMonths: 12,
-    installmentFromPerMonth: null, // цифру пока не дали — не показываем
+    installmentFromPerMonth: null, // цифру пока не дали - не показываем
     priceSchedule: [],
     cohortWeekdays: null,
     cohortVerified: false,
@@ -203,7 +203,7 @@ export const products: Product[] = [
     name: vocabulary.efir,
     resultLine: "Увидеть, как без кода собирается сайт с заявками",
     format: "онлайн, 1,5 часа",
-    // Эфир платный: 9 900 ₸ (подтвердил владелец). APS_TEST_EFIR_FREE — только для тестов ветки «бесплатно» (tests/efir-price.test.mjs)
+    // Эфир платный: 9 900 ₸ (подтвердил владелец). APS_TEST_EFIR_FREE - только для тестов ветки «бесплатно» (tests/efir-price.test.mjs)
     get price() {
       return process.env.APS_TEST_EFIR_FREE ? 0 : 9900;
     },
@@ -224,7 +224,7 @@ export const products: Product[] = [
     schedule: null, // TODO(клиент): даты проведения
     modules: null, // TODO(клиент): программа по модулям
     refundTerms: null, // TODO(клиент): условия возврата (текст школы)
-    // Данные школы (шаг 19), не подтверждены — в проде не выводим; priceSchedule не менять (нужна дата от школы)
+    // Данные школы (шаг 19), не подтверждены - в проде не выводим; priceSchedule не менять (нужна дата от школы)
     weekday: 1,
     time: "19:00",
     timezone: "Asia/Almaty",
@@ -264,7 +264,7 @@ export const products: Product[] = [
     modules: null, // TODO(клиент): программа по модулям
     refundTerms: null, // TODO(клиент): условия возврата (текст школы)
     durationHours: "3 часа",
-    durationAlt: "3–4 часа", // не подтверждено: «3 часа» (как в формате) или «3–4 часа» — вопрос школе в TODO.md
+    durationAlt: "3–4 часа", // не подтверждено: «3 часа» (как в формате) или «3–4 часа» - вопрос школе в TODO.md
     durationVerified: false,
     thanksUrl: thanks("offline"),
     leader: "Майдан",
@@ -277,7 +277,7 @@ export const products: Product[] = [
     direction: "vibecoding",
     step: "profession",
     name: vocabulary.vibecodingCourse, // verified, source: программа курса и приветствие студентам
-    // Пункт «проект для компании-партнёра» не подтверждён (deliverables → verified: false): в проде — «итоговый проект»
+    // Пункт «проект для компании-партнёра» не подтверждён (deliverables → verified: false): в проде - «итоговый проект»
     resultLine: "Сайты, магазин, CRM, Telegram-бот, ИИ-агент и 30 готовых проектов для портфолио",
     deliverables: [
       { id: "shop", title: "Магазин с CRM", icon: "store", verified: true },
@@ -306,7 +306,7 @@ export const products: Product[] = [
     modules: null, // TODO(клиент): программа по модулям
     refundTerms: null, // TODO(клиент): условия возврата (текст школы)
     oldPrice: 700000,
-    priceLabel: "Спеццена", // copy-check:ignore — метка не выводится
+    priceLabel: "Спеццена", // copy-check:ignore - метка не выводится
     oldPriceVerified: true, // 700 000 ₸ → 400 000 ₸: показ зачёркнутой цены решил владелец (метку «Спеццена» не выводим)
     thanksUrl: thanks("course"),
     leader: "Майдан",
@@ -323,7 +323,7 @@ export function getProduct(id: ProductId): Product {
 }
 
 /**
- * Пункты «Что соберёте» для показа: подтверждённые — как есть; неподтверждённый в проде заменяется на fallbackTitle
+ * Пункты «Что соберёте» для показа: подтверждённые - как есть; неподтверждённый в проде заменяется на fallbackTitle
  * (или пропускается), в dev показывается с пометкой unverified.
  */
 export function getDeliverables(product: Product): { id: string; title: string; icon: Deliverable["icon"]; unverified: boolean }[] {
@@ -337,7 +337,7 @@ export function getDeliverables(product: Product): { id: string; title: string; 
 
 /**
  * Шаг 04 пути вайб-кодинга «Проект для компании-партнёра»: показывается только при deliverables[final-project].verified === true
- * (флаг в данных, по умолчанию false). Пока false — в пути три шага, «итоговый проект» остаётся в описании курса.
+ * (флаг в данных, по умолчанию false). Пока false - в пути три шага, «итоговый проект» остаётся в описании курса.
  */
 export function getPartnerProjectStep(): { title: string } | null {
   const d = getProduct("course").deliverables?.find((x) => x.id === "final-project");
@@ -357,11 +357,11 @@ export function getCurrentPrice(product: Product, now: Date = currentDate()): nu
 export interface PriceParts {
   /** «от» или пусто */
   prefix: string;
-  /** «9 900» (неразрывные пробелы) — пусто у «бесплатно» */
+  /** «9 900» (неразрывные пробелы) - пусто у «бесплатно» */
   amount: string;
-  /** «₸» — пусто у «бесплатно» */
+  /** «₸» - пусто у «бесплатно» */
   unit: string;
-  /** Старая (зачёркнутая) цена рядом с текущей: «700 000» — только подтверждённая (oldPriceVerified) и платный продукт */
+  /** Старая (зачёркнутая) цена рядом с текущей: «700 000» - только подтверждённая (oldPriceVerified) и платный продукт */
   old?: string;
   /** Текст целиком для случаев, где разметка не нужна */
   text: string;
@@ -369,14 +369,14 @@ export interface PriceParts {
 
 const NBSP = " ";
 
-/** Составные части цены для вёрстки (единица мельче и в nowrap — см. ProductPrice). null-цена → пустые части. */
+/** Составные части цены для вёрстки (единица мельче и в nowrap - см. ProductPrice). null-цена → пустые части. */
 export function formatPriceParts(product: Product, now: Date = currentDate()): PriceParts {
   const price = getCurrentPrice(product, now);
   if (price === null) return { prefix: "", amount: "", unit: "", text: "" };
   if (price === 0) return { prefix: "", amount: FREE_WORD, unit: "", text: FREE_WORD };
   const prefix = product.pricePrefix;
   const amount = formatNumber(price);
-  // Зачёркнутая старая цена — только подтверждённая и выше текущей
+  // Зачёркнутая старая цена - только подтверждённая и выше текущей
   const old = product.oldPrice && product.oldPriceVerified === true && product.oldPrice > price ? formatNumber(product.oldPrice) : undefined;
   return {
     prefix,
@@ -387,7 +387,7 @@ export function formatPriceParts(product: Product, now: Date = currentDate()): P
   };
 }
 
-/** «9 900 ₸», «от 249 000 ₸», «бесплатно» — с неразрывными пробелами. Пустая строка, если цены нет. */
+/** «9 900 ₸», «от 249 000 ₸», «бесплатно» - с неразрывными пробелами. Пустая строка, если цены нет. */
 export function formatPrice(product: Product, now: Date = currentDate()): string {
   return formatPriceParts(product, now).text;
 }
@@ -397,15 +397,15 @@ export interface Cohort {
   date: string;
   /** 0 = вс … 6 = сб */
   weekday: number;
-  /** Подтверждены ли дни потока — пока нет, UI не должен подавать дату как факт */
+  /** Подтверждены ли дни потока - пока нет, UI не должен подавать дату как факт */
   verified: boolean;
 }
 
 const ALMATY_OFFSET_MS = 5 * 60 * 60 * 1000; // UTC+5
 
 /**
- * Ближайший день потока по cohortWeekdays (включая сегодня, время суток не учитывается). Календарь — по Астане.
- * null, если у продукта нет расписания потоков — тогда дату не показываем.
+ * Ближайший день потока по cohortWeekdays (включая сегодня, время суток не учитывается). Календарь - по Астане.
+ * null, если у продукта нет расписания потоков - тогда дату не показываем.
  */
 export function getNextCohort(id: ProductId, now: Date = currentDate()): Cohort | null {
   const p = getProduct(id);
@@ -436,7 +436,7 @@ export function getProductForCourse(slug: string): Product | null {
 const WEEKDAYS_SHORT = ["вс", "пн", "вт", "ср", "чт", "пт", "сб"];
 const MONTHS_GEN = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
 
-/** «26 октября» — дата потока по-русски; withWeekday: «пн, 26 октября» */
+/** «26 октября» - дата потока по-русски; withWeekday: «пн, 26 октября» */
 export function formatCohortDate(cohort: Cohort, withWeekday = false): string {
   const [, m, d] = cohort.date.split("-").map(Number);
   const text = `${d} ${MONTHS_GEN[(m ?? 1) - 1]}`;
@@ -452,7 +452,7 @@ export const STEP_LABELS: Record<Step, string> = {
   profession: "Освоить профессию",
 };
 
-/** Входные продукты (ступень «Попробовать») — по одному на направление */
+/** Входные продукты (ступень «Попробовать») - по одному на направление */
 export function getEntryProducts(): Product[] {
   return products.filter((p) => p.step === "try");
 }
@@ -460,7 +460,7 @@ export function getEntryProducts(): Product[] {
 /** Короткое название входного продукта для подписи («Практикум», «Эфир») */
 const entryShortName: Partial<Record<ProductId, string>> = { practicum: vocabulary.practicumShort, efir: vocabulary.efirShort };
 
-/** Строка под кнопкой входа: «Практикум от 9 900 ₸», «Эфир бесплатно». Цена — из конфига, не хардкод. */
+/** Строка под кнопкой входа: «Практикум от 9 900 ₸», «Эфир бесплатно». Цена - из конфига, не хардкод. */
 export function formatEntryLine(product: Product, now: Date = currentDate()): string {
   const price = getCurrentPrice(product, now);
   const name = entryShortName[product.id] ?? product.name;
@@ -478,7 +478,7 @@ export function efirIsFree(now: Date = currentDate()): boolean {
 
 /**
  * Цена эфира строкой для любых текстов сайта: «бесплатно» пока цена 0, иначе «9 900 ₸» (неразрывные пробелы).
- * Пустая строка, если цены нет. Руками «бесплатно» про эфир нигде не писать — только эта функция и efir.ts.
+ * Пустая строка, если цены нет. Руками «бесплатно» про эфир нигде не писать - только эта функция и efir.ts.
  */
 export function efirPriceLabel(now: Date = currentDate()): string {
   return formatPriceParts(getProduct("efir"), now).text;
@@ -486,7 +486,7 @@ export function efirPriceLabel(now: Date = currentDate()): string {
 
 /**
  * Подзаголовок первого экрана: «Без техобразования. Начать можно с {минимальная платная входная цена} или с эфира».
- * Слово «бесплатного» — только если эфир бесплатный (цена 0), иначе «с эфира».
+ * Слово «бесплатного» - только если эфир бесплатный (цена 0), иначе «с эфира».
  */
 export function getEntrySubtitle(now: Date = currentDate()): { before: string; price: string; after: string } {
   const entries = getEntryProducts();
@@ -514,7 +514,7 @@ export function getPaymentNote(product: Product): string | null {
   return product.priceNote || null;
 }
 
-/** Плашка «Рассрочка Kaspi на 12 месяцев»: срок — из products.ts → kaspiInstallmentMonths; нет срока — null */
+/** Плашка «Рассрочка Kaspi на 12 месяцев»: срок - из products.ts → kaspiInstallmentMonths; нет срока - null */
 export function getKaspiInstallmentLabel(product: Product): string | null {
   const n = product.kaspiInstallmentMonths;
   if (!n) return null;

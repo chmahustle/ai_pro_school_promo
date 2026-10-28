@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * brand = brand-50 + brand-700 (≥ AA на small text).
- * Не используем white-on-#E8307E — ~4.07:1, ниже AA для 11px.
+ * Не используем white-on-#E8307E - ~4.07:1, ниже AA для 11px.
  */
 type BadgeTone = "brand" | "dark" | "neutral" | "success" | "danger" | "peach";
 

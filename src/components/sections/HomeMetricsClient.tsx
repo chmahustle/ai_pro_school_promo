@@ -9,8 +9,8 @@ import { easeOut } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /**
- * «Школа в цифрах» — бенто на тёмной панели с лентами: большая карточка «Учеников» слева, справа две средние
- * (просмотры, подписчики) и широкая нижняя «Потоков практикума». Карточка без подтверждения (подписчики) в проде не приходит —
+ * «Школа в цифрах» - бенто на тёмной панели с лентами: большая карточка «Учеников» слева, справа две средние
+ * (просмотры, подписчики) и широкая нижняя «Потоков практикума». Карточка без подтверждения (подписчики) в проде не приходит -
  * тогда просмотры занимают всю верхнюю строку и дыры нет (4 → 3 карточки). Скрыта, пока подтверждено меньше 3 цифр.
  */
 export function HomeMetricsClient({ items, description }: { items: PublicMetric[]; description: string }) {
@@ -23,7 +23,7 @@ export function HomeMetricsClient({ items, description }: { items: PublicMetric[
   const views = byId("views");
   const followers = byId("followers");
   const streams = byId("streams");
-  // Остальные метрики (если добавят новые) — обычными карточками после широкой
+  // Остальные метрики (если добавят новые) - обычными карточками после широкой
   const rest = items.filter((m) => ![featured.id, "views", "followers", "streams"].includes(m.id));
   const item = (children: ReactNode, className: string) => (
     <motion.div className={cn("min-h-0", className)} variants={cardVariants(reduce)}>
@@ -93,7 +93,7 @@ function MetricValue({ metric, size, tone }: { metric: PublicMetric; size: "lg" 
   );
 }
 
-/** Подпись источника на карточке («Данные школы»); в dev — с датой проверки */
+/** Подпись источника на карточке («Данные школы»); в dev - с датой проверки */
 function SourceLine({ metric, className }: { metric: PublicMetric; className?: string }) {
   const text = metric.devSource ?? metric.source;
   if (!text) return null;

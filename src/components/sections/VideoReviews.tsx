@@ -2,7 +2,7 @@ import { Section, SectionIntro } from "@/components/ui";
 import { getVideoReviews, type VideoReviewPage } from "@/data/videoReviews";
 import { VideoReviewsClient } from "./VideoReviewsClient";
 
-/** «Отзывы учеников» (серверная часть): только verified && consent; нет роликов — блока нет */
+/** «Отзывы учеников» (серверная часть): только verified && consent; нет роликов - блока нет */
 export function VideoReviews({ page, id = "video-reviews" }: { page: VideoReviewPage; id?: string }) {
   const items = getVideoReviews(page);
   if (items.length === 0) return null;

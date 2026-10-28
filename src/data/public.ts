@@ -89,17 +89,17 @@ const devOf = (s: Pick<Story, "source" | "asOf" | "note" | "placeholder"> & { ve
 
 // ───────────── Результаты учеников ─────────────
 
-/** Карточки блока «Результаты учеников»: verified && consent (в dev — все, неподтверждённые с пометкой), опционально по аудитории и направлению */
+/** Карточки блока «Результаты учеников»: verified && consent (в dev - все, неподтверждённые с пометкой), опционально по аудитории и направлению */
 export function getPublicCases(audience?: AudienceSlug, direction?: Case["direction"], includeIndividual = false): PublicCase[] {
   const results: PublicCase[] = getVisibleCases()
     .filter((c) => includeIndividual || !c.individualResult)
     .filter((c) => !audience || c.audiences.includes(audience))
     .filter((c) => !direction || c.direction === direction)
-    // Метрика — число с подписью: нечисловой заголовок («Клиенты-компании») метрикой не считается — в prod карточки нет, в dev с пометкой
+    // Метрика - число с подписью: нечисловой заголовок («Клиенты-компании») метрикой не считается - в prod карточки нет, в dev с пометкой
     .filter((c) => SHOW_PLACEHOLDERS || isNumericMetric(c.metric))
     .map((c) => {
       const hasTexts = Boolean(c.before || c.after || c.quote);
-      // Неподтверждённые тексты — только в dev, с красной пометкой
+      // Неподтверждённые тексты - только в dev, с красной пометкой
       const texts = c.textsVerified || SHOW_PLACEHOLDERS ? { before: c.before, after: c.after, quote: c.quote } : {};
       const devNotes = [
         !isCasePublishable(c) ? (c.note ?? "не подтверждено") : null,
@@ -127,7 +127,7 @@ export function getPublicCases(audience?: AudienceSlug, direction?: Case["direct
       };
     });
 
-  // Видео-отзывы: на /reviews (includeIndividual) — все, на страницах направлений — по связанным продуктам
+  // Видео-отзывы: на /reviews (includeIndividual) - все, на страницах направлений - по связанным продуктам
   const videos: PublicCase[] = getVisibleVideoCases()
     .map((v) => ({ v, dir: (v.relatedProducts[0] ? getProduct(v.relatedProducts[0]).direction : "creator") as Case["direction"] }))
     .filter(({ v }) => includeIndividual || (direction ? v.relatedProducts.some((p) => getProduct(p).direction === direction) : false))
@@ -168,14 +168,14 @@ export function getPublicMetrics(): PublicMetric[] {
     decimals: m.decimals,
     featured: m.featured,
     pills: m.pills,
-    // «Данные школы» — осознанная подпись на карточке; дата — в подзаголовке блока
+    // «Данные школы» - осознанная подпись на карточке; дата - в подзаголовке блока
     source: m.source,
     devSource: SHOW_PLACEHOLDERS ? `Источник · ${m.source}${m.asOf ? ` · ${m.asOf}` : ""}` : undefined,
     devUnverified: SHOW_PLACEHOLDERS && !m.verified ? true : undefined,
   }));
 }
 
-/** Подзаголовок «Школа в цифрах»: «Данные школы на октябрь 2026» — дата из asOf показанных метрик (самая поздняя) */
+/** Подзаголовок «Школа в цифрах»: «Данные школы на октябрь 2026» - дата из asOf показанных метрик (самая поздняя) */
 export function getMetricsDescription(): string {
   const dates = getHomeMetrics().map((m) => m.asOf).filter((d): d is string => Boolean(d)).sort();
   const last = dates[dates.length - 1];
@@ -204,7 +204,7 @@ export function getPublicHeroData(): PublicHeroData {
   const details: PublicHeroData["details"] = {};
   for (const r of results) {
     const s = storyFor(r.name);
-    // Подробности показываем только для подтверждённых кейсов (в dev — для всех, с пометкой)
+    // Подробности показываем только для подтверждённых кейсов (в dev - для всех, с пометкой)
     details[r.id] =
       s && (isStoryPublishable(s) || SHOW_PLACEHOLDERS)
         ? {
@@ -235,9 +235,9 @@ export function getPublicHeroData(): PublicHeroData {
       title: heroEvent.title,
       duration: heroEvent.duration,
       tags: [...heroEvent.tags],
-      // Дату не придумываем: нет даты — «по регистрации» (в dev — пометка)
+      // Дату не придумываем: нет даты - «по регистрации» (в dev - пометка)
       dateText: heroEvent.date ?? (SHOW_PLACEHOLDERS ? "Дата скоро · TODO" : "По регистрации"),
-      modalDateText: heroEvent.date ?? (SHOW_PLACEHOLDERS ? "TODO — уточнить у клиента" : "сообщим после регистрации"),
+      modalDateText: heroEvent.date ?? (SHOW_PLACEHOLDERS ? "TODO - уточнить у клиента" : "сообщим после регистрации"),
       href: heroEvent.href,
       ctaLabel: heroEvent.ctaLabel,
     },
@@ -260,7 +260,7 @@ const toPrice = (p: (typeof products)[number]) => {
   return amount ? { prefix, amount, unit, ...(old ? { old } : {}) } : null;
 };
 
-/** Два пути: креаторство (практикум → курс) и вайб-кодинг (эфир → офлайн → курс; четвёртый шаг «проект для партнёра» — только при verified) */
+/** Два пути: креаторство (практикум → курс) и вайб-кодинг (эфир → офлайн → курс; четвёртый шаг «проект для партнёра» - только при verified) */
 export function getPublicPaths(): PublicPaths {
   const build = (direction: Direction): PublicPathStep[] => {
     const steps = products
@@ -294,7 +294,7 @@ export function getPublicPartners(): PublicPartner[] {
   }));
 }
 
-/** Вкладки «Результаты учеников»: вайб-кодинг — только если есть подтверждённые кейсы этого направления */
+/** Вкладки «Результаты учеников»: вайб-кодинг - только если есть подтверждённые кейсы этого направления */
 export function getPublicResultsTabs(stories: { direction: Direction }[]): PublicResultsTabs {
   return { tabs: resultsTabs.filter((t) => stories.some((s) => s.direction === t.id)).map((t) => ({ id: t.id, label: t.label })) };
 }
@@ -340,7 +340,7 @@ export function getLegalLinks(): { label: string; href: string }[] {
 
 /**
  * Футер: колонки направлений (названия и URL из products.ts), «Для кого», «Школа», контакты и юридическая строка.
- * Реквизиты — только подтверждённые; пустые соцсети/телефон не отдаются (иконки нет).
+ * Реквизиты - только подтверждённые; пустые соцсети/телефон не отдаются (иконки нет).
  */
 export function getFooterData(): PublicFooter {
   const order: Step[] = ["try", "project", "profession"];
@@ -389,7 +389,7 @@ export function getFooterData(): PublicFooter {
 
 // ───────────── Отзывы и работы ─────────────
 
-/** Видеоотзывы вайб-кодинга (videoReviews.ts, verified && consent) — в общем архиве отзывов после остальных */
+/** Видеоотзывы вайб-кодинга (videoReviews.ts, verified && consent) - в общем архиве отзывов после остальных */
 function getVibecodingArchiveVideos(): PublicTestimonial[] {
   return getVideoReviews("vibecoding").map((v) => ({
     id: v.id,
@@ -450,7 +450,7 @@ export function toPublicReview(r: Review): PublicReview {
 
 /** Тарифы только с ценой (без цены тариф не показываем) и без служебных полей */
 export function getPublicTariffs(course: Course): PublicTariff[] {
-  // Цена единственного тарифа — из products.ts (единый источник; в courses.ts она только для сверки)
+  // Цена единственного тарифа - из products.ts (единый источник; в courses.ts она только для сверки)
   const product = getProductForCourse(course.slug);
   const productPrice = product && course.tariffs.length === 1 ? getCurrentPrice(product) : null;
   return course.tariffs
@@ -460,13 +460,13 @@ export function getPublicTariffs(course: Course): PublicTariff[] {
       id: t.id,
       name: t.name,
       price: t.price,
-      // Старая цена — только подтверждённая; в dev показывается с пометкой
+      // Старая цена - только подтверждённая; в dev показывается с пометкой
       oldPrice: t.oldPrice && (t.oldPriceVerified !== false || SHOW_PLACEHOLDERS) ? t.oldPrice : null,
       devNote: SHOW_PLACEHOLDERS && t.oldPrice && t.oldPriceVerified === false ? "старая цена не подтверждена" : undefined,
       installment: t.installment,
       installmentMonths: t.installmentMonths,
       description: t.description,
-      // Неподтверждённые пункты — только в dev
+      // Неподтверждённые пункты - только в dev
       features: SHOW_PLACEHOLDERS ? [...t.features, ...(t.unverifiedFeatures ?? [])] : t.features,
       excluded: t.excluded,
       popular: t.popular,
@@ -490,7 +490,7 @@ export function isInstallmentEnabled(course: Course): boolean {
 
 // ───────────── Формы и страница «Спасибо» ─────────────
 
-/** Настройки формы заявки для клиента: список продуктов, согласие, обещание — всё из data-файлов */
+/** Настройки формы заявки для клиента: список продуктов, согласие, обещание - всё из data-файлов */
 export function getFormConfig(): FormConfig {
   return {
     productOptions: [...products.map((p) => ({ value: p.id as string, label: p.name })), { value: formConfig.generalOption.value, label: formConfig.generalOption.label }],
@@ -504,7 +504,7 @@ export function getThanksProductIds(): string[] {
   return [...products.map((p) => p.id as string), GENERAL_PRODUCT];
 }
 
-/** Страница «Спасибо»: ссылка WhatsApp с текстом из products.ts (для «general» — из forms.ts) */
+/** Страница «Спасибо»: ссылка WhatsApp с текстом из products.ts (для «general» - из forms.ts) */
 export function getThanksPage(productId: string): ThanksPageData | null {
   const waBase = site.whatsapp;
   if (productId === GENERAL_PRODUCT) {
@@ -587,7 +587,7 @@ export function getPublicSteps(ids: ProductId[]): PublicLadderStep[] {
   return ids.map((id) => toLadderStep(getProduct(id)));
 }
 
-/** Следующая ступень лестницы после продукта (в том же направлении); null — продукт последний */
+/** Следующая ступень лестницы после продукта (в том же направлении); null - продукт последний */
 export function getNextStep(id: ProductId): PublicLadderStep | null {
   const p = getProduct(id);
   const list = products.filter((x) => x.direction === p.direction).sort((a, b) => STEP_ORDER.indexOf(a.step) - STEP_ORDER.indexOf(b.step));
@@ -617,7 +617,7 @@ export function getPublicLineup(): PublicLineup {
 
 // ───────────── Страницы направлений и продуктов (шаг 5a) ─────────────
 
-/** Страница направления: названия и «для кого» из lineup.ts, ведущий и входной продукт — из products.ts */
+/** Страница направления: названия и «для кого» из lineup.ts, ведущий и входной продукт - из products.ts */
 export function getPublicDirectionPage(direction: Direction): PublicDirectionPage {
   const d = directions[direction];
   const entry = getEntryProducts().find((p) => p.direction === direction);
@@ -661,7 +661,7 @@ export function getPublicProductPage(id: "offline" | "course"): PublicProductPag
     ...(id === "course" ? courseExtras() : {}),
     formTitle: formConfig.productLeadTitle,
     format: p.format,
-    // Срок («3 месяца») показываем; пока не подтверждён школой — в dev с пометкой
+    // Срок («3 месяца») показываем; пока не подтверждён школой - в dev с пометкой
     devFormatNote: SHOW_PLACEHOLDERS && p.durationVerified === false ? "не подтверждено" : null,
     start: startLabel(p),
     kaspi: getKaspiInstallmentLabel(p),
@@ -690,7 +690,7 @@ function courseExtras() {
   };
 }
 
-/** «Ведёт курс»: преподаватели из speakers.ts (единый источник с страницей эфира), фото — из team.ts, только если файл есть */
+/** «Ведёт курс»: преподаватели из speakers.ts (единый источник с страницей эфира), фото - из team.ts, только если файл есть */
 export function getCourseTeachers(): { id: string; name: string; role: string; photo: string | null }[] {
   return speakers.flatMap((s) => {
     if (!s.verified) return [];
@@ -708,7 +708,7 @@ export function getCatalogLinks(): { label: string; href: string }[] {
   ];
 }
 
-/** Условия возврата продукта: только текст школы из products.ts; нет — null (блок скрыт) */
+/** Условия возврата продукта: только текст школы из products.ts; нет - null (блок скрыт) */
 export function getRefundTerms(id: ProductId): string | null {
   return getProduct(id).refundTerms;
 }

@@ -14,8 +14,8 @@ interface BusinessCasesSectionProps {
 }
 
 /**
- * «Что собирают предприниматели» — кейсы бизнесов в стиле главной: тёмная панель с лентами, белые карточки
- * с «До → После». Прод: только verified && consent, меньше 3 — блок скрыт (getHomeBusinessCases).
+ * «Что собирают предприниматели» - кейсы бизнесов в стиле главной: тёмная панель с лентами, белые карточки
+ * с «До → После». Прод: только verified && consent, меньше 3 - блок скрыт (getHomeBusinessCases).
  */
 export function BusinessCasesSection({ allHref }: BusinessCasesSectionProps = {}) {
   const items = getHomeBusinessCases();
@@ -29,7 +29,7 @@ export function BusinessCasesSection({ allHref }: BusinessCasesSectionProps = {}
         align="left"
         eyebrow="Бизнес-кейсы"
         title="Что собирают предприниматели"
-        description="Боты, сайты и ассистенты на вайб-кодинге — без найма разработчиков."
+        description="Боты, сайты и ассистенты на вайб-кодинге - без найма разработчиков."
         action={allHref ? <ArrowLink href={allHref} tone="onDark">Все кейсы</ArrowLink> : undefined}
       />
       <ul className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">

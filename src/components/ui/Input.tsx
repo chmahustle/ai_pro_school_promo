@@ -61,7 +61,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         id={id}
         aria-invalid={!!error || undefined}
         aria-describedby={error ? `${id}-error` : hint ? `${id}-hint` : undefined}
-        // ym-disable-keys: Вебвизор Метрики не записывает вводимые значения (имя, телефон) — они заменяются звёздочками
+        // ym-disable-keys: Вебвизор Метрики не записывает вводимые значения (имя, телефон) - они заменяются звёздочками
         className={cn("ym-disable-keys", fieldBase, "h-13", error ? fieldErr : fieldOk, className)}
         {...rest}
       />
@@ -193,7 +193,7 @@ interface DropdownProps {
 /**
  * Выпадающий список в стиле сайта вместо нативного <select>: стеклянная панель, скруглённые пункты,
  * галочка у выбранного, клавиатура (↑ ↓ Home End Enter Esc), закрытие по клику вне. Управляется снаружи (value/onChange),
- * для react-hook-form — через Controller.
+ * для react-hook-form - через Controller.
  */
 export function Dropdown({ label, error, hint, wrapClassName, className, id: idProp, name, options, placeholder, value = "", onChange, onBlur }: DropdownProps) {
   const autoId = useId();

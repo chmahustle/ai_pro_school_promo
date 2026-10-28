@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 interface ArrowLinkProps {
   href: string;
   children: string;
-  /** onDark — белая пилюля для тёмных панелей; onLight — тёмная для светлых */
+  /** onDark - белая пилюля для тёмных панелей; onLight - тёмная для светлых */
   tone?: "onDark" | "onLight";
   className?: string;
   onClick?: () => void;
@@ -15,7 +15,7 @@ interface ArrowLinkProps {
 
 /**
  * Ссылка-кнопка «Все …» с розовым кружком-стрелкой: при наведении круг разрастается на всю кнопку,
- * текст белеет, стрелки сменяют друг друга; к концу сама кнопка розовая — без каймы по краям.
+ * текст белеет, стрелки сменяют друг друга; к концу сама кнопка розовая - без каймы по краям.
  */
 export function ArrowLink({ href, children, tone = "onLight", className, onClick, external }: ArrowLinkProps) {
   const dark = tone === "onLight";

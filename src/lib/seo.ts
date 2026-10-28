@@ -5,7 +5,7 @@ interface PageMeta {
   title: string;
   description: string;
   path: string;
-  /** Канонический адрес, если страница дублирует другую (по умолчанию — её собственный path) */
+  /** Канонический адрес, если страница дублирует другую (по умолчанию - её собственный path) */
   canonicalPath?: string;
   /**
    * OG-картинка (1200×630).
@@ -24,11 +24,11 @@ interface PageMeta {
 
 /**
  * Единый конструктор метаданных: title, description, canonical, OG, Twitter.
- * OG-превью критичны для WhatsApp/Telegram — там показываются title+description+image.
+ * OG-превью критичны для WhatsApp/Telegram - там показываются title+description+image.
  */
 export function buildMetadata({ title, description, path, canonicalPath, image = "/og/default.png", noIndex = false, type = "website" }: PageMeta): Metadata {
   const url = `${SITE_URL}${path}`;
-  const fullTitle = path === "/" ? title : `${title} — ${site.name}`;
+  const fullTitle = path === "/" ? title : `${title} - ${site.name}`;
   const imageUrl = image ? (image.startsWith("http") ? image : `${SITE_URL}${image}`) : undefined;
 
   return {

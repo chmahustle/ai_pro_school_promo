@@ -12,14 +12,14 @@ interface CTAProps {
   interest?: string;
   secondaryLabel?: string;
   secondaryHref?: string;
-  /** lines — тёмная панель с паттерном из розовых волнистых линий */
+  /** lines - тёмная панель с паттерном из розовых волнистых линий */
   tone?: "mesh" | "dark" | "lines";
   mesh?: MeshVariant;
   source: string;
   className?: string;
 }
 
-/** Компактный CTA-баннер: mesh или ink, кнопки — ink/white */
+/** Компактный CTA-баннер: mesh или ink, кнопки - ink/white */
 export function CTA({
   title,
   description,
@@ -158,7 +158,7 @@ function CtaButtons({
   );
 }
 
-/** Фирменный паттерн из линий: ряды волнистых розовых линий разной плотности — как ленты из референсов, но тоньше */
+/** Фирменный паттерн из линий: ряды волнистых розовых линий разной плотности - как ленты из референсов, но тоньше */
 function LinesPattern() {
   return (
     <svg aria-hidden className="pointer-events-none absolute inset-0 h-full w-full">

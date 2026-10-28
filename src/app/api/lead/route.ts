@@ -53,7 +53,7 @@ export async function POST(req: Request) {
       console.error("[leads] delivery failed", adapter.name, result.error);
       return NextResponse.json({ ok: false, error: "Не удалось отправить заявку" }, { status: 502 });
     }
-    // Lead в Meta CAPI — после ответа, чтобы не задерживать посетителя; сбой CAPI на заявку не влияет
+    // Lead в Meta CAPI - после ответа, чтобы не задерживать посетителя; сбой CAPI на заявку не влияет
     const lead = parsed.data;
     if (lead.eventId) {
       const eventId = lead.eventId;

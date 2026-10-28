@@ -1,4 +1,4 @@
-# AI Pro School — сайт и ЦА-лендинги
+# AI Pro School - сайт и ЦА-лендинги
 
 Next.js 15 (App Router, SSG) · React 19 · TypeScript · Tailwind CSS v4 · framer-motion · react-hook-form + zod.
 
@@ -29,7 +29,7 @@ npm run lint && npm run typecheck
 
 ```
 src/
-  app/            маршруты (route-группы: (site) — с хедером/футером, (landing) — лендинги)
+  app/            маршруты (route-группы: (site) - с хедером/футером, (landing) - лендинги)
   components/ui   Button, Pill, Card, Badge, Input/Select/Checkbox, Accordion, Modal, Lightbox,
                   Counter, Marquee, Reveal, MediaPlaceholder, PlaceholderBadge, Section
   components/layout  Header, MegaMenu, MobileMenu, Footer, LandingHeader, FloatingMessenger, Analytics
@@ -37,7 +37,7 @@ src/
                        FAQ, LeadForm, LeadSection, Pricing, Programs, CourseHero, landing/*
   data/           ВЕСЬ контент и цифры: metrics, audiences, courses, results, reviews, team, partners, faq
   lib/            site (константы), seo, analytics, utm, leads (schema + адаптеры), og, motion, utils
-  i18n/           словари RU/KZ (KZ — заготовка с фолбэком на RU), LocaleProvider
+  i18n/           словари RU/KZ (KZ - заготовка с фолбэком на RU), LocaleProvider
   styles/         globals.css (@theme токены), fonts (self-hosted woff2 + woff для OG)
 ```
 
@@ -45,35 +45,35 @@ src/
 
 Каждая цифра/кейс/отзыв в `src/data/*` имеет `status`:
 
-- `verified` — подтверждено, показывается;
-- `unverified` — есть в источниках, но расходится; **не выводится** без явного флага
+- `verified` - подтверждено, показывается;
+- `unverified` - есть в источниках, но расходится; **не выводится** без явного флага
   (`SHOW_UNVERIFIED_METRICS` в `data/metrics.ts`), в dev помечается жёлтым бейджем `UNVERIFIED`;
-- `placeholder` — заглушка под вёрстку; в dev — красный бейдж `PLACEHOLDER`, в проде не рендерится
+- `placeholder` - заглушка под вёрстку; в dev - красный бейдж `PLACEHOLDER`, в проде не рендерится
   (метрики) либо рендерится как заглушка без бейджа (медиа). Для финальной проверки на проде:
   `NEXT_PUBLIC_SHOW_PLACEHOLDERS=true`.
 
-Статус резидентства Astana Hub: `astanaHub.show = false` в `data/metrics.ts` — не показывается.
+Статус резидентства Astana Hub: `astanaHub.show = false` в `data/metrics.ts` - не показывается.
 
 ## Заявки
 
 `POST /api/lead` → zod-валидация → адаптер из `LEADS_ADAPTER` (`mock` | `webhook` | `telegram`), см. `src/lib/leads/adapters.ts`.
 В заявке уходят: имя, телефон (нормализован до `7XXXXXXXXXX`), направление, комментарий, `formId`, страница, UTM/clid-метки (first-touch в сессии).
-После успеха — редирект на `/thanks`.
+После успеха - редирект на `/thanks`.
 
 ## Аналитика
 
-`src/lib/analytics.ts` — единая точка. Пиксели подключаются при наличии ID в `.env` (Meta, TikTok, GA4, Яндекс.Метрика).
+`src/lib/analytics.ts` - единая точка. Пиксели подключаются при наличии ID в `.env` (Meta, TikTok, GA4, Яндекс.Метрика).
 События: `page_view`, `view_landing`, `cta_click`, `lead_start`, `lead_submit`, `lead_success`, `messenger_click`.
 
 ## OG-картинки
 
 Генерируются на билде (`ImageResponse`) для `/courses/[slug]` и `/for/[audience]`.
-Общая картинка — статический `public/og/default.png`; пересоздать после правок `src/app/opengraph-image.tsx`:
+Общая картинка - статический `public/og/default.png`; пересоздать после правок `src/app/opengraph-image.tsx`:
 `npm run dev` → `curl localhost:3000/opengraph-image > public/og/default.png`.
 
 ## Локализация
 
-`ENABLED_LOCALES` в `src/i18n/index.ts` — сейчас только `ru`. Для KZ: заполнить `i18n/dictionaries/kz.ts`,
-добавить `kz` в `ENABLED_LOCALES`. Контент из `data/*` пока только RU (следующий шаг — `LocalizedString` в типах).
+`ENABLED_LOCALES` в `src/i18n/index.ts` - сейчас только `ru`. Для KZ: заполнить `i18n/dictionaries/kz.ts`,
+добавить `kz` в `ENABLED_LOCALES`. Контент из `data/*` пока только RU (следующий шаг - `LocalizedString` в типах).
 
-См. `TODO.md` — список мест, где нужно подставить реальные данные.
+См. `TODO.md` - список мест, где нужно подставить реальные данные.

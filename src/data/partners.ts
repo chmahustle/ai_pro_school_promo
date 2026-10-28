@@ -5,10 +5,10 @@ import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 /**
  * Полоса «Где нас видели».
  * На сайте: verified && logoPermission.
- * В dev / SHOW_PLACEHOLDERS — все записи (кроме удалённых), с PLACEHOLDER.
+ * В dev / SHOW_PLACEHOLDERS - все записи (кроме удалённых), с PLACEHOLDER.
  *
- * Astana Hub / резидентство — не включаем, пока verified !== true.
- * Казахтелеком — убран (клиент ученицы, не школы).
+ * Astana Hub / резидентство - не включаем, пока verified !== true.
+ * Казахтелеком - убран (клиент ученицы, не школы).
  *
  * TODO(клиент): подтвердить verified + logoPermission, прислать файлы логотипов.
  */
@@ -48,7 +48,7 @@ export const partners: Partner[] = [
     relation: "speaker",
     verified: false, // TODO: подтвердить спикерство → true
     logoPermission: false,
-    note: "Спикер — только после verified.",
+    note: "Спикер - только после verified.",
   },
 ];
 

@@ -4,7 +4,7 @@ import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 
 /**
  * Результаты учеников для StoryCard.
- * Прод: verified && consent. Цитата — только verbatim. Receipt — только piiBlurred.
+ * Прод: verified && consent. Цитата - только verbatim. Receipt - только piiBlurred.
  *
  * TODO(клиент): согласия, фото, медиа-файлы, verbatim-цитаты, актуальные asOf.
  */
@@ -226,14 +226,14 @@ export function canShowStoryMedia(s: Story): boolean {
   if (!s.media) return false;
   if (s.media.type === "receipt" && s.media.piiBlurred !== true) return false;
   const hasFile = Boolean(s.media.src || s.media.embedUrl);
-  // На проде без файла слот не рисуем; в dev — placeholder-медиа
+  // На проде без файла слот не рисуем; в dev - placeholder-медиа
   if (!hasFile && !SHOW_PLACEHOLDERS) return false;
   return true;
 }
 
 /**
- * Список для UI: на проде — только publishable;
- * в dev / SHOW_PLACEHOLDERS — все (с бейджами).
+ * Список для UI: на проде - только publishable;
+ * в dev / SHOW_PLACEHOLDERS - все (с бейджами).
  */
 export function getVisibleStories(): Story[] {
   if (SHOW_PLACEHOLDERS) return stories;

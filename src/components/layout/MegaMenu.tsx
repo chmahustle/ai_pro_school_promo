@@ -16,7 +16,7 @@ import { DirectionIllustration } from "./DirectionIllustration";
 import { StartLine } from "./DirectionCard";
 
 interface MegaMenuProps {
-  /** Данные меню — собираются на сервере (data/navMenu.ts → getNavMenu) */
+  /** Данные меню - собираются на сервере (data/navMenu.ts → getNavMenu) */
   menu: PublicNavMenu;
   open: boolean;
   onClose: () => void;
@@ -25,7 +25,7 @@ interface MegaMenuProps {
 
 /**
  * Выпадающее «Направления»: слева две строки (иконка, название, подпись) → страницы направлений,
- * справа тёмная карточка с иллюстрацией выбранного направления (меняется при наведении и фокусе; по умолчанию — первое).
+ * справа тёмная карточка с иллюстрацией выбранного направления (меняется при наведении и фокусе; по умолчанию - первое).
  * Кнопка карточки ведёт на входной продукт. Внизу «Все курсы».
  */
 export function MegaMenu({ menu, open, onClose, id }: MegaMenuProps) {

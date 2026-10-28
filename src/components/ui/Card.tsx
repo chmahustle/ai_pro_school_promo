@@ -8,7 +8,7 @@ const tones: Record<CardTone, string> = {
   lavender: "bg-lavender text-ink",
   soft: "bg-soft-100 text-ink",
   dark: "bg-dark text-white",
-  /** Мягкий magenta — не solid brand (white-on-#E8307E < AA) */
+  /** Мягкий magenta - не solid brand (white-on-#E8307E < AA) */
   brand: "bg-brand-50 text-ink",
   peach: "bg-peach text-ink",
   glass: "bg-white/70 backdrop-blur-md text-ink shadow-soft border border-white/60",

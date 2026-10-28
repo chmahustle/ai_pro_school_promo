@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
-/* hover: без media (hover: hover) — эффекты работают и в браузерах, которые сообщают hover: none (встроенные превью, гибридные ноутбуки) */
+/* hover: без media (hover: hover) - эффекты работают и в браузерах, которые сообщают hover: none (встроенные превью, гибридные ноутбуки) */
 @custom-variant hover (&:hover);
 
-/* Mesh vars first — referenced from @theme background-image tokens */
+/* Mesh vars first - referenced from @theme background-image tokens */
 :root {
   --mesh-home:
     radial-gradient(ellipse 55% 45% at 50% 42%, rgba(255, 255, 255, 0.95) 0%, transparent 70%),
@@ -40,13 +40,13 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Design tokens — AI Pro School
+   Design tokens - AI Pro School
    Mesh-градиент (Wonder): только фон hero / финальный CTA / мягкие разделители.
-   Текст и карточки — на surface / bg / ink. Лайм удалён.
+   Текст и карточки - на surface / bg / ink. Лайм удалён.
 --------------------------------------------------------------------------- */
 @theme {
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
-  /* --font-display задаёт next/font (Inter Tight) на <html>; стек с Manrope — в @utility ниже */
+  /* --font-display задаёт next/font (Inter Tight) на <html>; стек с Manrope - в @utility ниже */
 
   /* Surfaces */
   --color-bg: #f6f5fa;
@@ -68,7 +68,7 @@
   /* Тёмные поверхности (секции-панели, футер, тёмные карточки); текст остаётся ink */
   --color-dark: #171717;
 
-  /* Brand — magenta (только мелкие акценты: иконки, бейджи, подчёркивания) */
+  /* Brand - magenta (только мелкие акценты: иконки, бейджи, подчёркивания) */
   --color-brand: #e8307e;
   --color-brand-600: #c9246a;
   --color-brand-700: #a01d56;
@@ -85,7 +85,7 @@
   /* Semantic */
   --color-success: #1f9d6b;
   --color-danger: #d9304f;
-  /* Kaspi: фирменный красный — только плашка «Рассрочка Kaspi» */
+  /* Kaspi: фирменный красный - только плашка «Рассрочка Kaspi» */
   --color-kaspi: #f14635;
 
   /* Radii */
@@ -95,7 +95,7 @@
   --radius-3xl: 40px;
   --radius-pill: 999px;
 
-  /* Shadows — нейтральные, без индиго-glow */
+  /* Shadows - нейтральные, без индиго-glow */
   --shadow-soft: 0 8px 30px rgba(20, 18, 31, 0.06);
   --shadow-card: 0 16px 50px rgba(20, 18, 31, 0.1);
   --shadow-float: 0 24px 60px -10px rgba(20, 18, 31, 0.18);
@@ -136,7 +136,7 @@
     0%, 100% { transform: translateY(0) rotate(var(--float-rotate, 0deg)); }
     50% { transform: translateY(-10px) rotate(var(--float-rotate, 0deg)); }
   }
-  /* Только transform — дёшево на GPU, 32s */
+  /* Только transform - дёшево на GPU, 32s */
   @keyframes mesh-drift {
     0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
     50% { transform: translate3d(2%, -1.5%, 0) scale(1.03); }
@@ -423,8 +423,8 @@
     }
   }
 
-  /* Карточки лестницы (LadderStepCard): как плитки «Хотите так же?» — подъём карточки на 8px с лёгким увеличением и тенью, поворот/сдвиг фигур.
-     Включается от 1024px (ноутбуки, в т.ч. с сенсорным экраном, — любые типы указателя; на телефонах карточки статичны); при reduced-motion — только тень, без движения. Только transform и opacity. */
+  /* Карточки лестницы (LadderStepCard): как плитки «Хотите так же?» - подъём карточки на 8px с лёгким увеличением и тенью, поворот/сдвиг фигур.
+     Включается от 1024px (ноутбуки, в т.ч. с сенсорным экраном, - любые типы указателя; на телефонах карточки статичны); при reduced-motion - только тень, без движения. Только transform и opacity. */
   /* Зона декора карточки лестницы: высота задана здесь (не arbitrary-классами), чтобы фигуры не «схлопывались» */
   .step-zone {
     min-height: 96px;
@@ -525,7 +525,7 @@
     }
   }
 
-  /* «Хотите так же?» + карточки аудиторий — hover только при настоящем hover */
+  /* «Хотите так же?» + карточки аудиторий - hover только при настоящем hover */
   .want-same-sticker-a,
   .audience-sticker-a {
     transform: rotate(-6deg);

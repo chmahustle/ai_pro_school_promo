@@ -58,10 +58,10 @@ type Block =
   | "next";
 
 /**
- * Порядок блоков под каждую ЦА — одни компоненты, разные акценты:
- *  business   — сначала деньги (сравнение с подрядчиком), потом программа
- *  freelancers — сначала рост чека, потом программа; дополнительно метрики школы
- *  career     — сначала чек-лист рутины, затем программа; кейсы выше спикеров
+ * Порядок блоков под каждую ЦА - одни компоненты, разные акценты:
+ *  business   - сначала деньги (сравнение с подрядчиком), потом программа
+ *  freelancers - сначала рост чека, потом программа; дополнительно метрики школы
+ *  career     - сначала чек-лист рутины, затем программа; кейсы выше спикеров
  */
 const blockOrder: Record<Exclude<AudienceSlug, "beginners">, Block[]> = {
   business: ["comparison", "outcomes", "forWhom", "speakers", "results", "format", "next", "faq"],
@@ -75,7 +75,7 @@ export default async function AudienceLandingPage({ params }: { params: Promise<
   if (!a || !a.path.startsWith("/for/")) notFound();
 
   const order = blockOrder[a.slug as keyof typeof blockOrder] ?? blockOrder.business;
-  // Тёмная шапка только над чёрным hero (бизнес); над светлыми (фриланс, специалисты) — светлая
+  // Тёмная шапка только над чёрным hero (бизнес); над светлыми (фриланс, специалисты) - светлая
 
   return (
     <>
@@ -108,7 +108,7 @@ export default async function AudienceLandingPage({ params }: { params: Promise<
         submitLabel={a.form.submitLabel}
         hint="Ссылка на эфир и гайд придут в WhatsApp"
         thanksPath="/thanks/efir"
-        bullets={a.leadMagnet ? [a.leadMagnet.title, "Ссылка на эфир — в WhatsApp", efirNoHiddenConditions()] : undefined}
+        bullets={a.leadMagnet ? [a.leadMagnet.title, "Ссылка на эфир - в WhatsApp", efirNoHiddenConditions()] : undefined}
       />
     </>
   );
@@ -137,7 +137,7 @@ function LandingBlock({ block, audience }: { block: Block; audience: Audience })
         />
       );
     case "results":
-      // Кейсы ИИ-видео на лендингах не показываем; вместо них — проекты вайб-кодинга (verified && consent, меньше 3 — блока нет)
+      // Кейсы ИИ-видео на лендингах не показываем; вместо них - проекты вайб-кодинга (verified && consent, меньше 3 - блока нет)
       return (
         <div className="mt-6 sm:mt-10">
           <HomeStories audience={slug} direction="vibecoding" variant="projects" limit={3} />

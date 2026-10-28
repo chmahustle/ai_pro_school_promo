@@ -19,7 +19,7 @@ interface StoredLead {
 }
 
 /**
- * Lead в браузерные пиксели — один раз на заявку. Без записи формы (прямой заход, обновление после отправки) не шлём:
+ * Lead в браузерные пиксели - один раз на заявку. Без записи формы (прямой заход, обновление после отправки) не шлём:
  * иначе конверсия засчитается без заявки.
  */
 function fireLeadOnce(productId: string) {
@@ -33,7 +33,7 @@ function fireLeadOnce(productId: string) {
     trackLead({ product, page: lead.page ?? window.location.pathname, form_id: lead.formId }, lead.eventId);
     track({ name: "lead_success", params: { source: productId } });
   } catch {
-    // sessionStorage недоступен — событие не отправляем
+    // sessionStorage недоступен - событие не отправляем
   }
 }
 
@@ -44,8 +44,8 @@ export function ThanksContent({ data }: { data: ThanksPageData }) {
 
   const title = "Заявка принята";
   const text = data.productName
-    ? `${data.responseNote} и расскажем про ${data.productName}. Если сообщения нет — напишите нам первыми.`
-    : `${data.responseNote} и поможем выбрать программу. Если сообщения нет — напишите нам первыми.`;
+    ? `${data.responseNote} и расскажем про ${data.productName}. Если сообщения нет - напишите нам первыми.`
+    : `${data.responseNote} и поможем выбрать программу. Если сообщения нет - напишите нам первыми.`;
 
   return (
     <section className="px-2 sm:px-4">

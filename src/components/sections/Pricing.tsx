@@ -10,7 +10,7 @@ interface PricingProps {
 
 /**
  * Тарифы курса (серверная часть). В браузер уходят только публичные поля: без status, note, priceStatus.
- * Тариф без цены не передаётся; нет ни одного тарифа с ценой — блока нет.
+ * Тариф без цены не передаётся; нет ни одного тарифа с ценой - блока нет.
  */
 export function Pricing({ course, title, eyebrow }: PricingProps) {
   const tariffs = getPublicTariffs(course);

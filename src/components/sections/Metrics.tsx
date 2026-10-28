@@ -16,7 +16,7 @@ interface MetricsProps {
 
 /**
  * Блок ключевых метрик со счётчиками. По умолчанию показывает только опубликованные
- * (verified; unverified — по флагу; placeholder — только в dev и с бейджем).
+ * (verified; unverified - по флагу; placeholder - только в dev и с бейджем).
  */
 export function Metrics({
   items,

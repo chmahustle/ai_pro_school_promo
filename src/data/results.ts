@@ -63,7 +63,7 @@ export const results: ResultCase[] = [
     course: "ai-creator",
     source: "https://ai-pro-school.kz/ai2026",
     status: "placeholder", // не публикуем до подтверждения школы (видео-карточка в cases.ts, consent:false)
-    note: "Видеоотзыв YouTube IsYI0XQy9A8. before — не с лендинга.",
+    note: "Видеоотзыв YouTube IsYI0XQy9A8. before - не с лендинга.",
   },
   {
     id: "moldir",
@@ -77,13 +77,13 @@ export const results: ResultCase[] = [
     course: "ai-creator",
     source: "https://ai-pro-school.kz/ai2026",
     status: "placeholder", // не публикуем до подтверждения школы (видео-карточка в cases.ts, consent:false)
-    note: "Видеоотзыв YouTube _vHOfJPFbUY. before — не с лендинга.",
+    note: "Видеоотзыв YouTube _vHOfJPFbUY. before - не с лендинга.",
   },
 ];
 
 /**
  * Кейсы бизнесов (B2B). Пусто: прежние «Компания A/B», «Эксперт C» были выдуманными заглушками и удалены.
- * Добавлять только реальные кейсы с verified: true и consent: true — иначе блок не показывается
+ * Добавлять только реальные кейсы с verified: true и consent: true - иначе блок не показывается
  * (в проде нужно минимум 3 подтверждённых).
  */
 export const businessCases: ResultCase[] = [];
@@ -98,7 +98,7 @@ export function getPublishedBusinessCases() {
 
 /**
  * Кейсы для тёмной секции на главной.
- * Прод: только verified && consent; если меньше 3 — пустой массив (секция скрыта).
+ * Прод: только verified && consent; если меньше 3 - пустой массив (секция скрыта).
  * Dev / SHOW_PLACEHOLDERS: как filterForPublish (плейсхолдеры видны).
  */
 export function getHomeBusinessCases(): ResultCase[] {

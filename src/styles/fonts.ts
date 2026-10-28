@@ -1,8 +1,8 @@
 import localFont from "next/font/local";
 
 /**
- * Manrope — текстовый шрифт (variable 200–800), кириллица + латиница.
- * Inter Tight — заголовки (variable), локальные woff2 — сеть для запуска не нужна.
+ * Manrope - текстовый шрифт (variable 200–800), кириллица + латиница.
+ * Inter Tight - заголовки (variable), локальные woff2 - сеть для запуска не нужна.
  *
  * unicodeRange обязателен у local Manrope: без него next/font/local
  * подключает оба файла как один face.

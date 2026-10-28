@@ -10,9 +10,9 @@ interface DecorLinesProps {
 
 /**
  * Декоративные линии заднего плана (inline SVG):
- * - loops  — тонкие петли/орбиты
- * - wave   — широкая мягкая лента
- * - orbits — крупные дуги + искры
+ * - loops  - тонкие петли/орбиты
+ * - wave   - широкая мягкая лента
+ * - orbits - крупные дуги + искры
  */
 export function DecorLines({ variant = "loops", className, opacity }: DecorLinesProps) {
   return (

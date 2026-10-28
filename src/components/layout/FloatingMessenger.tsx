@@ -17,10 +17,10 @@ function footerVisibleNow() {
 }
 
 /**
- * WhatsApp: круглая иконка без текста — 52px на мобильных (<lg, с учётом safe-area), 56px на ≥lg;
+ * WhatsApp: круглая иконка без текста - 52px на мобильных (<lg, с учётом safe-area), 56px на ≥lg;
  * появляется после прокрутки ниже первого экрана (мобильные: > 80% высоты окна, ≥lg: > 400px).
  * Скрывается, когда в зоне видимости футер (#site-footer) или блок с data-hide-floating, и на /thanks/*.
- * Кнопка «наверх» (ScrollControls) стоит над ней с зазором 12px — размеры и отступы держать согласованными.
+ * Кнопка «наверх» (ScrollControls) стоит над ней с зазором 12px - размеры и отступы держать согласованными.
  */
 export function FloatingMessenger({ className }: { className?: string }) {
   const pathname = usePathname();
@@ -71,7 +71,7 @@ export function FloatingMessenger({ className }: { className?: string }) {
   const hiddenByFooter = footerInView;
   const hidden = hiddenByFooter || !scrolled;
 
-  // На «Спасибо» своя кнопка WhatsApp — плавающая не нужна
+  // На «Спасибо» своя кнопка WhatsApp - плавающая не нужна
   if (onThanks) return null;
 
   return (

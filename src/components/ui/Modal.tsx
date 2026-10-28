@@ -14,7 +14,7 @@ interface ModalProps {
   children: ReactNode;
   /** Ширина контента */
   size?: "sm" | "md" | "lg" | "full";
-  /** Без белой подложки — для лайтбокса */
+  /** Без белой подложки - для лайтбокса */
   bare?: boolean;
   className?: string;
   /** Центр элемента-источника (viewport px): окно «вылетает» из него и сворачивается обратно, как окно из Dock в macOS */
@@ -71,7 +71,7 @@ export function Modal({ open, onClose, title, children, size = "md", bare, class
 
   if (typeof document === "undefined") return null;
 
-  // Анимация из точки клика — только на десктопе (на мобильном окно — «шторка» снизу)
+  // Анимация из точки клика - только на десктопе (на мобильном окно - «шторка» снизу)
   const genie = Boolean(origin) && !reduce && window.innerWidth >= 640;
   const dx = genie && origin ? origin.x - window.innerWidth / 2 : 0;
   const dy = genie && origin ? origin.y - window.innerHeight / 2 : 0;

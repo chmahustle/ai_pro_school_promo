@@ -2,7 +2,7 @@ import { Accordion, Section, SectionHead } from "@/components/ui";
 import type { PublicFaqItem } from "@/data/faq";
 
 interface FAQProps {
-  /** Вопросы страницы из getFaq(page): в проде только подтверждённые, в dev — ещё и неподтверждённые (с devNote) */
+  /** Вопросы страницы из getFaq(page): в проде только подтверждённые, в dev - ещё и неподтверждённые (с devNote) */
   items: PublicFaqItem[];
   eyebrow?: string;
   title?: string;

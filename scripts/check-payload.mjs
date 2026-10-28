@@ -2,14 +2,14 @@
 /**
  * Проверка собранного сайта (postbuild): служебные данные не должны уходить в браузер.
  * Сканирует .next после `next build`:
- *   • HTML и RSC-payload (.next/server/app/**: .html, .rsc) — запрещены JSON-ключи
+ *   • HTML и RSC-payload (.next/server/app/**: .html, .rsc) - запрещены JSON-ключи
  *     "priceStatus", "consent", "verified", "piiBlurred", "logoPermission" и фразы «с действующего сайта», «требует утверждения»;
- *   • клиентские JS-чанки (.next/static/**) — запрещены те же фразы и идентификаторы priceStatus, piiBlurred, logoPermission
- *     (их нет в коде интерфейса — значит, в чанк попали данные);
+ *   • клиентские JS-чанки (.next/static/**) - запрещены те же фразы и идентификаторы priceStatus, piiBlurred, logoPermission
+ *     (их нет в коде интерфейса - значит, в чанк попали данные);
  *   • секреты: имя META_CAPI_TOKEN (серверный токен Meta Conversions API) не должно встречаться ни в HTML, ни в чанках;
  *     если токен задан в окружении сборки, ищем и его значение.
  *   • dev-пометки и TODO в HTML/RSC страниц («TODO», «ответ не подтверждён», «не подтверждено», PLACEHOLDER, UNVERIFIED и т.п.).
- * Нашли — сборка падает с указанием файла и контекста.
+ * Нашли - сборка падает с указанием файла и контекста.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
@@ -20,7 +20,7 @@ const NEXT = join(ROOT, ".next");
 
 const KEYS = ["priceStatus", "consent", "verified", "piiBlurred", "logoPermission"];
 const PHRASES = ["с действующего сайта", "требует утверждения", "META_CAPI_TOKEN"];
-// Шаг 21: dev-пометки и служебные тексты — только в HTML/RSC страниц (в клиентских чанках библиотек возможны посторонние совпадения)
+// Шаг 21: dev-пометки и служебные тексты - только в HTML/RSC страниц (в клиентских чанках библиотек возможны посторонние совпадения)
 const PAGE_PHRASES = [
   "TODO",
   "ответ не подтверждён",
@@ -42,13 +42,13 @@ const PAGE_PHRASES = [
   "1.000.000",
   "8 часов",
   "Гульдария заработала",
-  // Шаг 23.3: YouTube-плеер и превью только после клика — в HTML/RSC нет embed-адресов и доменов плеера/превью.
+  // Шаг 23.3: YouTube-плеер и превью только после клика - в HTML/RSC нет embed-адресов и доменов плеера/превью.
   // Обычные ссылки-переходы (youtube.com/watch в «Работах учеников», канал youtube.com/@… в футере) запросов не делают и допустимы
   "youtube.com/embed",
   "youtube-nocookie.com",
   "img.youtube.com",
   "i.ytimg.com",
-  // Шаг 22: внутренние строки описания курса — в страницы не попадают
+  // Шаг 22: внутренние строки описания курса - в страницы не попадают
   "в течение 1 часа",
   "10:00–20:00",
   "37 учеников",
@@ -76,7 +76,7 @@ function* walk(dir, exts) {
 }
 
 if (!existsSync(NEXT)) {
-  console.error("check-payload: папка .next не найдена — сначала `next build`.");
+  console.error("check-payload: папка .next не найдена - сначала `next build`.");
   process.exit(1);
 }
 
@@ -125,7 +125,7 @@ if (secret && secret.length >= 8) {
 
 if (hits.length > 0) {
   console.error(`\ncheck-payload: служебные данные попали в браузер (${hits.length}):\n`);
-  for (const h of hits.slice(0, 40)) console.error(`  ${relative(ROOT, h.file)} — ${h.what}\n    …${h.ctx}…`);
+  for (const h of hits.slice(0, 40)) console.error(`  ${relative(ROOT, h.file)} - ${h.what}\n    …${h.ctx}…`);
   if (hits.length > 40) console.error(`  … и ещё ${hits.length - 40}`);
   console.error("\nПередавайте в клиентские компоненты только публичные модели из src/data/public.ts.\n");
   process.exit(1);

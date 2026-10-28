@@ -16,13 +16,13 @@ interface MeshBackdropProps {
   /** Медленная анимация слоя (transform), off при reduced-motion */
   animate?: boolean;
   className?: string;
-  /** Скругление контейнера — обычно совпадает с родителем */
+  /** Скругление контейнера - обычно совпадает с родителем */
   rounded?: string;
 }
 
 /**
  * Mesh-фон: несколько radial-gradient, без filter:blur.
- * Класть как absolute inset-0 под контентом. Текст — не на этом слое,
+ * Класть как absolute inset-0 под контентом. Текст - не на этом слое,
  * а на surface/bg/ink поверх (или в центре, где mesh осветлён белым пятном).
  */
 export function MeshBackdrop({
@@ -34,7 +34,7 @@ export function MeshBackdrop({
 }: MeshBackdropProps) {
   return (
     <div className={cn("pointer-events-none absolute inset-0 overflow-hidden", rounded, className)} aria-hidden>
-      {/* Анимируемый слой чуть больше родителя — drift без клиппинга краёв */}
+      {/* Анимируемый слой чуть больше родителя - drift без клиппинга краёв */}
       <div
         className={cn(
           "absolute -inset-[6%] opacity-100",

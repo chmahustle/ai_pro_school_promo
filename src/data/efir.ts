@@ -40,7 +40,7 @@ export function efirCostValue(now: Date = currentDate()): string {
   return capitalize(efirPriceLabel(now));
 }
 
-/** «Записаться на эфир бесплатно» / «Записаться на эфир за 9 900 ₸»; при лид-магните — «Записаться на эфир и получить гайд» */
+/** «Записаться на эфир бесплатно» / «Записаться на эфир за 9 900 ₸»; при лид-магните - «Записаться на эфир и получить гайд» */
 export function efirSignupCta(hasGift: boolean, now: Date = currentDate()): string {
   if (hasGift) return "Записаться на эфир и получить гайд";
   return efirIsFree(now) ? `Записаться на эфир ${FREE_WORD}` : `Записаться на эфир за ${efirPriceLabel(now)}`;

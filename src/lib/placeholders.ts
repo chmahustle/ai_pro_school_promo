@@ -1,7 +1,7 @@
 /**
- * Плейсхолдеры — любые данные (фото, чеки, суммы, логотипы, цифры),
+ * Плейсхолдеры - любые данные (фото, чеки, суммы, логотипы, цифры),
  * которые ещё не подтверждены клиентом. Показываются ТОЛЬКО в dev (`next dev`, NODE_ENV !== "production"),
- * поверх них — бейдж <PlaceholderBadge/>.
+ * поверх них - бейдж <PlaceholderBadge/>.
  *
  * Production-сборка флаг NEXT_PUBLIC_SHOW_PLACEHOLDERS игнорирует: раньше при true в проде показывались
  * заглушки (кейсы «Компания A/B», «Эксперт C»). Дополнительно scripts/check-env.mjs (prebuild) валит сборку,
@@ -14,9 +14,9 @@ export type VerificationStatus = "verified" | "unverified" | "placeholder";
 
 export interface Verifiable {
   /**
-   * verified     — подтверждено клиентом, можно показывать
-   * unverified   — есть в источниках, но цифры расходятся; не выводить без явного флага
-   * placeholder  — выдуманная заглушка под вёрстку; обязательно заменить
+   * verified     - подтверждено клиентом, можно показывать
+   * unverified   - есть в источниках, но цифры расходятся; не выводить без явного флага
+   * placeholder  - выдуманная заглушка под вёрстку; обязательно заменить
    */
   status: VerificationStatus;
   /** Откуда взято / что нужно уточнить */
@@ -35,10 +35,10 @@ export function needsBadge(v: Verifiable): boolean {
 
 /**
  * Фильтр для списков (кейсы, отзывы, партнёры).
- * - verified — всегда
- * - unverified — по умолчанию да (это контент с действующих сайтов, не выдумка;
+ * - verified - всегда
+ * - unverified - по умолчанию да (это контент с действующих сайтов, не выдумка;
  *   для метрик используется отдельный SHOW_UNVERIFIED_METRICS)
- * - placeholder — только в dev / при NEXT_PUBLIC_SHOW_PLACEHOLDERS
+ * - placeholder - только в dev / при NEXT_PUBLIC_SHOW_PLACEHOLDERS
  */
 export function filterForPublish<T extends Verifiable>(
   items: T[],

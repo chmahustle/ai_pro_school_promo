@@ -7,7 +7,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, X, MessageCircle } from "lucide-react";
 import { DirectionCard } from "./DirectionCard";
 import { Logo } from "./Logo";
-import { LangSwitch } from "./LangSwitch";
 import { mainNav, PICK_PROGRAM_HREF } from "./nav";
 import type { PublicNavMenu } from "@/data/public-types";
 import { Button } from "@/components/ui";
@@ -17,7 +16,7 @@ import { track } from "@/lib/analytics";
 import { easeOut } from "@/lib/motion";
 
 interface MobileMenuProps {
-  /** Меню «Направления» — собирается на сервере (data/navMenu.ts → getNavMenu) */
+  /** Меню «Направления» - собирается на сервере (data/navMenu.ts → getNavMenu) */
   menu: PublicNavMenu;
   open: boolean;
   onClose: () => void;
@@ -92,15 +91,6 @@ export function MobileMenu({ menu, open, onClose }: MobileMenuProps) {
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link
-                  href="/contacts"
-                  onClick={onClose}
-                  className="block rounded-2xl bg-surface px-5 py-4 font-display text-lg shadow-soft hover:bg-soft-100"
-                >
-                  {t.nav.contacts}
-                </Link>
-              </li>
             </ul>
 
             <div className="mt-6 flex flex-col gap-3">
@@ -127,9 +117,6 @@ export function MobileMenu({ menu, open, onClose }: MobileMenuProps) {
               >
                 {t.common.whatsapp}
               </Button>
-              <div className="flex items-center justify-between pt-2">
-                <LangSwitch />
-              </div>
             </div>
           </motion.nav>
         </motion.div>

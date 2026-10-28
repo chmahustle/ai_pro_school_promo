@@ -6,7 +6,7 @@ import { PlaceholderBadge } from "./PlaceholderBadge";
 type MediaKind = "image" | "video" | "receipt" | "chat" | "logo";
 
 interface MediaPlaceholderProps {
-  /** Реальный src — если есть, рисуем картинку; иначе — заглушку с иконкой */
+  /** Реальный src - если есть, рисуем картинку; иначе - заглушку с иконкой */
   src?: string | null;
   alt: string;
   kind?: MediaKind;

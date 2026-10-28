@@ -3,7 +3,7 @@ import type { TeamMember } from "./types";
 
 /**
  * Команда. Источник: business/freelance/career.ai-pro-school.kz, ai2026, prakticum.
- * Фото — placeholder (null) до получения от клиента.
+ * Фото - placeholder (null) до получения от клиента.
  */
 export const team: TeamMember[] = [
   {
@@ -26,7 +26,7 @@ export const team: TeamMember[] = [
       youtube: "https://youtube.com/@nadira_batyrbayeva",
     },
     status: "verified",
-    note: "Текст — из действующих лендингов. Фото — студийное, public/photo/nadira-studio.webp.",
+    note: "Текст - из действующих лендингов. Фото - студийное, public/photo/nadira-studio.webp.",
   },
   {
     id: "maidan",
@@ -42,7 +42,7 @@ export const team: TeamMember[] = [
     ],
     photo: "/photo/maidan.jpg",
     status: "verified",
-    note: "Текст — из лендингов вайб-кодинга. Фото — public/photo/maidan.jpg.",
+    note: "Текст - из лендингов вайб-кодинга. Фото - public/photo/maidan.jpg.",
   },
   {
     id: "alena",
@@ -52,7 +52,7 @@ export const team: TeamMember[] = [
     facts: ["500+ AI-видео", "Договор на 15 роликов на 500 000 ₸", "Куратор AI Pro School"],
     photo: null,
     status: "verified",
-    note: "Упоминается как куратор в кейсах на лендингах. Роль/био — TODO уточнить.",
+    note: "Упоминается как куратор в кейсах на лендингах. Роль/био - TODO уточнить.",
   },
 ];
 

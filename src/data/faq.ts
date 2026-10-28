@@ -6,10 +6,10 @@ import { formatPrice, getKaspiInstallmentLabel, getProduct, products, type Produ
 import { vibeFaq } from "./vibecodingBlocks";
 
 /**
- * Единая модель FAQ: { id, q, a, pages, verified }. Все вопросы сайта — здесь; страницы берут свои через getFaq(page).
+ * Единая модель FAQ: { id, q, a, pages, verified }. Все вопросы сайта - здесь; страницы берут свои через getFaq(page).
  * Прод: только verified:true и непустой ответ. Dev: остальное с пометкой «ответ не подтверждён».
- * needsSchoolReview — ответ нужно подтвердить школой письменно (TODO.md → «FAQ: подтвердить школой»), пока verified:false, в проде скрыт.
- * Ответы самим не писать: пустой a и verified:false — ждём школу.
+ * needsSchoolReview - ответ нужно подтвердить школой письменно (TODO.md → «FAQ: подтвердить школой»), пока verified:false, в проде скрыт.
+ * Ответы самим не писать: пустой a и verified:false - ждём школу.
  */
 export type FaqPage =
   | "home"
@@ -29,7 +29,7 @@ export type FaqPage =
 export interface FaqEntry {
   id: string;
   q: string;
-  /** Ответ; функция — ответ строится из products.ts при рендере (цены и названия не хардкодим) */
+  /** Ответ; функция - ответ строится из products.ts при рендере (цены и названия не хардкодим) */
   a: string | (() => string);
   pages: FaqPage[];
   verified: boolean;
@@ -45,30 +45,30 @@ export interface PublicFaqItem {
   devNote?: string;
 }
 
-/** Рассрочка Kaspi: срок — из products.ts (курс вайб-кодинга); нет срока — ответа нет, вопрос скрыт */
+/** Рассрочка Kaspi: срок - из products.ts (курс вайб-кодинга); нет срока - ответа нет, вопрос скрыт */
 function kaspiAnswer(): string {
   const label = getKaspiInstallmentLabel(getProduct("course"));
   return label ? `Да, есть ${label.charAt(0).toLowerCase()}${label.slice(1)}.` : "";
 }
 
-/** «Есть рассрочка Kaspi на 12 месяцев» (для ответов о цене): срок — из products.ts, пусто — если рассрочки нет */
+/** «Есть рассрочка Kaspi на 12 месяцев» (для ответов о цене): срок - из products.ts, пусто - если рассрочки нет */
 function kaspiSentence(id: ProductId): string {
   const label = getKaspiInstallmentLabel(getProduct(id));
   return label ? `Есть ${label.charAt(0).toLowerCase()}${label.slice(1)}.` : "";
 }
 
-/** Офлайн-урок: «Сколько стоит и есть ли рассрочка?» — цена и рассрочка из products.ts */
+/** Офлайн-урок: «Сколько стоит и есть ли рассрочка?» - цена и рассрочка из products.ts */
 function offlinePriceAnswer(): string {
   const price = formatPrice(getProduct("offline"));
   return price ? [`${price}.`, kaspiSentence("offline")].filter(Boolean).join(" ") : "";
 }
 
-/** Офлайн-урок: «Что дальше?» — курс и его цена из products.ts */
+/** Офлайн-урок: «Что дальше?» - курс и его цена из products.ts */
 function offlineNextAnswer(): string {
   const course = getProduct("course");
   const price = formatPrice(course);
   if (!price) return "";
-  return `Дальше можно перейти на курс «${course.name}» — ${price}. ${kaspiSentence("course")}`.trim();
+  return `Дальше можно перейти на курс «${course.name}» - ${price}. ${kaspiSentence("course")}`.trim();
 }
 
 /**
@@ -82,7 +82,7 @@ function afterEfirAnswer(): string {
   if (next.length === 0) return "";
   const list = next.map((p) => {
     const price = formatPrice(p);
-    return price ? `${p.name} — ${price}` : p.name;
+    return price ? `${p.name} - ${price}` : p.name;
   });
   return `После эфира можно перейти на следующую ступень: ${list.join("; ")}.`;
 }
@@ -91,25 +91,25 @@ export const faqEntries: FaqEntry[] = [
   { id: "general-no-tech", q: "Нужно ли техническое образование?", a: "Нет. Все программы рассчитаны на людей без IT-опыта. Мы сами не из IT-среды, поэтому даём только те инструменты, которые подходят обычным людям, и показываем всё пошагово.", pages: ["home", "about", "courses"], verified: true },
   { id: "general-tools", q: "На каких нейросетях проходит обучение?", a: "На понятных и доступных: ChatGPT, генераторы картинок и видео, конструкторы сайтов и ботов. На старте большую часть задач можно делать на бесплатных версиях.", pages: ["home", "about", "courses"], verified: true },
   { id: "general-time", q: "Сколько времени нужно в день?", a: "Минимум 2–3 часа в день, чтобы проходить уроки и делать практику. Формат совместим с основной работой и семьёй.", pages: ["home", "about", "courses"], verified: true },
-  { id: "general-first-money", q: "Когда можно получить первые деньги?", a: "Первые заказы ученики берут ещё во время обучения — всё зависит от вашей активности. Мы не обещаем пассивный доход: это навык, который продаётся как услуга.", pages: ["home", "about", "courses"], verified: false, needsSchoolReview: true },
+  { id: "general-first-money", q: "Когда можно получить первые деньги?", a: "Первые заказы ученики берут ещё во время обучения - всё зависит от вашей активности. Мы не обещаем пассивный доход: это навык, который продаётся как услуга.", pages: ["home", "about", "courses"], verified: false, needsSchoolReview: true },
   { id: "general-orders", q: "Вы помогаете с заказами?", a: "Да. У школы есть собственная платформа ИИ-креаторов Strimmeo, список Telegram-сообществ с заказами и поддержка команды на старте.", pages: ["home", "about", "courses"], verified: false, needsSchoolReview: true },
-  { id: "general-which", q: "С чего начать, если я совсем новичок?", a: "С 7-дневного практикума по вирусным роликам: это недорогой способ попробовать формат и понять, подходит ли вам такой заработок. Дальше — курс AI Content Creator или вайб-кодинг.", pages: ["home", "about", "courses"], verified: true },
+  { id: "general-which", q: "С чего начать, если я совсем новичок?", a: "С 7-дневного практикума по вирусным роликам: это недорогой способ попробовать формат и понять, подходит ли вам такой заработок. Дальше - курс AI Content Creator или вайб-кодинг.", pages: ["home", "about", "courses"], verified: true },
   { id: "general-abroad", q: "Я не из Казахстана, подойдёт ли мне?", a: "Да. У нас много учеников из других стран. Нейросети работают с VPN, обучение проходит онлайн, оплата возможна из-за рубежа.", pages: ["home", "about", "courses"], verified: true },
   { id: "directions-diff", q: "Чем отличаются направления?", a: "", pages: ["home", "courses"], verified: false },
-  // Курс «Вайбкодинг с нуля»: вопросы и ответы — courseContent.ts
+  // Курс «Вайбкодинг с нуля»: вопросы и ответы - courseContent.ts
   ...courseFaq.map((q): FaqEntry => ({ id: `course-${q.id}`, q: q.q, a: q.a, pages: ["vibecoding-course"], verified: q.verified })),
   { id: "kaspi", q: "Есть ли рассрочка Kaspi?", a: kaspiAnswer, pages: ["home", "courses", "vibecoding-course", "ai-creator"], verified: true },
   { id: "offline-where", q: "Где проходит офлайн-урок?", a: "Офлайн-урок проходит в Astana Hub.", pages: ["vibecoding", "vibecoding-offline"], verified: true },
-  { id: "offline-experience", q: "Нужен ли опыт программирования?", a: "Нет. Достаточно понимать свою задачу и уметь её сформулировать — остальное покажем на уроке.", pages: ["vibecoding-offline"], verified: true },
+  { id: "offline-experience", q: "Нужен ли опыт программирования?", a: "Нет. Достаточно понимать свою задачу и уметь её сформулировать - остальное покажем на уроке.", pages: ["vibecoding-offline"], verified: true },
   { id: "offline-bring", q: "Что взять с собой?", a: "Ноутбук. Cursor установим вместе на уроке.", pages: ["vibecoding-offline"], verified: true },
   { id: "offline-group", q: "Сколько человек будет в группе?", a: "До 10 человек, поэтому место лучше забронировать заранее.", pages: ["vibecoding-offline"], verified: true },
   { id: "offline-result", q: "Что я получу после урока?", a: "Вы поймёте, что такое вайб-кодинг и что с его помощью можно сделать, а что нельзя; установите Cursor и увидите, что работать с ним так же просто, как с ChatGPT; придумаете и упакуете идею и разработаете её на уроке; познакомитесь с рабочим циклом вайб-кодинга. Домой уйдёте с пониманием, что делать дальше.", pages: ["vibecoding-offline"], verified: true },
-  { id: "offline-leader", q: "Кто ведёт урок?", a: () => { const role = getSpeakerRole("maidan"); return role ? `Майдан Найманов — ${role.charAt(0).toLowerCase()}${role.slice(1)}.` : ""; }, pages: ["vibecoding-offline"], verified: true },
+  { id: "offline-leader", q: "Кто ведёт урок?", a: () => { const role = getSpeakerRole("maidan"); return role ? `Майдан Найманов - ${role.charAt(0).toLowerCase()}${role.slice(1)}.` : ""; }, pages: ["vibecoding-offline"], verified: true },
   { id: "offline-price", q: "Сколько стоит урок?", a: offlinePriceAnswer, pages: ["vibecoding-offline"], verified: true },
   { id: "offline-next", q: "Что дальше после урока?", a: offlineNextAnswer, pages: ["vibecoding-offline"], verified: true },
   { id: "practicum-vs-ai-creator", q: "Чем практикум отличается от курса AI Content Creator?", a: "", pages: ["creator"], verified: false },
   { id: "practicum-blog", q: "Нужно ли вести личный аккаунт?", a: "Нет. Можно делать ролики как услугу для клиентов, без ведения блога и съёмки себя. Мы расскажем, как находить клиентов без блога.", pages: ["practicum"], verified: true },
-  { id: "practicum-paid", q: "Нужны ли платные нейросети?", a: "Нет. На старте работаем на бесплатных версиях — этого достаточно, чтобы делать 1 ролик в день.", pages: ["practicum"], verified: true },
+  { id: "practicum-paid", q: "Нужны ли платные нейросети?", a: "Нет. На старте работаем на бесплатных версиях - этого достаточно, чтобы делать 1 ролик в день.", pages: ["practicum"], verified: true },
   { id: "practicum-time", q: "Сколько времени занимает практикум?", a: "Поначалу 3–4 часа, потом 2–3 часа в день. Некоторые ученики делают ролик за 20 минут.", pages: ["practicum"], verified: true },
   { id: "practicum-record", q: "Будет ли запись? Я не смогу быть онлайн", a: "Да, записи всех эфиров доступны 30 дней.", pages: ["practicum"], verified: true },
   { id: "practicum-vpn", q: "Работают ли бесплатные нейросети в Казахстане и других странах?", a: "Да, с VPN. У нас много учеников из других стран.", pages: ["practicum"], verified: true },
@@ -119,15 +119,15 @@ export const faqEntries: FaqEntry[] = [
   { id: "ai-creator-newbie", q: "Подойдёт, если я раньше не зарабатывал(а) на ИИ?", a: "Да, курс построен от нуля: сначала выбор направления, потом практика и первые заказы.", pages: ["ai-creator"], verified: true },
   { id: "ai-creator-money", q: "Когда можно получить первые деньги?", a: "Первые заказы ученики берут уже во время обучения, всё зависит от вашей активности.", pages: ["ai-creator"], verified: false, needsSchoolReview: true },
   { id: "ai-creator-orders", q: "Вы помогаете с заказами?", a: "Да. В курсе есть поддержка школы и доступ к возможностям брать проекты.", pages: ["ai-creator"], verified: false, needsSchoolReview: true },
-  { id: "ai-creator-passive", q: "Это пассивный доход?", a: "Нет. Это навык, который продаётся как услуга. Зато результат — реальный доход и понятный рост, а не случайные заказы.", pages: ["ai-creator"], verified: true },
+  { id: "ai-creator-passive", q: "Это пассивный доход?", a: "Нет. Это навык, который продаётся как услуга. Зато результат - реальный доход и понятный рост, а не случайные заказы.", pages: ["ai-creator"], verified: true },
   // Четыре вопроса вайб-кодинга живут в vibecodingBlocks.ts (vibeFaq) и подмешиваются ниже
   { id: "business-code", q: "Нужно ли уметь программировать?", a: "Нет. Достаточно понимать свой бизнес и его задачи. На эфире покажем, как ставить задачу ИИ, чтобы получить работающий результат.", pages: ["for-business"], verified: true },
   { id: "business-real", q: "Это реально работает или маркетинг?", a: "Покажем вживую на экране: от задачи до рабочего бота или сайта. Вы сами увидите, где вайб-кодинг подходит, а где нужен разработчик.", pages: ["for-business"], verified: false, needsSchoolReview: true },
-  { id: "business-who", q: "Кто проводит эфир?", a: "Надира Батырбаева — основатель школы, и Майдан Найманов — ML-инженер и AI-архитектор со 100+ коммерческими проектами.", pages: ["for-business"], verified: true },
+  { id: "business-who", q: "Кто проводит эфир?", a: "Надира Батырбаева - основатель школы, и Майдан Найманов - ML-инженер и AI-архитектор со 100+ коммерческими проектами.", pages: ["for-business"], verified: true },
   { id: "business-after", q: "Что я получу после эфира?", a: "Гайд «25 задач бизнеса с вайб-кодингом» и понимание, какие процессы автоматизировать первыми.", pages: ["for-business"], verified: true },
-  { id: "freelancers-code", q: "Я не разработчик. Точно получится?", a: "Да. Вайб-кодинг — это постановка задачи ИИ на обычном языке. Ваши текущие навыки (понимание клиента, маркетинг, контент) здесь важнее кода.", pages: ["for-freelancers"], verified: true },
-  { id: "freelancers-price", q: "Сколько стоят такие услуги на рынке?", a: "На эфире разберём реальные чеки за ботов, сайты и автоматизации — и как их обосновать клиенту.", pages: ["for-freelancers"], verified: false, needsSchoolReview: true },
-  { id: "freelancers-clients", q: "Где искать первых заказчиков?", a: "Начать стоит с текущих клиентов — у них уже есть доверие к вам. Плюс расскажем про сообщества и платформу школы.", pages: ["for-freelancers"], verified: false, needsSchoolReview: true },
+  { id: "freelancers-code", q: "Я не разработчик. Точно получится?", a: "Да. Вайб-кодинг - это постановка задачи ИИ на обычном языке. Ваши текущие навыки (понимание клиента, маркетинг, контент) здесь важнее кода.", pages: ["for-freelancers"], verified: true },
+  { id: "freelancers-price", q: "Сколько стоят такие услуги на рынке?", a: "На эфире разберём реальные чеки за ботов, сайты и автоматизации - и как их обосновать клиенту.", pages: ["for-freelancers"], verified: false, needsSchoolReview: true },
+  { id: "freelancers-clients", q: "Где искать первых заказчиков?", a: "Начать стоит с текущих клиентов - у них уже есть доверие к вам. Плюс расскажем про сообщества и платформу школы.", pages: ["for-freelancers"], verified: false, needsSchoolReview: true },
   { id: "freelancers-after", q: "Что после эфира?", a: afterEfirAnswer, pages: ["for-freelancers"], verified: true },
   { id: "career-code", q: "У меня нет IT-образования. Это для меня?", a: "Да. Эфир рассчитан на специалистов из любых сфер: бухгалтерия, HR, продажи, маркетинг, логистика. Код писать не нужно.", pages: ["for-career"], verified: true },
   { id: "career-job", q: "Не заменит ли AI меня самого?", a: "Заменит тех, кто им не пользуется. Специалист, который автоматизирует рутину и берёт на себя больше, становится ценнее.", pages: ["for-career"], verified: true },
@@ -148,7 +148,7 @@ const resolve = (a: FaqEntry["a"]): string => (typeof a === "function" ? a() : a
 
 /**
  * Вопросы страницы. Прод: verified && !needsSchoolReview && непустой ответ. Dev: остальные тоже, с devNote.
- * limit — первые N показанных.
+ * limit - первые N показанных.
  */
 export function getFaq(page: FaqPage, opts?: { limit?: number }): PublicFaqItem[] {
   const out: PublicFaqItem[] = [];

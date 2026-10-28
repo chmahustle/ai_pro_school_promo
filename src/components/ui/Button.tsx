@@ -8,7 +8,7 @@ export type ButtonSize = "sm" | "md" | "lg";
 
 /**
  * Hover-принцип: у кнопок «текст + стрелка справа» от стрелки разрастается круг цвета `fill`, текст меняется на `hoverText`,
- * к концу сама кнопка тоже получает этот цвет (без каймы). У кнопок без стрелки — обычный hover (`plain`).
+ * к концу сама кнопка тоже получает этот цвет (без каймы). У кнопок без стрелки - обычный hover (`plain`).
  */
 const variants: Record<ButtonVariant, { base: string; plain: string; fill?: string; hoverBg?: string; hoverText?: string }> = {
   primary: { base: "bg-ink text-white shadow-pill", plain: "hover:bg-ink-700", fill: "bg-brand", hoverBg: "hover:bg-brand" },
@@ -36,7 +36,7 @@ interface CommonProps {
   icon?: ReactNode;
   iconPosition?: "left" | "right";
   fullWidth?: boolean;
-  /** Цвет заливки при наведении вместо розового — для кнопок на розовом фоне */
+  /** Цвет заливки при наведении вместо розового - для кнопок на розовом фоне */
   fillTone?: "dark";
 }
 
@@ -58,7 +58,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   ref,
 ) {
   const v = variants[variant];
-  // Анимация заливки — только у кнопок с иконкой-стрелкой справа
+  // Анимация заливки - только у кнопок с иконкой-стрелкой справа
   const withFill = Boolean(icon && iconPosition === "right" && v.fill);
   const classes = cn(
     base,

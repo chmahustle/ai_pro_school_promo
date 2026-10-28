@@ -8,10 +8,10 @@ interface SectionIntroProps {
   eyebrow: ReactNode;
   title: ReactNode;
   description?: ReactNode;
-  /** dark — для тёмных панелей */
+  /** dark - для тёмных панелей */
   tone?: "light" | "dark";
   align?: "center" | "left";
-  /** Правый слот (ссылка «Все …») — только при align="left" */
+  /** Правый слот (ссылка «Все …») - только при align="left" */
   action?: ReactNode;
 }
 

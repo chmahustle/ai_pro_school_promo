@@ -52,7 +52,7 @@ export default function ReviewsPage() {
         className="mt-10 sm:mt-16"
         formId="reviews-footer"
         title="Хотите такой же результат?"
-        description="Расскажите о своей цели — подскажем, с какой программы начать."
+        description="Расскажите о своей цели - подскажем, с какой программы начать."
       />
     </>
   );

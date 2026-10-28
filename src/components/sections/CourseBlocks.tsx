@@ -9,7 +9,7 @@ function DevNote({ note, className }: { note?: string | null; className?: string
   return note ? <p className={cn("text-[12px] font-semibold text-danger", className)}>{note}</p> : null;
 }
 
-/** «Программа»: часть 1 и часть 2 — аккордеоны модулей (название, цель одной строкой, список уроков). Нет модулей — блока нет */
+/** «Программа»: часть 1 и часть 2 - аккордеоны модулей (название, цель одной строкой, список уроков). Нет модулей - блока нет */
 export function CourseProgram({ program }: { program: PublicCourseContent["program"] }) {
   if (program.length === 0) return null;
   return (
@@ -53,7 +53,7 @@ export function CourseProgram({ program }: { program: PublicCourseContent["progr
   );
 }
 
-/** «Что вы сделаете»: нумерованные плитки; плитка-акцент («+ более 20 проектов») — на тёмном фоне и без номера */
+/** «Что вы сделаете»: нумерованные плитки; плитка-акцент («+ более 20 проектов») - на тёмном фоне и без номера */
 export function CourseMilestones({ id, items, title = "Что вы сделаете" }: { id: string; items: PublicCourseContent["milestones"]; title?: string }) {
   if (items.length === 0) return null;
   let n = 0;
@@ -143,7 +143,7 @@ export function CourseCosts({ costs }: { costs: PublicCourseContent["costs"] }) 
   );
 }
 
-/** «Ведёт курс»: два преподавателя — фото, имя, роль (строки — speakers.ts) */
+/** «Ведёт курс»: два преподавателя - фото, имя, роль (строки - speakers.ts) */
 export function CourseTeachers({ teachers }: { teachers: { id: string; name: string; role: string; photo: string | null }[] }) {
   if (teachers.length === 0) return null;
   return (

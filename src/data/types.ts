@@ -3,7 +3,7 @@ import type { Verifiable } from "@/lib/placeholders";
 export type AudienceSlug = "business" | "freelancers" | "career" | "beginners";
 export type CourseSlug = "ai-creator" | "practicum" | "vibecoding";
 
-/** Акцентная тема ЦА — влияет на hero/карточки, остаётся в одной дизайн-системе */
+/** Акцентная тема ЦА - влияет на hero/карточки, остаётся в одной дизайн-системе */
 /** peach = фрилансеры (персиковый mesh), indigo = новички/курс */
 export type AccentTheme = "indigo" | "peach" | "lavender" | "ink";
 
@@ -46,7 +46,7 @@ export interface ResultCase extends Verifiable {
   source?: string;
   /** Согласие на публикацию (прод: verified && consent) */
   consent?: boolean;
-  /** Краткий результат в чипе, напр. «3 дня» — только из существующих данных */
+  /** Краткий результат в чипе, напр. «3 дня» - только из существующих данных */
   keyResult?: string;
   /** Подпись под keyResult */
   keyResultLabel?: string;
@@ -60,7 +60,7 @@ export type StoryMediaType = "video" | "receipt" | "stats";
 export interface StoryMedia {
   type: StoryMediaType;
   src?: string | null;
-  /** Для video — embed (YouTube / Instagram) */
+  /** Для video - embed (YouTube / Instagram) */
   embedUrl?: string;
   /** receipt: на проде показывать только при true */
   piiBlurred: boolean;
@@ -70,8 +70,8 @@ export interface StoryMedia {
 
 /**
  * Карточка «Результаты учеников» на главной /reviews.
- * Прод: только verified && consent; цитата — только quote.verbatim;
- * receipt — только при media.piiBlurred.
+ * Прод: только verified && consent; цитата - только quote.verbatim;
+ * receipt - только при media.piiBlurred.
  */
 export interface Story {
   id: string;
@@ -89,14 +89,14 @@ export interface Story {
   descriptor: string;
   photo?: string | null;
   result: {
-    /** Число/сумма — brand */
+    /** Число/сумма - brand */
     value: string;
-    /** Единица («₸», «просмотров») — brand */
+    /** Единица («₸», «просмотров») - brand */
     unit: string;
-    /** Остальной текст заголовка — ink */
+    /** Остальной текст заголовка - ink */
     text: string;
   };
-  /** Конкретные «до/после»; если нет — блок не рендерится */
+  /** Конкретные «до/после»; если нет - блок не рендерится */
   before?: string;
   after?: string;
   quote?: { text: string; verbatim: boolean };
@@ -124,7 +124,7 @@ export interface Review extends Verifiable {
   text?: string;
   /** Картинка: скриншот переписки / чек / превью видео */
   src?: string | null;
-  /** Для видео — embed-ссылка */
+  /** Для видео - embed-ссылка */
   embedUrl?: string;
   /** Сумма на чеке (для receipt), в ₸ */
   amount?: number;
@@ -145,7 +145,7 @@ export interface TeamMember extends Verifiable {
   socials?: Partial<Record<"instagram" | "tiktok" | "youtube" | "linkedin" | "telegram", string>>;
 }
 
-/** Связь с площадкой — показывается как подпись, не «партнёр/резидент» */
+/** Связь с площадкой - показывается как подпись, не «партнёр/резидент» */
 export type PartnerRelation = "graduate" | "winner" | "founders" | "speaker";
 
 export interface Partner {
@@ -167,7 +167,7 @@ export interface Tariff extends Verifiable {
   price: number | null;
   /** Старая цена для зачёркивания */
   oldPrice?: number | null;
-  /** Старая цена подтверждена школой. Не true — зачёркнутая цена скрыта в проде (в dev с пометкой) */
+  /** Старая цена подтверждена школой. Не true - зачёркнутая цена скрыта в проде (в dev с пометкой) */
   oldPriceVerified?: boolean;
   /** Ежемесячный платёж в рассрочку */
   installment?: number | null;
@@ -216,10 +216,10 @@ export interface Course {
   program: ProgramModule[];
   /** Что продаёте после курса / как зарабатываете */
   monetization?: { title: string; items: string[] }[];
-  /** Шапка блока monetization (по умолчанию — «Как вы зарабатываете…») */
+  /** Шапка блока monetization (по умолчанию - «Как вы зарабатываете…») */
   monetizationHeading?: { eyebrow: string; title: string };
   tariffs: Tariff[];
-  /** verified: false — бонус не подтверждён школой: в проде скрыт, в dev с пометкой (не задано — показывается) */
+  /** verified: false - бонус не подтверждён школой: в проде скрыт, в dev с пометкой (не задано - показывается) */
   bonuses?: { title: string; items: string[]; deadline?: string; verified?: boolean };
   audiences: AudienceSlug[];
   seo: { title: string; description: string };
@@ -294,7 +294,7 @@ export interface Audience {
     items: { label: string; value: string }[];
   };
 
-  /** Блок сравнения / чек-листа — уникальный для ЦА */
+  /** Блок сравнения / чек-листа - уникальный для ЦА */
   comparison?: Verifiable & {
     title: string;
     description?: string;
