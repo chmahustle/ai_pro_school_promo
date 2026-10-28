@@ -1,7 +1,7 @@
 import "server-only";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 import { courseFaq } from "./courseContent";
-import { formatPrice, products } from "./products";
+import { formatPrice, getKaspiInstallmentLabel, getProduct, products } from "./products";
 import { vibeFaq } from "./vibecodingBlocks";
 
 /**
@@ -44,6 +44,12 @@ export interface PublicFaqItem {
   devNote?: string;
 }
 
+/** Рассрочка Kaspi: срок — из products.ts (курс вайб-кодинга); нет срока — ответа нет, вопрос скрыт */
+function kaspiAnswer(): string {
+  const label = getKaspiInstallmentLabel(getProduct("course"));
+  return label ? `Да, есть ${label.charAt(0).toLowerCase()}${label.slice(1)}.` : "";
+}
+
 /**
  * «Что после эфира?»: следующие ступени направления вайб-кодинга с названием и ценой из products.ts (порядок ступеней по конфигу).
  */
@@ -71,8 +77,7 @@ export const faqEntries: FaqEntry[] = [
   { id: "directions-diff", q: "Чем отличаются направления?", a: "", pages: ["home", "courses"], verified: false },
   // Курс «Вайбкодинг с нуля»: вопросы и ответы — courseContent.ts
   ...courseFaq.map((q): FaqEntry => ({ id: `course-${q.id}`, q: q.q, a: q.a, pages: ["vibecoding-course"], verified: q.verified })),
-  { id: "kaspi", q: "Есть ли рассрочка Kaspi и какой платёж?", a: "", pages: ["home", "courses", "vibecoding-course"], verified: false },
-  { id: "no-result", q: "Что если не получится / условия возврата?", a: "", pages: ["home", "courses", "vibecoding-offline", "vibecoding-course"], verified: false },
+  { id: "kaspi", q: "Есть ли рассрочка Kaspi?", a: kaspiAnswer, pages: ["home", "courses", "vibecoding-course"], verified: true },
   { id: "offline-where", q: "Где проходит офлайн-урок?", a: "Офлайн-урок проходит в Astana Hub.", pages: ["vibecoding", "vibecoding-offline"], verified: true },
   { id: "practicum-vs-ai-creator", q: "Чем практикум отличается от курса AI Content Creator?", a: "", pages: ["creator"], verified: false },
   { id: "practicum-blog", q: "Нужно ли вести личный аккаунт?", a: "Нет. Можно делать ролики как услугу для клиентов, без ведения блога и съёмки себя. Мы расскажем, как находить клиентов без блога.", pages: ["practicum"], verified: true },

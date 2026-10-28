@@ -89,12 +89,12 @@ export interface CourseMilestone extends Checked {
 export const courseMilestones: CourseMilestone[] = [
   { id: "shop", text: "Собственный магазин с ИИ-консультантом", verified: true, source: SOURCE, asOf: AS_OF },
   { id: "crm", text: "CRM-система для работы с заказами и клиентами", verified: true, source: SOURCE, asOf: AS_OF },
-  { id: "server", text: "Научитесь правильно заливать проект на сервер", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "media", text: "Научитесь создавать программы для генерации видео и фото", verified: true, source: SOURCE, asOf: AS_OF },
   { id: "tg-agent", text: "Сделаете и внедрите AI-агента в Telegram-бот", verified: true, source: SOURCE, asOf: AS_OF },
   { id: "agent-team", text: "Минимум 5 разных ИИ-агентов, объединённых в команду", verified: true, source: SOURCE, asOf: AS_OF },
   { id: "automation", text: "Автоматизация различных задач: n8n и другие инструменты", verified: true, source: SOURCE, asOf: AS_OF },
   { id: "orders", text: "Выполните реальные заказы и научитесь интеграции WhatsApp, Instagram, Битрикс24 и других сервисов", verified: true, source: SOURCE, asOf: AS_OF },
-  { id: "publish", text: "Публикация проекта на своём домене и сервере", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "server", text: "Научитесь правильно заливать проект на сервер", verified: true, source: SOURCE, asOf: AS_OF },
   { id: "more", text: "+ более 20 проектов", highlight: true, verified: true, source: SOURCE, asOf: AS_OF },
 ];
 
