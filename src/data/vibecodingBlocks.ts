@@ -68,8 +68,8 @@ const outcomes = (): VibeItem[] => [
 const efirAgenda = (): VibeItem[] => [
   { id: "demo", text: "Что такое вайб-кодинг — показываем на экране", verified: true, source: SRC, asOf: AS_OF },
   { id: "tasks", text: "Какие задачи уже автоматизируют: заявки, CRM, боты, сайты", verified: true, source: SRC, asOf: AS_OF },
-  { id: "cost", text: "Сколько стоит разработка на рынке и как сделать дешевле", verified: false, source: SRC, asOf: AS_OF },
-  { id: "guide", text: "Гайд в подарок после регистрации", verified: false, source: SRC, asOf: AS_OF },
+  { id: "cost", text: "Сколько стоит разработка на рынке и как сделать дешевле", verified: true, source: SRC, asOf: AS_OF },
+  { id: "guide", text: "Гайд в подарок после регистрации", verified: true, source: SRC, asOf: AS_OF },
 ];
 
 /** Вопросы страницы эфира (общая модель FAQ — faq.ts подмешивает их с pages vibecoding / vibecoding-efir / vibecoding-course) */
