@@ -1,7 +1,6 @@
 import { Laptop, LifeBuoy, MapPin, MessageCircle, PlayCircle, Video } from "lucide-react";
 import { Accordion, Avatar, Pill, Reveal, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
 import type { PublicCourseContent } from "@/data/courseContent";
-import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 import { cn, nbspDash } from "@/lib/utils";
 import Image from "next/image";
 
@@ -138,8 +137,6 @@ export function CourseCosts({ costs }: { costs: PublicCourseContent["costs"] }) 
               </RevealItem>
             ))}
           </RevealGroup>
-          {/* dev-only: цены сервисов меняются */}
-          {SHOW_PLACEHOLDERS && costs.devNote && <DevNote note={costs.devNote} className="mt-3" />}
         </div>
       </div>
     </Section>

@@ -118,9 +118,6 @@ export const courseCosts: { payer: string; items: CourseCost[] } = {
   ],
 };
 
-/** Цены сервисов меняются: пометка только в dev */
-const COST_DEV_NOTE = "уточнить актуальность"; // copy-check:ignore
-
 // ───────────── Кому подходит ─────────────
 
 export interface CourseForWhom extends Checked {
@@ -216,7 +213,7 @@ export interface PublicCourseContent {
   program: { part: 1 | 2; partTitle: string; modules: { id: string; number: string; title: string; goal: string; lessons: string[]; optional: boolean; devNote?: string }[] }[];
   delivery: { id: string; title: string; text: string; devNote?: string }[];
   milestones: { id: string; text: string; highlight: boolean; devNote?: string }[];
-  costs: { payer: string; items: { id: string; name: string; amount: string; hint?: string; devNote?: string }[]; devNote?: string };
+  costs: { payer: string; items: { id: string; name: string; amount: string; hint?: string; devNote?: string }[] };
   forWhom: { id: string; text: string; title: string; devNote?: string }[];
   /** Только dev: что скрыто как неподтверждённое */
   devUnverified: string[];
@@ -247,7 +244,6 @@ export function getCourseContent(): PublicCourseContent {
     costs: {
       payer: courseCosts.payer,
       items: costItems.map((c) => ({ id: c.id, name: c.name, amount: c.amount, hint: c.hint, devNote: c.devNote })),
-      devNote: SHOW_PLACEHOLDERS ? COST_DEV_NOTE : undefined,
     },
     forWhom: visible(courseForWhom).map((f) => ({ id: f.id, title: f.title, text: f.text, devNote: f.devNote })),
     devUnverified: SHOW_PLACEHOLDERS ? courseUnverified.map((u) => u.label) : [],
