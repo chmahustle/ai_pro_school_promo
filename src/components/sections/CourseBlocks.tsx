@@ -56,7 +56,7 @@ export function CourseProgram({ program }: { program: PublicCourseContent["progr
 
 const DELIVERY_ICONS = { online: Laptop, recorded: PlayCircle, calls: Video, support: LifeBuoy, chat: MessageCircle, weekly: CalendarDays } as const;
 
-/** «Как проходит обучение»: формат, записи, Zoom по средам, чат, еженедельное открытие уроков */
+/** «Как проходит обучение»: формат, записи, онлайн-созвоны, поддержка разработчика, чат, еженедельное открытие уроков */
 export function CourseDelivery({ items }: { items: PublicCourseContent["delivery"] }) {
   if (items.length === 0) return null;
   return (
