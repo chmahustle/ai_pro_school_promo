@@ -43,16 +43,21 @@ export interface PublicCase {
   authorRole: string;
   metric: string;
   metricLabel: string;
-  doneLine: string;
+  photoSrc: string | null;
   posterSrc: string | null;
-  statsSrc: string | null;
   videoUrl: string | null;
   /** Публичный оригинал для ссылки «Смотреть ролик» */
   sourceUrl: string | null;
   /** «Данные аккаунта ученицы, октябрь 2026» */
   sourceCaption: string;
+  /** Дословные тексты; пустое поле не рендерится; неподтверждённые в prod сюда не попадают */
+  before?: string;
+  after?: string;
+  quote?: string;
   /** Только dev: пометка у неподтверждённого кейса */
   devNote?: string;
+  /** Только dev: тексты До/После/цитата не подтверждены */
+  devTextNote?: string;
 }
 
 export interface PublicMetric {

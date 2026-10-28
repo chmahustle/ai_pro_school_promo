@@ -21,16 +21,22 @@ export interface Case {
   authorName: string;
   /** Роль/описание одной строкой */
   authorRole: string;
-  /** Цифра крупно: «2,7 млн», «500 000 ₸» */
+  /** Число: «2,7 млн», «500 000 ₸» (обязательно с цифрой; нечисловые заголовки метрикой не считаются) */
   metric: string;
   /** Подпись к цифре: «просмотров на ролике» */
   metricLabel: string;
-  /** Что сделано — одна строка */
-  doneLine: string;
-  /** Постер видео (next/image) */
+  /** Фото автора (56 px в ряду автора); нет — миниатюра постера видео, иначе инициалы */
+  photoSrc: string | null;
+  /** Постер видео (next/image): миниатюра 56 px с play */
   posterSrc: string | null;
-  /** Скриншот статистики — если нет видео */
-  statsSrc: string | null;
+  /** «До»: дословно из источника, без сокращений; необязательно */
+  before?: string;
+  /** «После»: дословно из источника; необязательно */
+  after?: string;
+  /** Цитата — только дословная; необязательно */
+  quote?: string;
+  /** Тексты before/after/quote подтверждены: false — в prod не показываются, в dev с красной пометкой */
+  textsVerified: boolean;
   /** Embed-ссылка видео: открывается в модалке по клику */
   videoUrl: string | null;
   /** Публичный оригинал (ссылка «Смотреть ролик»); внутренние домены сюда не пишем */
@@ -57,11 +63,14 @@ export const cases: Case[] = [
     authorRole: "без опыта в AI-видео",
     metric: "500 000 ₸",
     metricLabel: "договор на 15 роликов",
-    doneLine: "500+ AI-видео, куратор AI Pro School",
+    photoSrc: "/stories/case-alena.webp",
     posterSrc: null,
-    statsSrc: null,
     videoUrl: null,
     sourceUrl: null,
+    before: "Нет опыта в AI-видео, первые ролики не залетали, думала сдаться.",
+    after: "500+ AI-видео, миллионные просмотры, куратор AI Pro School.",
+    quote: "Несколько месяцев от первого видео до куратора школы",
+    textsVerified: true,
     sourceKind: "student-f",
     asOf: AS_OF,
     verified: true,
@@ -77,11 +86,14 @@ export const cases: Case[] = [
     authorRole: "мама двоих детей в декрете",
     metric: "Клиенты-компании", // copy-check:ignore
     metricLabel: "постоянный клиент Казахтелеком", // copy-check:ignore
-    doneLine: "Школа сама заказывает у неё ролики", // copy-check:ignore
+    photoSrc: "/stories/case-madina.webp",
     posterSrc: null,
-    statsSrc: null,
     videoUrl: null,
     sourceUrl: null,
+    before: "Мама двоих детей в декрете, без дохода и опыта в IT. Только телефон и желание.", // copy-check:ignore
+    after: "Работает с компаниями, постоянный клиент Казахтелеком, стабильный доход из дома.", // copy-check:ignore
+    quote: "Я начала, имея только телефон. Сегодня Казахтелеком мой постоянный клиент", // copy-check:ignore
+    textsVerified: false,
     sourceKind: "student-f",
     asOf: AS_OF,
     verified: false,
@@ -96,11 +108,12 @@ export const cases: Case[] = [
     authorRole: "ноль опыта в AI и монтаже",
     metric: "1 600 000",
     metricLabel: "просмотров за 5 дней",
-    doneLine: "ИИ-ролики с пустого аккаунта",
+    photoSrc: "/stories/case-gulayym.webp",
     posterSrc: null,
-    statsSrc: null,
     videoUrl: null,
     sourceUrl: null,
+    before: "Ноль опыта в AI и монтаже, пустой аккаунт, не знала, с чего начать.",
+    textsVerified: true,
     sourceKind: "student-f",
     asOf: AS_OF,
     verified: true,
@@ -116,10 +129,10 @@ export const cases: Case[] = [
     authorRole: "43 года",
     metric: "500 000 ₸",
     metricLabel: "+ 150 000 ₸ в месяц · 8 часов",
-    doneLine: "Видеоотзыв ученицы курса",
+    photoSrc: null,
     posterSrc: "/stories/video-shynar.jpg",
-    statsSrc: null,
     ...yt("IsYI0XQy9A8"),
+    textsVerified: true,
     sourceKind: "school",
     asOf: AS_OF,
     verified: true,
@@ -134,10 +147,10 @@ export const cases: Case[] = [
     authorRole: "техспец",
     metric: "1 000 000 ₸",
     metricLabel: "в месяц",
-    doneLine: "Видеоотзыв ученика курса",
+    photoSrc: null,
     posterSrc: "/stories/video-moldir.jpg",
-    statsSrc: null,
     ...yt("_vHOfJPFbUY"),
+    textsVerified: true,
     sourceKind: "school",
     asOf: AS_OF,
     verified: true,
@@ -151,10 +164,10 @@ export const cases: Case[] = [
     authorRole: "Вирусные ИИ-ролики",
     metric: "2,7 млн",
     metricLabel: "просмотров на ролике",
-    doneLine: "ИИ-ролик в соцсетях",
+    photoSrc: null,
     posterSrc: "/stories/practicum/reel-2_7m.jpg",
-    statsSrc: null,
     ...yt("H9gsaBtulxQ"),
+    textsVerified: true,
     sourceKind: "student-f",
     asOf: AS_OF,
     verified: true,
@@ -168,10 +181,10 @@ export const cases: Case[] = [
     authorRole: "Вирусные ИИ-ролики",
     metric: "74 года",
     metricLabel: "первый ИИ-ролик",
-    doneLine: "ИИ-ролик в соцсетях",
+    photoSrc: null,
     posterSrc: "/stories/practicum/reel-74y.jpg",
-    statsSrc: null,
     ...yt("a6kI7H38uzU"),
+    textsVerified: true,
     sourceKind: "student-m",
     asOf: AS_OF,
     verified: true,
@@ -185,10 +198,10 @@ export const cases: Case[] = [
     authorRole: "Вирусные ИИ-ролики",
     metric: "1,9 млн",
     metricLabel: "просмотров на ролике",
-    doneLine: "ИИ-ролик в соцсетях",
+    photoSrc: null,
     posterSrc: "/stories/practicum/reel-1_9m.jpg",
-    statsSrc: null,
     ...yt("rpQWe1Z3CQ4"),
+    textsVerified: true,
     sourceKind: "student-f",
     asOf: AS_OF,
     verified: true,
@@ -198,6 +211,9 @@ export const cases: Case[] = [
 
 /** Можно ли показать в проде */
 export const isCasePublishable = (c: Case): boolean => c.verified && c.consent;
+
+/** Метрика — число с подписью: есть хотя бы одна цифра */
+export const isNumericMetric = (metric: string): boolean => /\d/.test(metric);
 
 /** Подпись-источник: «Данные аккаунта ученицы, октябрь 2026» / «Данные школы, октябрь 2026» */
 export function caseSourceCaption(c: Case): string {

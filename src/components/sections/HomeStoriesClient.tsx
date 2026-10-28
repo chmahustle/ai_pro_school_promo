@@ -144,7 +144,7 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
           Меньше 3 карточек после фильтра: две — по 50%, одна — по центру с max-w, без пустых зон. */}
       <ul
         className={cn(
-          "-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:-mx-6 sm:px-6 md:mx-0 md:grid md:snap-none md:items-stretch md:gap-5 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden",
+          "-mt-4 sm:-mt-6 -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:-mx-6 sm:px-6 md:mx-0 md:grid md:snap-none md:items-stretch md:gap-5 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden",
           stories.length >= 3 && "md:grid-cols-2 lg:grid-cols-3",
           stories.length === 2 && "md:grid-cols-2",
           stories.length === 1 && "md:mx-auto md:max-w-[420px] md:grid-cols-1",

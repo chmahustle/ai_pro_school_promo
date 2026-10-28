@@ -43,7 +43,7 @@ import { vocabulary } from "./vocabulary";
 import { SITE_URL, site } from "@/lib/site";
 import { formatMonthYear, formatNumber, formatTenge, nameInSentence } from "@/lib/utils";
 import { isStoryPublishable, stories as allStories } from "./stories";
-import { caseSourceCaption, getVisibleCases, isCasePublishable, type Case } from "./cases";
+import { caseSourceCaption, getVisibleCases, isCasePublishable, isNumericMetric, type Case } from "./cases";
 import { team } from "./team";
 import { getVisibleTestimonials } from "./testimonials";
 import { getVisibleWorks } from "./works";
@@ -94,23 +94,35 @@ export function getPublicCases(audience?: AudienceSlug, direction?: Case["direct
     .filter((c) => includeIndividual || !c.individualResult)
     .filter((c) => !audience || c.audiences.includes(audience))
     .filter((c) => !direction || c.direction === direction)
-    .map((c) => ({
-      id: c.id,
-      direction: c.direction,
-      audiences: c.audiences,
-      individualResult: c.individualResult,
-      authorName: c.authorName,
-      authorRole: c.authorRole,
-      metric: c.metric,
-      metricLabel: c.metricLabel,
-      doneLine: c.doneLine,
-      posterSrc: c.posterSrc,
-      statsSrc: c.statsSrc,
-      videoUrl: c.videoUrl,
-      sourceUrl: c.sourceUrl,
-      sourceCaption: caseSourceCaption(c),
-      devNote: SHOW_PLACEHOLDERS && !isCasePublishable(c) ? (c.note ?? "не подтверждено") : undefined,
-    }));
+    // Метрика — число с подписью: нечисловой заголовок («Клиенты-компании») метрикой не считается — в prod карточки нет, в dev с пометкой
+    .filter((c) => SHOW_PLACEHOLDERS || isNumericMetric(c.metric))
+    .map((c) => {
+      const hasTexts = Boolean(c.before || c.after || c.quote);
+      // Неподтверждённые тексты — только в dev, с красной пометкой
+      const texts = c.textsVerified || SHOW_PLACEHOLDERS ? { before: c.before, after: c.after, quote: c.quote } : {};
+      const devNotes = [
+        !isCasePublishable(c) ? (c.note ?? "не подтверждено") : null,
+        !isNumericMetric(c.metric) ? "метрика не число" : null,
+      ].filter(Boolean) as string[];
+      return {
+        id: c.id,
+        direction: c.direction,
+        audiences: c.audiences,
+        individualResult: c.individualResult,
+        authorName: c.authorName,
+        authorRole: c.authorRole,
+        metric: c.metric,
+        metricLabel: c.metricLabel,
+        photoSrc: c.photoSrc,
+        posterSrc: c.posterSrc,
+        videoUrl: c.videoUrl,
+        sourceUrl: c.sourceUrl,
+        sourceCaption: caseSourceCaption(c),
+        ...texts,
+        devNote: SHOW_PLACEHOLDERS && devNotes.length > 0 ? devNotes.join(" · ") : undefined,
+        devTextNote: SHOW_PLACEHOLDERS && hasTexts && !c.textsVerified ? "тексты не подтверждены" : undefined,
+      };
+    });
 }
 
 // ───────────── Метрики ─────────────
