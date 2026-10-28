@@ -85,13 +85,15 @@ export interface CourseMilestone extends Checked {
 }
 
 export const courseMilestones: CourseMilestone[] = [
-  { id: "shop", text: "Магазин с заказом в WhatsApp и ИИ-консультантом", verified: true, source: SOURCE, asOf: AS_OF },
-  { id: "crm", text: "CRM-админка для работы с заказами", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "shop", text: "Собственный магазин с ИИ-консультантом", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "crm", text: "CRM-система для работы с заказами и клиентами", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "server", text: "Научитесь правильно заливать проект на сервер", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "tg-agent", text: "Сделаете и внедрите AI-агента в Telegram-бот", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "agent-team", text: "Минимум 5 разных ИИ-агентов, объединённых в команду", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "automation", text: "Автоматизация различных задач: n8n и другие инструменты", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "orders", text: "Выполните реальные заказы и научитесь интеграции WhatsApp, Instagram, Битрикс24 и других сервисов", verified: true, source: SOURCE, asOf: AS_OF },
   { id: "publish", text: "Публикация проекта на своём домене и сервере", verified: true, source: SOURCE, asOf: AS_OF },
-  { id: "bot", text: "Telegram-бот, который помнит контекст разговора", verified: true, source: SOURCE, asOf: AS_OF },
-  { id: "docs", text: "ИИ, отвечающий по вашим документам", verified: true, source: SOURCE, asOf: AS_OF },
-  { id: "agents", text: "ИИ-агенты и автоматизация рутинных задач", verified: true, source: SOURCE, asOf: AS_OF },
-  { id: "final", text: "Финальный проект с защитой", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "more", text: "+ более 20 проектов", verified: true, source: SOURCE, asOf: AS_OF },
 ];
 
 // ───────────── Что понадобится кроме курса ─────────────
