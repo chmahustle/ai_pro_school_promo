@@ -193,8 +193,8 @@ export function getVisibleCases(): Case[] {
 
 /**
  * Карточка «видео»: нейтральный текст («История {имя}», роль, дата публикации), без сумм и сроков.
- * claimsText — суммы/сроки/«зарабатывает» из заголовка ролика: verified:false, в prod не показываются, в dev — красной пометкой.
- * consent:false — карточка скрыта в prod до подтверждения школы. Превью — локальный файл из public/cases/ (до клика запросов к YouTube и Google нет).
+ * Суммы и сроки из заголовков роликов на сайте не показываем. Согласия учениц на видео подтверждены владельцем.
+ * Превью — локальный файл из public/cases/ (до клика запросов к YouTube и Google нет).
  */
 export interface VideoCase {
   id: string;
@@ -212,10 +212,6 @@ export interface VideoCase {
   verified: boolean;
   /** Одна нейтральная строка вместо метрики */
   neutralLine: string;
-  /** Суммы и сроки из заголовка ролика (не публикуем) */
-  claimsText?: string;
-  /** Пометка dev */
-  devNote?: string;
 }
 
 export const videoCases: VideoCase[] = [
@@ -227,10 +223,9 @@ export const videoCases: VideoCase[] = [
     relatedProducts: ["efir", "course"],
     posterSrc: "/cases/yt-eyqVEf-2294.jpg",
     publishedAt: "2025-06-08",
-    consent: false,
+    consent: true,
     verified: true,
     neutralLine: "Видео-отзыв ученицы",
-    devNote: "согласие не подтверждено; заголовок ролика не проверен — уточнить claimsText",
   },
   {
     id: "video-shynar",
@@ -240,11 +235,9 @@ export const videoCases: VideoCase[] = [
     relatedProducts: [],
     posterSrc: "/cases/yt-IsYI0XQy9A8.jpg",
     publishedAt: null,
-    consent: false,
+    consent: true,
     verified: true,
     neutralLine: "Видео-отзыв ученицы",
-    claimsText: "500 000 ₸, + 150 000 ₸ в месяц, 8 часов", // copy-check:ignore
-    devNote: "согласие не подтверждено; уточнить у школы: роль, дату публикации, связанные продукты",
   },
   {
     id: "video-moldir",
@@ -254,11 +247,9 @@ export const videoCases: VideoCase[] = [
     relatedProducts: [],
     posterSrc: "/cases/yt-_vHOfJPFbUY.jpg",
     publishedAt: null,
-    consent: false,
+    consent: true,
     verified: true,
     neutralLine: "Видео-отзыв",
-    claimsText: "1 000 000 ₸ в месяц", // copy-check:ignore
-    devNote: "согласие не подтверждено; уточнить у школы: роль, дату публикации, связанные продукты",
   },
 ];
 

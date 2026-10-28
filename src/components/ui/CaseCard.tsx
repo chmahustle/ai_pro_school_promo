@@ -37,7 +37,6 @@ export function CaseCard({ item, onOpenVideo, className }: CaseCardProps) {
     <article className={cn("relative flex h-full flex-col rounded-[28px] bg-surface p-5 text-ink shadow-soft sm:p-6", className)}>
       {/* dev-плашки: на краях карточки, не перекрывают аватар, имя и текст */}
       {devTop && <PlaceholderBadge status="unverified" variant="note" note={devTop} className="left-4 top-0 max-w-[calc(100%-2rem)] -translate-y-1/2 truncate" />}
-      {item.devClaimsNote && <PlaceholderBadge status="unverified" variant="note" note={item.devClaimsNote} className="bottom-0 left-4 max-w-[calc(100%-2rem)] translate-y-1/2 truncate" />}
 
       {/* Автор: аватар — только если есть фото (миниатюры видео с play и инициалов нет: play — на большом постере и в «Смотреть ролик») */}
       <div className="flex items-center gap-3">

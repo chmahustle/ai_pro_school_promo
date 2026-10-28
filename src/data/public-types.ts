@@ -69,8 +69,6 @@ export interface PublicCase {
   devNote?: string;
   /** Только dev: тексты До/После/цитата не подтверждены */
   devTextNote?: string;
-  /** Только dev: «доходная формулировка, не публикуем» + текст claims */
-  devClaimsNote?: string;
 }
 
 export interface PublicMetric {

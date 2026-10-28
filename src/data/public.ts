@@ -149,8 +149,7 @@ export function getPublicCases(audience?: AudienceSlug, direction?: Case["direct
       youtubeId: v.youtubeId,
       sourceUrl: null,
       sourceCaption: "",
-      devNote: SHOW_PLACEHOLDERS && (!isVideoCasePublishable(v) || v.devNote) ? (v.devNote ?? "не подтверждено") : undefined,
-      devClaimsNote: SHOW_PLACEHOLDERS && v.claimsText ? `доходная формулировка, не публикуем: ${v.claimsText}` : undefined,
+      devNote: SHOW_PLACEHOLDERS && !isVideoCasePublishable(v) ? "не подтверждено" : undefined,
     }));
 
   return [...results, ...videos];

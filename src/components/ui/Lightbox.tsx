@@ -52,7 +52,7 @@ export function Lightbox({ items, index, onClose, onChange }: LightboxProps) {
 
   return (
     // Вертикальный ролик: без прокрутки — панель не скроллится, высота плеера подогнана под экран
-    <Modal open={open} onClose={onClose} size="full" bare title={item?.alt} className={item?.vertical ? "overflow-visible" : undefined}>
+    <Modal open={open} onClose={onClose} size="full" bare title={item?.alt} className={item?.vertical || item?.videoSrc ? "overflow-visible" : undefined}>
       {item && (
         <div className="flex flex-col items-center gap-4 px-2 pb-6 pt-12 sm:px-14">
           <div className="relative w-full max-w-4xl">
@@ -66,7 +66,7 @@ export function Lightbox({ items, index, onClose, onChange }: LightboxProps) {
                 playsInline
                 preload="metadata"
                 aria-label={item.alt}
-                className="mx-auto max-h-[75dvh] w-auto max-w-full rounded-2xl bg-ink"
+                className="mx-auto h-[calc(92dvh-5.5rem)] max-h-[calc(92dvh-5.5rem)] w-auto max-w-full rounded-[24px] bg-ink object-contain"
               />
             ) : item.embedUrl ? (
               <div
@@ -115,8 +115,8 @@ export function Lightbox({ items, index, onClose, onChange }: LightboxProps) {
               </>
             )}
           </div>
-          {item.caption && !item.vertical && <p className="max-w-2xl text-center text-sm text-white/80">{item.caption}</p>}
-          {items.length > 1 && index !== null && !item.vertical && (
+          {item.caption && !item.vertical && !item.videoSrc && <p className="max-w-2xl text-center text-sm text-white/80">{item.caption}</p>}
+          {items.length > 1 && index !== null && !item.vertical && !item.videoSrc && (
             <p className="text-xs text-white/50 tabular-nums">
               {index + 1} / {items.length}
             </p>
