@@ -35,14 +35,7 @@ export interface Product {
   direction: Direction;
   step: Step;
   name: string;
-  /**
-   * Название утверждено. false — в проде показывается короткое название (`name`), полное рабочее — только в dev
-   * (см. resolveName); утвердят — поставить true и убрать из vocabulary лишнее.
-   */
-  nameApproved: boolean;
   resultLine: string;
-  /** Рабочее название-уточнение (подпись под H1): в проде только если nameApproved, в dev — с пометкой */
-  workingTitle?: string;
   /** Пункты «Что соберёте» (страница продукта) */
   deliverables?: Deliverable[];
   format: string;
@@ -129,11 +122,6 @@ const AS_OF = "2026-10-22";
 const wa = (name: string) => `Здравствуйте! Хочу узнать про ${nameInSentence(name)}`;
 const thanks = (id: ProductId) => `/thanks/${id}`;
 
-/** Название продукта с неутверждённой частью: в проде — публичное, в dev — полное рабочее (с пометкой в UI) */
-function resolveName(publicName: string, fullWorkingName: string): string {
-  return SHOW_PLACEHOLDERS ? fullWorkingName : publicName;
-}
-
 /**
  * Адреса страниц направлений и каталога — единственный источник для меню, лестниц и sitemap
  * (адреса самих продуктов — поле landingUrl у каждого продукта ниже).
@@ -147,7 +135,6 @@ export const products: Product[] = [
     direction: "creator",
     step: "try",
     name: vocabulary.practicum,
-    nameApproved: true,
     resultLine: "Первый ИИ-ролик с телефона на бесплатных нейросетях",
     // TODO(клиент): подтвердить формат (3 эфира по 90 минут, Пн/Вт/Ср, потоки пн/чт) → formatVerified: true, формат вернуть на подробный
     formatVerified: false,
@@ -180,9 +167,8 @@ export const products: Product[] = [
     direction: "creator",
     step: "profession",
     name: vocabulary.creatorCourse,
-    nameApproved: true,
     resultLine: "Портфолио, упакованный профиль и прайс",
-    format: "онлайн, куратор проверяет работы",
+    format: "онлайн, 3 месяца, куратор проверяет работы",
     price: 249000,
     pricePrefix: "от",
     priceNote: "есть рассрочка",
@@ -211,7 +197,6 @@ export const products: Product[] = [
     direction: "vibecoding",
     step: "try",
     name: vocabulary.efir,
-    nameApproved: true,
     resultLine: "Увидеть, как без кода собирается сайт с заявками",
     format: "онлайн, 1,5 часа",
     // Эфир платный: 9 900 ₸ (подтвердил владелец). APS_TEST_EFIR_FREE — только для тестов ветки «бесплатно» (tests/efir-price.test.mjs)
@@ -253,9 +238,8 @@ export const products: Product[] = [
     direction: "vibecoding",
     step: "project",
     name: vocabulary.offline,
-    nameApproved: true,
     resultLine: "Демо сайта, бота или агента под свою задачу за 3 часа",
-    format: "Астана, сб и вс, 3 часа, до 8 мест",
+    format: "Астана, до 8 мест",
     price: 35000,
     pricePrefix: "",
     priceNote: "",
@@ -286,11 +270,9 @@ export const products: Product[] = [
     id: "course",
     direction: "vibecoding",
     step: "profession",
-    name: resolveName(vocabulary.vibecodingCourse, vocabulary.vibecodingCourseFull),
-    nameApproved: false, // «(Junior AI Developer)» — рабочее название на утверждении, только в dev
+    name: vocabulary.vibecodingCourse, // verified, source: программа курса и приветствие студентам
     // Пункт «проект для компании-партнёра» не подтверждён (deliverables → verified: false): в проде — «итоговый проект»
     resultLine: "Магазин с CRM, Telegram-бот, ИИ-агент и итоговый проект",
-    workingTitle: "Junior AI Developer",
     deliverables: [
       { id: "shop", title: "Магазин с CRM", icon: "store", verified: true },
       { id: "telegram-bot", title: "Telegram-бот", icon: "send", verified: true },
@@ -298,6 +280,7 @@ export const products: Product[] = [
       { id: "final-project", title: "Проект для компании-партнёра", icon: "flag", verified: false, fallbackTitle: "Итоговый проект" },
     ],
     format: "3 месяца",
+    durationVerified: false, // TODO(клиент): подтвердить срок «3 месяца» → true; пока в проде показывается, в dev с пометкой
     price: 400000,
     pricePrefix: "",
     priceNote: "есть рассрочка",
@@ -476,7 +459,7 @@ export function formatEntryLine(product: Product, now: Date = currentDate()): st
   const name = entryShortName[product.id] ?? product.name;
   if (price === null) return name;
   if (price === 0) return `${name} ${FREE_WORD}`;
-  return `${name}${NBSP}${formatNumber(price)}${NBSP}₸`;
+  return `${name} от${NBSP}${formatNumber(price)}${NBSP}₸`;
 }
 
 /**

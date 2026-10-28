@@ -139,7 +139,7 @@ export function HomeHeroClient({ data }: { data: PublicHeroData }) {
 
             <div className="mt-4 grid w-full grid-cols-1 gap-3 sm:mt-6 sm:w-auto sm:grid-cols-2 sm:gap-5">
               <HeroChoice href="/#lineup?tab=creator" direction="creator" label="Делать ИИ-ролики" note={data.entry.creator} location="home-hero-creator" />
-              <HeroChoice href="/#lineup?tab=vibecoding" direction="vibecoding" label="Собирать сайты и ботов" note={data.entry.vibecoding} location="home-hero-vibecoding" />
+              <HeroChoice href="/#lineup?tab=vibecoding" direction="vibecoding" label="Начать вайбкодить" note={data.entry.vibecoding} location="home-hero-vibecoding" />
             </div>
           </div>
         </div>

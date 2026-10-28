@@ -1,5 +1,6 @@
 import "server-only";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
+import { courseFaq } from "./courseContent";
 import { formatPrice, products } from "./products";
 import { vibeFaq } from "./vibecodingBlocks";
 
@@ -68,9 +69,10 @@ export const faqEntries: FaqEntry[] = [
   { id: "general-which", q: "С чего начать, если я совсем новичок?", a: "С 7-дневного практикума по вирусным роликам: это недорогой способ попробовать формат и понять, подходит ли вам такой заработок. Дальше — курс AI Content Creator или вайб-кодинг.", pages: ["home", "about", "courses"], verified: true },
   { id: "general-abroad", q: "Я не из Казахстана, подойдёт ли мне?", a: "Да. У нас много учеников из других стран. Нейросети работают с VPN, обучение проходит онлайн, оплата возможна из-за рубежа.", pages: ["home", "about", "courses"], verified: true },
   { id: "directions-diff", q: "Чем отличаются направления?", a: "", pages: ["home", "courses"], verified: false },
+  // Курс «Вайбкодинг с нуля»: вопросы и ответы — courseContent.ts
+  ...courseFaq.map((q): FaqEntry => ({ id: `course-${q.id}`, q: q.q, a: q.a, pages: ["vibecoding-course"], verified: q.verified })),
   { id: "kaspi", q: "Есть ли рассрочка Kaspi и какой платёж?", a: "", pages: ["home", "courses", "vibecoding-course"], verified: false },
   { id: "no-result", q: "Что если не получится / условия возврата?", a: "", pages: ["home", "courses", "vibecoding-offline", "vibecoding-course"], verified: false },
-  { id: "laptop", q: "Нужен ли мощный ноутбук?", a: "", pages: ["vibecoding", "vibecoding-efir"], verified: false },
   { id: "offline-where", q: "Где проходит офлайн-урок?", a: "Офлайн-урок проходит в Astana Hub.", pages: ["vibecoding", "vibecoding-offline"], verified: true },
   { id: "practicum-vs-ai-creator", q: "Чем практикум отличается от курса AI Content Creator?", a: "", pages: ["creator"], verified: false },
   { id: "practicum-blog", q: "Нужно ли вести личный аккаунт?", a: "Нет. Можно делать ролики как услугу для клиентов, без ведения блога и съёмки себя. Мы расскажем, как находить клиентов без блога.", pages: ["practicum"], verified: true },
@@ -103,7 +105,7 @@ export const faqEntries: FaqEntry[] = [
       id: `vibecoding-${q.id}`,
       q: q.q,
       a: q.dynamic === "after-efir" ? afterEfirAnswer : q.a,
-      pages: q.id === "after" ? ["vibecoding", "vibecoding-efir"] : ["vibecoding", "vibecoding-efir", "vibecoding-course"],
+      pages: ["vibecoding", "vibecoding-efir"],
       verified: q.verified,
     }),
   ),

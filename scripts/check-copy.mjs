@@ -85,6 +85,10 @@ const MENU_FORBIDDEN = ["Бесплатный эфир", "бесплатный �
 // Ошибка — «стабильный доход»; предупреждение (не ошибка, в отчёт для ручной проверки) — корни про заработок и доход.
 const PRODUCT_FILES = /^src\/(data\/(courses|products|lineup|forms|faq)\.ts|components\/sections\/(Course[A-Za-z]*|Pricing[A-Za-z]*|ProductLanding|ProductLadder|LadderStepCard|Programs|RefundTerms|NextSteps|LeaderCard|HeroTitle)\.tsx|app\/\(landing\)\/courses\/.*)$/;
 const PRODUCT_FORBIDDEN = ["стабильный доход"];
+// Шаг 22: лендинг курса «Вайбкодинг с нуля» (данные, блоки, страница) — без обещаний дохода и внутренних деталей описания курса.
+// Остальные страницы сайта (направление creator и др.) такие слова используют, поэтому проверка только по файлам курса.
+const COURSE_FILES = /^src\/(data\/(courseContent|speakers|vibecodingBlocks)\.ts|components\/sections\/(ProductLanding|CourseBlocks)\.tsx|app\/\(landing\)\/courses\/vibecoding-course\/.*)$/;
+const COURSE_FORBIDDEN = ["приносит доход", "реальные деньги", "зарабатыв", "монетиз", "банковской ячейке", "90% проектов", "часто врёт"];
 const WARN_RE = /заработ|зарабатыв|доход|монетиз|ежедневно|приводим заказчиков|вирусят/i;
 const warnings = [];
 // Файлы, где старые написания перечислены намеренно (справочник словаря)
@@ -158,6 +162,11 @@ for (const file of walk(SRC)) {
       }
       const m = WARN_RE.exec(code);
       if (m) warnings.push({ file: relative(ROOT, file), line: idx + 1, root: m[0], text: raw.trim().slice(0, 140) });
+    }
+    if (COURSE_FILES.test(relative(ROOT, file))) {
+      for (const phrase of COURSE_FORBIDDEN) {
+        if (ncode.includes(norm(phrase))) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase: `${phrase} (лендинг курса)`, text: raw.trim().slice(0, 140) });
+      }
     }
     if (MENU_FILES.test(relative(ROOT, file))) {
       for (const phrase of MENU_FORBIDDEN) {

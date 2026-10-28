@@ -40,10 +40,10 @@ test("подзаголовок hero: «Начать можно с 9 900 ₸ ил
   free(false);
 });
 
-test("подпись под кнопкой hero: «Эфир 9 900 ₸» (при цене 0 — «Эфир бесплатно»)", () => {
+test("подпись под кнопкой hero: «Эфир от 9 900 ₸» (при цене 0 — «Эфир бесплатно»)", () => {
   const efirProduct = products.getProduct("efir");
   free(false);
-  assert.equal(norm(products.formatEntryLine(efirProduct)), "Эфир 9 900 ₸");
+  assert.equal(norm(products.formatEntryLine(efirProduct)), "Эфир от 9 900 ₸");
   free(true);
   assert.equal(products.formatEntryLine(efirProduct), "Эфир бесплатно");
   free(false);

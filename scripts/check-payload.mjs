@@ -26,11 +26,21 @@ const PAGE_PHRASES = [
   "ответ не подтверждён",
   "не подтверждено",
   "старая цена не подтверждена",
-  "название на утверждении",
+  "уточнить актуальность",
   "Блоки скрыты",
   "PLACEHOLDER",
   "UNVERIFIED",
+  // Шаг 22: внутренние строки описания курса — в страницы не попадают
+  "в течение 1 часа",
+  "10:00–20:00",
+  "37 учеников",
+  "/invite",
+  "youtu.be",
+  "договор с лектором",
+  "course-description",
 ];
+// «30%» как текст, а не CSS-класс (top-[30%], w-[30%]): без «[» перед и без цифры/«-»/«.» перед числом
+const PAGE_REGEXES = [{ re: /(?<![\d\[.\-])30%/, name: "30%" }];
 const CHUNK_IDENTIFIERS = ["priceStatus", "piiBlurred", "logoPermission"];
 
 function* walk(dir, exts) {
@@ -63,6 +73,10 @@ for (const file of walk(join(NEXT, "server", "app"), [".html", ".rsc"])) {
   for (const phrase of [...PHRASES, ...PAGE_PHRASES]) {
     const i = text.indexOf(phrase);
     if (i !== -1) hits.push({ file, what: `фраза «${phrase}»`, ctx: ctx(text, i, phrase.length) });
+  }
+  for (const { re, name } of PAGE_REGEXES) {
+    const m = re.exec(text);
+    if (m) hits.push({ file, what: `фраза «${name}»`, ctx: ctx(text, m.index, name.length) });
   }
 }
 

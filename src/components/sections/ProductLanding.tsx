@@ -1,28 +1,25 @@
 import Link from "next/link";
-import { ArrowRight, Bot, Clock, Flag, MapPin, Send, Store, Users } from "lucide-react";
+import { ArrowRight, Clock, MapPin, Users } from "lucide-react";
 import { LandingHeader } from "@/components/layout/LandingHeader";
 import { Button, Pill, Section, SectionIntro } from "@/components/ui";
 import { ProductPrice } from "@/components/ui/ProductPrice";
-import { getNextStep, getPublicProductPage } from "@/data/public";
+import { getCourseTeachers, getNextStep, getPublicProductPage } from "@/data/public";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 import { cn, nbspDash } from "@/lib/utils";
-import { PlaceholderBadge } from "@/components/ui/PlaceholderBadge";
 import { getFaq } from "@/data/faq";
-import { getCourseOutcomes, getVibecodingBlocks } from "@/data/vibecodingBlocks";
+import { getCourseContent } from "@/data/courseContent";
 import { ForWhomTiles, OutcomeTiles } from "./BlockTiles";
+import { courseHeroFormat, courseHeroLevel } from "@/data/courseContent";
+import { CourseCosts, CourseDelivery, CourseProgram, CourseTeachers } from "./CourseBlocks";
 import { FAQ } from "./FAQ";
 import { VideoReviews } from "./VideoReviews";
-import { LeaderCard } from "./LeaderCard";
 import { LeadSection } from "./LeadSection";
 import { NextSteps } from "./NextSteps";
 import { RefundTerms } from "./RefundTerms";
 import { PageHero } from "./PageHero";
 
-/** Заголовок блока результата: у офлайна «Что получите», у курса «Что соберёте» */
-const RESULT_TITLE = { offline: "Что получите", course: "Что соберёте" } as const;
-
-/** Иконки пунктов «Что соберёте» (ключи — из products.ts → deliverables) */
-const DELIVERABLE_ICONS = { store: Store, send: Send, bot: Bot, flag: Flag } as const;
+/** Заголовок блока результата у офлайна */
+const OFFLINE_RESULT_TITLE = "Что получите";
 
 /**
  * Страница продукта вайб-кодинга (офлайн-урок, курс): hero с результатом, форматом и ценой,
@@ -30,6 +27,7 @@ const DELIVERABLE_ICONS = { store: Store, send: Send, bot: Bot, flag: Flag } as 
  */
 export function ProductLanding({ id }: { id: "offline" | "course" }) {
   const p = getPublicProductPage(id);
+  const content = id === "course" ? getCourseContent() : null;
   const nextStep = getNextStep(id);
   const hasVenue = Boolean(p.venue.address || p.venue.schedule);
 
@@ -40,14 +38,6 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
         id={`${id}-title`}
         eyebrow={p.directionName}
         title={p.name}
-        titleCaption={
-          p.workingTitle ? (
-            <>
-              {p.workingTitle}
-              {p.workingTitleDevNote && <span className="ml-3 align-middle text-[12px] font-semibold text-danger">{p.workingTitleDevNote}</span>}
-            </>
-          ) : undefined
-        }
         description={p.resultLine}
         actions={
           <>
@@ -62,7 +52,19 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
               <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-white/55">
                 <Clock className="size-4" aria-hidden /> Формат
               </p>
-              <p className="mt-3 font-display text-[clamp(1.0625rem,0.95rem+0.5vw,1.375rem)] font-bold leading-tight">{nbspDash(p.format)}</p>
+              {id === "course" ? (
+                <ul className="mt-3 flex flex-col gap-1.5 font-display text-[clamp(1.0625rem,0.95rem+0.5vw,1.375rem)] font-bold leading-tight">
+                  <li>{courseHeroFormat}</li>
+                  <li>{courseHeroLevel}</li>
+                  <li>
+                    {p.format}
+                    {p.devFormatNote && <span className="ml-2 align-middle text-[12px] font-semibold text-danger">{p.devFormatNote}</span>}
+                  </li>
+                  {p.start && <li>Старт: {p.start}</li>}
+                </ul>
+              ) : (
+                <p className="mt-3 font-display text-[clamp(1.0625rem,0.95rem+0.5vw,1.375rem)] font-bold leading-tight">{nbspDash(p.format)}</p>
+              )}
             </li>
             <li className="rounded-[24px] bg-surface p-5 shadow-soft">
               <p className="text-[11px] font-bold uppercase tracking-wider text-ink-500">Стоимость</p>
@@ -83,50 +85,20 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
         }
       />
 
-      <Section className="scroll-mt-24" aria-labelledby={`${id}-result-title`}>
-        <SectionIntro id={`${id}-result-title`} align="left" eyebrow="Результат" title={RESULT_TITLE[id]} />
-        {id === "course" && p.deliverables.length > 0 ? (
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {p.deliverables.map((d) => {
-              const Icon = DELIVERABLE_ICONS[d.icon];
-              return (
-                <li key={d.id} className="relative flex items-start gap-4 rounded-[24px] bg-lavender p-5 sm:p-6">
-                  <span className="grid size-11 shrink-0 place-items-center rounded-full bg-surface text-brand-600">
-                    <Icon className="size-5" aria-hidden />
-                  </span>
-                  <span className="font-display text-[18px] font-bold leading-snug">{nbspDash(d.title)}</span>
-                  {d.unverified && <PlaceholderBadge status="unverified" note="Пункт не подтверждён клиентом: в проде вместо него «Итоговый проект»" />}
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
+      {content ? (
+        <OutcomeTiles id="course-milestones-title" items={content.milestones} title="Что вы сделаете" />
+      ) : (
+        <Section className="scroll-mt-24" aria-labelledby={`${id}-result-title`}>
+          <SectionIntro id={`${id}-result-title`} align="left" eyebrow="Результат" title={OFFLINE_RESULT_TITLE} />
           <p className="max-w-[40ch] rounded-[28px] bg-lavender p-6 font-display text-[clamp(1.25rem,1rem+1.2vw,1.75rem)] font-bold leading-snug sm:p-8">{nbspDash(p.resultLine)}</p>
-        )}
-      </Section>
-
-      {/* Лендинг курса: «Кому подходит» и «Чему научитесь» — без обещаний дохода и трудоустройства */}
-      {id === "course" && <ForWhomTiles id="course-forwhom-tiles-title" items={getVibecodingBlocks().forWhom} />}
-      {id === "course" && <OutcomeTiles id="course-outcomes-title" items={getCourseOutcomes()} title="Чему научитесь на курсе" />}
-
-      {id === "course" && p.forWhomLinks && p.forWhomLinks.length > 0 && (
-        <Section aria-labelledby="course-forwhom-title">
-          <SectionIntro id="course-forwhom-title" align="left" eyebrow="Кому подходит" title="Для кого этот курс" />
-          <ul className="flex flex-wrap gap-3" role="list">
-            {p.forWhomLinks.map((c) => (
-              <li key={c.href}>
-                <Link
-                  href={c.href}
-                  className="inline-flex min-h-11 items-center gap-2 rounded-pill bg-surface px-5 py-2.5 text-[15px] font-semibold text-ink shadow-soft ring-1 ring-ink/5 transition-colors hover:bg-lavender focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-brand"
-                >
-                  {c.label}
-                  <ArrowRight className="size-4" aria-hidden />
-                </Link>
-              </li>
-            ))}
-          </ul>
         </Section>
       )}
+
+      {content && <CourseProgram program={content.program} />}
+      {content && <CourseDelivery items={content.delivery} />}
+      {content && <CourseCosts costs={content.costs} />}
+      {content && <ForWhomTiles id="course-forwhom-title" items={content.forWhom} title="Курс подойдёт, если вы" />}
+      {content && <CourseTeachers teachers={getCourseTeachers()} />}
 
       {id === "course" && p.path && p.path.length > 1 && (
         <Section aria-labelledby="course-path-title">
@@ -156,8 +128,6 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
         </Section>
       )}
 
-      {id === "course" && p.leader && <LeaderCard id="course-leader-title" leader={p.leader} />}
-
       {id === "offline" && hasVenue && (
         <Section aria-labelledby="offline-venue-title">
           <SectionIntro id="offline-venue-title" align="left" eyebrow="Офлайн" title="Где и когда" />
@@ -178,29 +148,18 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
         </Section>
       )}
 
-      {id === "course" && p.modules && (
-        <Section aria-labelledby="course-modules-title">
-          <SectionIntro id="course-modules-title" align="left" eyebrow="Программа" title="Программа по модулям" />
-          <ol className="grid gap-4 md:grid-cols-2">
-            {p.modules.map((m, i) => (
-              <li key={m.title} className="rounded-[24px] bg-surface p-6 shadow-soft">
-                <p className="font-display text-[34px] font-extrabold leading-none text-ink/20 tabular-nums">{String(i + 1).padStart(2, "0")}</p>
-                <h3 className="mt-3 font-display text-lg leading-tight">{nbspDash(m.title)}</h3>
-                <ul className="mt-3 flex flex-col gap-1.5 text-[14px] text-ink-500">
-                  {m.items.map((it) => (
-                    <li key={it}>{it}</li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ol>
-        </Section>
-      )}
-
       {SHOW_PLACEHOLDERS && p.devMissing.length > 0 && (
         <div className="container-site my-4">
           <p className="rounded-2xl border border-dashed border-danger/50 bg-danger/5 p-4 text-[13px] font-semibold text-danger">
-            Блоки скрыты, нет данных в products.ts: {p.devMissing.join(", ")}
+            Блоки скрыты, нет данных: {p.devMissing.join(", ")}
+          </p>
+        </div>
+      )}
+
+      {SHOW_PLACEHOLDERS && content && content.devUnverified.length > 0 && (
+        <div className="container-site my-4">
+          <p className="rounded-2xl border border-dashed border-danger/50 bg-danger/5 p-4 text-[13px] font-semibold text-danger">
+            Не подтверждено, в проде скрыто: {content.devUnverified.join("; ")}
           </p>
         </div>
       )}

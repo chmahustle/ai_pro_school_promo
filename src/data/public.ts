@@ -6,6 +6,8 @@ import "server-only";
  */
 import { audiences, landingAudiences } from "./audiences";
 import { company } from "./company";
+import { getCourseContent } from "./courseContent";
+import { getSpeakerRole, speakers } from "./speakers";
 import { courses } from "./courses";
 import { getVisibleHeroResults, heroEvent, heroTeachers } from "./heroResults";
 import { getHomeMetrics } from "./metrics";
@@ -498,7 +500,7 @@ export function getPublicLadder(direction: Direction): PublicLadder {
       const a = audiences.find((x) => x.slug === c.audience);
       return a ? [{ label: a.menuTitle, href: a.path }] : [];
     }),
-    leader: { name: leaderName, photo: photoIfExists(member?.photo), role: member?.status === "verified" ? member.role : null },
+    leader: { name: leaderName, photo: photoIfExists(member?.photo), role: getSpeakerRole(LEADER_MEMBER[leaderName]) },
     steps: steps.map(toLadderStep),
   };
 }
@@ -511,7 +513,6 @@ function toLadderStep(p: (typeof products)[number]): PublicLadderStep {
     direction: p.direction,
     stepLabel: STEP_LABELS[p.step],
     name: p.name,
-    devNameNote: SHOW_PLACEHOLDERS && !p.nameApproved ? "название на утверждении" : undefined,
     resultLine: p.resultLine,
     format: p.format,
     price: { prefix, amount, unit, ...(old ? { old } : {}) },
@@ -590,21 +591,21 @@ export function getPublicProductPage(id: "offline" | "course"): PublicProductPag
     if (!p.address) missing.push("адрес проведения");
     if (!p.schedule) missing.push("даты проведения");
   }
-  if (id === "course" && !p.modules) missing.push("программа по модулям");
+  if (id === "course") missing.push(...getCourseContent().devMissing);
   if (!p.refundTerms) missing.push("условия возврата");
   return {
     id: p.id,
     directionName: d.name,
     directionPath: d.path,
-    // H1 — короткое название; рабочее уточнение («Junior AI Developer») идёт отдельной подписью
-    name: id === "course" ? vocabulary.vibecodingCourse : p.name,
-    workingTitle: p.workingTitle && (p.nameApproved || SHOW_PLACEHOLDERS) ? p.workingTitle : null,
-    workingTitleDevNote: SHOW_PLACEHOLDERS && Boolean(p.workingTitle) && !p.nameApproved ? "название на утверждении" : null,
+    name: p.name,
     resultLine: p.resultLine,
     deliverables: getDeliverables(p),
     ...(id === "course" ? courseExtras() : {}),
     formTitle: formConfig.productLeadTitle,
     format: p.format,
+    // Срок («3 месяца») показываем; пока не подтверждён школой — в dev с пометкой
+    devFormatNote: SHOW_PLACEHOLDERS && p.durationVerified === false ? "не подтверждено" : null,
+    start: startLabel(p),
     price: { prefix, amount, unit, ...(old ? { old } : {}) },
     installment: p.installmentFromPerMonth ? `Рассрочка от ${formatNumber(p.installmentFromPerMonth)}${NBSP_}₸ в месяц` : null,
     ctaLabel: p.ctaLabel,
@@ -618,18 +619,25 @@ export function getPublicProductPage(id: "offline" | "course"): PublicProductPag
       SHOW_PLACEHOLDERS && p.oldPrice && p.oldPriceVerified !== true
         ? { amount: formatTenge(p.oldPrice), label: p.priceLabel ?? "", note: "старая цена не подтверждена" }
         : null,
-    seo: { title: id === "course" ? vocabulary.vibecodingCourse : p.name, description: `${p.resultLine}. ${p.format}.` },
+    seo: { title: p.name, description: `${p.resultLine}. ${p.format}.` },
   };
 }
 
-/** Блоки страницы курса из существующих данных: «Для кого» (чипы на /for/*), «Путь к курсу» (эфир → офлайн → курс), «Ведёт …» */
+/** Блок страницы курса из существующих данных: «Путь к курсу» (эфир → офлайн → курс) */
 function courseExtras() {
   const ladder = getPublicLadder("vibecoding");
   return {
-    forWhomLinks: ladder.forWhomLinks,
     path: ladder.steps.map((s) => ({ id: s.id, stepLabel: s.stepLabel, name: s.name, href: s.href, current: s.id === "course" })),
-    leader: ladder.leader,
   };
+}
+
+/** «Ведёт курс»: преподаватели из speakers.ts (единый источник с страницей эфира), фото — из team.ts, только если файл есть */
+export function getCourseTeachers(): { id: string; name: string; role: string; photo: string | null }[] {
+  return speakers.flatMap((s) => {
+    if (!s.verified) return [];
+    const member = team.find((m) => m.id === s.id);
+    return [{ id: s.id, name: s.name, role: s.role, photo: photoIfExists(member?.photo) }];
+  });
 }
 
 /** Ссылки на новые страницы для меню и футера */

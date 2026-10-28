@@ -79,32 +79,3 @@ export function AgendaDark({ id, items }: { id: string; items: PublicVibeItem[] 
     </Section>
   );
 }
-
-/** «Чему научитесь»: цветные плитки с крупными номерами */
-export function ColorfulOutcomes({ id, items }: { id: string; items: PublicVibeItem[] }) {
-  if (items.length === 0) return null;
-  // Тёмную плитку в этом блоке пропускаем
-  const tones = [TONES[3]!, TONES[2]!, TONES[0]!, TONES[5]!, TONES[4]!];
-  return (
-    <Section aria-labelledby={id}>
-      <SectionIntro id={id} align="left" eyebrow="Результат" title="Чему научитесь" />
-      <RevealGroup as="ul" className={cn("audience-grid grid gap-4 sm:grid-cols-2", items.length % 4 === 0 ? "lg:grid-cols-4" : "lg:grid-cols-3")}>
-        {items.map((o, i) => {
-          const t = tones[i % tones.length]!;
-          return (
-            <RevealItem as="li" key={o.id} className="flex">
-              <div className={cn("audience-tile relative isolate flex min-h-[150px] w-full flex-col justify-between gap-6 overflow-hidden rounded-[28px] p-6", t.tile)}>
-                <Decor tone={t} className="-right-6 -top-6" />
-                <span className="relative font-display text-[40px] font-extrabold leading-none tabular-nums opacity-40">0{i + 1}</span>
-                <div className="relative">
-                  <DevNote note={o.devNote} />
-                  <p className="font-display text-[18px] font-bold leading-snug">{nbspDash(o.text)}</p>
-                </div>
-              </div>
-            </RevealItem>
-          );
-        })}
-      </RevealGroup>
-    </Section>
-  );
-}

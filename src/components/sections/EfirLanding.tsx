@@ -6,7 +6,8 @@ import { formConfig } from "@/data/forms";
 import { getPublicLadder } from "@/data/public";
 import { getVibecodingBlocks } from "@/data/vibecodingBlocks";
 import { cn } from "@/lib/utils";
-import { AgendaDark, ColorfulForWhom, ColorfulOutcomes } from "./EfirBlocks";
+import { OutcomeTiles } from "./BlockTiles";
+import { AgendaDark, ColorfulForWhom } from "./EfirBlocks";
 import { FAQ } from "./FAQ";
 import { LeaderCard } from "./LeaderCard";
 import { LeadSection } from "./LeadSection";
@@ -64,7 +65,7 @@ export function EfirLanding() {
 
       <AgendaDark id="efir-agenda-title" items={blocks.efirAgenda} />
 
-      <ColorfulOutcomes id="efir-outcomes-title" items={blocks.outcomes} />
+      <OutcomeTiles id="efir-outcomes-title" items={blocks.outcomes} title="Чему научитесь" />
 
       <LeaderCard id="efir-leader-title" leader={ladder.leader} />
 

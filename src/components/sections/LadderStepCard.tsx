@@ -30,7 +30,6 @@ export function LadderStepCard({ step, entryBadge, showEntry = true, className }
         </div>
 
         <h3 className="mt-5 font-display text-[22px] font-bold leading-tight sm:text-[24px]">{nbspDash(step.name)}</h3>
-        {step.devNameNote && <p className="mt-1 text-[12px] font-semibold text-danger">{step.devNameNote}</p>}
         <p className="mt-2 text-[14px] leading-snug text-ink-700">{nbspDash(step.resultLine)}</p>
         <p className="mt-3 text-[13px] leading-snug text-ink-500">{step.format}</p>
 

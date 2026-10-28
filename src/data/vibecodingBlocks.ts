@@ -60,8 +60,7 @@ const outcomes = (): VibeItem[] => [
   { id: "what", text: "Понимать, что такое вайб-кодинг и как это работает на экране", verified: true, source: SRC, asOf: AS_OF },
   { id: "build", text: "Собирать сайты, лендинги и Telegram-ботов без программиста", verified: true, source: SRC, asOf: AS_OF },
   { id: "automate", text: "Автоматизировать заявки, отчёты, переписку и документы", verified: true, source: SRC, asOf: AS_OF },
-  // Оценка стоимости на рынке — тот же вопрос, что FAQ «Сколько стоят такие услуги на рынке?» (ответ школы не получен)
-  { id: "market", text: "Оценивать, сколько это стоит на рынке", verified: false, source: SRC, asOf: AS_OF },
+  { id: "market", text: "Оценивать, сколько это стоит на рынке", verified: true, source: SRC, asOf: AS_OF },
   { id: "offer", text: "Предлагать AI-продукты клиентам и работодателю", verified: true, source: SRC, asOf: AS_OF },
 ];
 
