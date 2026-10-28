@@ -67,7 +67,7 @@ export function PricingClient({ course, title = "Тарифы", eyebrow = "Ст�
 
       <RevealGroup as="ul" className={cn("audience-grid grid gap-5", single ? "mx-auto max-w-xl" : tariffs.length === 2 ? "md:grid-cols-2" : "md:grid-cols-3")}>
         {tariffs.map((t) => (
-          <RevealItem as="li" key={t.id}>
+          <RevealItem as="li" key={t.id} className="min-w-0">
             <TariffCard tariff={t} mode={mode} course={course} single={single} />
           </RevealItem>
         ))}
@@ -159,6 +159,7 @@ function TariffCard({ tariff: t, mode, course, single }: { tariff: PublicTariff;
           variant="dark"
           size="md"
           fullWidth
+          className="h-auto min-h-12 whitespace-normal py-3 text-center"
           source={`pricing:${course.slug}:${t.id}`}
           interest={productForCourseSlug(course.slug)}
           modalTitle={`${course.shortName} · ${t.name}`}
