@@ -4,7 +4,6 @@ import { LandingHeader } from "@/components/layout/LandingHeader";
 import { Button, Pill, Section, SectionIntro } from "@/components/ui";
 import { ProductPrice } from "@/components/ui/ProductPrice";
 import { getCourseTeachers, getNextStep, getPublicProductPage } from "@/data/public";
-import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 import { cn, nbspDash } from "@/lib/utils";
 import { getFaq } from "@/data/faq";
 import { getCourseContent } from "@/data/courseContent";
@@ -146,22 +145,6 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
             )}
           </ul>
         </Section>
-      )}
-
-      {SHOW_PLACEHOLDERS && p.devMissing.length > 0 && (
-        <div className="container-site my-4">
-          <p className="rounded-2xl border border-dashed border-danger/50 bg-danger/5 p-4 text-[13px] font-semibold text-danger">
-            Блоки скрыты, нет данных: {p.devMissing.join(", ")}
-          </p>
-        </div>
-      )}
-
-      {SHOW_PLACEHOLDERS && content && content.devUnverified.length > 0 && (
-        <div className="container-site my-4">
-          <p className="rounded-2xl border border-dashed border-danger/50 bg-danger/5 p-4 text-[13px] font-semibold text-danger">
-            Не подтверждено, в проде скрыто: {content.devUnverified.join("; ")}
-          </p>
-        </div>
       )}
 
       <RefundTerms text={p.refundTerms} />
