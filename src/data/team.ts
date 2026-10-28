@@ -19,14 +19,14 @@ export const team: TeamMember[] = [
       "Сооснователь платформы Strimmeo.com",
       "Многодетная мама, предприниматель, лектор",
     ],
-    photo: "/photo/nadira-studio.png",
+    photo: "/photo/nadira-studio.webp",
     socials: {
       instagram: "https://www.instagram.com/nadira_batyrbaeva/",
       tiktok: "https://www.tiktok.com/@nadira_batyrbaeva",
       youtube: "https://youtube.com/@nadira_batyrbayeva",
     },
     status: "verified",
-    note: "Текст — из действующих лендингов. Фото — студийное, public/photo/nadira-studio.png.",
+    note: "Текст — из действующих лендингов. Фото — студийное, public/photo/nadira-studio.webp.",
   },
   {
     id: "maidan",

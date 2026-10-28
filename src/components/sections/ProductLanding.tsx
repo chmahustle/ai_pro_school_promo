@@ -11,6 +11,7 @@ import { getFaq } from "@/data/faq";
 import { getCourseOutcomes, getVibecodingBlocks } from "@/data/vibecodingBlocks";
 import { ForWhomTiles, OutcomeTiles } from "./BlockTiles";
 import { FAQ } from "./FAQ";
+import { VideoReviews } from "./VideoReviews";
 import { LeaderCard } from "./LeaderCard";
 import { LeadSection } from "./LeadSection";
 import { NextSteps } from "./NextSteps";
@@ -205,6 +206,8 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
       )}
 
       <RefundTerms text={p.refundTerms} />
+
+      {id === "offline" && <VideoReviews page="vibecoding-offline" />}
 
       <FAQ items={getFaq(id === "offline" ? "vibecoding-offline" : "vibecoding-course")} />
 

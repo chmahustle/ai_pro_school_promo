@@ -1,4 +1,5 @@
 import { getFaq } from "@/data/faq";
+import { VideoReviews } from "@/components/sections/VideoReviews";
 import { DirectionPage } from "@/components/sections/DirectionPage";
 import { FAQ } from "@/components/sections/FAQ";
 import { getPublicDirectionPage } from "@/data/public";
@@ -18,6 +19,7 @@ export const metadata = buildMetadata({ title: page.seo.title, description: page
 export default function VibecodingPage() {
   return (
     <DirectionPage direction="vibecoding">
+      <VideoReviews page="vibecoding" />
       <FAQ items={getFaq("vibecoding")} />
     </DirectionPage>
   );
