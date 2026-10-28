@@ -6,6 +6,8 @@ import { storyAudienceFilters } from "@/data/story-filters";
 import type { PublicCase } from "@/data/public-types";
 import type { AudienceSlug } from "@/data/types";
 import { cn, noBreakHyphen } from "@/lib/utils";
+import { youtubeEmbedUrl } from "@/lib/youtube";
+import { isCompactCase } from "@/components/ui/CaseCard";
 
 const HOME_LIMIT = 3;
 type FilterId = "all" | AudienceSlug;
@@ -43,17 +45,19 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
     return limit == null ? list : list.slice(0, limit);
   }, [all, filter, limit, showTabs, direction]);
   const [lightbox, setLightbox] = useState<number | null>(null);
+  const anyVideo = stories.some((c) => c.youtubeId);
 
   // Видео открывается по клику в модалке; embed подгружается только тогда, автозапуска нет
   const mediaItems: LightboxItem[] = useMemo(
     () =>
-      stories.filter((c) => c.videoUrl).map((c) => ({
+      stories.filter((c) => c.youtubeId).map((c) => ({
         id: c.id,
         src: c.posterSrc,
-        alt: `${c.authorName}: ${c.metric} ${c.metricLabel}`,
-        caption: `${c.authorName} · ${c.metric} ${c.metricLabel}`,
+        // title iframe: «Видео-отзыв: {имя}»; адрес плеера (youtube-nocookie) собирается здесь, в браузере
+        alt: `Видео-отзыв: ${c.authorName}`,
+        caption: c.kind === "video" ? [c.title, c.authorRole].filter(Boolean).join(" · ") : `${c.authorName} · ${c.metric} ${c.metricLabel}`,
         kind: "video" as const,
-        embedUrl: c.videoUrl ?? undefined,
+        embedUrl: youtubeEmbedUrl(c.youtubeId!),
         vertical: true,
       })),
     [stories],
@@ -151,11 +155,13 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
         )}
       >
         {stories.map((c) => (
-          <li key={c.id} className="flex w-[84%] shrink-0 snap-start md:w-auto md:shrink">
-            <CaseCard item={c} onOpenVideo={c.videoUrl ? (el) => openMedia(c.id, el) : undefined} className="w-full" />
+          <li key={c.id} className={cn("flex w-[84%] shrink-0 snap-start md:w-auto md:shrink", isCompactCase(c, anyVideo) && "md:self-start")}>
+            <CaseCard item={c} onOpenVideo={c.youtubeId ? (el) => openMedia(c.id, el) : undefined} className="w-full" />
           </li>
         ))}
       </ul>
+
+      <p className="mt-6 text-[12px] leading-snug text-white/55">Результаты индивидуальны и не являются гарантией дохода.</p> {/* copy-check:ignore */}
 
       <Lightbox items={mediaItems} index={lightbox} onClose={closeMedia} onChange={setLightbox} />
     </HomeSection>

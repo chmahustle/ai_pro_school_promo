@@ -7,6 +7,7 @@ import { ExternalLink } from "lucide-react";
 import { Button, HomeSection, Lightbox, Pill, type LightboxItem } from "@/components/ui";
 import type { PublicTestimonial, PublicWork } from "@/data/public-types";
 import { cn } from "@/lib/utils";
+import { youtubeEmbedUrl } from "@/lib/youtube";
 
 type Tab = "testimonials" | "receipts" | "works";
 
@@ -138,7 +139,7 @@ export function ReviewsArchiveClient({ testimonials: allT, works }: { testimonia
       alt: t.alt,
       caption: t.type === "receipt" || t.type === "chat" ? "Данные скрыты" : (labelOf(t) ?? undefined),
       kind: t.type === "receipt" ? "receipt" : t.type === "chat" ? "chat" : "video",
-      embedUrl: t.embedUrl ?? undefined,
+      embedUrl: t.youtubeId ? youtubeEmbedUrl(t.youtubeId) : undefined,
       videoSrc: t.videoSrc ?? undefined,
     }));
   }, [tab, videoItems, proofItems]);
@@ -204,7 +205,7 @@ export function ReviewsArchiveClient({ testimonials: allT, works }: { testimonia
               <MediaTile
                 poster={t.poster}
                 label={labelOf(t)}
-                onClick={t.embedUrl || t.videoSrc ? () => openById(t.id) : undefined}
+                onClick={t.youtubeId || t.videoSrc ? () => openById(t.id) : undefined}
               />
             </li>
           ))}

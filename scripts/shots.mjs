@@ -3,6 +3,12 @@
  * Скриншоты страниц на 375 и 1440 px (Playwright). Только читает сайт по URL, ничего в проекте не меняет.
  *
  *   node scripts/shots.mjs [--base http://localhost:3111] [--out tmp/shots] [--widths 375,1440] [--no-extra] /path ...
+ *   node scripts/shots.mjs --prod [/path ...]
+ *
+ * Режим --prod: сам собирает production-копию (scripts/shots-serve.sh) на свободном порту, снимает главную (отдельно блок
+ * «Результаты»), /reviews и страницу эфира в 1440 и 375 px в tmp/shots/prod, проверяет, что на страницах нет dev-плашек
+ * и скрытых карточек (UNVERIFIED, PLACEHOLDER, «не подтверждено», Мадина, Гульдария…), и останавливает сервер.
+ * Dev-сервер на общем .next при сборке лучше закрыть.
  *
  * Для каждой страницы и ширины: <имя>-<ширина>-top.png и (если не --no-extra) -form.png (последняя форма по центру экрана)
  * и -bottom.png (низ страницы: футер, плавающие кнопки). Папка tmp/shots в .gitignore.
@@ -19,11 +25,41 @@ const opt = (name, def) => {
   const i = args.indexOf(`--${name}`);
   return i >= 0 ? args.splice(i, 2)[1] : def;
 };
+const prod = args.includes("--prod") && !!args.splice(args.indexOf("--prod"), 1);
 const noExtra = args.includes("--no-extra") && !!args.splice(args.indexOf("--no-extra"), 1);
-const base = opt("base", "http://localhost:3111");
-const out = resolve(opt("out", "tmp/shots"));
-const widths = opt("widths", "375,1440").split(",").map(Number);
-const paths = args.length ? args : ["/"];
+let base = opt("base", "http://localhost:3111");
+const out = resolve(opt("out", prod ? "tmp/shots/prod" : "tmp/shots"));
+const widths = opt("widths", prod ? "1440,375" : "375,1440").split(",").map(Number);
+const paths = args.length ? args : prod ? ["/", "/reviews", "/courses/vibecoding-efir"] : ["/"];
+
+/** Что не должно попасть на prod-страницы: dev-плашки и скрытые карточки */
+const PROD_FORBIDDEN = ["UNVERIFIED", "PLACEHOLDER", "не подтверждено", "не подтверждены", "уточнить у школы", "доходная формулировка", "метрика не число", "Мадина", "Казахтелеком", "Гульдария", "Шынар", "Молдир", "Клиенты-компании"];
+
+let serverStarted = false;
+if (prod) {
+  const { spawnSync } = await import("node:child_process");
+  const { createServer } = await import("node:net");
+  const port = await new Promise((res) => {
+    const srv = createServer();
+    srv.listen(0, () => {
+      const p = srv.address().port;
+      srv.close(() => res(p));
+    });
+  });
+  const root = resolve(new URL(".", import.meta.url).pathname, "..");
+  const r = spawnSync("bash", [join(root, "scripts/shots-serve.sh"), String(port)], { stdio: "inherit" });
+  if (r.status !== 0) process.exit(r.status ?? 1);
+  serverStarted = true;
+  base = `http://localhost:${port}`;
+}
+const stopServer = async () => {
+  if (!serverStarted) return;
+  const { readFileSync } = await import("node:fs");
+  try {
+    process.kill(Number(readFileSync("/tmp/aps-shots.pid", "utf8").trim()));
+  } catch {}
+};
+let prodProblems = 0;
 
 const PW_DIR = process.env.PW_DIR ?? join(homedir(), ".cache", "ai-pro-school-shots");
 const require = createRequire(import.meta.url);
@@ -61,6 +97,22 @@ for (const w of widths) {
     await page.addStyleTag({ content: "html{scroll-behavior:auto!important}" });
     await page.waitForTimeout(1500);
     const name = `${slug(path)}-${w}`;
+    if (prod) {
+      const html = await page.content();
+      const found = PROD_FORBIDDEN.filter((f) => html.includes(f));
+      if (found.length) {
+        prodProblems += found.length;
+        console.error(`✗ ${path} @${w}: в prod-странице найдено: ${found.join(", ")}`);
+      }
+      // Блок результатов на главной — отдельным снимком
+      const block = page.locator("#results");
+      if (path === "/" && (await block.count())) {
+        await block.scrollIntoViewIfNeeded();
+        await page.waitForTimeout(1200);
+        await block.screenshot({ path: join(out, `home-results-${w}.png`) });
+        await page.evaluate(() => window.scrollTo(0, 0));
+      }
+    }
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
     await page.screenshot({ path: join(out, `${name}-top.png`) });
     if (!noExtra) {
@@ -79,3 +131,8 @@ for (const w of widths) {
   await ctx.close();
 }
 await browser.close();
+await stopServer();
+if (prod) {
+  console.log(prodProblems ? `✗ prod-проверка: ${prodProblems} нарушений` : "✓ prod-проверка: dev-плашек и скрытых карточек на страницах нет");
+  if (prodProblems) process.exit(1);
+}

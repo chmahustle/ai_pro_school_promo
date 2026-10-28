@@ -39,6 +39,20 @@ const PAGE_PHRASES = [
   "freelance.ai-pro-school.kz",
   "ai-pro-school.kz/prakticum",
   "ai-pro-school.kz/ai2026",
+  // Шаг 23.3: доходные формулировки из заголовков видео-отзывов
+  "заработала",
+  "400.000",
+  "500.000",
+  "150.000",
+  "1.000.000",
+  "8 часов",
+  "Гульдария заработала",
+  // Шаг 23.3: YouTube-плеер и превью только после клика — в HTML/RSC нет embed-адресов и доменов плеера/превью.
+  // Обычные ссылки-переходы (youtube.com/watch в «Работах учеников», канал youtube.com/@… в футере) запросов не делают и допустимы
+  "youtube.com/embed",
+  "youtube-nocookie.com",
+  "img.youtube.com",
+  "i.ytimg.com",
   // Шаг 22: внутренние строки описания курса — в страницы не попадают
   "в течение 1 часа",
   "10:00–20:00",
@@ -49,7 +63,11 @@ const PAGE_PHRASES = [
   "course-description",
 ];
 // «30%» как текст, а не CSS-класс (top-[30%], w-[30%]): без «[» перед и без цифры/«-»/«.» перед числом
-const PAGE_REGEXES = [{ re: /(?<![\d\[.\-])30%/, name: "30%" }];
+const PAGE_REGEXES = [
+  { re: /(?<![\d\[.\-])30%/, name: "30%" },
+  // «зарабатывает» целиком (не «зарабатываете» в заголовках курса)
+  { re: /(?<![а-яё])зарабатывает(?![а-яё])/, name: "зарабатывает" },
+];
 const CHUNK_IDENTIFIERS = ["priceStatus", "piiBlurred", "logoPermission"];
 
 function* walk(dir, exts) {

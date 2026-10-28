@@ -19,6 +19,7 @@ import { reviewKindLabels } from "@/data/review-labels";
 import type { PublicReview } from "@/data/public-types";
 import type { ReviewKind } from "@/data/types";
 import { cn, formatTenge } from "@/lib/utils";
+import { youtubeEmbedUrl } from "@/lib/youtube";
 
 interface ReviewsWallProps {
   items: PublicReview[];
@@ -70,7 +71,7 @@ export function ReviewsWallClient({
           alt: r.text ?? r.author,
           caption: [r.author, r.context].filter(Boolean).join(" · "),
           kind: r.kind === "video" ? "video" : (r.kind as "receipt" | "chat"),
-          embedUrl: r.embedUrl,
+          embedUrl: r.youtubeId ? youtubeEmbedUrl(r.youtubeId) : undefined,
         })),
     [filtered],
   );

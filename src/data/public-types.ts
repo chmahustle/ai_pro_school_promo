@@ -36,6 +36,14 @@ export interface PublicStory {
 /** Карточка кейса блока «Результаты учеников» (единый шаблон CaseCard) */
 export interface PublicCase {
   id: string;
+  /** «result» — результат ученика; «video» — видео-отзыв (нейтральный текст, без цифр) */
+  kind: "result" | "video";
+  /** video: «История {имя}» */
+  title?: string;
+  /** video: одна нейтральная строка вместо метрики */
+  neutralLine?: string;
+  /** video: «Видео опубликовано 8 июня 2025» */
+  publishedLabel?: string;
   direction: "creator" | "vibecoding";
   audiences: AudienceSlug[];
   individualResult?: boolean;
@@ -45,8 +53,9 @@ export interface PublicCase {
   metricLabel: string;
   photoSrc: string | null;
   posterSrc: string | null;
-  videoUrl: string | null;
-  /** Публичный оригинал для ссылки «Смотреть ролик» */
+  /** id ролика YouTube: плеер открывается в браузере по клику (ссылок youtube.com в HTML нет) */
+  youtubeId?: string;
+  /** Публичный оригинал (не YouTube) для ссылки «Смотреть ролик» */
   sourceUrl: string | null;
   /** «Данные аккаунта ученицы, октябрь 2026» */
   sourceCaption: string;
@@ -58,6 +67,8 @@ export interface PublicCase {
   devNote?: string;
   /** Только dev: тексты До/После/цитата не подтверждены */
   devTextNote?: string;
+  /** Только dev: «доходная формулировка, не публикуем» + текст claims */
+  devClaimsNote?: string;
 }
 
 export interface PublicMetric {
@@ -230,7 +241,8 @@ export interface PublicTestimonial {
   label: string | null;
   poster: string;
   imageSrc: string | null;
-  embedUrl: string | null;
+  /** id ролика YouTube: адрес плеера собирается в браузере по клику (ссылок youtube.com в HTML нет) */
+  youtubeId: string | null;
   /** Локальный MP4 (вертикальное видео): плеер в лайтбоксе */
   videoSrc?: string | null;
   alt: string;
@@ -252,7 +264,7 @@ export interface PublicReview {
   context?: string;
   text?: string;
   src: string | null;
-  embedUrl?: string;
+  youtubeId?: string;
   amount?: number;
   rating?: number;
   photo: string | null;

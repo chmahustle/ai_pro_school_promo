@@ -42,8 +42,9 @@ import { GENERAL_PRODUCT } from "./product-ids";
 import { vocabulary } from "./vocabulary";
 import { SITE_URL, site } from "@/lib/site";
 import { formatMonthYear, formatNumber, formatTenge, nameInSentence } from "@/lib/utils";
+import { youtubeIdFromUrl } from "@/lib/youtube";
 import { isStoryPublishable, stories as allStories } from "./stories";
-import { caseSourceCaption, getVisibleCases, isCasePublishable, isNumericMetric, type Case } from "./cases";
+import { caseSourceCaption, formatPublishedAt, getVisibleCases, getVisibleVideoCases, isCasePublishable, isNumericMetric, isVideoCasePublishable, type Case } from "./cases";
 import { team } from "./team";
 import { getVisibleTestimonials } from "./testimonials";
 import { getVisibleWorks } from "./works";
@@ -90,7 +91,7 @@ const devOf = (s: Pick<Story, "source" | "asOf" | "note" | "placeholder"> & { ve
 
 /** Карточки блока «Результаты учеников»: verified && consent (в dev — все, неподтверждённые с пометкой), опционально по аудитории и направлению */
 export function getPublicCases(audience?: AudienceSlug, direction?: Case["direction"], includeIndividual = false): PublicCase[] {
-  return getVisibleCases()
+  const results: PublicCase[] = getVisibleCases()
     .filter((c) => includeIndividual || !c.individualResult)
     .filter((c) => !audience || c.audiences.includes(audience))
     .filter((c) => !direction || c.direction === direction)
@@ -106,6 +107,7 @@ export function getPublicCases(audience?: AudienceSlug, direction?: Case["direct
       ].filter(Boolean) as string[];
       return {
         id: c.id,
+        kind: "result" as const,
         direction: c.direction,
         audiences: c.audiences,
         individualResult: c.individualResult,
@@ -115,14 +117,42 @@ export function getPublicCases(audience?: AudienceSlug, direction?: Case["direct
         metricLabel: c.metricLabel,
         photoSrc: c.photoSrc,
         posterSrc: c.posterSrc,
-        videoUrl: c.videoUrl,
-        sourceUrl: c.sourceUrl,
+        youtubeId: c.youtubeId,
+        sourceUrl: c.sourceUrl ?? null,
         sourceCaption: caseSourceCaption(c),
         ...texts,
         devNote: SHOW_PLACEHOLDERS && devNotes.length > 0 ? devNotes.join(" · ") : undefined,
         devTextNote: SHOW_PLACEHOLDERS && hasTexts && !c.textsVerified ? "тексты не подтверждены" : undefined,
       };
     });
+
+  // Видео-отзывы: на /reviews (includeIndividual) — все, на страницах направлений — по связанным продуктам
+  const videos: PublicCase[] = getVisibleVideoCases()
+    .map((v) => ({ v, dir: (v.relatedProducts[0] ? getProduct(v.relatedProducts[0]).direction : "creator") as Case["direction"] }))
+    .filter(({ v }) => includeIndividual || (direction ? v.relatedProducts.some((p) => getProduct(p).direction === direction) : false))
+    .filter(({ dir }) => !direction || includeIndividual || dir === direction)
+    .map(({ v, dir }) => ({
+      id: v.id,
+      kind: "video" as const,
+      title: `История ${v.authorName}`,
+      neutralLine: v.neutralLine,
+      publishedLabel: v.publishedAt ? `Видео опубликовано ${formatPublishedAt(v.publishedAt)}` : undefined,
+      direction: dir,
+      audiences: ["beginners", "freelancers", "career", "business"] as AudienceSlug[],
+      authorName: v.authorName,
+      authorRole: v.authorRole ?? "",
+      metric: "",
+      metricLabel: "",
+      photoSrc: null,
+      posterSrc: v.posterSrc,
+      youtubeId: v.youtubeId,
+      sourceUrl: null,
+      sourceCaption: "",
+      devNote: SHOW_PLACEHOLDERS && (!isVideoCasePublishable(v) || v.devNote) ? (v.devNote ?? "не подтверждено") : undefined,
+      devClaimsNote: SHOW_PLACEHOLDERS && v.claimsText ? `доходная формулировка, не публикуем: ${v.claimsText}` : undefined,
+    }));
+
+  return [...results, ...videos];
 }
 
 // ───────────── Метрики ─────────────
@@ -367,7 +397,7 @@ function getVibecodingArchiveVideos(): PublicTestimonial[] {
     label: "Вайб-кодинг",
     poster: v.poster,
     imageSrc: null,
-    embedUrl: null,
+    youtubeId: null,
     videoSrc: v.src,
     alt: "Видеоотзыв ученика вайб-кодинга",
   }));
@@ -385,7 +415,7 @@ function getPublicTestimonialsBase(): PublicTestimonial[] {
     label: t.consent ? ([t.personName, t.caption].filter(Boolean).join(" · ") || null) : null,
     poster: t.poster,
     imageSrc: t.imageSrc ?? null,
-    embedUrl: t.embedUrl ?? null,
+    youtubeId: youtubeIdFromUrl(t.embedUrl),
     alt: t.consent && t.personName ? t.personName : "Скриншот",
   }));
 }
@@ -408,7 +438,7 @@ export function toPublicReview(r: Review): PublicReview {
     context: r.context,
     text: r.text,
     src: r.src ?? null,
-    embedUrl: r.embedUrl,
+    youtubeId: youtubeIdFromUrl(r.embedUrl) ?? undefined,
     amount: r.amount,
     rating: r.rating,
     photo: r.photo ?? null,

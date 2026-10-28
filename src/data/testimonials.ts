@@ -38,7 +38,7 @@ export const testimonials: Testimonial[] = [
     videoSrc: null,
     embedUrl: "https://www.youtube.com/embed/eyqVEf-2294?autoplay=1",
     poster: "/stories/ai2026/video-guldaria.jpg",
-    verified: true,
+    verified: false, // не публикуем до подтверждения школы (видео-карточка в cases.ts, consent:false)
   },
   {
     id: "t-shynar",
@@ -49,7 +49,7 @@ export const testimonials: Testimonial[] = [
     videoSrc: null,
     embedUrl: "https://www.youtube.com/embed/IsYI0XQy9A8?autoplay=1",
     poster: "/stories/ai2026/video-shynar.jpg",
-    verified: true,
+    verified: false, // не публикуем до подтверждения школы (видео-карточка в cases.ts, consent:false)
   },
   {
     id: "t-moldir",
@@ -60,7 +60,7 @@ export const testimonials: Testimonial[] = [
     videoSrc: null,
     embedUrl: "https://www.youtube.com/embed/_vHOfJPFbUY?autoplay=1",
     poster: "/stories/ai2026/video-moldir.jpg",
-    verified: true,
+    verified: false, // не публикуем до подтверждения школы (видео-карточка в cases.ts, consent:false)
   },
   {
     id: "t-review-1",

@@ -57,12 +57,12 @@ export const results: ResultCase[] = [
     context: "43 года",
     headline: "500 000 ₸ + 150 000 ₸ в месяц",
     before: "Без технического образования и опыта в IT.",
-    after: "Заработала 500 000 ₸ и получает по 150 000 ₸ в месяц, работая всего 8 часов.",
+    after: "Заработала 500 000 ₸ и получает по 150 000 ₸ в месяц, работая всего 8 часов.", // copy-check:ignore
     photo: null,
     audiences: ["beginners", "career"],
     course: "ai-creator",
     source: "https://ai-pro-school.kz/ai2026",
-    status: "verified",
+    status: "placeholder", // не публикуем до подтверждения школы (видео-карточка в cases.ts, consent:false)
     note: "Видеоотзыв YouTube IsYI0XQy9A8. before — не с лендинга.",
   },
   {
@@ -71,12 +71,12 @@ export const results: ResultCase[] = [
     context: "техспец",
     headline: "1 000 000 ₸ в месяц",
     before: "Работала разово, без системы.",
-    after: "Зарабатывает 1 000 000 ₸ в месяц, работая техспецом.",
+    after: "Зарабатывает 1 000 000 ₸ в месяц, работая техспецом.", // copy-check:ignore
     photo: null,
     audiences: ["freelancers", "career", "beginners"],
     course: "ai-creator",
     source: "https://ai-pro-school.kz/ai2026",
-    status: "verified",
+    status: "placeholder", // не публикуем до подтверждения школы (видео-карточка в cases.ts, consent:false)
     note: "Видеоотзыв YouTube _vHOfJPFbUY. before — не с лендинга.",
   },
 ];

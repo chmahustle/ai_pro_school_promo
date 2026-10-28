@@ -1,13 +1,14 @@
 import "server-only";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 import { formatMonthYear } from "@/lib/utils";
+import type { ProductId } from "./product-ids";
 import type { AudienceSlug } from "./types";
 
 /**
  * Кейсы блока «Результаты учеников» (главная, /for/*, страницы направлений, /reviews): единый шаблон карточки CaseCard.
  * Прод: только verified && consent. Dev: остальные — с красной пометкой.
  * Источник на карточке — не внутренний домен, а «Данные аккаунта ученицы/ученика, {месяц год}» или «Данные школы, {месяц год}» (sourceKind + asOf).
- * Ссылка «Смотреть ролик» — только на публичный оригинал (sourceUrl). Квитанции оплат сюда не входят (вкладка «Чеки и переписки» на /reviews).
+ * YouTube — только youtubeId (плеер по клику, без запросов до него). Квитанции оплат сюда не входят (вкладка «Чеки и переписки» на /reviews).
  *
  * TODO(клиент): согласия учеников, постеры и скриншоты статистики для карточек без медиа, актуальные asOf.
  */
@@ -37,10 +38,10 @@ export interface Case {
   quote?: string;
   /** Тексты before/after/quote подтверждены: false — в prod не показываются, в dev с красной пометкой */
   textsVerified: boolean;
-  /** Embed-ссылка видео: открывается в модалке по клику */
-  videoUrl: string | null;
-  /** Публичный оригинал (ссылка «Смотреть ролик»); внутренние домены сюда не пишем */
-  sourceUrl: string | null;
+  /** id ролика YouTube: плеер открывается в модалке по клику (youtube-nocookie.com), ссылок youtube.com в данных нет */
+  youtubeId?: string;
+  /** Публичный оригинал не на YouTube (ссылка «Смотреть ролик»); внутренние домены сюда не пишем */
+  sourceUrl?: string | null;
   /** Чьи данные: аккаунт ученицы / аккаунт ученика / школа */
   sourceKind: "student-f" | "student-m" | "school";
   asOf: string;
@@ -51,7 +52,6 @@ export interface Case {
 }
 
 const AS_OF = "2026-10";
-const yt = (id: string) => ({ videoUrl: `https://www.youtube.com/embed/${id}`, sourceUrl: `https://www.youtube.com/watch?v=${id}` });
 
 export const cases: Case[] = [
   {
@@ -65,7 +65,6 @@ export const cases: Case[] = [
     metricLabel: "договор на 15 роликов",
     photoSrc: "/stories/case-alena.webp",
     posterSrc: null,
-    videoUrl: null,
     sourceUrl: null,
     before: "Нет опыта в AI-видео, первые ролики не залетали, думала сдаться.",
     after: "500+ AI-видео, миллионные просмотры, куратор AI Pro School.",
@@ -88,7 +87,6 @@ export const cases: Case[] = [
     metricLabel: "постоянный клиент Казахтелеком", // copy-check:ignore
     photoSrc: "/stories/case-madina.webp",
     posterSrc: null,
-    videoUrl: null,
     sourceUrl: null,
     before: "Мама двоих детей в декрете, без дохода и опыта в IT. Только телефон и желание.", // copy-check:ignore
     after: "Работает с компаниями, постоянный клиент Казахтелеком, стабильный доход из дома.", // copy-check:ignore
@@ -110,7 +108,6 @@ export const cases: Case[] = [
     metricLabel: "просмотров за 5 дней",
     photoSrc: "/stories/case-gulayym.webp",
     posterSrc: null,
-    videoUrl: null,
     sourceUrl: null,
     before: "Ноль опыта в AI и монтаже, пустой аккаунт, не знала, с чего начать.",
     textsVerified: true,
@@ -119,42 +116,6 @@ export const cases: Case[] = [
     verified: true,
     consent: true,
     note: "нужен скриншот статистики или видео", // TODO(клиент)
-  },
-  {
-    id: "shynar",
-    direction: "creator",
-    audiences: ["beginners", "career"],
-    individualResult: true,
-    authorName: "Шынар",
-    authorRole: "43 года",
-    metric: "500 000 ₸",
-    metricLabel: "+ 150 000 ₸ в месяц · 8 часов",
-    photoSrc: null,
-    posterSrc: "/stories/video-shynar.jpg",
-    ...yt("IsYI0XQy9A8"),
-    textsVerified: true,
-    sourceKind: "school",
-    asOf: AS_OF,
-    verified: true,
-    consent: true,
-  },
-  {
-    id: "moldir",
-    direction: "creator",
-    audiences: ["freelancers", "career", "beginners"],
-    individualResult: true,
-    authorName: "Молдир",
-    authorRole: "техспец",
-    metric: "1 000 000 ₸",
-    metricLabel: "в месяц",
-    photoSrc: null,
-    posterSrc: "/stories/video-moldir.jpg",
-    ...yt("_vHOfJPFbUY"),
-    textsVerified: true,
-    sourceKind: "school",
-    asOf: AS_OF,
-    verified: true,
-    consent: true,
   },
   {
     id: "practicum-2_7m",
@@ -166,7 +127,7 @@ export const cases: Case[] = [
     metricLabel: "просмотров на ролике",
     photoSrc: null,
     posterSrc: "/stories/practicum/reel-2_7m.jpg",
-    ...yt("H9gsaBtulxQ"),
+    youtubeId: "H9gsaBtulxQ",
     textsVerified: true,
     sourceKind: "student-f",
     asOf: AS_OF,
@@ -183,7 +144,7 @@ export const cases: Case[] = [
     metricLabel: "первый ИИ-ролик",
     photoSrc: null,
     posterSrc: "/stories/practicum/reel-74y.jpg",
-    ...yt("a6kI7H38uzU"),
+    youtubeId: "a6kI7H38uzU",
     textsVerified: true,
     sourceKind: "student-m",
     asOf: AS_OF,
@@ -200,7 +161,7 @@ export const cases: Case[] = [
     metricLabel: "просмотров на ролике",
     photoSrc: null,
     posterSrc: "/stories/practicum/reel-1_9m.jpg",
-    ...yt("rpQWe1Z3CQ4"),
+    youtubeId: "rpQWe1Z3CQ4",
     textsVerified: true,
     sourceKind: "student-f",
     asOf: AS_OF,
@@ -224,4 +185,92 @@ export function caseSourceCaption(c: Case): string {
 /** Список для UI: прод — verified && consent; dev — все (неподтверждённые с пометкой) */
 export function getVisibleCases(): Case[] {
   return SHOW_PLACEHOLDERS ? cases : cases.filter(isCasePublishable);
+}
+
+// ───────────── Видео-отзывы учениц (YouTube) ─────────────
+
+/**
+ * Карточка «видео»: нейтральный текст («История {имя}», роль, дата публикации), без сумм и сроков.
+ * claimsText — суммы/сроки/«зарабатывает» из заголовка ролика: verified:false, в prod не показываются, в dev — красной пометкой.
+ * consent:false — карточка скрыта в prod до подтверждения школы. Превью — локальный файл из public/cases/ (до клика запросов к YouTube и Google нет).
+ */
+export interface VideoCase {
+  id: string;
+  youtubeId: string;
+  authorName: string;
+  /** Роль одной строкой; null — не уточнена (dev-пометка «уточнить у школы») */
+  authorRole: string | null;
+  /** На каких продуктовых страницах показывать; пусто — только /reviews */
+  relatedProducts: ProductId[];
+  /** Превью (public/cases/) */
+  posterSrc: string;
+  /** Дата публикации видео, YYYY-MM-DD; null — не показываем */
+  publishedAt: string | null;
+  consent: boolean;
+  verified: boolean;
+  /** Одна нейтральная строка вместо метрики */
+  neutralLine: string;
+  /** Суммы и сроки из заголовка ролика (не публикуем) */
+  claimsText?: string;
+  /** Пометка dev */
+  devNote?: string;
+}
+
+export const videoCases: VideoCase[] = [
+  {
+    id: "video-guldaria",
+    youtubeId: "eyqVEf-2294",
+    authorName: "Гульдария",
+    authorRole: "мама двоих детей",
+    relatedProducts: ["efir", "course"],
+    posterSrc: "/cases/yt-eyqVEf-2294.jpg",
+    publishedAt: "2025-06-08",
+    consent: false,
+    verified: true,
+    neutralLine: "Видео-отзыв ученицы",
+    devNote: "согласие не подтверждено; заголовок ролика не проверен — уточнить claimsText",
+  },
+  {
+    id: "video-shynar",
+    youtubeId: "IsYI0XQy9A8",
+    authorName: "Шынар",
+    authorRole: null,
+    relatedProducts: [],
+    posterSrc: "/cases/yt-IsYI0XQy9A8.jpg",
+    publishedAt: null,
+    consent: false,
+    verified: true,
+    neutralLine: "Видео-отзыв ученицы",
+    claimsText: "500 000 ₸, + 150 000 ₸ в месяц, 8 часов", // copy-check:ignore
+    devNote: "согласие не подтверждено; уточнить у школы: роль, дату публикации, связанные продукты",
+  },
+  {
+    id: "video-moldir",
+    youtubeId: "_vHOfJPFbUY",
+    authorName: "Молдир",
+    authorRole: null,
+    relatedProducts: [],
+    posterSrc: "/cases/yt-_vHOfJPFbUY.jpg",
+    publishedAt: null,
+    consent: false,
+    verified: true,
+    neutralLine: "Видео-отзыв",
+    claimsText: "1 000 000 ₸ в месяц", // copy-check:ignore
+    devNote: "согласие не подтверждено; уточнить у школы: роль, дату публикации, связанные продукты",
+  },
+];
+
+export const isVideoCasePublishable = (v: VideoCase): boolean => v.verified && v.consent;
+
+/** Прод — verified && consent; dev — все с пометками */
+export function getVisibleVideoCases(): VideoCase[] {
+  return SHOW_PLACEHOLDERS ? videoCases : videoCases.filter(isVideoCasePublishable);
+}
+
+/** «8 июня 2025» */
+export function formatPublishedAt(iso: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  const months = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+  const name = m ? months[Number(m[2]) - 1] : undefined;
+  return m && name ? `${Number(m[3])} ${name} ${m[1]}` : iso;
 }
