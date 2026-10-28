@@ -87,29 +87,33 @@ export function CourseHeroClient({ course }: { course: CourseHeroData }) {
               {nbspDash(course.description)}
             </motion.p>
 
-            <motion.div variants={fadeUp} className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <LeadButton
-                variant={dark ? "white" : "dark"}
-                size="lg"
-                source={`course-hero:${course.slug}`}
-                interest={productForCourseSlug(course.slug)}
-                icon={<ArrowRight className="size-5" />}
-              >
-                {course.ctaLabel}
-                {/* Практикум: цена в самой кнопке («Записаться на практикум за 9 900 ₸»), цена из products.ts */}
-                {course.ctaWithPrice && course.price && (
-                  <>
-                    {" "}за <ProductPrice parts={course.price} />
-                  </>
+            {/* Ряд 1: кнопка и цена на одной линии по центру; ряд 2: плашка рассрочки под ними от левого края */}
+            <motion.div variants={fadeUp} className="flex flex-col items-start gap-3">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+                <LeadButton
+                  variant={dark ? "white" : "dark"}
+                  size="lg"
+                  source={`course-hero:${course.slug}`}
+                  interest={productForCourseSlug(course.slug)}
+                  icon={<ArrowRight className="size-5" />}
+                >
+                  {course.ctaLabel}
+                  {/* Практикум: цена в самой кнопке («Записаться на практикум за 9 900 ₸»), цена из products.ts */}
+                  {course.ctaWithPrice && course.price && (
+                    <>
+                      {" "}за <ProductPrice parts={course.price} />
+                    </>
+                  )}
+                </LeadButton>
+                {!course.ctaWithPrice && course.price && (
+                  <ProductPrice parts={course.price} className={cn("font-display text-lg leading-none", dark ? "text-white" : "text-ink")} />
                 )}
-              </LeadButton>
-              {!course.ctaWithPrice && course.price && (
-                <span className="ml-1 flex flex-col leading-tight">
-                  <ProductPrice parts={course.price} className={cn("font-display text-lg", dark ? "text-white" : "text-ink")} />
-                  {course.kaspi ? <KaspiBadge label={course.kaspi} className="mt-2 self-start text-[13px]" /> : course.paymentNote && <span className={cn("text-[13px]", dark ? "text-white/65" : "text-ink-500")}>{course.paymentNote}</span>}
-                </span>
+              </div>
+              {course.kaspi ? (
+                <KaspiBadge label={course.kaspi} className="text-[13px]" />
+              ) : (
+                course.paymentNote && <span className={cn("text-[13px]", dark ? "text-white/65" : "text-ink-500")}>{course.paymentNote}</span>
               )}
-              {course.ctaWithPrice && (course.kaspi ? <KaspiBadge label={course.kaspi} className="text-[13px]" /> : course.paymentNote && <span className={cn("ml-1 text-[13px]", dark ? "text-white/65" : "text-ink-500")}>{course.paymentNote}</span>)}
             </motion.div>
           </motion.div>
 
