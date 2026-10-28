@@ -19,7 +19,7 @@ interface HowItWorksClientProps {
 
 /**
  * Линия пути (viewBox 1200×400) по числу шагов: проходит через центры колонок (x = (i+0.5)·1200/n) на высоте 200px,
- * между узлами плавно изгибается вверх и вниз. Карточки чередуются: ниже линии / выше линии.
+ * между узлами плавно изгибается вверх и вниз. Карточки чередуются: первая выше линии, вторая ниже и т.д.
  */
 function buildPath(n: number): string {
   const col = 1200 / n;
@@ -28,7 +28,7 @@ function buildPath(n: number): string {
   for (let i = 1; i < n; i++) {
     const a = xs[i - 1]!;
     const b = xs[i]!;
-    const y = i % 2 === 1 ? 155 : 245;
+    const y = i % 2 === 1 ? 245 : 155;
     d += ` C${a + (b - a) * 0.37},${y} ${a + (b - a) * 0.63},${y} ${b},200`;
   }
   return `${d} C${xs[n - 1]! + col * 0.2},222 ${xs[n - 1]! + col * 0.4},214 1200,206`;
@@ -127,7 +127,7 @@ export function HowItWorksClient({
               {/* Список шагов: на мобильном колонка с узлом слева, на ≥lg — колонки по числу шагов, карточки выше/ниже линии */}
               <ol className="relative flex flex-col gap-4 lg:grid lg:h-[400px] lg:gap-0" style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}>
                 {steps.map((st, i) => {
-                  const above = i % 2 === 1;
+                  const above = i % 2 === 0;
                   return (
                     <li key={st.n} className="relative pl-16 lg:px-2 lg:pl-2" style={{ gridColumn: i + 1, gridRow: 1 }}>
                       <div className="absolute left-0 top-1.5 z-10 lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2">
