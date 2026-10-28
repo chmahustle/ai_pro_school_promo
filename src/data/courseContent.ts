@@ -52,7 +52,7 @@ export const courseProgram: CourseModule[] = [];
 // ───────────── Как проходит обучение ─────────────
 
 export interface CourseDeliveryItem extends Checked {
-  id: "online" | "recorded" | "calls" | "support" | "chat" | "weekly";
+  id: "online" | "recorded" | "calls" | "support" | "chat" | "offline";
   title: string;
   text: string;
 }
@@ -70,14 +70,7 @@ export const courseDelivery: CourseDeliveryItem[] = [
     asOf: AS_OF,
   },
   { id: "chat", title: "Чат курса", text: "Вопросы и обсуждение — в общем чате студентов.", verified: true, source: SOURCE, asOf: AS_OF },
-  {
-    id: "weekly",
-    title: "Новые уроки каждую неделю",
-    text: "Уроки открываются по неделям. Программа может корректироваться по обратной связи студентов.",
-    verified: true,
-    source: SOURCE,
-    asOf: AS_OF,
-  },
+  { id: "offline", title: "Офлайн-урок раз в месяц", text: "Один раз в месяц проходит офлайн-урок.", verified: true, source: SOURCE, asOf: AS_OF },
 ];
 
 /** Строка формата для hero */
