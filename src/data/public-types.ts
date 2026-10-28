@@ -204,6 +204,8 @@ export interface PublicTestimonial {
   poster: string;
   imageSrc: string | null;
   embedUrl: string | null;
+  /** Локальный MP4 (вертикальное видео): плеер в лайтбоксе */
+  videoSrc?: string | null;
   alt: string;
 }
 

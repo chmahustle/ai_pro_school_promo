@@ -13,6 +13,8 @@ export interface LightboxItem {
   kind?: "image" | "receipt" | "chat" | "video";
   /** Для видео: ссылка на embed (YouTube/Instagram) */
   embedUrl?: string;
+  /** Для видео: локальный MP4 (вертикальный ролик) — родной плеер */
+  videoSrc?: string;
 }
 
 interface LightboxProps {
@@ -51,7 +53,19 @@ export function Lightbox({ items, index, onClose, onChange }: LightboxProps) {
       {item && (
         <div className="flex flex-col items-center gap-4 px-2 pb-6 pt-12 sm:px-14">
           <div className="relative w-full max-w-4xl">
-            {item.embedUrl ? (
+            {item.videoSrc ? (
+              <video
+                key={item.id}
+                src={item.videoSrc}
+                poster={item.src ?? undefined}
+                controls
+                autoPlay
+                playsInline
+                preload="metadata"
+                aria-label={item.alt}
+                className="mx-auto max-h-[75dvh] w-auto max-w-full rounded-2xl bg-ink"
+              />
+            ) : item.embedUrl ? (
               <div className="aspect-video w-full overflow-hidden rounded-2xl bg-ink">
                 <iframe
                   src={item.embedUrl}

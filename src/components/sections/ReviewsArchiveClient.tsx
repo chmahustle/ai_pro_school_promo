@@ -139,6 +139,7 @@ export function ReviewsArchiveClient({ testimonials: allT, works }: { testimonia
       caption: t.type === "receipt" || t.type === "chat" ? "Данные скрыты" : (labelOf(t) ?? undefined),
       kind: t.type === "receipt" ? "receipt" : t.type === "chat" ? "chat" : "video",
       embedUrl: t.embedUrl ?? undefined,
+      videoSrc: t.videoSrc ?? undefined,
     }));
   }, [tab, videoItems, proofItems]);
 
@@ -203,7 +204,7 @@ export function ReviewsArchiveClient({ testimonials: allT, works }: { testimonia
               <MediaTile
                 poster={t.poster}
                 label={labelOf(t)}
-                onClick={t.embedUrl ? () => openById(t.id) : undefined}
+                onClick={t.embedUrl || t.videoSrc ? () => openById(t.id) : undefined}
               />
             </li>
           ))}

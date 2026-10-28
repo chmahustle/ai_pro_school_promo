@@ -7,7 +7,6 @@ import { PageHero } from "@/components/sections/PageHero";
 import { HomeMetrics } from "@/components/sections/HomeMetrics";
 import { HomeStories } from "@/components/sections/HomeStories";
 import { ReviewsArchive } from "@/components/sections/ReviewsArchive";
-import { VideoReviews } from "@/components/sections/VideoReviews";
 import { LeadSection } from "@/components/sections/LeadSection";
 
 export const metadata = buildMetadata({
@@ -44,7 +43,6 @@ export default function ReviewsPage() {
       <div className="mt-4">
         <HomeStories limit={null} withFilters showAllLink={false} includeIndividual />
       </div>
-      <VideoReviews page="vibecoding" id="vibecoding-reviews" title="Результаты и отзывы по вайб-кодингу" description="Видеоотзывы учеников, которые прошли программы по вайб-кодингу." />
       <div id="archive" className="scroll-mt-24">
         <Suspense fallback={null}>
           <ReviewsArchive />

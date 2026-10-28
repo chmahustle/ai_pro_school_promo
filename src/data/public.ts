@@ -11,6 +11,7 @@ import { getSpeakerRole, speakers } from "./speakers";
 import { courses } from "./courses";
 import { getVisibleHeroResults, heroEvent, heroTeachers } from "./heroResults";
 import { getHomeMetrics } from "./metrics";
+import { getVideoReviews } from "./videoReviews";
 import { formConfig } from "./forms";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
@@ -352,7 +353,25 @@ export function getFooterData(): PublicFooter {
 
 // ───────────── Отзывы и работы ─────────────
 
+/** Видеоотзывы вайб-кодинга (videoReviews.ts, verified && consent) — в общем архиве отзывов после остальных */
+function getVibecodingArchiveVideos(): PublicTestimonial[] {
+  return getVideoReviews("vibecoding").map((v) => ({
+    id: v.id,
+    type: "testimonial" as const,
+    label: "Вайб-кодинг",
+    poster: v.poster,
+    imageSrc: null,
+    embedUrl: null,
+    videoSrc: v.src,
+    alt: "Видеоотзыв ученика вайб-кодинга",
+  }));
+}
+
 export function getPublicTestimonials(): PublicTestimonial[] {
+  return [...getPublicTestimonialsBase(), ...getVibecodingArchiveVideos()];
+}
+
+function getPublicTestimonialsBase(): PublicTestimonial[] {
   return getVisibleTestimonials().map((t) => ({
     id: t.id,
     type: t.type,
