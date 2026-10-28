@@ -518,7 +518,6 @@ function toLadderStep(p: (typeof products)[number]): PublicLadderStep {
     format: p.format,
     price: { prefix, amount, unit, ...(old ? { old } : {}) },
     start: startLabel(p),
-    kaspi: getKaspiInstallmentLabel(p),
     ctaLabel: p.ctaLabel,
     href: p.landingUrl,
     isEntry: p.step === "try",
