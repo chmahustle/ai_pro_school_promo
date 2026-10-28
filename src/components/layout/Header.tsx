@@ -101,7 +101,7 @@ export function Header({ menu }: { menu: PublicNavMenu }) {
             aria-hidden
             className={cn(
               "absolute inset-0 -z-10 rounded-pill ring-1 ring-white/70 backdrop-blur-2xl backdrop-saturate-150 transition-[background-color,box-shadow] duration-300",
-              scrolled || megaOpen ? "bg-white/70 shadow-pill" : "bg-white/45",
+              scrolled || megaOpen ? "bg-white/[0.97] shadow-pill" : "bg-white/[0.94]",
             )}
           />
           <Logo />

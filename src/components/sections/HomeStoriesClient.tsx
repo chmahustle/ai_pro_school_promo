@@ -1,9 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowLink, HomeSection, Lightbox, SectionIntro, StoryCard, type LightboxItem } from "@/components/ui";
+import { ArrowLink, CaseCard, HomeSection, Lightbox, SectionIntro, type LightboxItem } from "@/components/ui";
 import { storyAudienceFilters } from "@/data/story-filters";
-import type { PublicStory } from "@/data/public-types";
+import type { PublicCase } from "@/data/public-types";
 import type { AudienceSlug } from "@/data/types";
 import { cn, noBreakHyphen } from "@/lib/utils";
 
@@ -14,7 +14,7 @@ const MIN_STORIES = 3;
 
 interface HomeStoriesClientProps {
   /** Уже отфильтрованные на сервере (verified && consent) публичные карточки */
-  stories: PublicStory[];
+  stories: PublicCase[];
   /** Вкладки направлений (только те, где есть кейсы). Одна вкладка или фильтр по аудитории — полоса вкладок не рисуется */
   /** «projects» — проекты вайб-кодинга: другие подписи шапки */
   variant?: "results" | "projects";
@@ -44,35 +44,36 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
   }, [all, filter, limit, showTabs, direction]);
   const [lightbox, setLightbox] = useState<number | null>(null);
 
+  // Видео открывается по клику в модалке; embed подгружается только тогда, автозапуска нет
   const mediaItems: LightboxItem[] = useMemo(
     () =>
-      stories.filter((s) => s.media).map((s) => ({
-        id: s.id,
-        src: s.media!.src,
-        alt: s.media!.caption ?? s.name,
-        caption: [s.name, s.media!.caption].filter(Boolean).join(" · "),
-        kind: s.media!.type === "video" ? "video" : s.media!.type === "receipt" ? "receipt" : "image",
-        embedUrl: s.media!.embedUrl,
+      stories.filter((c) => c.videoUrl).map((c) => ({
+        id: c.id,
+        src: c.posterSrc,
+        alt: `${c.authorName}: ${c.metric} ${c.metricLabel}`,
+        caption: `${c.authorName} · ${c.metric} ${c.metricLabel}`,
+        kind: "video" as const,
+        embedUrl: c.videoUrl ?? undefined,
       })),
     [stories],
   );
 
-  const openMedia = (story: PublicStory) => {
-    const idx = mediaItems.findIndex((m) => m.id === story.id);
+  const openMedia = (id: string) => {
+    const idx = mediaItems.findIndex((m) => m.id === id);
     if (idx >= 0) setLightbox(idx);
   };
 
   if (all.length < MIN_STORIES) return null;
 
   return (
-    <HomeSection id="results" labelledBy="stories-title" tone="dark" ribbon="pair">
+    <HomeSection id="results" labelledBy="stories-title" tone="dark" ribbon="pair" mobileCompact>
       <SectionIntro
         id="stories-title"
         tone="dark"
         align="left"
         eyebrow={variant === "projects" ? "Проекты" : "Результаты учеников"}
-        title={variant === "projects" ? noBreakHyphen("Проекты вайб-кодинга") : "Они начали с нуля — вот что получилось"}
-        description={variant === "projects" ? undefined : (description ?? "Люди без технического образования, которые освоили ИИ.")}
+        title={variant === "projects" ? noBreakHyphen("Проекты вайб-кодинга") : "Работы учеников"}
+        description={variant === "projects" ? undefined : (description ?? "Ролики и результаты учеников AI Pro School.")}
         action={
           showAllLink ? (
             <ArrowLink href="/reviews" tone="onDark">
@@ -129,14 +130,19 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
         </div>
       )}
 
-      {/* items-start: карточки разной высоты (видео, до/после, только результат) не растягиваются по строке и не оставляют пустых белых полей */}
-      <ul className="grid items-start gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {stories.map((story) => (
-          <li key={story.id}>
-            <StoryCard
-              story={story}
-              onOpenMedia={story.media ? () => openMedia(story) : undefined}
-            />
+      {/* Одинаковая высота карточек (items-stretch). ≥1024 — 3 колонки, ≥768 — 2; на мобильном горизонтальный scroll-snap, карточка 84% ширины.
+          Меньше 3 карточек после фильтра: две — по 50%, одна — по центру с max-w, без пустых зон. */}
+      <ul
+        className={cn(
+          "-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:-mx-6 sm:px-6 md:mx-0 md:grid md:snap-none md:items-stretch md:gap-5 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden",
+          stories.length >= 3 && "md:grid-cols-2 lg:grid-cols-3",
+          stories.length === 2 && "md:grid-cols-2",
+          stories.length === 1 && "md:mx-auto md:max-w-[420px] md:grid-cols-1",
+        )}
+      >
+        {stories.map((c) => (
+          <li key={c.id} className="flex w-[84%] shrink-0 snap-start md:w-auto md:shrink">
+            <CaseCard item={c} onOpenVideo={c.videoUrl ? () => openMedia(c.id) : undefined} className="w-full" />
           </li>
         ))}
       </ul>

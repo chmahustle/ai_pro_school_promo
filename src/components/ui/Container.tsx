@@ -28,6 +28,8 @@ interface HomeSectionProps {
   ribbon?: RibbonVariant;
   /** Уменьшенные вертикальные отступы панели */
   compact?: boolean;
+  /** Отступы панели 96px на десктопе и 56px на мобильном */
+  mobileCompact?: boolean;
 }
 
 /**
@@ -44,6 +46,7 @@ export function HomeSection({
   tone = "light",
   ribbon,
   compact,
+  mobileCompact,
 }: HomeSectionProps) {
   return (
     <section
@@ -60,7 +63,7 @@ export function HomeSection({
         className={cn(
           "relative overflow-hidden rounded-2xl sm:rounded-3xl",
           tone === "dark" ? "bg-dark text-white" : "bg-bg",
-          padTop === "after-logos" ? "pb-24" : compact ? "py-14 sm:py-16" : "py-24",
+          padTop === "after-logos" ? "pb-24" : compact ? "py-14 sm:py-16" : mobileCompact ? "py-14 sm:py-24" : "py-24",
         )}
       >
         {ribbon ? <Ribbon variant={ribbon} tone={tone} /> : null}

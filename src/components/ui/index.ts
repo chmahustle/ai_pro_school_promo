@@ -12,7 +12,7 @@ export { Marquee } from "./Marquee";
 export { Avatar } from "./Avatar";
 export { MediaPlaceholder } from "./MediaPlaceholder";
 export { Lightbox, type LightboxItem } from "./Lightbox";
-export { StoryCard, type StoryCardProps } from "./StoryCard";
+export { CaseCard } from "./CaseCard";
 export { PlaceholderBadge, Placeholder } from "./PlaceholderBadge";
 export { MeshBackdrop, MeshDivider, type MeshVariant } from "./MeshBackdrop";
 export { SectionIntro } from "./SectionIntro";

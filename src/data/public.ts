@@ -42,11 +42,12 @@ import { GENERAL_PRODUCT } from "./product-ids";
 import { vocabulary } from "./vocabulary";
 import { SITE_URL, site } from "@/lib/site";
 import { formatMonthYear, formatNumber, formatTenge, nameInSentence } from "@/lib/utils";
-import { getVisibleStories, canShowStoryMedia, isStoryPublishable, stories as allStories } from "./stories";
+import { isStoryPublishable, stories as allStories } from "./stories";
+import { caseSourceCaption, getVisibleCases, isCasePublishable, type Case } from "./cases";
 import { team } from "./team";
 import { getVisibleTestimonials } from "./testimonials";
 import { getVisibleWorks } from "./works";
-import type { Audience, Course, Partner, Review, Story, TeamMember } from "./types";
+import type { Audience, AudienceSlug, Course, Partner, Review, Story, TeamMember } from "./types";
 import type {
   PublicFooter,
   MenuAudience,
@@ -65,7 +66,7 @@ import type {
   PublicLineup,
   PublicMetric,
   PublicReview,
-  PublicStory,
+  PublicCase,
   PublicTariff,
   PublicTeamMember,
   PublicTestimonial,
@@ -87,36 +88,29 @@ const devOf = (s: Pick<Story, "source" | "asOf" | "note" | "placeholder"> & { ve
 
 // ───────────── Результаты учеников ─────────────
 
-export function toPublicStory(s: Story): PublicStory {
-  return {
-    id: s.id,
-    direction: s.direction,
-    teacherProject: s.teacherProject,
-    individualResult: s.individualResult,
-    audiences: s.audiences,
-    name: s.name,
-    descriptor: s.descriptor,
-    photo: s.photo ?? null,
-    result: s.result,
-    before: s.before,
-    after: s.after,
-    quote: s.quote?.verbatim ? s.quote.text : undefined,
-    media:
-      s.media && canShowStoryMedia(s)
-        ? { type: s.media.type, src: s.media.src ?? null, embedUrl: s.media.embedUrl, caption: s.media.caption }
-        : undefined,
-    variant: s.variant ?? "default",
-    dev: devOf(s),
-  };
-}
-
-/** Карточки результатов: verified && consent (в dev — все), опционально по аудитории */
-export function getPublicStories(audience?: Story["audiences"][number], direction?: Story["direction"], includeIndividual = false): PublicStory[] {
-  return getVisibleStories()
-    .filter((s) => includeIndividual || !s.individualResult)
-    .filter((s) => !audience || s.audiences.includes(audience))
-    .filter((s) => !direction || s.direction === direction)
-    .map(toPublicStory);
+/** Карточки блока «Результаты учеников»: verified && consent (в dev — все, неподтверждённые с пометкой), опционально по аудитории и направлению */
+export function getPublicCases(audience?: AudienceSlug, direction?: Case["direction"], includeIndividual = false): PublicCase[] {
+  return getVisibleCases()
+    .filter((c) => includeIndividual || !c.individualResult)
+    .filter((c) => !audience || c.audiences.includes(audience))
+    .filter((c) => !direction || c.direction === direction)
+    .map((c) => ({
+      id: c.id,
+      direction: c.direction,
+      audiences: c.audiences,
+      individualResult: c.individualResult,
+      authorName: c.authorName,
+      authorRole: c.authorRole,
+      metric: c.metric,
+      metricLabel: c.metricLabel,
+      doneLine: c.doneLine,
+      posterSrc: c.posterSrc,
+      statsSrc: c.statsSrc,
+      videoUrl: c.videoUrl,
+      sourceUrl: c.sourceUrl,
+      sourceCaption: caseSourceCaption(c),
+      devNote: SHOW_PLACEHOLDERS && !isCasePublishable(c) ? (c.note ?? "не подтверждено") : undefined,
+    }));
 }
 
 // ───────────── Метрики ─────────────

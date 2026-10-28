@@ -33,6 +33,28 @@ export interface PublicStory {
   dev?: PublicDev;
 }
 
+/** Карточка кейса блока «Результаты учеников» (единый шаблон CaseCard) */
+export interface PublicCase {
+  id: string;
+  direction: "creator" | "vibecoding";
+  audiences: AudienceSlug[];
+  individualResult?: boolean;
+  authorName: string;
+  authorRole: string;
+  metric: string;
+  metricLabel: string;
+  doneLine: string;
+  posterSrc: string | null;
+  statsSrc: string | null;
+  videoUrl: string | null;
+  /** Публичный оригинал для ссылки «Смотреть ролик» */
+  sourceUrl: string | null;
+  /** «Данные аккаунта ученицы, октябрь 2026» */
+  sourceCaption: string;
+  /** Только dev: пометка у неподтверждённого кейса */
+  devNote?: string;
+}
+
 export interface PublicMetric {
   id: string;
   value: number;

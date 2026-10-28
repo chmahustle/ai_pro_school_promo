@@ -61,6 +61,13 @@ const FORBIDDEN_PHRASES = [
   "Vibe-coding",
   "Бесплатный вебинар",
   "AI Content Creator (курс)",
+  // Шаг 23: кейс Мадины не подтверждён (verified:false) — формулировки про клиента, заказы и «монетизацию» нигде вне dev-блоков и строк copy-check:ignore
+  "постоянный клиент",
+  "постоянным клиентом",
+  "Казахтелеком",
+  "Школа сама заказывает",
+  "заказывает у неё",
+  "монетизир",
 ];
 const FORBIDDEN_RE = [
   { re: /700[\s\u00a0\u202f]000/, name: "«700 000» (старая цена курса вайб-кодинга не подтверждена)" },
@@ -88,6 +95,9 @@ const PRODUCT_FORBIDDEN = ["стабильный доход"];
 // Шаг 22: лендинг курса «Вайбкодинг с нуля» (данные, блоки, страница) — без обещаний дохода и внутренних деталей описания курса.
 // Остальные страницы сайта (направление creator и др.) такие слова используют, поэтому проверка только по файлам курса.
 const COURSE_FILES = /^src\/(data\/(courseContent|speakers|vibecodingBlocks)\.ts|components\/sections\/(ProductLanding|CourseBlocks)\.tsx|app\/\(landing\)\/courses\/vibecoding-course\/.*)$/;
+// Шаг 23: файлы блока «Результаты учеников» (единый шаблон CaseCard) — без слова «доход» (кроме строк copy-check:ignore)
+const CASES_FILES = /^src\/(data\/cases\.ts|components\/(sections\/HomeStories(Client)?|ui\/CaseCard)\.tsx)$/;
+const CASES_FORBIDDEN = ["доход", "заказывает"];
 const COURSE_FORBIDDEN = ["приносит доход", "реальные деньги", "зарабатыв", "монетиз", "банковской ячейке", "90% проектов", "часто врёт"];
 const WARN_RE = /заработ|зарабатыв|доход|монетиз|ежедневно|приводим заказчиков|вирусят/i;
 const warnings = [];
@@ -166,6 +176,11 @@ for (const file of walk(SRC)) {
     if (COURSE_FILES.test(relative(ROOT, file))) {
       for (const phrase of COURSE_FORBIDDEN) {
         if (ncode.includes(norm(phrase))) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase: `${phrase} (лендинг курса)`, text: raw.trim().slice(0, 140) });
+      }
+    }
+    if (CASES_FILES.test(relative(ROOT, file))) {
+      for (const phrase of CASES_FORBIDDEN) {
+        if (ncode.includes(norm(phrase))) violations.push({ file: relative(ROOT, file), line: idx + 1, phrase: `${phrase} (результаты учеников)`, text: raw.trim().slice(0, 140) });
       }
     }
     if (MENU_FILES.test(relative(ROOT, file))) {

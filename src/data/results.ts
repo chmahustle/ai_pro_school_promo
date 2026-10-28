@@ -28,15 +28,15 @@ export const results: ResultCase[] = [
     id: "madina",
     name: "Мадина",
     context: "мама двоих детей в декрете",
-    headline: "Школа сама заказывает у неё ролики",
-    before: "Мама двоих детей в декрете, без дохода и опыта в IT. Только телефон и желание.",
-    after: "Работает с компаниями, постоянный клиент Казахтелеком, стабильный доход из дома.",
-    quote: "Я начала, имея только телефон. Сегодня Казахтелеком мой постоянный клиент",
+    headline: "Школа сама заказывает у неё ролики", // copy-check:ignore
+    before: "Мама двоих детей в декрете, без дохода и опыта в IT. Только телефон и желание.", // copy-check:ignore
+    after: "Работает с компаниями, постоянный клиент Казахтелеком, стабильный доход из дома.", // copy-check:ignore
+    quote: "Я начала, имея только телефон. Сегодня Казахтелеком мой постоянный клиент", // copy-check:ignore
     photo: "/stories/case-madina.webp",
     audiences: ["beginners", "freelancers", "business", "career"],
     course: "ai-creator",
     source: "https://freelance.ai-pro-school.kz/",
-    status: "verified",
+    status: "placeholder", // не публикуем: формулировки про клиента и доход не подтверждены // copy-check:ignore
   },
   {
     id: "gulaiym",

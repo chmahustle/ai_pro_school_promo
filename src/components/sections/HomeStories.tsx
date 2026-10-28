@@ -1,4 +1,4 @@
-import { getPublicResultsTabs, getPublicStories } from "@/data/public";
+import { getPublicCases, getPublicResultsTabs } from "@/data/public";
 import type { AudienceSlug } from "@/data/types";
 import { HomeStoriesClient } from "./HomeStoriesClient";
 
@@ -28,8 +28,8 @@ interface HomeStoriesProps {
  * здесь, до передачи в браузер. Меньше 3 подтверждённых кейсов — блок скрыт.
  */
 export function HomeStories({ limit, withFilters, showAllLink, audience, direction, variant, includeIndividual, onlyViews, description }: HomeStoriesProps = {}) {
-  const all = getPublicStories(audience, direction, includeIndividual);
-  const stories = onlyViews ? all.filter((s) => s.result.unit.includes("просмотр")) : all;
+  const all = getPublicCases(audience, direction, includeIndividual);
+  const stories = onlyViews ? all.filter((c) => c.metricLabel.includes("просмотр")) : all;
   if (stories.length < 3) return null;
   // Вкладки направлений: вайб-кодинг — только если есть подтверждённые кейсы этого направления
   const tabs = getPublicResultsTabs(stories).tabs;
