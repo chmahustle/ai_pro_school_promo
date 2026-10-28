@@ -316,8 +316,8 @@ export const products: Product[] = [
     modules: null, // TODO(клиент): программа по модулям
     refundTerms: null, // TODO(клиент): условия возврата (текст школы)
     oldPrice: 700000,
-    priceLabel: "Спеццена", // copy-check:ignore — не подтверждено, в проде не выводить
-    oldPriceVerified: false,
+    priceLabel: "Спеццена", // copy-check:ignore — метка не выводится
+    oldPriceVerified: true, // 700 000 ₸ → 400 000 ₸: показ зачёркнутой цены решил владелец (метку «Спеццена» не выводим)
     thanksUrl: thanks("course"),
     leader: "Майдан",
     verified: true,
@@ -371,6 +371,8 @@ export interface PriceParts {
   amount: string;
   /** «₸» — пусто у «бесплатно» */
   unit: string;
+  /** Старая (зачёркнутая) цена рядом с текущей: «700 000» — только подтверждённая (oldPriceVerified) и платный продукт */
+  old?: string;
   /** Текст целиком для случаев, где разметка не нужна */
   text: string;
 }
@@ -384,10 +386,13 @@ export function formatPriceParts(product: Product, now: Date = currentDate()): P
   if (price === 0) return { prefix: "", amount: FREE_WORD, unit: "", text: FREE_WORD };
   const prefix = product.pricePrefix;
   const amount = formatNumber(price);
+  // Зачёркнутая старая цена — только подтверждённая и выше текущей
+  const old = product.oldPrice && product.oldPriceVerified === true && product.oldPrice > price ? formatNumber(product.oldPrice) : undefined;
   return {
     prefix,
     amount,
     unit: "₸",
+    ...(old ? { old } : {}),
     text: `${prefix ? `${prefix}${NBSP}` : ""}${amount}${NBSP}₸`,
   };
 }

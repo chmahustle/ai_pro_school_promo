@@ -216,8 +216,8 @@ export function getPublicHeroData(): PublicHeroData {
 // ───────────── «Как это работает»: пути ─────────────
 
 const toPrice = (p: (typeof products)[number]) => {
-  const { prefix, amount, unit } = formatPriceParts(p);
-  return amount ? { prefix, amount, unit } : null;
+  const { prefix, amount, unit, old } = formatPriceParts(p);
+  return amount ? { prefix, amount, unit, ...(old ? { old } : {}) } : null;
 };
 
 /** Два пути: креаторство (практикум → курс) и вайб-кодинг (эфир → офлайн → курс; четвёртый шаг «проект для партнёра» — только при verified) */
@@ -505,7 +505,7 @@ export function getPublicLadder(direction: Direction): PublicLadder {
 
 /** Ступень лестницы для карточки (общая для лестницы, каталога и блоков «Что дальше») */
 function toLadderStep(p: (typeof products)[number]): PublicLadderStep {
-  const { prefix, amount, unit } = formatPriceParts(p);
+  const { prefix, amount, unit, old } = formatPriceParts(p);
   return {
     id: p.id,
     direction: p.direction,
@@ -514,7 +514,7 @@ function toLadderStep(p: (typeof products)[number]): PublicLadderStep {
     devNameNote: SHOW_PLACEHOLDERS && !p.nameApproved ? "название на утверждении" : undefined,
     resultLine: p.resultLine,
     format: p.format,
-    price: { prefix, amount, unit },
+    price: { prefix, amount, unit, ...(old ? { old } : {}) },
     start: startLabel(p),
     ctaLabel: p.ctaLabel,
     href: p.landingUrl,
@@ -583,7 +583,7 @@ const NBSP_ = "\u00a0";
 /** Страница продукта: цена, рассрочка (если сумма задана), места и «Где и когда» (если данные есть) */
 export function getPublicProductPage(id: "offline" | "course"): PublicProductPage {
   const p = getProduct(id);
-  const { prefix, amount, unit } = formatPriceParts(p);
+  const { prefix, amount, unit, old } = formatPriceParts(p);
   const d = directions[p.direction];
   const missing: string[] = [];
   if (id === "offline") {
@@ -605,7 +605,7 @@ export function getPublicProductPage(id: "offline" | "course"): PublicProductPag
     ...(id === "course" ? courseExtras() : {}),
     formTitle: formConfig.productLeadTitle,
     format: p.format,
-    price: { prefix, amount, unit },
+    price: { prefix, amount, unit, ...(old ? { old } : {}) },
     installment: p.installmentFromPerMonth ? `Рассрочка от ${formatNumber(p.installmentFromPerMonth)}${NBSP_}₸ в месяц` : null,
     ctaLabel: p.ctaLabel,
     seatsLeft: p.seatsLeft,

@@ -93,7 +93,7 @@ export interface PublicLadderStep {
   devNameNote?: string;
   resultLine: string;
   format: string;
-  price: { prefix: string; amount: string; unit: string };
+  price: { prefix: string; amount: string; unit: string; /** зачёркнутая старая цена */ old?: string };
   /** Ближайший старт: только подтверждённый, иначе null */
   start: string | null;
   ctaLabel: string;
@@ -131,7 +131,7 @@ export interface PublicPathStep {
   title: string;
   text: string;
   /** Цена шага, если у шага есть продукт */
-  price: { prefix: string; amount: string; unit: string } | null;
+  price: { prefix: string; amount: string; unit: string; old?: string } | null;
   /** Входная ступень: розовая карточка с меткой entryBadge */
   isEntry: boolean;
 }
@@ -310,7 +310,7 @@ export interface PublicProductPage {
   /** Заголовок формы заявки (forms.ts) */
   formTitle: string;
   format: string;
-  price: { prefix: string; amount: string; unit: string };
+  price: { prefix: string; amount: string; unit: string; old?: string };
   /** «Рассрочка от … ₸ в месяц» — только если сумма задана */
   installment: string | null;
   ctaLabel: string;
