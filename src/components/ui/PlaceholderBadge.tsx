@@ -6,15 +6,28 @@ interface PlaceholderBadgeProps {
   status?: Exclude<VerificationStatus, "verified">;
   note?: string;
   className?: string;
+  /** «note» — красная пунктирная плашка (как остальные dev-пометки, со словом UNVERIFIED/PLACEHOLDER и пояснением) */
+  variant?: "badge" | "note";
 }
 
 /**
  * Заметный dev-бейдж поверх плейсхолдерных данных. В проде не рендерится
  * (если не включён NEXT_PUBLIC_SHOW_PLACEHOLDERS). Родитель должен быть `relative`.
  */
-export function PlaceholderBadge({ status = "placeholder", note, className }: PlaceholderBadgeProps) {
+export function PlaceholderBadge({ status = "placeholder", note, className, variant = "badge" }: PlaceholderBadgeProps) {
   if (!SHOW_PLACEHOLDERS) return null;
   const label = status === "placeholder" ? "PLACEHOLDER" : "UNVERIFIED";
+  if (variant === "note") {
+    return (
+      <span
+        role="note"
+        className={cn("pointer-events-auto absolute z-30 rounded-lg border border-dashed border-danger/60 bg-white/95 px-2 py-1 text-[11px] font-semibold leading-tight text-danger", className)}
+      >
+        {label}
+        {note ? ` · ${note}` : ""}
+      </span>
+    );
+  }
   return (
     <span
       role="note"

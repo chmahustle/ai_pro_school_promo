@@ -15,6 +15,8 @@ export interface LightboxItem {
   embedUrl?: string;
   /** Для видео: локальный MP4 (вертикальный ролик) — родной плеер */
   videoSrc?: string;
+  /** Вертикальный ролик 9:16 (embed): высота до 85vh, без автозапуска */
+  vertical?: boolean;
 }
 
 interface LightboxProps {
@@ -66,7 +68,10 @@ export function Lightbox({ items, index, onClose, onChange }: LightboxProps) {
                 className="mx-auto max-h-[75dvh] w-auto max-w-full rounded-2xl bg-ink"
               />
             ) : item.embedUrl ? (
-              <div className="aspect-video w-full overflow-hidden rounded-2xl bg-ink">
+              <div
+                className={item.vertical ? "mx-auto aspect-[9/16] max-w-full overflow-hidden rounded-2xl bg-ink" : "aspect-video w-full overflow-hidden rounded-2xl bg-ink"}
+                style={item.vertical ? { height: "min(85vh, calc((100vw - 1rem) * 16 / 9))" } : undefined}
+              >
                 <iframe
                   src={item.embedUrl}
                   title={item.alt}

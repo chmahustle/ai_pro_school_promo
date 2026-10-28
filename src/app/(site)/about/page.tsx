@@ -5,7 +5,6 @@ import { PageHero } from "@/components/sections/PageHero";
 import { HomeMetrics } from "@/components/sections/HomeMetrics";
 import { Team } from "@/components/sections/Team";
 import { LogosMarquee } from "@/components/sections/LogosMarquee";
-import { HowItWorks } from "@/components/sections/HowItWorks";
 import { FAQ } from "@/components/sections/FAQ";
 import { LeadSection } from "@/components/sections/LeadSection";
 import { getFaq } from "@/data/faq";
@@ -86,7 +85,6 @@ export default function AboutPage() {
 
       <Team />
       <LogosMarquee title="Площадки и партнёры" className="pb-12 sm:pb-16" />
-      <HowItWorks />
 
       {/* Strimmeo — компактная тёмная полоса той же ширины, что и соседние панели */}
       <section id="strimmeo" aria-labelledby="platform-title" className="mt-4 px-2 sm:px-4">

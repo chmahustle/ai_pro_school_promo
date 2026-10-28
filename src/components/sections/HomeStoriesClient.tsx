@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { ArrowLink, CaseCard, HomeSection, Lightbox, SectionIntro, type LightboxItem } from "@/components/ui";
 import { storyAudienceFilters } from "@/data/story-filters";
 import type { PublicCase } from "@/data/public-types";
@@ -54,13 +54,23 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
         caption: `${c.authorName} · ${c.metric} ${c.metricLabel}`,
         kind: "video" as const,
         embedUrl: c.videoUrl ?? undefined,
+        vertical: true,
       })),
     [stories],
   );
 
-  const openMedia = (id: string) => {
+  // Кнопка play, с которой открыли модалку: после закрытия фокус возвращается на неё
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const openMedia = (id: string, trigger: HTMLButtonElement) => {
     const idx = mediaItems.findIndex((m) => m.id === id);
-    if (idx >= 0) setLightbox(idx);
+    if (idx < 0) return;
+    triggerRef.current = trigger;
+    setLightbox(idx);
+  };
+  const closeMedia = () => {
+    setLightbox(null);
+    const el = triggerRef.current;
+    requestAnimationFrame(() => el?.focus());
   };
 
   if (all.length < MIN_STORIES) return null;
@@ -142,12 +152,12 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
       >
         {stories.map((c) => (
           <li key={c.id} className="flex w-[84%] shrink-0 snap-start md:w-auto md:shrink">
-            <CaseCard item={c} onOpenVideo={c.videoUrl ? () => openMedia(c.id) : undefined} className="w-full" />
+            <CaseCard item={c} onOpenVideo={c.videoUrl ? (el) => openMedia(c.id, el) : undefined} className="w-full" />
           </li>
         ))}
       </ul>
 
-      <Lightbox items={mediaItems} index={lightbox} onClose={() => setLightbox(null)} onChange={setLightbox} />
+      <Lightbox items={mediaItems} index={lightbox} onClose={closeMedia} onChange={setLightbox} />
     </HomeSection>
   );
 }
