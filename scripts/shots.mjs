@@ -33,7 +33,7 @@ const widths = opt("widths", prod ? "1440,375" : "375,1440").split(",").map(Numb
 const paths = args.length ? args : prod ? ["/", "/reviews", "/courses/vibecoding-efir"] : ["/"];
 
 /** Что не должно попасть на prod-страницы: dev-плашки и скрытые карточки */
-const PROD_FORBIDDEN = ["UNVERIFIED", "PLACEHOLDER", "не подтверждено", "не подтверждены", "уточнить у школы", "доходная формулировка", "метрика не число", "Гульдария", "Шынар", "Молдир", "Клиенты-компании"];
+const PROD_FORBIDDEN = ["UNVERIFIED", "PLACEHOLDER", "не подтверждено", "не подтверждены", "уточнить у школы", "доходная формулировка", "метрика не число", "Гульдария", "Клиенты-компании"];
 
 let serverStarted = false;
 if (prod) {

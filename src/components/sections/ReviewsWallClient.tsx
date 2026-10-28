@@ -190,7 +190,7 @@ function ReviewCard({
         )}
         <p className={cn("leading-relaxed text-ink-700", compact ? "text-[13px]" : "text-[15px]")}>{item.text}</p>
         <footer className="mt-auto flex items-center gap-2.5">
-          <Avatar name={item.author} src={item.photo} size="sm" placeholder={!item.photo} />
+          {item.photo && <Avatar name={item.author} src={item.photo} size="sm" />}
           <div className="min-w-0">
             <p className="text-sm font-semibold">{item.author}</p>
             {item.context && <p className="truncate text-xs text-ink-500">{item.context}</p>}
@@ -251,7 +251,7 @@ function ReviewCard({
           </span>
         </div>
         <div className={cn("flex items-center gap-2.5", compact ? "p-2.5" : "gap-3 p-4")}>
-          {!compact && <Avatar name={item.author} src={item.photo} size="sm" placeholder={!item.photo} />}
+          {!compact && item.photo && <Avatar name={item.author} src={item.photo} size="sm" />}
           <div className="min-w-0">
             <p className={cn("truncate font-semibold", compact ? "text-[12px]" : "text-sm")}>{item.author}</p>
             {(item.context ?? item.text) && (

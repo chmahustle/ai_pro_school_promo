@@ -1,9 +1,8 @@
 import Image from "next/image";
 import { Check, Instagram, Linkedin, Send, Youtube } from "lucide-react";
-import { Pill, PlaceholderBadge, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
+import { Pill, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
 import { team } from "@/data/team";
 import type { TeamMember } from "@/data/types";
-import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
 import { cn } from "@/lib/utils";
 
 interface TeamProps {
@@ -84,26 +83,12 @@ export function Team({
 /** Цвета карточек в ряду: тёмная, сиреневая, белая (как плитки главной) */
 const gridTints = ["dark", "lavender", "white"] as const;
 
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase() ?? "")
-    .join("");
-}
-
-/** Фото участника; без фото — инициалы на градиенте (в dev бейдж «нужно фото») */
+/** Фото участника; нет фото — блок не рисуем (ни инициалов, ни плашки) */
 function MemberPhoto({ member, className, sizes }: { member: TeamMember; className?: string; sizes: string }) {
+  if (!member.photo) return null;
   return (
     <div className={cn("relative overflow-hidden bg-dark", className)}>
-      {member.photo ? (
-        <Image src={member.photo} alt={member.name} fill sizes={sizes} className="object-cover object-top" />
-      ) : (
-        <div className="absolute inset-0 grid place-items-center bg-gradient-to-br from-brand-200 via-brand-100 to-lavender">
-          <span className="font-display text-6xl font-extrabold text-brand-700/60">{initials(member.name)}</span>
-          {SHOW_PLACEHOLDERS && <PlaceholderBadge note="Фото преподавателя" />}
-        </div>
-      )}
+      <Image src={member.photo} alt={member.name} fill sizes={sizes} className="object-cover object-top" />
     </div>
   );
 }
@@ -139,7 +124,7 @@ function Socials({ member, onDark }: { member: TeamMember; onDark?: boolean }) {
 /** Основатель: тёмная карточка во всю ширину — фото слева, текст и факты справа */
 function FeatureCard({ member }: { member: TeamMember }) {
   return (
-    <article className="relative grid overflow-hidden rounded-[32px] bg-dark text-white lg:grid-cols-[minmax(0,400px)_1fr]">
+    <article className={cn("relative grid overflow-hidden rounded-[32px] bg-dark text-white", member.photo && "lg:grid-cols-[minmax(0,400px)_1fr]")}>
       <MemberPhoto member={member} sizes="(max-width: 1024px) 100vw, 400px" className="aspect-[4/5] lg:aspect-auto lg:min-h-[480px]" />
       <div className="relative flex flex-col gap-5 p-6 sm:p-8 lg:p-10">
         <svg viewBox="0 0 100 100" aria-hidden className="audience-spark pointer-events-none absolute -right-8 -top-8 size-44 fill-white/[0.06]">

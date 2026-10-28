@@ -1,23 +1,14 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { MeshBackdrop, Pill, Reveal, Ribbon } from "@/components/ui";
+import { MeshBackdrop, Pill, Ribbon } from "@/components/ui";
 import { LeadButton } from "@/components/ui/LeadButton";
-import { ProductPrice } from "@/components/ui/ProductPrice";
-import { getPublicCatalog, getPublicLineup } from "@/data/public";
-import { cn } from "@/lib/utils";
-
-/** Цвета строк по направлению: розовая — креаторство, тёмная — вайб-кодинг */
-const rowTone = {
-  creator: { row: "bg-brand text-white", sub: "text-white/75", arrow: "bg-white text-brand group-hover:bg-dark group-hover:text-white" },
-  vibecoding: { row: "bg-dark text-white", sub: "text-white/65", arrow: "bg-white text-ink group-hover:bg-brand group-hover:text-white" },
-} as const;
+import { getPublicLineup } from "@/data/public";
 
 /**
- * Hero страницы «Курсы»: слева заголовок и CTA, справа все продукты списком-быстрыми ссылками
- * (названия, форматы и цены — из products.ts). На mesh-фоне с лёгкой лентой, как hero главной.
+ * Hero страницы «Курсы»: заголовок, подзаголовок и две кнопки на mesh-фоне с лёгкой лентой, как hero главной.
+ * Список программ — ниже, в каталоге (#courses), справа в hero его нет.
  */
 export function CoursesHero() {
-  const { steps } = getPublicCatalog();
   const lineup = getPublicLineup();
   return (
     <section className="px-2 sm:px-4" aria-labelledby="courses-hero-title">
@@ -25,7 +16,7 @@ export function CoursesHero() {
         <MeshBackdrop variant="home" rounded="rounded-3xl" />
         <Ribbon variant="right" tone="light" className="hidden sm:block" draw />
 
-        <div className="container-site relative z-10 grid items-center gap-10 py-14 sm:py-16 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:py-20">
+        <div className="container-site relative z-10 py-14 sm:py-16 lg:py-20">
           <div className="flex flex-col items-start">
             <Pill tone="brand" dot>
               Каталог
@@ -43,36 +34,6 @@ export function CoursesHero() {
               </Link>
             </div>
           </div>
-
-          <Reveal delay={0.1}>
-            <ul className="flex flex-col gap-2.5">
-              {steps.map((s, i) => {
-                const t = rowTone[s.direction];
-                return (
-                  <li key={s.id}>
-                    <Link
-                      href={s.href}
-                      className={cn(
-                        "group flex items-center gap-4 rounded-[24px] p-3.5 pr-3 transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-card sm:p-4 sm:pr-4",
-                        t.row,
-                      )}
-                    >
-                      <span className="font-display text-2xl font-extrabold tabular-nums opacity-30">{String(i + 1).padStart(2, "0")}</span>
-                      <span className="min-w-0 flex-1">
-                        <span className="block font-display text-[17px] font-bold leading-tight">{s.name}</span>
-                        <span className={cn("mt-0.5 block text-[13px]", t.sub)}>
-                          {s.format} · <ProductPrice parts={s.price} className="font-semibold" />
-                        </span>
-                      </span>
-                      <span className={cn("grid size-10 shrink-0 place-items-center rounded-full transition-[transform,background-color,color] duration-300 group-hover:rotate-45", t.arrow)}>
-                        <ArrowUpRight className="size-5" aria-hidden />
-                      </span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </Reveal>
         </div>
       </div>
     </section>
