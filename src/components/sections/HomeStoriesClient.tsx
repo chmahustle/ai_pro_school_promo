@@ -7,7 +7,6 @@ import type { PublicCase } from "@/data/public-types";
 import type { AudienceSlug } from "@/data/types";
 import { cn, noBreakHyphen } from "@/lib/utils";
 import { youtubeEmbedUrl } from "@/lib/youtube";
-import { isCompactCase } from "@/components/ui/CaseCard";
 
 const HOME_LIMIT = 3;
 type FilterId = "all" | AudienceSlug;
@@ -45,7 +44,6 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
     return limit == null ? list : list.slice(0, limit);
   }, [all, filter, limit, showTabs, direction]);
   const [lightbox, setLightbox] = useState<number | null>(null);
-  const anyVideo = stories.some((c) => c.youtubeId);
 
   // Видео открывается по клику в модалке; embed подгружается только тогда, автозапуска нет
   const mediaItems: LightboxItem[] = useMemo(
@@ -155,7 +153,7 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
         )}
       >
         {stories.map((c) => (
-          <li key={c.id} className={cn("flex w-[84%] shrink-0 snap-start md:w-auto md:shrink", isCompactCase(c, anyVideo) && "md:self-start")}>
+          <li key={c.id} className="flex w-[84%] shrink-0 snap-start md:w-auto md:shrink">
             <CaseCard item={c} onOpenVideo={c.youtubeId ? (el) => openMedia(c.id, el) : undefined} className="w-full" />
           </li>
         ))}

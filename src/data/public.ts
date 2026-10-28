@@ -115,6 +115,7 @@ export function getPublicCases(audience?: AudienceSlug, direction?: Case["direct
         authorRole: c.authorRole,
         metric: c.metric,
         metricLabel: c.metricLabel,
+        headline: c.headline,
         photoSrc: c.photoSrc,
         posterSrc: c.posterSrc,
         youtubeId: c.youtubeId,

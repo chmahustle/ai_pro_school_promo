@@ -252,7 +252,7 @@ export const courses: Course[] = [
       title: "При оплате в течение 24 часов",
       items: ["Мини-гайд в подарок"],
       deadline: "24 часа",
-      verified: false, // TODO(клиент): подтвердить бонус за оплату в 24 часа
+      verified: true, // бонус за оплату в 24 часа подтверждён владельцем
     },
     audiences: ["beginners", "freelancers", "business"],
     seo: {

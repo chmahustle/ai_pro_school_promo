@@ -51,6 +51,8 @@ export interface PublicCase {
   authorRole: string;
   metric: string;
   metricLabel: string;
+  /** Заголовок вместо метрики (результат не числом) */
+  headline?: string;
   photoSrc: string | null;
   posterSrc: string | null;
   /** id ролика YouTube: плеер открывается в браузере по клику (ссылок youtube.com в HTML нет) */

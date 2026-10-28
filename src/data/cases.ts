@@ -22,10 +22,12 @@ export interface Case {
   authorName: string;
   /** Роль/описание одной строкой */
   authorRole: string;
-  /** Число: «2,7 млн», «500 000 ₸» (обязательно с цифрой; нечисловые заголовки метрикой не считаются) */
+  /** Число: «2,7 млн», «500 000 ₸» (обязательно с цифрой; нечисловой заголовок метрикой не считается). Пусто — используется headline */
   metric: string;
   /** Подпись к цифре: «просмотров на ролике» */
   metricLabel: string;
+  /** Заголовок вместо метрики, если результат не числом (одна строка) */
+  headline?: string;
   /** Фото автора (56 px в ряду автора); нет — миниатюра постера видео, иначе инициалы */
   photoSrc: string | null;
   /** Постер видео (next/image): миниатюра 56 px с play */
@@ -77,26 +79,25 @@ export const cases: Case[] = [
     note: "нужен скриншот статистики или видео", // TODO(клиент)
   },
   {
-    // Не публикуем: формулировки про заказчиков и доход не подтверждены (verified:false) — в prod карточки нет
     id: "madina",
     direction: "creator",
     audiences: ["beginners", "freelancers", "business", "career"],
     authorName: "Мадина",
     authorRole: "мама двоих детей в декрете",
-    metric: "Клиенты-компании", // copy-check:ignore
-    metricLabel: "постоянный клиент Казахтелеком", // copy-check:ignore
+    // Нечисловой результат: вместо метрики — заголовок (тексты подтверждены владельцем)
+    metric: "",
+    metricLabel: "",
+    headline: "Школа сама заказывает у неё ролики",
     photoSrc: "/stories/case-madina.webp",
     posterSrc: null,
-    sourceUrl: null,
-    before: "Мама двоих детей в декрете, без дохода и опыта в IT. Только телефон и желание.", // copy-check:ignore
-    after: "Работает с компаниями, постоянный клиент Казахтелеком, стабильный доход из дома.", // copy-check:ignore
-    quote: "Я начала, имея только телефон. Сегодня Казахтелеком мой постоянный клиент", // copy-check:ignore
-    textsVerified: false,
+    before: "Мама двоих детей в декрете, без дохода и опыта в IT. Только телефон и желание.",
+    after: "Работает с компаниями, постоянный клиент Казахтелеком, стабильный доход из дома.",
+    quote: "Я начала, имея только телефон. Сегодня Казахтелеком мой постоянный клиент",
+    textsVerified: true,
     sourceKind: "student-f",
     asOf: AS_OF,
-    verified: false,
+    verified: true,
     consent: true,
-    note: "не публикуем: формулировки не подтверждены",
   },
   {
     id: "gulaiym",
@@ -174,7 +175,8 @@ export const cases: Case[] = [
 export const isCasePublishable = (c: Case): boolean => c.verified && c.consent;
 
 /** Метрика — число с подписью: есть хотя бы одна цифра */
-export const isNumericMetric = (metric: string): boolean => /\d/.test(metric);
+/** Метрика допустима, если пустая (тогда нужен headline) или с цифрой; нечисловой непустой заголовок («Клиенты-компании») метрикой не считается */
+export const isNumericMetric = (metric: string): boolean => metric === "" || /\d/.test(metric);
 
 /** Подпись-источник: «Данные аккаунта ученицы, октябрь 2026» / «Данные школы, октябрь 2026» */
 export function caseSourceCaption(c: Case): string {

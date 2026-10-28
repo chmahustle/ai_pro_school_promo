@@ -51,7 +51,8 @@ export function Lightbox({ items, index, onClose, onChange }: LightboxProps) {
   }, [open, prev, next]);
 
   return (
-    <Modal open={open} onClose={onClose} size="full" bare title={item?.alt}>
+    // Вертикальный ролик: без прокрутки — панель не скроллится, высота плеера подогнана под экран
+    <Modal open={open} onClose={onClose} size="full" bare title={item?.alt} className={item?.vertical ? "overflow-visible" : undefined}>
       {item && (
         <div className="flex flex-col items-center gap-4 px-2 pb-6 pt-12 sm:px-14">
           <div className="relative w-full max-w-4xl">
@@ -69,8 +70,8 @@ export function Lightbox({ items, index, onClose, onChange }: LightboxProps) {
               />
             ) : item.embedUrl ? (
               <div
-                className={item.vertical ? "mx-auto aspect-[9/16] max-w-full overflow-hidden rounded-2xl bg-ink" : "aspect-video w-full overflow-hidden rounded-2xl bg-ink"}
-                style={item.vertical ? { height: "min(85vh, calc((100vw - 1rem) * 16 / 9))" } : undefined}
+                className={item.vertical ? "mx-auto aspect-[9/16] max-w-full overflow-hidden rounded-[24px] bg-ink" : "aspect-video w-full overflow-hidden rounded-2xl bg-ink"}
+                style={item.vertical ? { height: "min(calc(92dvh - 5.5rem), calc((100vw - 1rem) * 16 / 9))" } : undefined}
               >
                 <iframe
                   src={item.embedUrl}
@@ -114,8 +115,8 @@ export function Lightbox({ items, index, onClose, onChange }: LightboxProps) {
               </>
             )}
           </div>
-          {item.caption && <p className="max-w-2xl text-center text-sm text-white/80">{item.caption}</p>}
-          {items.length > 1 && index !== null && (
+          {item.caption && !item.vertical && <p className="max-w-2xl text-center text-sm text-white/80">{item.caption}</p>}
+          {items.length > 1 && index !== null && !item.vertical && (
             <p className="text-xs text-white/50 tabular-nums">
               {index + 1} / {items.length}
             </p>

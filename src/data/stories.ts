@@ -36,17 +36,17 @@ export const stories: Story[] = [
     name: "Мадина",
     descriptor: "мама двоих детей в декрете",
     photo: "/stories/case-madina.webp",
-    result: { value: "", unit: "", text: "Школа сама заказывает у неё ролики" }, // copy-check:ignore
-    before: "Мама двоих детей в декрете, без дохода и опыта в IT. Только телефон и желание.", // copy-check:ignore
-    after: "Работает с компаниями, постоянный клиент Казахтелеком, стабильный доход из дома.", // copy-check:ignore
+    result: { value: "", unit: "", text: "Школа сама заказывает у неё ролики" },
+    before: "Мама двоих детей в декрете, без дохода и опыта в IT. Только телефон и желание.",
+    after: "Работает с компаниями, постоянный клиент Казахтелеком, стабильный доход из дома.",
     quote: {
-      text: "Я начала, имея только телефон. Сегодня Казахтелеком мой постоянный клиент", // copy-check:ignore
+      text: "Я начала, имея только телефон. Сегодня Казахтелеком мой постоянный клиент",
       verbatim: true,
     },
     audiences: ["beginners", "freelancers", "business", "career"],
     source: "freelance.ai-pro-school.kz",
     asOf: "2026-10",
-    verified: false, // не публикуем: формулировки про клиента и доход не подтверждены // copy-check:ignore
+    verified: true,
     consent: true,
     note: "Источник: https://freelance.ai-pro-school.kz/ #cases",
   },
