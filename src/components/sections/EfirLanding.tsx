@@ -1,7 +1,6 @@
-import Link from "next/link";
-import { ArrowRight, Calendar, Clock, Signal, MonitorPlay } from "lucide-react";
+import { Calendar, Clock, Signal, MonitorPlay } from "lucide-react";
 import { LandingHeader } from "@/components/layout/LandingHeader";
-import { Button, Section, SectionIntro } from "@/components/ui";
+import { Button } from "@/components/ui";
 import { getFaq } from "@/data/faq";
 import { formConfig } from "@/data/forms";
 import { getPublicLadder } from "@/data/public";
@@ -63,25 +62,6 @@ export function EfirLanding() {
       />
 
       <ForWhomTiles id="efir-forwhom-title" items={blocks.forWhom} />
-
-      {ladder.forWhomLinks.length > 0 && (
-        <Section aria-labelledby="efir-links-title" className="!pt-0">
-          <SectionIntro id="efir-links-title" align="left" eyebrow="Для кого" title="Эфир для вашей задачи" />
-          <ul className="flex flex-wrap gap-3" role="list">
-            {ladder.forWhomLinks.map((c) => (
-              <li key={c.href}>
-                <Link
-                  href={c.href}
-                  className="inline-flex min-h-11 items-center gap-2 rounded-pill bg-surface px-5 py-2.5 text-[15px] font-semibold text-ink shadow-soft ring-1 ring-ink/5 transition-colors hover:bg-lavender focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-brand"
-                >
-                  {c.label}
-                  <ArrowRight className="size-4" aria-hidden />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Section>
-      )}
 
       <Programs
         modules={[{ id: "efir", eyebrow: "Эфир", title: efir.name, lessons: blocks.efirAgenda.map((a) => (a.devNote ? `${a.text} (${a.devNote})` : a.text)) }]}
