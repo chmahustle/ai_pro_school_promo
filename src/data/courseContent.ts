@@ -108,8 +108,8 @@ const NB = " ";
 export const courseCosts: { payer: string; items: CourseCost[] } = {
   payer: "Сервисы оплачивает студент",
   items: [
-    { id: "cursor", name: "Cursor", amount: `около${NB}$20${NB}в${NB}месяц`, verified: true, source: SOURCE, asOf: "2026-09-29" },
-    { id: "openai", name: "API OpenAI", amount: `около${NB}$15${NB}в${NB}месяц`, hint: `начать можно с${NB}$5`, verified: true, source: SOURCE, asOf: "2026-09-29" },
+    { id: "cursor", name: "Cursor", amount: `около${NB}$30${NB}в${NB}месяц`, verified: true, source: SOURCE, asOf: "2026-09-29" },
+    { id: "openai", name: "API OpenAI", amount: `около${NB}$15`, hint: `хватает на${NB}1–2${NB}месяца, а${NB}начать можно даже с${NB}$5`, verified: true, source: SOURCE, asOf: "2026-09-29" },
   ],
 };
 

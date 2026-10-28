@@ -98,7 +98,7 @@ export function CourseCosts({ costs }: { costs: PublicCourseContent["costs"] }) 
               <DevNote note={c.devNote} />
               <h3 className="font-display text-[19px] font-bold leading-snug">{c.name}</h3>
               <p className="whitespace-nowrap font-display text-[clamp(1.5rem,1.2rem+1.2vw,2rem)] font-extrabold leading-none">{c.amount}</p>
-              {c.hint && <p className="whitespace-nowrap text-[14px] text-ink-500">{c.hint}</p>}
+              {c.hint && <p className="text-[14px] text-ink-500">{c.hint}</p>}
             </div>
           </RevealItem>
         ))}
