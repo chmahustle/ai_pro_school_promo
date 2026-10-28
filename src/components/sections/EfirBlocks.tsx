@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import { HomeSection, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
+import { RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
 import type { PublicVibeItem } from "@/data/vibecodingBlocks";
 import { cn, nbspDash } from "@/lib/utils";
 
@@ -57,36 +57,33 @@ export function ColorfulForWhom({ id, items }: { id: string; items: PublicVibeIt
   );
 }
 
-/** «Что будет на эфире»: тёмная панель, пункты повестки в стеклянных плитках с крупными номерами */
+/** «Что будет на эфире»: спокойный светлый блок, пункты повестки в мягких плитках с небольшими номерами */
 export function AgendaDark({ id, items }: { id: string; items: PublicVibeItem[] }) {
   if (items.length === 0) return null;
   return (
-    <HomeSection labelledBy={id} tone="dark" compact>
-      <SectionIntro id={id} tone="dark" align="left" eyebrow="Программа эфира" title="Что будет на эфире" />
-      <RevealGroup as="ol" className={cn("audience-grid grid gap-4", items.length > 1 ? "md:grid-cols-2" : "")}>
+    <Section aria-labelledby={id}>
+      <SectionIntro id={id} align="left" eyebrow="Программа эфира" title="Что будет на эфире" />
+      <RevealGroup as="ol" className={cn("grid gap-3", items.length > 1 ? "md:grid-cols-2" : "")}>
         {items.map((a, i) => (
           <RevealItem as="li" key={a.id} className="flex">
-            <div className="audience-tile relative isolate flex min-h-[150px] w-full items-start gap-5 overflow-hidden rounded-[28px] bg-white/[0.07] p-6 ring-1 ring-white/10 sm:p-7">
-              <svg aria-hidden viewBox="0 0 100 100" className="pointer-events-none absolute -bottom-10 -right-10 -z-0 size-[160px]" fill="#e8307e" fillOpacity={0.35}>
-                <path d={STAR} />
-              </svg>
-              <span className="font-display text-[44px] font-extrabold leading-none text-brand tabular-nums">0{i + 1}</span>
-              <div className="relative">
+            <div className="flex w-full items-start gap-4 rounded-[24px] bg-soft-100 p-5 ring-1 ring-ink/5 sm:p-6">
+              <span className="grid size-9 shrink-0 place-items-center rounded-full bg-surface font-display text-[15px] font-bold text-brand-600 tabular-nums shadow-soft">{i + 1}</span>
+              <div>
                 <DevNote note={a.devNote} />
-                <p className="font-display text-[clamp(1.125rem,1rem+0.6vw,1.5rem)] font-bold leading-snug text-white">{nbspDash(a.text)}</p>
+                <p className="text-[16px] font-semibold leading-snug text-ink">{nbspDash(a.text)}</p>
               </div>
             </div>
           </RevealItem>
         ))}
       </RevealGroup>
-    </HomeSection>
+    </Section>
   );
 }
 
 /** «Чему научитесь»: цветные плитки с крупными номерами */
 export function ColorfulOutcomes({ id, items }: { id: string; items: PublicVibeItem[] }) {
   if (items.length === 0) return null;
-  // Тёмную плитку в этом блоке пропускаем: после тёмной повестки нужен светлый ритм
+  // Тёмную плитку в этом блоке пропускаем
   const tones = [TONES[3]!, TONES[2]!, TONES[0]!, TONES[5]!, TONES[4]!];
   return (
     <Section aria-labelledby={id}>
