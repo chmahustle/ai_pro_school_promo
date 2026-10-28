@@ -144,7 +144,7 @@ export const products: Product[] = [
     price: 9900,
     pricePrefix: "",
     priceNote: "",
-    kaspiInstallmentMonths: 12,
+    kaspiInstallmentMonths: null, // рассрочку Kaspi не показываем: цена небольшая
     installmentFromPerMonth: null,
     priceSchedule: [],
     cohortWeekdays: [1, 4], // пн, чт
@@ -209,7 +209,7 @@ export const products: Product[] = [
     },
     pricePrefix: "",
     priceNote: "",
-    kaspiInstallmentMonths: 12,
+    kaspiInstallmentMonths: null, // рассрочку Kaspi не показываем: цена небольшая
     installmentFromPerMonth: null,
     priceSchedule: [],
     cohortWeekdays: null,
@@ -248,7 +248,7 @@ export const products: Product[] = [
     price: 35000,
     pricePrefix: "",
     priceNote: "",
-    kaspiInstallmentMonths: 12,
+    kaspiInstallmentMonths: null, // рассрочку Kaspi не показываем: цена небольшая
     installmentFromPerMonth: null,
     priceSchedule: [],
     cohortWeekdays: null, // сб и вс указаны в формате текстом; расписание потоков не задавали
