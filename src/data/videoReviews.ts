@@ -35,6 +35,11 @@ export const videoReviews: VideoReview[] = [
   { id: "r-5809", src: `${BASE}/IMG_5809.mp4`, poster: `${BASE}/IMG_5809.webp`, durationSec: 57, ...meta },
   { id: "r-5866", src: `${BASE}/IMG_5866.mp4`, poster: `${BASE}/IMG_5866.webp`, durationSec: 46, ...meta },
   { id: "r-7039", src: `${BASE}/IMG_7039.mp4`, poster: `${BASE}/IMG_7039.webp`, durationSec: 119, ...meta },
+  { id: "r-0969", src: `${BASE}/IMG_0969.mp4`, poster: `${BASE}/IMG_0969.webp`, durationSec: 76, ...meta },
+  { id: "r-0974", src: `${BASE}/IMG_0974.mp4`, poster: `${BASE}/IMG_0974.webp`, durationSec: 18, ...meta },
+  { id: "r-1127", src: `${BASE}/IMG_1127.mp4`, poster: `${BASE}/IMG_1127.webp`, durationSec: 74, ...meta },
+  { id: "r-1139", src: `${BASE}/IMG_1139.mp4`, poster: `${BASE}/IMG_1139.webp`, durationSec: 16, ...meta },
+  { id: "r-6902", src: `${BASE}/IMG_6902.mp4`, poster: `${BASE}/IMG_6902.webp`, durationSec: 58, ...meta },
 ];
 
 /** Публичная модель: только то, что нужно плееру (без verified/consent/source) */
