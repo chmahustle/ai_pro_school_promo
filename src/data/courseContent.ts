@@ -52,7 +52,7 @@ export const courseProgram: CourseModule[] = [];
 // ───────────── Как проходит обучение ─────────────
 
 export interface CourseDeliveryItem extends Checked {
-  id: "online" | "recorded" | "zoom" | "chat" | "weekly";
+  id: "online" | "recorded" | "calls" | "support" | "chat" | "weekly";
   title: string;
   text: string;
 }
@@ -60,7 +60,15 @@ export interface CourseDeliveryItem extends Checked {
 export const courseDelivery: CourseDeliveryItem[] = [
   { id: "online", title: "Онлайн", text: "Курс проходит полностью онлайн.", verified: true, source: SOURCE, asOf: AS_OF },
   { id: "recorded", title: "Уроки в записи", text: "Смотрите в удобное время и возвращайтесь к сложным темам.", verified: true, source: SOURCE, asOf: AS_OF },
-  { id: "zoom", title: "Живой Zoom каждую среду", text: "Встреча с преподавателем проходит каждую неделю по средам.", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "calls", title: "Онлайн-созвоны каждую неделю", text: "Живые встречи с преподавателем проходят каждую неделю.", verified: true, source: SOURCE, asOf: AS_OF },
+  {
+    id: "support",
+    title: "Персональная поддержка от разработчика",
+    text: "Пишите ему напрямую: он ответит, поможет разобраться и подключится к вашей задаче.",
+    verified: true,
+    source: SOURCE,
+    asOf: AS_OF,
+  },
   { id: "chat", title: "Чат курса", text: "Вопросы и обсуждение — в общем чате студентов.", verified: true, source: SOURCE, asOf: AS_OF },
   {
     id: "weekly",
@@ -182,7 +190,7 @@ export const courseFaq: CourseFaq[] = [
   {
     id: "recorded",
     q: "Почему уроки в записи?",
-    a: "Запись можно смотреть в удобное время и пересматривать сложные темы. Вопросы разбираем вживую в Zoom каждую среду и в чате курса.",
+    a: "Запись можно смотреть в удобное время и пересматривать сложные темы. Вопросы разбираем вживую на онлайн-созвонах каждую неделю и в чате курса, а разработчику можно написать лично.",
     verified: true,
     source: SOURCE,
     asOf: AS_OF,

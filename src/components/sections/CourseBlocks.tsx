@@ -1,4 +1,4 @@
-import { CalendarDays, Laptop, MessageCircle, PlayCircle, Video } from "lucide-react";
+import { CalendarDays, Laptop, LifeBuoy, MessageCircle, PlayCircle, Video } from "lucide-react";
 import { Accordion, Avatar, Pill, Reveal, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
 import type { PublicCourseContent } from "@/data/courseContent";
 import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
@@ -54,7 +54,7 @@ export function CourseProgram({ program }: { program: PublicCourseContent["progr
   );
 }
 
-const DELIVERY_ICONS = { online: Laptop, recorded: PlayCircle, zoom: Video, chat: MessageCircle, weekly: CalendarDays } as const;
+const DELIVERY_ICONS = { online: Laptop, recorded: PlayCircle, calls: Video, support: LifeBuoy, chat: MessageCircle, weekly: CalendarDays } as const;
 
 /** «Как проходит обучение»: формат, записи, Zoom по средам, чат, еженедельное открытие уроков */
 export function CourseDelivery({ items }: { items: PublicCourseContent["delivery"] }) {
