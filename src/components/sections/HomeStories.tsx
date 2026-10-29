@@ -19,17 +19,19 @@ interface HomeStoriesProps {
   description?: string;
   /** Истории с доходом («индивидуальный результат»): только на /reviews */
   includeIndividual?: boolean;
+  /** Видео-превью без подписей (рилсы учеников): идут в той же ленте после карточек, плеер по клику */
+  extraVideos?: { id: string; poster: string; youtubeId: string }[];
 }
 
 /**
  * «Результаты учеников» (серверная часть): отбор verified && consent и сборка публичных карточек -
  * здесь, до передачи в браузер. Меньше 3 подтверждённых кейсов - блок скрыт.
  */
-export function HomeStories({ limit, withFilters, audience, direction, variant, includeIndividual, onlyViews, description }: HomeStoriesProps = {}) {
+export function HomeStories({ limit, withFilters, audience, direction, variant, includeIndividual, onlyViews, description, extraVideos }: HomeStoriesProps = {}) {
   const all = getPublicCases(audience, direction, includeIndividual);
   const stories = onlyViews ? all.filter((c) => c.metricLabel.includes("просмотр") || c.authorName.includes("практикума")) : all;
   if (stories.length < 3) return null;
   // Вкладки направлений: вайб-кодинг - только если есть подтверждённые кейсы этого направления
   const tabs = getPublicResultsTabs(stories).tabs;
-  return <HomeStoriesClient stories={stories} tabs={tabs} variant={variant} description={description} limit={limit} withFilters={withFilters} />;
+  return <HomeStoriesClient stories={stories} tabs={tabs} variant={variant} description={description} limit={limit} withFilters={withFilters} extraVideos={extraVideos} />;
 }

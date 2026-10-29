@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
+import Image from "next/image";
+import { Play } from "lucide-react";
 import { ArrowLink, CaseCard, HomeSection, Lightbox, SectionIntro, type LightboxItem } from "@/components/ui";
 import { BuildCarousel } from "./BuildCarousel";
 import { storyAudienceFilters } from "@/data/story-filters";
@@ -17,6 +19,8 @@ const MIN_STORIES = 3;
 interface HomeStoriesClientProps {
   /** Уже отфильтрованные на сервере (verified && consent) публичные карточки */
   stories: PublicCase[];
+  /** Видео без подписей: идут в той же ленте после карточек */
+  extraVideos?: ExtraVideo[];
   /** Вкладки направлений (только те, где есть кейсы). Одна вкладка или фильтр по аудитории - полоса вкладок не рисуется */
   /** «projects» - проекты вайб-кодинга: другие подписи шапки */
   variant?: "results" | "projects";
@@ -33,7 +37,14 @@ interface HomeStoriesClientProps {
  * «Результаты учеников»: тёмная панель с лентами. На главной - 3 карточки и ссылка на /reviews,
  * на /reviews - все карточки с фильтром по аудитории (тот же стиль).
  */
-export function HomeStoriesClient({ stories: all, tabs = [], variant = "results", description, limit = HOME_LIMIT, withFilters = false }: HomeStoriesClientProps) {
+/** Видео без подписей в общей ленте «Работ учеников» */
+export interface ExtraVideo {
+  id: string;
+  poster: string;
+  youtubeId: string;
+}
+
+export function HomeStoriesClient({ stories: all, tabs = [], variant = "results", description, limit = HOME_LIMIT, withFilters = false, extraVideos = [] }: HomeStoriesClientProps) {
   const [filter, setFilter] = useState<FilterId>("all");
   const [direction, setDirection] = useState<"creator" | "vibecoding">(tabs[0]?.id ?? "creator");
   const showTabs = tabs.length > 1 && !withFilters;
@@ -59,11 +70,18 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
       })),
     [stories],
   );
+  const allMedia: LightboxItem[] = useMemo(
+    () => [
+      ...mediaItems,
+      ...extraVideos.map((v, i) => ({ id: `x-${v.id}`, src: v.poster, alt: `Ролик ученика практикума ${i + 1}`, kind: "video" as const, embedUrl: youtubeEmbedUrl(v.youtubeId), vertical: true })),
+    ],
+    [mediaItems, extraVideos],
+  );
 
   // Кнопка play, с которой открыли модалку: после закрытия фокус возвращается на неё
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const openMedia = (id: string, trigger: HTMLButtonElement) => {
-    const idx = mediaItems.findIndex((m) => m.id === id);
+    const idx = allMedia.findIndex((m) => m.id === id);
     if (idx < 0) return;
     triggerRef.current = trigger;
     setLightbox(idx);
@@ -144,12 +162,29 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
 
       {/* Одинаковая высота карточек (items-stretch). ≥1024 - 3 колонки, ≥768 - 2; на мобильном горизонтальный scroll-snap, карточка 84% ширины.
           Меньше 3 карточек после фильтра: две - по 50%, одна - по центру с max-w, без пустых зон. */}
-      {limit != null && stories.length > 3 ? (
+      {limit != null && stories.length + extraVideos.length > 3 ? (
         // Больше трёх карточек (практикум, ИИ-креатор): лента со scroll-snap и стрелками вместо длинной сетки
         <BuildCarousel label="Работы учеников" always>
           {stories.map((c) => (
             <li key={c.id} className="flex w-[84%] shrink-0 snap-start sm:w-[380px]">
               <CaseCard item={c} onOpenVideo={c.youtubeId ? (el) => openMedia(c.id, el) : undefined} className="w-full" />
+            </li>
+          ))}
+          {extraVideos.map((v, i) => (
+            <li key={v.id} className="flex w-[52%] shrink-0 snap-start sm:w-[230px]">
+              <button
+                type="button"
+                onClick={(e) => openMedia(`x-${v.id}`, e.currentTarget)}
+                aria-label={`Смотреть ролик ученика ${i + 1}`}
+                className="group relative block w-full overflow-hidden rounded-[28px] bg-white/10 transition-[transform,box-shadow] duration-300 hover:-translate-y-1.5 hover:shadow-float focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+              >
+                <Image src={v.poster} alt="" fill sizes="(max-width:640px) 52vw, 230px" className="object-cover" />
+                <span className="absolute inset-0 grid place-items-center bg-ink/15">
+                  <span className="grid size-14 place-items-center rounded-full bg-white/95 text-ink shadow-float transition-transform duration-300 group-hover:scale-110 motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+                    <Play className="ml-0.5 size-6 fill-current" aria-hidden />
+                  </span>
+                </span>
+              </button>
             </li>
           ))}
         </BuildCarousel>
@@ -172,7 +207,7 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
 
       <p className="mt-6 text-[12px] leading-snug text-white/55">Результаты индивидуальны и не являются гарантией дохода.</p> {/* copy-check:ignore */}
 
-      <Lightbox items={mediaItems} index={lightbox} onClose={closeMedia} onChange={setLightbox} />
+      <Lightbox items={allMedia} index={lightbox} onClose={closeMedia} onChange={setLightbox} />
     </HomeSection>
   );
 }

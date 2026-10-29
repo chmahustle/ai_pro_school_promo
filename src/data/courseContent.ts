@@ -520,37 +520,6 @@ export function getPracticumResults() {
   return { title: practicumResults.title, titleTail: practicumResults.titleTail, shots: visible(practicumResults.shots).map(({ id, src, ratio }) => ({ id, src, ratio })) };
 }
 
-// ───────────── Практикум: «Какие ролики вы можете создавать» ─────────────
-
-export interface PracticumRoleVideo extends Checked {
-  id: string;
-  /** Подпись под роликом (как на странице школы) */
-  label: string;
-  /** id ролика YouTube: адрес плеера собирается в браузере по клику (ссылок youtube.com в HTML нет) */
-  youtubeId: string;
-  /** Локальный постер (до клика запросов к YouTube нет) */
-  poster: string;
-}
-
-export const practicumFormats = {
-  title: "Какие ролики вы",
-  titleAccent: "можете создавать,",
-  titleTail: "обучившись нашим ИИ",
-  videos: [
-    { id: "experts", label: "Ролики для экспертов/специалистов", youtubeId: "YJGNvYglvuE", poster: "/stories/practicum/reel-extra-3.jpg", verified: true, source: SOURCE, asOf: AS_OF },
-    { id: "business", label: "Ролик для бизнесов/компаний", youtubeId: "Uac29_nlknA", poster: "/stories/practicum/reel-extra-4.jpg", verified: true, source: SOURCE, asOf: AS_OF },
-    { id: "lovestory", label: "Lovestory/поздравительные ролики", youtubeId: "0lHtMeAnbrg", poster: "/stories/practicum/reel-extra-5.jpg", verified: true, source: SOURCE, asOf: AS_OF },
-    { id: "photos", label: "Оживление старых фотографий", youtubeId: "IGaH0pRQAcs", poster: "/stories/practicum/reel-extra-6.jpg", verified: true, source: SOURCE, asOf: AS_OF },
-    { id: "kids", label: "Обучающие видео для детей", youtubeId: "DraOftA9sdY", poster: "/stories/practicum/reel-extra-7.jpg", verified: true, source: SOURCE, asOf: AS_OF },
-    { id: "brands", label: "Ролики для брендов", youtubeId: "bGeHiczDroc", poster: "/stories/practicum/reel-extra-8.jpg", verified: true, source: SOURCE, asOf: AS_OF },
-    { id: "topics", label: "Визуализация сложных тем", youtubeId: "G58GV--LEYU", poster: "/stories/practicum/reel-extra-9.jpg", verified: true, source: SOURCE, asOf: AS_OF },
-  ] as PracticumRoleVideo[],
-};
-
-export function getPracticumFormats() {
-  return { ...practicumFormats, videos: visible(practicumFormats.videos).map(({ id, label, youtubeId, poster }) => ({ id, label, youtubeId, poster })) };
-}
-
 // ───────────── Практикум: «Меня зовут Надира Батырбаева» ─────────────
 
 export interface PracticumTeacherFact extends Checked {

@@ -17,11 +17,9 @@ import { getCourse } from "@/data/courses";
 import { productForCourseSlug } from "@/data/product-ids";
 import { getCurrentPrice, getProductForCourse } from "@/data/products";
 import { getPublishedReviews } from "@/data/reviews";
-import { Section, SectionIntro } from "@/components/ui";
-import { VideoCarousel } from "@/components/sections/VideoCarousel";
 import { youtubeIdFromUrl } from "@/lib/youtube";
-import { getPracticumFormats, getPracticumGets, getPracticumGuide, getPracticumTeacher, getPracticumGrowth, getPracticumResults, practicumVideo } from "@/data/courseContent";
-import { PracticumFormats, PracticumGets, PracticumGuide, PracticumTeacher, PracticumGrowth, PracticumResults, PracticumVideo } from "@/components/sections/CourseBlocks";
+import { getPracticumGets, getPracticumGuide, getPracticumTeacher, getPracticumGrowth, getPracticumResults, practicumVideo } from "@/data/courseContent";
+import { PracticumGets, PracticumGuide, PracticumTeacher, PracticumGrowth, PracticumResults, PracticumVideo } from "@/components/sections/CourseBlocks";
 import { team } from "@/data/team";
 import { SITE_URL, site } from "@/lib/site";
 
@@ -80,23 +78,20 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
       <div className="mt-6 sm:mt-10">
         {course.slug === "practicum" ? (
           // Практикум: только кейсы про просмотры, без доходов и личных историй (Мадина - только на странице курса AI Content Creator)
-          <HomeStories audience={course.audiences[0]} limit={12} onlyViews description="Люди без технического образования, освоившие ИИ-ролики" />
-        ) : (
-          <HomeStories audience={course.audiences[0]} limit={12} />
-        )}
-      </div>
-      {course.slug === "practicum" && (
-        <Section aria-labelledby="practicum-reels-title">
-          <SectionIntro id="practicum-reels-title" align="left" eyebrow="Результаты" title="Как залетают рилсы наших учеников" description="Видео работ учеников практикума." />
-          <VideoCarousel
-            label="Рилсы учеников практикума"
-            items={practicumReels.flatMap((r) => {
+          <HomeStories
+            audience={course.audiences[0]}
+            limit={12}
+            onlyViews
+            description="Люди без технического образования, освоившие ИИ-ролики"
+            extraVideos={practicumReels.flatMap((r) => {
               const id = youtubeIdFromUrl(r.embedUrl);
               return id && r.src ? [{ id: r.id, poster: r.src, youtubeId: id }] : [];
             })}
           />
-        </Section>
-      )}
+        ) : (
+          <HomeStories audience={course.audiences[0]} limit={12} />
+        )}
+      </div>
       {course.slug === "practicum" && <PracticumGrowth growth={getPracticumGrowth()} />}
       {/* Практикум: блок «Что входит» убран по решению владельца (состав - в «Что вы получаете», цена - в hero и форме) */}
       {course.slug !== "practicum" && <Pricing course={course} />}
@@ -105,7 +100,6 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
         <>
           {/* Практикум: рилсы учеников и переписки-благодарности (отзывы со страницы школы, из reviews.ts) */}
           <PracticumResults results={getPracticumResults()} />
-          <PracticumFormats formats={getPracticumFormats()} />
         </>
       ) : courseReviews.length > 0 && (
         <ReviewsWall

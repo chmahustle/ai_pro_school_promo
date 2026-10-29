@@ -5,8 +5,7 @@ import { BuildIdeas } from "./BuildIdeas";
 import { TimelineClient } from "./TimelineClient";
 import { GrowthGrid } from "./GrowthGrid";
 import { PhotoCarousel } from "./PhotoCarousel";
-import { VideoCarousel } from "./VideoCarousel";
-import type { getOfflineBuild, getOfflineSkill, getOfflineTimeline, getPracticumFormats, getPracticumGets, getPracticumGrowth, getPracticumGuide, getPracticumResults, getPracticumTeacher, PublicCourseContent } from "@/data/courseContent";
+import type { getOfflineBuild, getOfflineSkill, getOfflineTimeline, getPracticumGets, getPracticumGrowth, getPracticumGuide, getPracticumResults, getPracticumTeacher, PublicCourseContent } from "@/data/courseContent";
 import { YoutubeTeaser } from "./YoutubeTeaser";
 import { cn, nbspDash } from "@/lib/utils";
 import Image from "next/image";
@@ -371,23 +370,6 @@ export function PracticumResults({ results }: { results: ReturnType<typeof getPr
       </h2>
       <PhotoCarousel shots={results.shots} label="Скриншоты переписок учеников после практикума" altPrefix="Результат ученика практикума" />
     </HomeSection>
-  );
-}
-
-/** «Какие ролики вы можете создавать, обучившись нашим ИИ»: семь форматов - горизонтальная лента вертикальных роликов с подписями, плеер по клику */
-export function PracticumFormats({ formats }: { formats: ReturnType<typeof getPracticumFormats> }) {
-  if (formats.videos.length === 0) return null;
-  return (
-    <Section aria-labelledby="practicum-formats-title">
-      <h2 id="practicum-formats-title" className="mb-8 font-display text-[clamp(1.875rem,1.3rem+2.4vw,3.25rem)] font-extrabold leading-[1.05] tracking-[-0.015em] text-ink">
-        {formats.title}
-        <br />
-        <span className="text-brand">{formats.titleAccent}</span>
-        <br />
-        <span className="text-[0.55em] font-bold text-ink-500">{formats.titleTail}</span>
-      </h2>
-      <VideoCarousel label="Какие ролики можно создавать" items={formats.videos.map((v) => ({ id: v.id, poster: v.poster, youtubeId: v.youtubeId, label: v.label }))} />
-    </Section>
   );
 }
 
