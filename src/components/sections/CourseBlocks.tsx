@@ -1,6 +1,7 @@
-import { Check, FileText, Flame, Instagram, Laptop, Lightbulb, LifeBuoy, MapPin, MessageCircle, PlayCircle, Plus, Sparkles, Users, Video, Youtube } from "lucide-react";
+import { ArrowDown, Check, FileText, Flame, Info, Instagram, Laptop, Lightbulb, LifeBuoy, MapPin, MessageCircle, PlayCircle, Sparkles, Users, Video, Youtube } from "lucide-react";
 import { Accordion, Avatar, HomeSection, Pill, Reveal, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
 import { BuildCarousel } from "./BuildCarousel";
+import { BuildIdeas } from "./BuildIdeas";
 import type { getOfflineBuild, getOfflineSkill, getOfflineTimeline, getPracticumGets, getPracticumGrowth, PublicCourseContent } from "@/data/courseContent";
 import { YoutubeTeaser } from "./YoutubeTeaser";
 import { cn, nbspDash } from "@/lib/utils";
@@ -161,79 +162,97 @@ function Connector({ horizontal }: { horizontal?: boolean }) {
 }
 
 /**
- * «Что соберёте именно вы»: на тёмной панели карусель из четырёх сценариев (бизнес, эксперт, в найме, фриланс).
- * В каждом - боль одной фразой, панель «Сейчас» (переписка/файлы) и панель «Соберёте на уроке».
- * Ниже - «Ещё 68 идей» (нативный details, без JS).
+ * «Что соберёте именно вы» (страница офлайн-урока /courses/vibecoding-offline, ProductLanding): на тёмной панели четыре карточки-примера.
+ * В карточке: метка аудитории и боль (заголовок с запасом под 3 строки) → тёмная панель «Сейчас» → коннектор «на уроке» →
+ * светлая панель «Соберёте на уроке». ≥1024 px - сетка из трёх колонок (общие строки через subgrid: панели всех карточек начинаются
+ * на одной линии, нижние одной высоты), ниже - лента со scroll-snap. Затем «Ещё N идей» и заметная подпись про демо и вымышленные данные.
  */
 export function CourseBuild({ build }: { build: BuildData }) {
   if (build.cards.length === 0) return null;
+  const wideLast = build.cards.length % 3 === 1;
   return (
     <HomeSection tone="dark" labelledBy="offline-build-title" mobileCompact className="mt-4">
       <SectionIntro id="offline-build-title" tone="dark" align="left" eyebrow="Примеры" title="Что соберёте именно вы" />
       <BuildCarousel label="Примеры того, что вы соберёте на уроке">
-        {build.cards.map((c) => (
-          <li key={c.id} className="flex w-[84%] shrink-0 snap-start sm:w-[420px]">
-            <article className="flex w-full flex-col gap-4 rounded-[28px] bg-white/[0.06] p-5 text-white ring-1 ring-white/10 sm:p-6">
-              <DevNote note={c.devNote} />
-              <div>
+        {build.cards.map((c, idx) => {
+          const wide = wideLast && idx === build.cards.length - 1;
+          return (
+            <li
+              key={c.id}
+              className={cn(
+                "flex w-[84%] shrink-0 snap-start flex-col gap-4 rounded-[28px] bg-white/[0.06] p-5 text-white ring-1 ring-white/10 sm:w-[420px] sm:p-6",
+                wide
+                  ? "lg:col-span-3 lg:grid lg:w-auto lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-[auto_1fr] lg:gap-x-4 lg:gap-y-4"
+                  : "lg:row-span-4 lg:grid lg:w-auto lg:grid-rows-subgrid lg:gap-y-4",
+              )}
+            >
+              <div className={cn("min-h-[8.75rem] sm:min-h-[9.5rem]", wide && "lg:col-span-3 lg:min-h-0")}>
+                <DevNote note={c.devNote} />
                 <Pill tone="white" size="sm">{c.audience}</Pill>
-                <h3 className="mt-3 font-display text-[clamp(1.125rem,1rem+0.5vw,1.375rem)] font-bold leading-snug">{nbspDash(c.pain)}</h3>
+                <h3 className="mt-3 font-display text-[22px] font-bold leading-snug [text-wrap:balance] sm:text-[24px]">{nbspDash(c.pain)}</h3>
               </div>
 
-              <div className="flex flex-col gap-2 rounded-2xl bg-white/[0.06] p-3.5 ring-1 ring-white/10">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-white/55">Сейчас · {c.now.source}</p>
+              <div className={cn("flex min-h-[15rem] flex-col gap-2 rounded-[20px] bg-black/30 p-3.5 ring-1 ring-white/10", wide && "lg:min-h-0")}>
+                <p className="text-[12px] font-bold uppercase tracking-wider text-white/70">Сейчас · {c.now.source}</p>
                 {c.now.lines.map((l, i) => (
                   <Bubble key={i} text={l.text} time={l.time} gap={l.gap} tone="now" />
                 ))}
-                <p className="mt-0.5 text-[14px] font-semibold text-brand-200">{c.now.outcome}</p>
+                <p className="mt-0.5 text-[13px] font-semibold text-brand-200">{c.now.outcome}</p>
               </div>
 
-              <div className="flex flex-1 flex-col gap-2 rounded-2xl bg-brand-600/25 p-3.5 ring-1 ring-brand/40">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-brand-200">Соберёте на уроке</p>
-                <p className="flex flex-wrap items-center gap-2 font-display text-[17px] font-bold leading-tight">
+              <Connector horizontal={wide} />
+
+              <div className="flex flex-1 flex-col gap-2 rounded-[20px] bg-lavender p-3.5 text-ink">
+                <p className="text-[12px] font-bold uppercase tracking-wider text-ink-700">Соберёте на уроке</p>
+                <p className="flex flex-wrap items-center gap-2 font-display text-[18px] font-bold leading-tight">
                   {c.built.title}
-                  {c.built.badge && <span className="rounded-pill bg-brand-600 px-2.5 py-1 text-[11px] font-bold leading-none text-white">{c.built.badge}</span>}
+                  {c.built.badge && <span className="rounded-pill bg-brand-100 px-2.5 py-1 text-[13px] font-bold leading-none text-brand-700">{c.built.badge}</span>}
                 </p>
                 {c.built.lines.map((l, i) => (
                   <Bubble key={i} text={l.text} time={l.time} gap={l.gap} tone="built" />
                 ))}
+                {c.built.chart && (
+                  <div className="rounded-2xl bg-white p-3 shadow-soft">
+                    <MiniChart values={c.built.chart} />
+                  </div>
+                )}
+                {c.built.stats && (
+                  <ul className="flex flex-col gap-1.5">
+                    {c.built.stats.map((st) => (
+                      <li key={st.label} className="flex items-center justify-between gap-3 rounded-2xl bg-white px-3.5 py-2 text-[14px] shadow-soft">
+                        <span className="text-ink-700">{st.label}</span>
+                        <span className="whitespace-nowrap font-display text-[15px] font-bold text-ink">{st.value}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
                 {c.built.tags && (
                   <ul className="flex flex-col gap-1.5">
                     {c.built.tags.map((t) => (
-                      <li key={t.label} className="flex items-center justify-between gap-3 rounded-2xl bg-white px-3.5 py-2 text-[14px] text-ink shadow-soft">
+                      <li key={t.label} className="flex items-center justify-between gap-3 rounded-2xl bg-white px-3.5 py-2 text-[14px] shadow-soft">
                         <span>{t.label}</span>
-                        <span className="rounded-pill bg-brand-100 px-2.5 py-0.5 text-[12px] font-semibold text-brand-700">{t.value}</span>
+                        <span className="rounded-pill bg-brand-100 px-2.5 py-0.5 text-[13px] font-semibold text-brand-700">{t.value}</span>
                       </li>
                     ))}
                   </ul>
                 )}
               </div>
-            </article>
-          </li>
-        ))}
+            </li>
+          );
+        })}
       </BuildCarousel>
 
-      <details className="group mt-6 rounded-[24px] bg-white/[0.06] p-2 ring-1 ring-white/10">
-        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-2xl px-4 py-3 font-display text-[17px] font-bold text-white [&::-webkit-details-marker]:hidden">
-          Ещё {build.ideasCount} идей, что можно собрать
-          <span aria-hidden className="grid size-8 place-items-center rounded-full bg-white/10 text-white transition-transform duration-300 group-open:rotate-45">
-            <Plus className="size-4" />
-          </span>
-        </summary>
-        <div className="grid gap-5 px-4 pb-4 pt-2 md:grid-cols-2">
-          {build.ideas.map((g) => (
-            <div key={g.id}>
-              <h3 className="font-display text-[15px] font-bold text-white">{g.title}</h3>
-              <ul className="mt-2 flex flex-wrap gap-1.5">
-                {g.items.map((it) => (
-                  <li key={it} className="rounded-pill bg-white/10 px-3 py-1.5 text-[13px] leading-snug text-white/85">{it}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
+      <BuildIdeas groups={build.ideas} />
+      <p className="mt-4 max-w-[60ch] text-[14px] text-white/70">{build.ideasNote}</p>
+
+      {/* Заметная подпись: примеры и данные вымышлены, на уроке собираете демо-версию */}
+      <div className="mt-6 flex items-start gap-3 rounded-[20px] bg-white/[0.08] p-4 ring-1 ring-white/25">
+        <Info className="mt-0.5 size-5 shrink-0 text-brand-200" aria-hidden />
+        <div>
+          <p className="text-[15px] font-semibold leading-snug text-white">{build.caption}</p>
+          {build.captionDevNote && <DevNote note={build.captionDevNote} className="mt-1" />}
         </div>
-      </details>
-      <p className="mt-4 max-w-[60ch] text-[14px] text-white/60">{build.ideasNote}</p>
+      </div>
     </HomeSection>
   );
 }
