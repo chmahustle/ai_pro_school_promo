@@ -65,7 +65,7 @@ export const cases: Case[] = [
     authorRole: "без опыта в AI-видео",
     metric: "500 000 ₸",
     metricLabel: "договор на 15 роликов",
-    photoSrc: "/stories/case-alena.webp",
+    photoSrc: "/photo/alena.webp",
     posterSrc: null,
     sourceUrl: null,
     before: "Нет опыта в AI-видео, первые ролики не залетали, думала сдаться.",

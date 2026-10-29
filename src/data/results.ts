@@ -18,7 +18,7 @@ export const results: ResultCase[] = [
     before: "Нет опыта в AI-видео, первые ролики не залетали, думала сдаться.",
     after: "500+ AI-видео, миллионные просмотры, куратор AI Pro School.",
     quote: "Несколько месяцев от первого видео до куратора школы",
-    photo: "/stories/case-alena.webp",
+    photo: "/photo/alena.webp",
     audiences: ["freelancers", "beginners", "business", "career"],
     course: "ai-creator",
     source: "https://freelance.ai-pro-school.kz/",

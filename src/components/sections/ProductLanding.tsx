@@ -6,10 +6,11 @@ import { ProductPrice } from "@/components/ui/ProductPrice";
 import { getCourseTeachers, getNextStep, getPublicProductPage } from "@/data/public";
 import { cn, nbspDash } from "@/lib/utils";
 import { getFaq } from "@/data/faq";
-import { getCourseContent, getOfflineMilestones } from "@/data/courseContent";
+import { getProduct } from "@/data/products";
+import { getCourseContent, getOfflineBuild, getOfflineMilestones, getOfflineSkill, getOfflineTimeline } from "@/data/courseContent";
 import { ForWhomTiles } from "./BlockTiles";
 import { courseHeroFormat, courseHeroLevel } from "@/data/courseContent";
-import { CourseCosts, CourseDelivery, CourseMilestones, CourseProgram, CourseTeachers } from "./CourseBlocks";
+import { CourseBuild, CourseCosts, CourseDelivery, CourseMilestones, CourseProgram, CourseSkill, CourseTeachers, CourseTimeline } from "./CourseBlocks";
 import { FAQ } from "./FAQ";
 import { VideoReviews } from "./VideoReviews";
 import { LeadSection } from "./LeadSection";
@@ -101,6 +102,10 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
       ) : (
         <CourseMilestones id="offline-result-title" items={getOfflineMilestones()} title={OFFLINE_RESULT_TITLE} />
       )}
+
+      {id === "offline" && <CourseSkill skill={getOfflineSkill()} />}
+      {id === "offline" && <CourseBuild build={getOfflineBuild()} />}
+      {id === "offline" && <CourseTimeline timeline={getOfflineTimeline()} date={getProduct("offline").lessonDate ?? null} time={getProduct("offline").lessonTime ?? null} />}
 
       {content && <CourseProgram program={content.program} />}
       {content && <CourseDelivery items={content.delivery} />}

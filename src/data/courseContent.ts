@@ -113,6 +113,294 @@ export function getOfflineMilestones(): PublicCourseContent["milestones"] {
   return visible(offlineMilestones).map((m) => ({ id: m.id, text: m.text, highlight: Boolean(m.highlight), devNote: m.devNote }));
 }
 
+// ───────────── Офлайн-урок: «Один навык для любых задач» ─────────────
+
+export interface OfflineSkillItem extends Checked {
+  id: string;
+  title: string;
+  text: string;
+}
+
+/** Блок «Один навык для любых задач» (страница офлайн-урока): заголовок, вводный абзац и три примера. Тексты — как утвердил владелец */
+export const offlineSkill = {
+  title: "Один навык",
+  titleAccent: "для любых задач",
+  lead: "Вы описываете задачу словами, ИИ пишет код. Освойте это один раз и будете сами собирать инструменты под",
+  leadAccent: "работу, своё дело и жизнь",
+  items: [
+    { id: "work", title: "В работе", text: "Отчёт по продажам собирается за минуту, вместо вечера в Excel.", verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "business", title: "В своём деле", text: "Бот принимает заявки и записывает клиентов, даже когда вы спите.", verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "life", title: "В жизни", text: "Помощник ведёт семейный бюджет, напоминает о платежах и составляет меню на неделю.", verified: true, source: SOURCE, asOf: AS_OF },
+  ] as OfflineSkillItem[],
+};
+
+/** Публичная модель блока: только verified (dev - остальные с пометкой) */
+export function getOfflineSkill() {
+  return {
+    title: offlineSkill.title,
+    titleAccent: offlineSkill.titleAccent,
+    lead: offlineSkill.lead,
+    leadAccent: offlineSkill.leadAccent,
+    items: visible(offlineSkill.items).map((i) => ({ id: i.id, title: i.title, text: i.text, devNote: i.devNote })),
+  };
+}
+
+// ───────────── Офлайн-урок: «Что соберёте именно вы» ─────────────
+
+export interface OfflineBuildMessage {
+  text: string;
+  time?: string;
+  /** Подпись-разделитель перед сообщением («утром», «на следующий день») */
+  gap?: string;
+}
+
+/** Карточка-сценарий: что сейчас («Сейчас») и что соберёте на уроке. Тексты — как на странице школы ai-pro-school.kz/newness */
+export interface OfflineBuildCard extends Checked {
+  id: string;
+  /** Для кого: Бизнес / Эксперт / В найме / Фриланс */
+  audience: string;
+  /** Боль одной фразой */
+  pain: string;
+  now: { source: string; lines: OfflineBuildMessage[]; outcome: string };
+  built: { title: string; badge?: string; lines: OfflineBuildMessage[]; tags?: { label: string; value: string }[] };
+}
+
+const NB2 = "\u00a0";
+
+export const offlineBuild: OfflineBuildCard[] = [
+  {
+    id: "business",
+    audience: "Бизнес",
+    pain: "Клиенты пишут ночью, а утром уже записаны к конкурентам",
+    now: {
+      source: "WhatsApp салона",
+      lines: [
+        { text: "Здравствуйте, можно завтра на 10:00?", time: "23:47" },
+        { gap: "утром", text: "Доброе утро! Да, свободно", time: "09:30" },
+        { text: "Спасибо, уже записалась в другой салон", time: "09:32" },
+      ],
+      outcome: "Клиент ушёл, пока все спали",
+    },
+    built: {
+      title: "Бот записи",
+      badge: "24/7",
+      lines: [
+        { text: "Можно завтра на 10:00?", time: "23:47" },
+        { text: "Да, 10:00 свободно. Записала вас, Айгерим. Утром пришлю напоминание.", time: "23:47" },
+        { text: `Новая запись, завтра 10:00 · 8${NB2}000${NB2}₸` },
+      ],
+    },
+    verified: true,
+    source: "ai-pro-school.kz/newness (блок «Что соберёте именно вы»)",
+    asOf: AS_OF,
+  },
+  {
+    id: "expert",
+    audience: "Эксперт",
+    pain: "Клиенты не приходят, а предоплату приходится выпрашивать",
+    now: {
+      source: "Переписка с клиентом",
+      lines: [
+        { text: "Подтверждаете завтра 15:00? Скиньте, пожалуйста, предоплату на Kaspi", time: "18:10" },
+        { text: "Да-да, вечером скину", time: "18:42" },
+        { gap: "на следующий день", text: "Ой, сегодня не получится, давайте на следующей неделе", time: "14:40" },
+      ],
+      outcome: "Час пропал, предоплаты нет",
+    },
+    built: {
+      title: "Ваша страница записи",
+      lines: [{ text: "пт 12:00 · пт 15:00 · сб 11:00" }],
+      tags: [
+        { label: "Предоплата через Kaspi", value: "оплачено" },
+        { label: "Напоминание клиенту за сутки", value: "включено" },
+      ],
+    },
+    verified: true,
+    source: "ai-pro-school.kz/newness (блок «Что соберёте именно вы»)",
+    asOf: AS_OF,
+  },
+  {
+    id: "employee",
+    audience: "В найме",
+    pain: "Каждый понедельник полдня уходит на отчёт из пяти таблиц",
+    now: {
+      source: "Понедельник 09:00",
+      lines: [
+        { text: "Продажи_Астана.xlsx · копировать" },
+        { text: "Продажи_Алматы.xlsx · копировать" },
+        { text: "Выгрузка_1С.xlsx · сверить" },
+        { text: "Итог_v7_ФИНАЛ.xlsx · ошибка" },
+      ],
+      outcome: "Отчёт к обеду, если ничего не сломалось",
+    },
+    built: {
+      title: "Дашборд продаж",
+      badge: "обновлён в 09:01",
+      lines: [{ text: "Отчёт ушёл руководителю в Telegram", time: "09:01" }],
+    },
+    verified: true,
+    source: "ai-pro-school.kz/newness (блок «Что соберёте именно вы»)",
+    asOf: AS_OF,
+  },
+  {
+    id: "freelance",
+    audience: "Фриланс",
+    pain: "Клиент просит сайт под рекламу, и вы отдаёте его агентству вместе с бюджетом",
+    now: {
+      source: "Чат с клиентом",
+      lines: [
+        { text: "Запускаем таргет. Нужен сайт под рекламу, сделаешь?", time: "11:05" },
+        { text: "Сайты не делаю, могу посоветовать агентство", time: "11:20" },
+        { text: "Ок, тогда и рекламу им отдадим", time: "11:24" },
+      ],
+      outcome: "Ушёл не только сайт, ушёл клиент",
+    },
+    built: {
+      title: "Ваш ответ теперь",
+      lines: [{ text: "Сделаю лендинг с формой, заявки будут сразу падать вам в Telegram", time: "11:20" }],
+      tags: [
+        { label: "Ведение соцсетей", value: "было" },
+        { label: "Лендинг под рекламу", value: "новое" },
+        { label: "Бот для заявок", value: "новое" },
+      ],
+    },
+    verified: true,
+    source: "ai-pro-school.kz/newness (блок «Что соберёте именно вы»)",
+    asOf: AS_OF,
+  },
+];
+
+/** «Ещё 68 идей, что можно собрать» — списки по группам, как на странице школы */
+export const offlineIdeas: { id: string; title: string; items: string[] }[] = [
+  { id: "business", title: "Для бизнеса", items: [
+    "Сайт-визитка компании",
+    "Лендинг под акцию или мероприятие",
+    "Мини-CRM: клиенты и статусы сделок",
+    "Telegram-бот для заявок и записи",
+    "Онлайн-запись для салона, барбершопа, автосервиса",
+    "Каталог с заказом в WhatsApp",
+    "Калькулятор стоимости: ремонт, окна, доставка",
+    "Складской учёт для магазина",
+    "Учёт смен и зарплат",
+    "Бот для сбора отзывов",
+    "Программа лояльности и кэшбэк",
+    "Меню кафе по QR-коду",
+    "Бронирование столиков, бань, беседок",
+    "Учёт заказов для кондитера, флориста, швеи",
+    "Генератор КП и счетов",
+    "Дашборд продаж",
+    "Бот-напоминания клиентам",
+  ] },
+  { id: "ai", title: "AI-помощники на базе ChatGPT", items: [
+    "AI-чат для сайта или WhatsApp",
+    "AI-помощник продаж",
+    "AI-финансист: бюджет и анализ трат",
+    "AI-напоминания ИП о налогах",
+    "AI-HR: разбор резюме",
+    "AI-репетитор, подготовка к ЕНТ",
+    "AI-рецепты из продуктов в холодильнике",
+    "AI-программа тренировок",
+    "AI-подбор квартир",
+    "AI-планировщик поездок",
+    "AI-копирайтер в стиле бренда",
+    "AI-сказки и задания для детей",
+    "AI-выжимка длинных документов",
+    "AI-переводчик казахский, русский, английский",
+    "Свой чат-бот с ролью и базой знаний",
+  ] },
+  { id: "experts", title: "Для экспертов и педагогов", items: [
+    "Сайт эксперта с записью",
+    "Бот-квиз для привлечения клиентов",
+    "Тренажёр и тесты для учеников",
+    "Электронный журнал оценок",
+    "Генератор планов уроков",
+    "Бот для домашних заданий",
+    "Портфолио мастера или фотографа",
+    "Калькулятор сметы для своей профессии",
+    "Бот для приёма оплат и выдачи материалов",
+  ] },
+  { id: "marketing", title: "Маркетинг и контент", items: [
+    "Генератор идей для Reels",
+    "Контент-план с напоминаниями",
+    "Генератор хуков и заголовков",
+    "Бот-воронка: квиз, подарок, заявка",
+    "Лендинг под рекламу",
+    "Отчёты по рекламе",
+    "Бот для розыгрышей",
+  ] },
+  { id: "routine", title: "Автоматизация рутины", items: [
+    "Заявки с сайта в таблицу",
+    "Бот для частых вопросов",
+    "Отчёты из таблиц",
+    "Рассылка счетов и напоминаний об оплате",
+    "Обработка и сортировка файлов",
+    "Сбор цен конкурентов",
+    "Уведомления в Telegram о заказах",
+  ] },
+  { id: "family", title: "Для себя и семьи", items: [
+    "Трекер привычек",
+    "Планер задач и целей",
+    "Семейный бюджет",
+    "Трекер тренировок",
+    "Дневник питания",
+    "Общий список покупок",
+    "Трекер чтения",
+    "Органайзер рецептов",
+    "Напоминалка о днях рождения",
+    "Календарь кружков детей",
+    "Расходы на машину",
+    "Планировщик путешествий",
+    "Личный сайт-резюме",
+  ] },
+];
+
+export const offlineIdeasNote = "На уроке собираете первую версию одной идеи. Остальные дома, тем же способом.";
+
+/** Публичная модель блока: только verified (dev - остальные с пометкой) */
+export function getOfflineBuild() {
+  return {
+    cards: visible(offlineBuild).map(({ id, audience, pain, now, built, devNote }) => ({ id, audience, pain, now, built, devNote })),
+    ideas: offlineIdeas,
+    ideasNote: offlineIdeasNote,
+    ideasCount: offlineIdeas.reduce((n, g) => n + g.items.length, 0),
+  };
+}
+
+// ───────────── Офлайн-урок: «3 часа на уроке» ─────────────
+
+export interface OfflineTimelineItem extends Checked {
+  id: string;
+  /** Время начала: «12:00» */
+  time: string;
+  title: string;
+  text: string;
+}
+
+/** Расписание урока по блокам; дата и общее время — из products.ts (lessonDate, lessonTime). Тексты — как на странице школы ai-pro-school.kz/newness */
+export const offlineTimeline = {
+  title: "3 часа на уроке",
+  items: [
+    { id: "tools", time: "12:00", title: "Инструменты и подход", text: "Что такое вайб-кодинг, работа в Cursor, как ставить задачу ИИ.", verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "spec", time: "12:30", title: "Ваша идея становится ТЗ", text: "Упаковываем задачу в понятное ТЗ и пошаговые промпты.", verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "build", time: "13:00", title: "Сборка продукта", text: "Интерфейс и логика сайта, бота или помощника. Разработчик рядом.", verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "fix", time: "14:15", title: "Починка ошибок", text: "Учимся заставлять ИИ найти и исправить баг.", verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "link", time: "14:40", title: "Ссылка и план", text: "Публикуем продукт по ссылке и составляем план на 7 дней.", verified: true, source: SOURCE, asOf: AS_OF },
+  ] as OfflineTimelineItem[],
+  outcomePrefix: "Итог:",
+  outcomeAccent: "продукт по ссылке",
+  outcomeRest: ", которым пользуются, и навык собирать следующие",
+};
+
+export function getOfflineTimeline() {
+  return {
+    title: offlineTimeline.title,
+    items: visible(offlineTimeline.items).map(({ id, time, title, text, devNote }) => ({ id, time, title, text, devNote })),
+    outcomePrefix: offlineTimeline.outcomePrefix,
+    outcomeAccent: offlineTimeline.outcomeAccent,
+    outcomeRest: offlineTimeline.outcomeRest,
+  };
+}
+
 // ───────────── Что понадобится кроме курса ─────────────
 
 export interface CourseCost extends Checked {

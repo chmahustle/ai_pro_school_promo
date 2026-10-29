@@ -1,6 +1,7 @@
 import { Laptop, LifeBuoy, MapPin, MessageCircle, PlayCircle, Video } from "lucide-react";
 import { Accordion, Avatar, Pill, Reveal, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
-import type { PublicCourseContent } from "@/data/courseContent";
+import { Check, Plus } from "lucide-react";
+import type { getOfflineBuild, getOfflineSkill, getOfflineTimeline, PublicCourseContent } from "@/data/courseContent";
 import { cn, nbspDash } from "@/lib/utils";
 import Image from "next/image";
 
@@ -82,6 +83,174 @@ export function CourseMilestones({ id, items, title = "Что вы сделае�
           </RevealItem>
         ))}
       </RevealGroup>
+    </Section>
+  );
+}
+
+/** «Один навык для любых задач» (офлайн-урок): заголовок с розовым акцентом, вводный абзац и три белые карточки с номерами */
+export function CourseSkill({ skill }: { skill: ReturnType<typeof getOfflineSkill> }) {
+  if (skill.items.length === 0) return null;
+  return (
+    <Section aria-labelledby="offline-skill-title">
+      <div className="mx-auto flex max-w-[860px] flex-col items-center text-center">
+        <h2 id="offline-skill-title" className="font-display text-[clamp(1.875rem,1.3rem+2.4vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.015em] text-ink">
+          {nbspDash(skill.title)} <span className="text-brand">{skill.titleAccent}</span>
+        </h2>
+        <p className="mt-4 max-w-[52ch] text-[16px] leading-relaxed text-ink-700 [text-wrap:balance]">
+          {skill.lead} <span className="font-semibold text-brand">{skill.leadAccent}</span>.
+        </p>
+      </div>
+      <RevealGroup as="ol" className="mx-auto mt-8 grid max-w-[1040px] gap-4 md:grid-cols-3">
+        {skill.items.map((it, i) => (
+          <RevealItem as="li" key={it.id} className="flex">
+            <div className="flex w-full items-start gap-4 rounded-[24px] bg-surface p-5 shadow-soft sm:p-6">
+              <span className="grid size-14 shrink-0 place-items-center rounded-[18px] bg-brand-50 font-display text-[20px] font-extrabold text-brand tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+              <div>
+                <DevNote note={it.devNote} />
+                <h3 className="font-display text-[19px] font-bold leading-snug">{it.title}</h3>
+                <p className="mt-1.5 text-[15px] leading-relaxed text-ink-700">{it.text}</p>
+              </div>
+            </div>
+          </RevealItem>
+        ))}
+      </RevealGroup>
+    </Section>
+  );
+}
+
+type BuildData = ReturnType<typeof getOfflineBuild>;
+
+function Bubble({ text, time, gap, tone }: { text: string; time?: string; gap?: string; tone: "now" | "built" }) {
+  return (
+    <>
+      {gap && <p className="py-0.5 text-center text-[11px] font-semibold uppercase tracking-wide text-ink-300">{gap}</p>}
+      <div className={cn("flex items-end justify-between gap-3 rounded-2xl px-3.5 py-2.5 text-[14px] leading-snug", tone === "now" ? "bg-surface text-ink-700" : "bg-white text-ink shadow-soft")}>
+        <span>{text}</span>
+        {time && <span className="shrink-0 text-[11px] tabular-nums text-ink-300">{time}</span>}
+      </div>
+    </>
+  );
+}
+
+/**
+ * «Что соберёте именно вы»: четыре сценария (бизнес, эксперт, в найме, фриланс). В каждом - боль одной фразой,
+ * панель «Сейчас» (переписка/файлы) и панель «Соберёте на уроке». Ниже - «Ещё 68 идей» (нативный details, без JS).
+ */
+export function CourseBuild({ build }: { build: BuildData }) {
+  if (build.cards.length === 0) return null;
+  return (
+    <Section aria-labelledby="offline-build-title">
+      <SectionIntro id="offline-build-title" align="left" eyebrow="Примеры" title="Что соберёте именно вы" />
+      <RevealGroup as="ul" className="grid gap-4 md:grid-cols-2">
+        {build.cards.map((c) => (
+          <RevealItem as="li" key={c.id} className="flex">
+            <article className="flex w-full flex-col gap-4 rounded-[28px] bg-lavender p-5 sm:p-6">
+              <DevNote note={c.devNote} />
+              <div>
+                <Pill tone="white" size="sm">{c.audience}</Pill>
+                <h3 className="mt-3 font-display text-[clamp(1.125rem,1rem+0.5vw,1.375rem)] font-bold leading-snug">{nbspDash(c.pain)}</h3>
+              </div>
+
+              <div className="flex flex-col gap-2 rounded-2xl bg-soft-100 p-3.5 ring-1 ring-ink/5">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-ink-500">Сейчас · {c.now.source}</p>
+                {c.now.lines.map((l, i) => (
+                  <Bubble key={i} text={l.text} time={l.time} gap={l.gap} tone="now" />
+                ))}
+                <p className="mt-0.5 text-[14px] font-semibold text-danger">{c.now.outcome}</p>
+              </div>
+
+              <div className="flex flex-1 flex-col gap-2 rounded-2xl bg-brand-50 p-3.5 ring-1 ring-brand/20">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-brand-700">Соберёте на уроке</p>
+                <p className="flex flex-wrap items-center gap-2 font-display text-[17px] font-bold leading-tight">
+                  {c.built.title}
+                  {c.built.badge && <span className="rounded-pill bg-brand-600 px-2.5 py-1 text-[11px] font-bold leading-none text-white">{c.built.badge}</span>}
+                </p>
+                {c.built.lines.map((l, i) => (
+                  <Bubble key={i} text={l.text} time={l.time} gap={l.gap} tone="built" />
+                ))}
+                {c.built.tags && (
+                  <ul className="flex flex-col gap-1.5">
+                    {c.built.tags.map((t) => (
+                      <li key={t.label} className="flex items-center justify-between gap-3 rounded-2xl bg-white px-3.5 py-2 text-[14px] shadow-soft">
+                        <span>{t.label}</span>
+                        <span className="rounded-pill bg-brand-100 px-2.5 py-0.5 text-[12px] font-semibold text-brand-700">{t.value}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </article>
+          </RevealItem>
+        ))}
+      </RevealGroup>
+
+      <details className="group mt-4 rounded-[24px] bg-surface p-2 shadow-soft">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-2xl px-4 py-3 font-display text-[17px] font-bold [&::-webkit-details-marker]:hidden">
+          Ещё {build.ideasCount} идей, что можно собрать
+          <span aria-hidden className="grid size-8 place-items-center rounded-full bg-brand-50 text-brand transition-transform duration-300 group-open:rotate-45">
+            <Plus className="size-4" />
+          </span>
+        </summary>
+        <div className="grid gap-5 px-4 pb-4 pt-2 md:grid-cols-2">
+          {build.ideas.map((g) => (
+            <div key={g.id}>
+              <h3 className="font-display text-[15px] font-bold">{g.title}</h3>
+              <ul className="mt-2 flex flex-wrap gap-1.5">
+                {g.items.map((it) => (
+                  <li key={it} className="rounded-pill bg-soft-100 px-3 py-1.5 text-[13px] leading-snug text-ink-700">{it}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </details>
+      <p className="mt-4 max-w-[60ch] text-[14px] text-ink-500">{build.ideasNote}</p>
+    </Section>
+  );
+}
+
+type TimelineData = ReturnType<typeof getOfflineTimeline>;
+
+/** «3 часа на уроке»: карточка с датой и временем урока (из products.ts), вертикальная линия по блокам и карточка «Итог» */
+export function CourseTimeline({ timeline, date, time }: { timeline: TimelineData; date: string | null; time: string | null }) {
+  if (timeline.items.length === 0) return null;
+  return (
+    <Section aria-labelledby="offline-timeline-title">
+      <div className="mx-auto max-w-[760px]">
+        <h2 id="offline-timeline-title" className="text-center font-display text-[clamp(1.875rem,1.3rem+2.4vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.015em] text-ink">
+          {timeline.title}
+        </h2>
+        <div className="mt-8 rounded-[28px] bg-surface p-5 shadow-soft sm:p-7">
+          {(date || time) && (
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              {date && <p className="font-display text-[19px] font-bold">Урок, {date}</p>}
+              {time && <span className="rounded-pill bg-brand-100 px-3.5 py-1.5 text-[14px] font-bold tabular-nums text-brand-700">{time}</span>}
+            </div>
+          )}
+          <ol className={cn("flex flex-col", (date || time) && "mt-6")}>
+            {timeline.items.map((it, i) => (
+              <li key={it.id} className="relative flex gap-4 pb-6 last:pb-0">
+                {i < timeline.items.length - 1 && <span aria-hidden className="absolute left-[34px] top-9 bottom-0 w-0.5 -translate-x-1/2 bg-brand-200" />}
+                <span className={cn("z-10 h-8 w-[68px] shrink-0 rounded-xl text-center text-[14px] font-bold leading-8 tabular-nums", i === 0 ? "bg-brand-600 text-white" : "bg-brand-100 text-brand-700")}>{it.time}</span>
+                <div>
+                  <DevNote note={it.devNote} />
+                  <h3 className="font-display text-[18px] font-bold leading-snug">{it.title}</h3>
+                  <p className="mt-1 text-[15px] leading-relaxed text-ink-700">{it.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div className="mt-4 flex items-center gap-4 rounded-[24px] bg-surface p-5 ring-2 ring-brand/25">
+          <span className="grid size-14 shrink-0 place-items-center rounded-full bg-brand-600 text-white">
+            <Check className="size-6" aria-hidden />
+          </span>
+          <p className="text-[17px] font-bold leading-snug">
+            {timeline.outcomePrefix} <span className="text-brand">{timeline.outcomeAccent}</span>
+            {timeline.outcomeRest}
+          </p>
+        </div>
+      </div>
     </Section>
   );
 }

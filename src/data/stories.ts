@@ -15,7 +15,7 @@ export const stories: Story[] = [
     direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Алёна Заярных",
     descriptor: "без опыта в AI-видео",
-    photo: "/stories/case-alena.webp",
+    photo: "/photo/alena.webp",
     result: { value: "500 000", unit: "₸", text: "· договор на 15 роликов" },
     before: "Нет опыта в AI-видео, первые ролики не залетали, думала сдаться.",
     after: "500+ AI-видео, миллионные просмотры, куратор AI Pro School.",

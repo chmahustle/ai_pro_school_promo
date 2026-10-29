@@ -98,6 +98,9 @@ export interface Product {
   address: string | null;
   /** Даты проведения (офлайн). null - блок «Где и когда» скрыт */
   schedule: string | null;
+  /** Офлайн-урок: ближайшая дата («1 ноября») и время («12:00–15:00») для блока «3 часа на уроке»; null - в блоке не показываем */
+  lessonDate?: string | null;
+  lessonTime?: string | null;
   /** Условия возврата - только текст школы; null - блок скрыт (на страницах курсов) */
   refundTerms: string | null;
   /** Программа по модулям; null - блок скрыт (данных в проекте нет) */
@@ -261,6 +264,8 @@ export const products: Product[] = [
     seatsLeft: null,
     address: null, // TODO(клиент): адрес проведения
     schedule: null, // TODO(клиент): даты проведения
+    lessonDate: "1 ноября", // ближайший урок (владелец, 2026-10-29); обновлять с каждым потоком
+    lessonTime: "12:00–15:00",
     modules: null, // TODO(клиент): программа по модулям
     refundTerms: null, // TODO(клиент): условия возврата (текст школы)
     durationHours: "3 часа",
