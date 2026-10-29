@@ -118,8 +118,10 @@ export const testimonials: Testimonial[] = [
       verified: true,
     };
   }),
-  ...Array.from({ length: 24 }, (_, i) => {
-    const n = i + 1;
+  // chat-9..12 - логотипы нейросетей (Astana Hub, ChatGPT, Google, Grok), не отзывы: убраны вместе с файлами
+  ...Array.from({ length: 24 }, (_, i) => i + 1)
+    .filter((n) => n < 9 || n > 12)
+    .map((n) => {
     const ext = n === 19 ? "png" : "jpeg";
     return {
       id: `t-chat-p-${n}`,
