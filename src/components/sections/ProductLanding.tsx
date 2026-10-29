@@ -106,6 +106,7 @@ export function ProductLanding({ id }: { id: "offline" | "course" }) {
       {id === "offline" && <CourseSkill skill={getOfflineSkill()} />}
       {id === "offline" && <CourseBuild build={getOfflineBuild()} />}
       {id === "offline" && <CourseTimeline timeline={getOfflineTimeline()} date={getProduct("offline").lessonDate ?? null} time={getProduct("offline").lessonTime ?? null} />}
+      {id === "offline" && <CourseTeachers id="offline-teachers-title" title="Кто преподаёт" teachers={getCourseTeachers()} />}
 
       {content && <CourseProgram program={content.program} />}
       {content && <CourseDelivery items={content.delivery} />}
