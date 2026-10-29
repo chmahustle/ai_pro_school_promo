@@ -15,12 +15,21 @@ import { track } from "@/lib/analytics";
 import { useT } from "@/i18n/LocaleProvider";
 import { cn } from "@/lib/utils";
 
+/** Своя кнопка справа (лендинги): ведёт к форме на странице вместо «Подобрать программу» */
+export interface HeaderCta {
+  label: string;
+  /** Короткая подпись для узких экранов (до sm) */
+  shortLabel?: string;
+  /** id блока с формой на странице (без #) */
+  formAnchor: string;
+}
+
 /**
  * Плавающий хедер-«пилюля» (референс ventorme / mindset health).
  * Desktop: лого · [Направления ▾ · Результаты · О нас] · RU/KZ · CTA «Подобрать программу» (→ /#lineup)
  * Mobile: лого · CTA · бургер → MobileMenu (две карточки направлений).
  */
-export function Header({ menu }: { menu: PublicNavMenu }) {
+export function Header({ menu, cta }: { menu: PublicNavMenu; cta?: HeaderCta }) {
   const t = useT();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -171,13 +180,13 @@ export function Header({ menu }: { menu: PublicNavMenu }) {
             <Button
               variant="dark"
               size="sm"
-              href={PICK_PROGRAM_HREF}
+              href={cta ? `#${cta.formAnchor}` : PICK_PROGRAM_HREF}
               icon={<ArrowRight className="size-4" />}
               className="h-10 px-4 text-[14px]"
-              onClick={() => track({ name: "cta_click", params: { label: "pick_program", location: "header" } })}
+              onClick={() => track({ name: "cta_click", params: { label: cta ? "landing_cta" : "pick_program", location: "header" } })}
             >
-              <span className="hidden sm:inline">{t.nav.pickProgram}</span>
-              <span className="sm:hidden">Подобрать</span>
+              <span className="hidden sm:inline">{cta ? cta.label : t.nav.pickProgram}</span>
+              <span className="sm:hidden">{cta ? (cta.shortLabel ?? "Записаться") : "Подобрать"}</span>
             </Button>
             <button
               type="button"

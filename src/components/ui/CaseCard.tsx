@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRef } from "react";
 import { ExternalLink, Play, Quote } from "lucide-react";
 import { PlaceholderBadge } from "./PlaceholderBadge";
 import type { PublicCase } from "@/data/public-types";
@@ -31,10 +32,25 @@ export function CaseCard({ item, onOpenVideo, className }: CaseCardProps) {
   const hasTexts = Boolean(item.before || item.after || item.quote);
   const showBigPoster = hasVideo && !hasTexts && Boolean(item.posterSrc);
   const open = (e: React.MouseEvent<HTMLButtonElement>) => onOpenVideo?.(e.currentTarget);
+  // Карточка с видео кликабельна целиком: клик по свободному месту открывает ролик так же, как кнопка «Смотреть ролик»
+  const footerBtnRef = useRef<HTMLButtonElement>(null);
+  const openFromCard = (e: React.MouseEvent<HTMLElement>) => {
+    if (!hasVideo || !footerBtnRef.current) return;
+    if ((e.target as HTMLElement).closest("button, a")) return;
+    onOpenVideo?.(footerBtnRef.current);
+  };
   const devTop = [item.devNote, item.devTextNote].filter(Boolean).join(" · ");
 
   return (
-    <article className={cn("relative flex h-full flex-col rounded-[28px] bg-surface p-5 text-ink shadow-soft sm:p-6", className)}>
+    <article
+      onClick={openFromCard}
+      className={cn(
+        "group/card relative flex h-full flex-col rounded-[28px] bg-surface p-5 text-ink shadow-soft sm:p-6",
+        // Видео-карточка: курсор-рука, подъём, тень и кольцо при наведении (без движения при reduced-motion)
+        hasVideo && "cursor-pointer transition-[transform,box-shadow] duration-300 hover:-translate-y-1.5 hover:shadow-float hover:ring-2 hover:ring-brand/40 motion-reduce:transition-none motion-reduce:hover:translate-y-0",
+        className,
+      )}
+    >
       {/* dev-плашки: на краях карточки, не перекрывают аватар, имя и текст */}
       {devTop && <PlaceholderBadge status="unverified" variant="note" note={devTop} className="left-4 top-0 max-w-[calc(100%-2rem)] -translate-y-1/2 truncate" />}
 
@@ -96,9 +112,9 @@ export function CaseCard({ item, onOpenVideo, className }: CaseCardProps) {
           aria-label={`Смотреть видео: ${alt}`}
           className="group relative mt-4 min-h-[160px] flex-1 overflow-hidden rounded-2xl bg-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         >
-          <Image src={item.posterSrc} alt="" fill sizes="(max-width:767px) 80vw, 380px" loading="lazy" className="object-cover object-center" />
+          <Image src={item.posterSrc} alt="" fill sizes="(max-width:767px) 80vw, 380px" loading="lazy" className="object-cover object-center transition-transform duration-500 group-hover/card:scale-105 motion-reduce:transition-none motion-reduce:group-hover/card:scale-100" />
           <span className="absolute inset-0 grid place-items-center bg-ink/20">
-            <span className="grid size-16 place-items-center rounded-full bg-white/95 text-ink shadow-float transition-transform duration-300 group-hover:scale-110 motion-reduce:transition-none">
+            <span className="grid size-16 place-items-center rounded-full bg-white/95 text-ink shadow-float transition-transform duration-300 group-hover/card:scale-110 motion-reduce:transition-none motion-reduce:group-hover/card:scale-100">
               <Play className="ml-1 size-7 fill-current" aria-hidden />
             </span>
           </span>
@@ -109,7 +125,7 @@ export function CaseCard({ item, onOpenVideo, className }: CaseCardProps) {
       <footer className="mt-auto pt-5">
         {item.sourceCaption && <p className="text-[12px] leading-snug text-ink-500">{item.sourceCaption}</p>}
         {hasVideo ? (
-          <button type="button" onClick={open} className={LINK}>
+          <button ref={footerBtnRef} type="button" onClick={open} className={LINK}>
             Смотреть ролик
             <ExternalLink className="size-3.5" aria-hidden />
           </button>
