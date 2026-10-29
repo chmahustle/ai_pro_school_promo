@@ -42,6 +42,16 @@ export const partners: Partner[] = [
     note: "Основатели платформы Strimmeo.com",
   },
   {
+    id: "technowomen",
+    name: "TechnoWomen KZ",
+    logo: null,
+    textOnly: true, // TODO(клиент): прислать логотип TechnoWomen KZ - заменить текст на логотип
+    relation: "partner",
+    verified: true,
+    logoPermission: true,
+    note: "Партнёр школы (подтверждено владельцем 2026-10-30).",
+  },
+  {
     id: "it-ayel",
     name: "IT Ayel",
     logo: null,
@@ -55,7 +65,7 @@ export const partners: Partner[] = [
 /** Прод: verified && logoPermission && есть файл логотипа (без логотипов полоса скрыта). Dev: все (для вёрстки). */
 export function getVisiblePartners(): Partner[] {
   if (SHOW_PLACEHOLDERS) return partners;
-  return partners.filter((p) => p.verified && p.logoPermission && Boolean(p.logo));
+  return partners.filter((p) => p.verified && p.logoPermission && (Boolean(p.logo) || p.textOnly === true));
 }
 
 /** @deprecated используйте getVisiblePartners */

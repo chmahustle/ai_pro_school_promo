@@ -281,6 +281,7 @@ const RELATION_LABEL: Record<Partner["relation"], string> = {
   winner: "Победитель",
   founders: "Основатели платформы",
   speaker: "Спикер",
+  partner: "Партнёр",
 };
 
 /** Партнёры для полосы: в проде только verified && logoPermission && есть файл логотипа */
@@ -290,7 +291,7 @@ export function getPublicPartners(): PublicPartner[] {
     name: p.name,
     logo: p.logo ?? null,
     relationLabel: RELATION_LABEL[p.relation],
-    devNote: SHOW_PLACEHOLDERS && !(p.verified && p.logoPermission && p.logo) ? (p.note ?? "Нужны verified + logoPermission + логотип") : undefined,
+    devNote: SHOW_PLACEHOLDERS && !(p.verified && p.logoPermission && (p.logo || p.textOnly)) ? (p.note ?? "Нужны verified + logoPermission + логотип") : undefined,
   }));
 }
 

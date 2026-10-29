@@ -146,7 +146,7 @@ export interface TeamMember extends Verifiable {
 }
 
 /** Связь с площадкой - показывается как подпись, не «партнёр/резидент» */
-export type PartnerRelation = "graduate" | "winner" | "founders" | "speaker";
+export type PartnerRelation = "graduate" | "winner" | "founders" | "speaker" | "partner";
 
 export interface Partner {
   id: string;
@@ -158,6 +158,8 @@ export interface Partner {
   verified: boolean;
   /** Право показывать логотип на сайте */
   logoPermission: boolean;
+  /** Показывать названием текстом (пока нет файла логотипа): в проде допустимо при verified && logoPermission */
+  textOnly?: boolean;
   note?: string;
 }
 
