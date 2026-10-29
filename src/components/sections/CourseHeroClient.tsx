@@ -78,7 +78,7 @@ export function CourseHeroClient({ course }: { course: CourseHeroData }) {
             <motion.h1
               id="course-title"
               variants={fadeUp}
-              className={cn("font-display text-[clamp(2rem,1.3rem+3vw,3.5rem)] font-extrabold leading-[1.06] tracking-[-0.015em] [text-wrap:balance]", dark ? "text-white" : "text-ink")}
+              className={cn("font-display font-extrabold leading-[1.06] tracking-[-0.015em] [text-wrap:balance]", course.slug === "practicum" ? "text-[clamp(1.625rem,1.2rem+2vw,2.5rem)]" : "text-[clamp(2rem,1.3rem+3vw,3.5rem)]", dark ? "text-white" : "text-ink")}
             >
               {nbspDash(course.tagline)}
             </motion.h1>
