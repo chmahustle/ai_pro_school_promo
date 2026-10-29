@@ -55,14 +55,14 @@ export function Lightbox({ items, index, onClose, onChange }: LightboxProps) {
 
   return (
     // Вертикальный ролик: без прокрутки - панель не скроллится, высота плеера подогнана под экран
-    <Modal open={open} onClose={onClose} size="full" bare title={item?.alt} className={item?.vertical || item?.videoSrc ? "overflow-visible" : undefined}>
+    <Modal open={open} onClose={onClose} size="full" bare title={item?.alt} className={item?.vertical || item?.videoSrc || item?.ratio ? "overflow-visible" : undefined}>
       {item && (
         <div className="flex flex-col items-center gap-4 px-2 pb-6 pt-12 sm:px-14">
           <div className="relative w-full max-w-4xl">
             {item.ratio && item.src ? (
               <div
                 className="relative mx-auto overflow-hidden rounded-2xl bg-white"
-                style={{ aspectRatio: item.ratio, width: `min(100%, calc(78dvh * ${item.ratio}))` }}
+                style={{ aspectRatio: item.ratio, width: `min(100%, calc(66dvh * ${item.ratio}))` }}
               >
                 <Image src={item.src} alt={item.alt} fill sizes="(max-width:1024px) 100vw, 900px" className="object-contain" />
               </div>

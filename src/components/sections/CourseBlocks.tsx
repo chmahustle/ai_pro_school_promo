@@ -335,7 +335,8 @@ export function PracticumGrowth({ growth }: { growth: ReturnType<typeof getPract
   if (growth.stats.length === 0) return null;
   return (
     <HomeSection tone="dark" labelledBy="practicum-growth-title" mobileCompact className="mt-4">
-      <div className="mx-auto flex max-w-[860px] flex-col items-center text-center">
+      {/* Шапка: заголовок слева, подзаголовок справа (на узких экранах друг под другом) */}
+      <div className="grid items-center gap-6 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
         <h2 id="practicum-growth-title" className="font-display text-[clamp(1.875rem,1.3rem+2.4vw,3.25rem)] font-extrabold leading-[1.05] tracking-[-0.015em] text-white">
           {growth.title}
           <br />
@@ -343,11 +344,13 @@ export function PracticumGrowth({ growth }: { growth: ReturnType<typeof getPract
           <br />
           {growth.titleTail}
         </h2>
-        <p className="mt-7 max-w-[46ch] text-[17px] leading-[1.7] text-white/80 [text-wrap:balance]">{growth.lead}</p>
-        <p className="mt-5 max-w-[46ch] text-[17px] leading-[1.7] text-white/90 [text-wrap:balance]">
-          <Flame className="mr-1.5 inline size-5 -translate-y-0.5 text-brand" aria-hidden />
-          <b className="font-bold text-brand">{growth.highlight}</b> {growth.highlightText}
-        </p>
+        <div>
+          <p className="max-w-[46ch] text-[17px] leading-[1.7] text-white/80">{growth.lead}</p>
+          <p className="mt-5 max-w-[46ch] text-[17px] leading-[1.7] text-white/90">
+            <Flame className="mr-1.5 inline size-5 -translate-y-0.5 text-brand" aria-hidden />
+            <b className="font-bold text-brand">{growth.highlight}</b> {growth.highlightText}
+          </p>
+        </div>
       </div>
       <GrowthGrid stats={growth.stats} />
     </HomeSection>

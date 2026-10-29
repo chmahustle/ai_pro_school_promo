@@ -42,7 +42,7 @@ export function GrowthGrid({ stats }: { stats: GrowthStat[] }) {
   };
   return (
     <>
-      <ul className="mx-auto mt-12 grid max-w-[1180px] gap-4 sm:grid-cols-3">
+      <ul className="mt-12 grid gap-4 sm:grid-cols-3">
         {stats.map((st, si) => {
           const Icon = st.id === "instagram" ? Instagram : st.id === "youtube" ? Youtube : null;
           return (
@@ -54,7 +54,7 @@ export function GrowthGrid({ stats }: { stats: GrowthStat[] }) {
                 </span>
                 <p className="whitespace-nowrap font-display text-[clamp(1.75rem,1.4rem+1.4vw,2.5rem)] font-extrabold leading-none text-white">{st.gain}</p>
                 <p className="whitespace-nowrap text-[14px] text-white/70">{st.period}</p>
-                <div className="mt-3 flex w-full flex-col gap-3">
+                <div className="mt-3 grid w-full grid-cols-2 items-start gap-2">
                   {[0, 1].map((k) => {
                     const idx = si * 2 + k;
                     const sh = shots[idx]!;
@@ -67,15 +67,14 @@ export function GrowthGrid({ stats }: { stats: GrowthStat[] }) {
                             setOpen(idx);
                           }}
                           aria-label={`Открыть: ${items[idx]!.alt}`}
-                          className="group relative block w-full overflow-hidden rounded-xl bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-                          style={{ aspectRatio: sh.ratio }}
+                          className="group relative block aspect-[4/3] w-full overflow-hidden rounded-xl bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
                         >
-                          <Image src={sh.src} alt="" fill sizes="(max-width:640px) 90vw, 360px" className="object-contain" />
-                          <span className="absolute right-2 top-2 grid size-8 place-items-center rounded-full bg-ink/70 text-white opacity-90 transition-opacity group-hover:opacity-100">
-                            <Maximize2 className="size-4" aria-hidden />
+                          <Image src={sh.src} alt="" fill sizes="(max-width:640px) 44vw, 180px" className="object-contain" />
+                          <span className="absolute right-1.5 top-1.5 grid size-7 place-items-center rounded-full bg-ink/70 text-white opacity-90 transition-opacity group-hover:opacity-100">
+                            <Maximize2 className="size-3.5" aria-hidden />
                           </span>
                         </button>
-                        <figcaption className={cn("text-[13px] font-semibold", sh.cap === "Стало" ? "text-brand-200" : "text-white/70")}>{sh.cap}</figcaption>
+                        <figcaption className={cn("text-center text-[13px] font-semibold", sh.cap === "Стало" ? "text-brand-200" : "text-white/70")}>{sh.cap}</figcaption>
                       </figure>
                     );
                   })}
