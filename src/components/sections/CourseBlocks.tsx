@@ -1,10 +1,8 @@
-import { Laptop, LifeBuoy, MapPin, MessageCircle, PlayCircle, Video } from "lucide-react";
+import { Check, FileText, Flame, Instagram, Laptop, Lightbulb, LifeBuoy, MapPin, MessageCircle, PlayCircle, Plus, Sparkles, Users, Video, Youtube } from "lucide-react";
 import { Accordion, Avatar, HomeSection, Pill, Reveal, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
 import { BuildCarousel } from "./BuildCarousel";
-import { Check, Plus } from "lucide-react";
 import type { getOfflineBuild, getOfflineSkill, getOfflineTimeline, getPracticumGets, getPracticumGrowth, PublicCourseContent } from "@/data/courseContent";
 import { YoutubeTeaser } from "./YoutubeTeaser";
-import { Instagram, Youtube, Flame } from "lucide-react";
 import { cn, nbspDash } from "@/lib/utils";
 import Image from "next/image";
 
@@ -259,40 +257,47 @@ export function CourseTimeline({ timeline, date, time }: { timeline: TimelineDat
   );
 }
 
-/** «Что вы получаете, присоединившись» (практикум): тёмная панель, семь строк «розовая метка + пояснение» */
+const GETS_ICONS = { live: Video, chat: MessageCircle, records: PlayCircle, ideas: Lightbulb, prompts: Sparkles, docs: FileText, clients: Users } as const;
+
+/**
+ * «Что вы получаете, присоединившись» (практикум): светлая секция в стиле остальных плиточных блоков - заголовок слева,
+ * семь компактных плиток с иконкой (первая шире). Крупная метка («3 эфира») - розовая, пояснение - обычным текстом.
+ */
 export function PracticumGets({ items }: { items: ReturnType<typeof getPracticumGets> }) {
   if (items.length === 0) return null;
   return (
-    <HomeSection tone="dark" labelledBy="practicum-gets-title" mobileCompact className="mt-4">
-      <div className="mx-auto max-w-[760px]">
-        <h2 id="practicum-gets-title" className="text-center font-display text-[clamp(1.875rem,1.3rem+2.4vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.015em] text-white">
-          <span className="text-brand">Что вы получаете,</span>
-          <br />
-          присоединившись
-        </h2>
-        <RevealGroup as="ul" className="mt-8 flex flex-col gap-3">
-          {items.map((it) => (
-            <RevealItem as="li" key={it.id}>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-[20px] bg-white/[0.07] p-3 ring-1 ring-white/15 sm:p-4">
-                <DevNote note={it.devNote} />
-                <span className="rounded-2xl bg-brand px-4 py-2 font-display text-[clamp(1.125rem,1rem+0.6vw,1.5rem)] font-extrabold uppercase leading-none tracking-wide text-white">{it.label}</span>
-                <span className="text-[15px] leading-snug text-white/85 sm:text-[17px]">
-                  {it.bold && it.text.includes(it.bold) ? (
-                    <>
-                      {it.text.slice(0, it.text.indexOf(it.bold))}
-                      <b className="font-bold text-white">{it.bold}</b>
-                      {it.text.slice(it.text.indexOf(it.bold) + it.bold.length)}
-                    </>
-                  ) : (
-                    it.text
-                  )}
+    <Section aria-labelledby="practicum-gets-title">
+      <SectionIntro id="practicum-gets-title" align="left" eyebrow="Состав" title="Что вы получаете, присоединившись" />
+      <RevealGroup as="ul" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {items.map((it, i) => {
+          const Icon = GETS_ICONS[it.id as keyof typeof GETS_ICONS] ?? Sparkles;
+          return (
+            <RevealItem as="li" key={it.id} className={cn("flex", i === 0 && "lg:col-span-2")}>
+              <div className={cn("flex w-full items-start gap-4 rounded-[24px] p-5", i === 0 ? "bg-lavender" : "bg-surface shadow-soft")}>
+                <span className={cn("grid size-11 shrink-0 place-items-center rounded-full text-brand", i === 0 ? "bg-surface" : "bg-brand-50")}>
+                  <Icon className="size-5" aria-hidden />
                 </span>
+                <div className="min-w-0">
+                  <DevNote note={it.devNote} />
+                  <h3 className="font-display text-[20px] font-extrabold leading-tight text-brand">{it.label}</h3>
+                  <p className="mt-1 text-[14px] leading-snug text-ink-700">
+                    {it.bold && it.text.includes(it.bold) ? (
+                      <>
+                        {it.text.slice(0, it.text.indexOf(it.bold))}
+                        <b className="font-semibold text-ink">{it.bold}</b>
+                        {it.text.slice(it.text.indexOf(it.bold) + it.bold.length)}
+                      </>
+                    ) : (
+                      it.text
+                    )}
+                  </p>
+                </div>
               </div>
             </RevealItem>
-          ))}
-        </RevealGroup>
-      </div>
-    </HomeSection>
+          );
+        })}
+      </RevealGroup>
+    </Section>
   );
 }
 
