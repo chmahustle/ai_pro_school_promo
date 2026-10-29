@@ -1,5 +1,5 @@
 import { ArrowDown, FileText, Flame, Laptop, Lightbulb, LifeBuoy, MapPin, MessageCircle, PlayCircle, Send, Sparkles, Users, Video } from "lucide-react";
-import { Accordion, Avatar, Button, HomeSection, Pill, Reveal, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
+import { Accordion, Avatar, Button, Container, HomeSection, Pill, Reveal, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
 import { BuildCarousel } from "./BuildCarousel";
 import { BuildIdeas } from "./BuildIdeas";
 import { TimelineClient } from "./TimelineClient";
@@ -362,14 +362,18 @@ export function PracticumGrowth({ growth }: { growth: ReturnType<typeof getPract
 export function PracticumResults({ results }: { results: ReturnType<typeof getPracticumResults> }) {
   if (results.shots.length === 0) return null;
   return (
-    <HomeSection tone="dark" labelledBy="practicum-results-title" mobileCompact className="mt-4">
-      <h2 id="practicum-results-title" className="mb-10 font-display text-[clamp(1.875rem,1.3rem+2.4vw,3.25rem)] font-extrabold leading-[1.05] tracking-[-0.015em] text-white">
-        <span className="text-brand">{results.title}</span>
-        <br />
-        {results.titleTail}
-      </h2>
-      <PhotoCarousel shots={results.shots} label="Скриншоты переписок учеников после практикума" altPrefix="Результат ученика практикума" />
-    </HomeSection>
+    <section aria-labelledby="practicum-results-title" className="mt-4 px-2 sm:px-4">
+      <div className="rounded-2xl bg-lavender py-14 sm:rounded-3xl sm:py-24">
+        <Container>
+          <h2 id="practicum-results-title" className="mb-10 font-display text-[clamp(1.875rem,1.3rem+2.4vw,3.25rem)] font-extrabold leading-[1.05] tracking-[-0.015em] text-ink">
+            <span className="text-brand">{results.title}</span>
+            <br />
+            {results.titleTail}
+          </h2>
+          <PhotoCarousel shots={results.shots} label="Скриншоты переписок учеников после практикума" altPrefix="Результат ученика практикума" tone="light" />
+        </Container>
+      </div>
+    </section>
   );
 }
 

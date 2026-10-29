@@ -17,7 +17,7 @@ export interface PhotoShot {
  * Клик открывает фото целиком в окне просмотра (стрелки листают, Esc и фон закрывают, фокус возвращается, без прокрутки).
  * Автопрокрутки нет. Стрелки показываются, только если есть переполнение.
  */
-export function PhotoCarousel({ shots, label, altPrefix }: { shots: PhotoShot[]; label: string; altPrefix: string }) {
+export function PhotoCarousel({ shots, label, altPrefix, tone = "dark" }: { shots: PhotoShot[]; label: string; altPrefix: string; tone?: "dark" | "light" }) {
   const listRef = useRef<HTMLUListElement>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const [overflow, setOverflow] = useState(false);
@@ -41,7 +41,9 @@ export function PhotoCarousel({ shots, label, altPrefix }: { shots: PhotoShot[];
     if (!el) return;
     el.scrollBy({ left: dir * Math.max(240, el.clientWidth * 0.8), behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   };
-  const btn = "grid size-11 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-white hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand";
+  const btn = tone === "light"
+    ? "grid size-11 place-items-center rounded-full bg-white text-ink shadow-soft transition-colors hover:bg-ink hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+    : "grid size-11 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-white hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand";
 
   const items: LightboxItem[] = shots.map((s, i) => ({ id: s.id, src: s.src, ratio: s.ratio, alt: `${altPrefix} ${i + 1}`, caption: `${i + 1} / ${shots.length}`, kind: "image" }));
   const close = () => {
@@ -71,7 +73,7 @@ export function PhotoCarousel({ shots, label, altPrefix }: { shots: PhotoShot[];
                 setOpen(i);
               }}
               aria-label={`Открыть: ${altPrefix} ${i + 1}`}
-              className="group relative block h-[320px] overflow-hidden rounded-[20px] bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:h-[400px]"
+              className="group relative block h-[320px] overflow-hidden rounded-[20px] bg-white shadow-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:h-[400px]"
               style={{ aspectRatio: s.ratio }}
             >
               <Image src={s.src} alt="" fill sizes="(max-width:640px) 70vw, 340px" className="object-cover" />
@@ -82,7 +84,7 @@ export function PhotoCarousel({ shots, label, altPrefix }: { shots: PhotoShot[];
           </li>
         ))}
       </ul>
-      {overflow && <p className="mt-1 text-[12px] text-white/70">Листайте вправо</p>}
+      {overflow && <p className={tone === "light" ? "mt-1 text-[12px] text-ink-500" : "mt-1 text-[12px] text-white/70"}>Листайте вправо</p>}
       <Lightbox items={items} index={open} onClose={close} onChange={setOpen} />
     </div>
   );
