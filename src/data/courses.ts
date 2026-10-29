@@ -1,9 +1,11 @@
 import "server-only";
 import { efirFreeGenPrefix, efirLow, efirTitle } from "./efir";
 import { getCurrentPrice, getProduct } from "./products";
+import { formatTenge } from "@/lib/utils";
 import type { Course, CourseSlug } from "./types";
 
 /** Формат практикума (число эфиров, дни недели) подтверждён школой - products.ts → formatVerified */
+const PRACTICUM_ENTRY_PRICE = 9_900;
 const PRACTICUM_FORMAT_VERIFIED = getProduct("practicum").formatVerified === true;
 
 /**
@@ -157,17 +159,17 @@ export const courses: Course[] = [
     slug: "practicum",
     name: "Практикум по вирусным ИИ-роликам",
     shortName: "Практикум",
-    tagline: "Первый ИИ-ролик с телефона за 7 дней",
+    tagline: `${formatTenge(PRACTICUM_ENTRY_PRICE)} на входе. От ${formatTenge(30_000)} за каждый ролик на выходе`,
     description: PRACTICUM_FORMAT_VERIFIED
-      ? "3 живых эфира по 90 минут без воды: сценарий в ChatGPT, картинки в Nano Banana, оживление в Grok и сборка в CapCut. Подходит, даже если вы никогда не делали ролики и не разбираетесь в ИИ."
-      : "Живые эфиры без воды: сценарий в ChatGPT, картинки в Nano Banana, оживление в Grok и сборка в CapCut. Подходит, даже если вы никогда не делали ролики и не разбираетесь в ИИ.",
+      ? "Практикум, после которого вы умеете делать ИИ-ролики, которые покупает бизнес. 3 вечера, телефон, бесплатные нейросети."
+      : "Практикум, после которого вы умеете делать ИИ-ролики, которые покупает бизнес. Телефон и бесплатные нейросети.",
     cover: null,
     accent: "peach",
     format: PRACTICUM_FORMAT_VERIFIED ? "Онлайн · 3 эфира + чат в Telegram" : "Онлайн · живые эфиры + чат в Telegram",
     duration: "7 дней",
     level: "С нуля",
     startNote: "Записи доступны 30 дней",
-    priceFrom: 9_900,
+    priceFrom: PRACTICUM_ENTRY_PRICE,
     priceStatus: "unverified",
     forWhom: [
       { title: "Никогда не делали ролики", text: "и не разбираетесь в ИИ - практикум строится с нуля" },
