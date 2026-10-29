@@ -83,7 +83,7 @@ export const stories: Story[] = [
     audiences: ["beginners", "career"],
     source: "ai-pro-school.kz/ai2026",
     asOf: "2026-10",
-    verified: false, // не публикуем до подтверждения школы (видео-карточка в cases.ts, consent:false)
+    verified: true,
     consent: true,
     note: "Видео с https://ai-pro-school.kz/ai2026 · YouTube IsYI0XQy9A8",
   },
@@ -105,7 +105,7 @@ export const stories: Story[] = [
     audiences: ["freelancers", "career", "beginners"],
     source: "ai-pro-school.kz/ai2026",
     asOf: "2026-10",
-    verified: false, // не публикуем до подтверждения школы (видео-карточка в cases.ts, consent:false)
+    verified: true,
     consent: true,
     note: "Видео с https://ai-pro-school.kz/ai2026 · YouTube _vHOfJPFbUY",
   },

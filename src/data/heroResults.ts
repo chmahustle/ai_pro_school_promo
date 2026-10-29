@@ -4,7 +4,7 @@ import { vocabulary } from "./vocabulary";
 
 /**
  * Плавающие результаты в hero / чипы в метриках.
- * verified: false - показывать только в dev (SHOW_PLACEHOLDERS).
+ * verified: false - показывать только в dev (SHOW_PLACEHOLDERS). Карточка Гульайым подтверждена и показывается на сайте.
  * В первом экране - только результаты без обещаний дохода (шаг 3a): карточки с суммами заработка убраны.
  * TODO(клиент): подтвердить цифры, добавить фото, дату эфира.
  */
@@ -28,8 +28,8 @@ export const heroResults: HeroResult[] = [
     result: "1,6 млн просмотров за 5 дней",
     label: "Охват ролика",
     progress: 64,
-    photo: null, // TODO: фото ученицы
-    verified: false,
+    photo: "/stories/case-gulayym.webp",
+    verified: true,
   },
 ];
 
