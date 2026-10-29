@@ -30,20 +30,20 @@ test("efirPriceLabel: эфир платный - «9 900 ₸»; ветка «бе
   free(false);
 });
 
-test("подзаголовок hero: «Начать можно с 9 900 ₸ или с эфира»; «бесплатного» только при цене 0", () => {
-  free(false);
-  const paid = products.getEntrySubtitle();
-  assert.equal(norm(paid.before + paid.price + paid.after), "Без техобразования. Начать можно с 9 900 ₸ или с эфира");
-  free(true);
-  const f = products.getEntrySubtitle();
-  assert.match(f.before + f.price + f.after, /с бесплатного эфира$/);
+test("подзаголовок hero: «Без техобразования. Начать можно сегодня» - без цен и эфира, при любой цене эфира", () => {
+  for (const isFree of [false, true]) {
+    free(isFree);
+    const t = products.getEntrySubtitle();
+    assert.equal(norm(t.before + t.price + t.after), "Без техобразования. Начать можно сегодня");
+  }
   free(false);
 });
 
-test("подпись под кнопкой hero: «Эфир от 9 900 ₸» (при цене 0 - «Эфир бесплатно»)", () => {
+test("подпись под кнопкой hero: «от 9 900 ₸» без названия продукта (при цене 0 - «Эфир бесплатно»)", () => {
   const efirProduct = products.getProduct("efir");
   free(false);
-  assert.equal(norm(products.formatEntryLine(efirProduct)), "Эфир от 9 900 ₸");
+  assert.equal(norm(products.formatEntryLine(efirProduct)), "от 9 900 ₸");
+  assert.equal(norm(products.formatEntryLine(products.getProduct("practicum"))), "от 9 900 ₸");
   free(true);
   assert.equal(products.formatEntryLine(efirProduct), "Эфир бесплатно");
   free(false);

@@ -460,13 +460,13 @@ export function getEntryProducts(): Product[] {
 /** Короткое название входного продукта для подписи («Практикум», «Эфир») */
 const entryShortName: Partial<Record<ProductId, string>> = { practicum: vocabulary.practicumShort, efir: vocabulary.efirShort };
 
-/** Строка под кнопкой входа: «Практикум от 9 900 ₸», «Эфир бесплатно». Цена - из конфига, не хардкод. */
+/** Строка под кнопкой входа: «от 9 900 ₸» (без названия продукта); при цене 0 - «Эфир бесплатно». Цена - из конфига, не хардкод. */
 export function formatEntryLine(product: Product, now: Date = currentDate()): string {
   const price = getCurrentPrice(product, now);
   const name = entryShortName[product.id] ?? product.name;
   if (price === null) return name;
   if (price === 0) return `${name} ${FREE_WORD}`;
-  return `${name} от${NBSP}${formatNumber(price)}${NBSP}₸`;
+  return `от${NBSP}${formatNumber(price)}${NBSP}₸`;
 }
 
 /**
@@ -485,20 +485,11 @@ export function efirPriceLabel(now: Date = currentDate()): string {
 }
 
 /**
- * Подзаголовок первого экрана: «Без техобразования. Начать можно с {минимальная платная входная цена} или с эфира».
- * Слово «бесплатного» - только если эфир бесплатный (цена 0), иначе «с эфира».
+ * Подзаголовок первого экрана: «Без техобразования. Начать можно сегодня» (без цен и упоминания эфира).
+ * Формат {before, price, after} сохранён для HomeHeroClient: цена и хвост пустые.
  */
-export function getEntrySubtitle(now: Date = currentDate()): { before: string; price: string; after: string } {
-  const entries = getEntryProducts();
-  const priced = entries.map((p) => getCurrentPrice(p, now));
-  const paid = priced.filter((v): v is number => v !== null && v > 0);
-  const hasFree = priced.some((v) => v === 0);
-  const hasEfir = entries.some((p) => p.id === "efir");
-  const min = paid.length ? Math.min(...paid) : null;
-  const before = "Без техобразования. Начать можно с ";
-  const efirWord = hasFree ? "бесплатного эфира" : "эфира";
-  if (min === null) return { before: hasEfir ? `${before}${efirWord}` : "Без техобразования", price: "", after: "" };
-  return { before, price: `${formatNumber(min)}${NBSP}₸`, after: hasEfir ? ` или с ${efirWord}` : "" };
+export function getEntrySubtitle(): { before: string; price: string; after: string } {
+  return { before: "Без техобразования. Начать можно сегодня", price: "", after: "" };
 }
 
 /** Первый шаг направления для карточек: короткое название и цена (из конфига) */
