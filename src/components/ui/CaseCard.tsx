@@ -123,7 +123,6 @@ export function CaseCard({ item, onOpenVideo, className }: CaseCardProps) {
 
       {/* Футер */}
       <footer className="mt-auto pt-5">
-        {item.sourceCaption && <p className="text-[12px] leading-snug text-ink-500">{item.sourceCaption}</p>}
         {hasVideo ? (
           <button ref={footerBtnRef} type="button" onClick={open} className={LINK}>
             Смотреть ролик
