@@ -157,12 +157,21 @@ export interface OfflineBuildMessage {
 /** Карточка-сценарий: что сейчас («Сейчас») и что соберёте на уроке. Тексты — как на странице школы ai-pro-school.kz/newness */
 export interface OfflineBuildCard extends Checked {
   id: string;
-  /** Для кого: Бизнес / Эксперт / В найме / Фриланс */
+  /** Для кого: метка аудитории из vocabulary.audienceLabels (Бизнес / Фрилансеры / Специалисты в найме) */
   audience: string;
   /** Боль одной фразой */
   pain: string;
   now: { source: string; lines: OfflineBuildMessage[]; outcome: string };
-  built: { title: string; badge?: string; lines: OfflineBuildMessage[]; tags?: { label: string; value: string }[] };
+  built: {
+    title: string;
+    badge?: string;
+    lines: OfflineBuildMessage[];
+    tags?: { label: string; value: string }[];
+    /** Мини-график: высоты столбиков 0-100 (статичный SVG); данные вымышленные */
+    chart?: number[];
+    /** Строки с числами под графиком (вымышленные данные) */
+    stats?: { label: string; value: string }[];
+  };
 }
 
 const NB2 = "\u00a0";
@@ -170,7 +179,7 @@ const NB2 = "\u00a0";
 export const offlineBuild: OfflineBuildCard[] = [
   {
     id: "business",
-    audience: "Бизнес",
+    audience: vocabulary.audienceLabels.business,
     pain: "Клиенты пишут ночью, а утром уже записаны к конкурентам",
     now: {
       source: "WhatsApp салона",
@@ -196,7 +205,7 @@ export const offlineBuild: OfflineBuildCard[] = [
   },
   {
     id: "expert",
-    audience: "Эксперт",
+    audience: vocabulary.audienceLabels.freelancers,
     pain: "Клиенты не приходят, а предоплату приходится выпрашивать",
     now: {
       source: "Переписка с клиентом",
@@ -221,7 +230,7 @@ export const offlineBuild: OfflineBuildCard[] = [
   },
   {
     id: "employee",
-    audience: "В найме",
+    audience: vocabulary.audienceLabels.career,
     pain: "Каждый понедельник полдня уходит на отчёт из пяти таблиц",
     now: {
       source: "Понедельник 09:00",
@@ -237,6 +246,12 @@ export const offlineBuild: OfflineBuildCard[] = [
       title: "Дашборд продаж",
       badge: "обновлён в 09:01",
       lines: [{ text: "Отчёт ушёл руководителю в Telegram", time: "09:01" }],
+      // Демо-данные (вымышленные): мини-график недели и две строки с числами
+      chart: [42, 58, 51, 74, 66, 88, 95],
+      stats: [
+        { label: "Продажи за неделю", value: `1${NB2}240${NB2}000${NB2}₸` },
+        { label: "Средний чек", value: `18${NB2}500${NB2}₸` },
+      ],
     },
     verified: true,
     source: "ai-pro-school.kz/newness (блок «Что соберёте именно вы»)",
@@ -244,7 +259,7 @@ export const offlineBuild: OfflineBuildCard[] = [
   },
   {
     id: "freelance",
-    audience: "Фриланс",
+    audience: vocabulary.audienceLabels.freelancers,
     pain: "Клиент просит сайт под рекламу, и вы отдаёте его агентству вместе с бюджетом",
     now: {
       source: "Чат с клиентом",
@@ -356,12 +371,24 @@ export const offlineIdeas: { id: string; title: string; items: string[] }[] = [
 
 export const offlineIdeasNote = "На уроке собираете первую версию одной идеи. Остальные дома, тем же способом.";
 
+/**
+ * Подпись под блоком «Что соберёте именно вы». В prod - только формулировка про демо и вымышленные данные (public).
+ * Утверждение, что именно эти продукты собираются на уроке, школа не подтверждала (confirmedBySchool: false) - пометка только в dev.
+ */
+export const offlineBuildCaption = {
+  public: "Примеры результата. Имена и данные вымышлены; на уроке собираете демо-версию.",
+  confirmedBySchool: false,
+  devNote: "не подтверждено школой, что именно эти продукты собираются на уроке",
+};
+
 /** Публичная модель блока: только verified (dev - остальные с пометкой) */
 export function getOfflineBuild() {
   return {
     cards: visible(offlineBuild).map(({ id, audience, pain, now, built, devNote }) => ({ id, audience, pain, now, built, devNote })),
     ideas: offlineIdeas,
     ideasNote: offlineIdeasNote,
+    caption: offlineBuildCaption.public,
+    captionDevNote: SHOW_PLACEHOLDERS && !offlineBuildCaption.confirmedBySchool ? offlineBuildCaption.devNote : undefined,
     ideasCount: offlineIdeas.reduce((n, g) => n + g.items.length, 0),
   };
 }

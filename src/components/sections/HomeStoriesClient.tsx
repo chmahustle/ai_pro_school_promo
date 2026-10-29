@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import { ArrowRight } from "lucide-react";
-import { CaseCard, Button, HomeSection, Lightbox, SectionIntro, type LightboxItem } from "@/components/ui";
+import { ArrowLink, CaseCard, HomeSection, Lightbox, SectionIntro, type LightboxItem } from "@/components/ui";
 import { storyAudienceFilters } from "@/data/story-filters";
 import type { PublicCase } from "@/data/public-types";
 import type { AudienceSlug } from "@/data/types";
@@ -85,6 +84,14 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
         eyebrow={variant === "projects" ? "Проекты" : "Результаты учеников"}
         title={variant === "projects" ? noBreakHyphen("Проекты вайб-кодинга") : "Работы учеников"}
         description={variant === "projects" ? undefined : (description ?? "Ролики и результаты учеников AI Pro School.")}
+        action={
+          // Справа сверху: белая пилюля с розовым кружком-стрелкой; на самой странице /reviews (limit = null) её нет
+          limit != null ? (
+            <ArrowLink href="/reviews" tone="onDark">
+              Все результаты и отзывы
+            </ArrowLink>
+          ) : undefined
+        }
       />
 
       {showTabs && (
@@ -150,15 +157,6 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
           </li>
         ))}
       </ul>
-
-      {/* Кнопка ко всем отзывам и результатам - вместо ссылки в шапке (не дублируем); на самой странице /reviews (limit = null) её нет */}
-      {limit != null && (
-        <div className="mt-8 flex justify-center">
-          <Button variant="white" size="lg" href="/reviews" icon={<ArrowRight className="size-5" />}>
-            Все результаты и отзывы
-          </Button>
-        </div>
-      )}
 
       <p className="mt-6 text-[12px] leading-snug text-white/55">Результаты индивидуальны и не являются гарантией дохода.</p> {/* copy-check:ignore */}
 

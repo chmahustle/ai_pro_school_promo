@@ -124,12 +124,39 @@ type BuildData = ReturnType<typeof getOfflineBuild>;
 function Bubble({ text, time, gap, tone }: { text: string; time?: string; gap?: string; tone: "now" | "built" }) {
   return (
     <>
-      {gap && <p className="py-0.5 text-center text-[11px] font-semibold uppercase tracking-wide text-white/45">{gap}</p>}
-      <div className={cn("flex items-end justify-between gap-3 rounded-2xl px-3.5 py-2.5 text-[14px] leading-snug", tone === "now" ? "bg-white/10 text-white/90" : "bg-white text-ink shadow-soft")}>
+      {gap && <p className={cn("py-0.5 text-center text-[12px] font-semibold uppercase tracking-wide", tone === "now" ? "text-white/60" : "text-ink-500")}>{gap}</p>}
+      <div className={cn("flex items-end justify-between gap-3 rounded-2xl px-3.5 py-2.5 text-[14px] leading-snug", tone === "now" ? "bg-white/10 text-white/75" : "bg-white text-ink shadow-soft")}>
         <span>{text}</span>
-        {time && <span className={cn("shrink-0 text-[11px] tabular-nums", tone === "now" ? "text-white/50" : "text-ink-300")}>{time}</span>}
+        {time && <span className={cn("shrink-0 text-[12px] tabular-nums", tone === "now" ? "text-white/55" : "text-ink-500")}>{time}</span>}
       </div>
     </>
+  );
+}
+
+/** Мини-график из столбиков (статичный SVG, вымышленные данные примера) */
+function MiniChart({ values }: { values: number[] }) {
+  const w = 140;
+  const h = 56;
+  const step = w / values.length;
+  return (
+    <svg viewBox={`0 0 ${w} ${h + 6}`} role="img" aria-label="Пример: продажи по дням недели" className="h-16 w-full">
+      {values.map((v, i) => {
+        const bh = (v / 100) * h;
+        return <rect key={i} x={i * step + step * 0.18} y={h - bh + 3} width={step * 0.64} height={bh} rx={3} className={i === values.length - 1 ? "fill-brand-600" : "fill-brand-200"} />;
+      })}
+    </svg>
+  );
+}
+
+/** Круглая стрелка между панелями: вниз (колонка) или вправо (широкая карточка) и подпись «на уроке» */
+function Connector({ horizontal }: { horizontal?: boolean }) {
+  return (
+    <div className={cn("flex items-center justify-center gap-2", horizontal ? "lg:flex-col lg:px-2" : "")} aria-hidden>
+      <span className="grid size-9 place-items-center rounded-full bg-brand-600 text-white shadow-soft">
+        <ArrowDown className={cn("size-4", horizontal && "lg:-rotate-90")} />
+      </span>
+      <span className="text-[13px] font-semibold text-brand-200">на уроке</span>
+    </div>
   );
 }
 

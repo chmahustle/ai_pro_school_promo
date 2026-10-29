@@ -21,6 +21,8 @@ export const vocabulary = {
   efir: "Эфир «Вайб-кодинг вживую»",
   /** Офлайн-формат */
   offline: "Офлайн-урок в Astana Hub",
+  /** Метки аудиторий (карточки-примеры, чипы): единое написание */
+  audienceLabels: { business: "Бизнес", freelancers: "Фрилансеры", career: "Специалисты в найме" },
 } as const;
 
 export type VocabularyKey = keyof typeof vocabulary;
