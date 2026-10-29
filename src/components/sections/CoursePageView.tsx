@@ -11,8 +11,7 @@ import { Team } from "@/components/sections/Team";
 import { FAQ } from "@/components/sections/FAQ";
 import { LeadSection } from "@/components/sections/LeadSection";
 import { NextSteps } from "@/components/sections/NextSteps";
-import { getNextStep, getPublicLadder, getRefundTerms } from "@/data/public";
-import { LeaderCard } from "@/components/sections/LeaderCard";
+import { getCourseTeachers, getNextStep, getRefundTerms } from "@/data/public";
 import { RefundTerms } from "@/components/sections/RefundTerms";
 import { getCourse } from "@/data/courses";
 import { productForCourseSlug } from "@/data/product-ids";
@@ -21,8 +20,8 @@ import { getPublishedReviews } from "@/data/reviews";
 import { Section, SectionIntro } from "@/components/ui";
 import { VideoCarousel } from "@/components/sections/VideoCarousel";
 import { youtubeIdFromUrl } from "@/lib/youtube";
-import { getPracticumGets, getPracticumGrowth, getPracticumResults, practicumVideo } from "@/data/courseContent";
-import { PracticumGets, PracticumGrowth, PracticumResults, PracticumVideo } from "@/components/sections/CourseBlocks";
+import { getPracticumFormats, getPracticumGets, getPracticumGuide, getPracticumTeacher, getPracticumGrowth, getPracticumResults, practicumVideo } from "@/data/courseContent";
+import { PracticumFormats, PracticumGets, PracticumGuide, PracticumTeacher, PracticumGrowth, PracticumResults, PracticumVideo } from "@/components/sections/CourseBlocks";
 import { team } from "@/data/team";
 import { SITE_URL, site } from "@/lib/site";
 
@@ -73,6 +72,7 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
         description="Пошагово, без перегруза. Всё сразу применимо на практике"
       />
       {course.slug === "practicum" && <PracticumGets items={getPracticumGets()} />}
+      {course.slug === "practicum" && <PracticumTeacher teacher={getPracticumTeacher()} photo={getCourseTeachers().find((t) => t.id === "nadira")?.photo ?? null} />}
       {course.slug === "practicum" && <PracticumVideo youtubeId={practicumVideo.youtubeId} posterSrc={practicumVideo.posterSrc} title={practicumVideo.title} />}
       <CourseOutcomes course={course} />
       <CourseMonetization course={course} />
@@ -87,8 +87,8 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
       </div>
       {course.slug === "practicum" && <PracticumGrowth growth={getPracticumGrowth()} />}
       <Pricing course={course} />
+      {course.slug === "practicum" && getPracticumGuide() && <PracticumGuide guide={getPracticumGuide()!} />}
       {product && <RefundTerms text={getRefundTerms(product.id)} />}
-      {product && <NextSteps id="next" title="Что дальше" steps={nextStep ? [nextStep] : []} />}
       {course.slug === "practicum" ? (
         <>
           {/* Практикум: рилсы учеников и переписки-благодарности (отзывы со страницы школы, из reviews.ts) */}
@@ -103,6 +103,7 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
             />
           </Section>
           <PracticumResults results={getPracticumResults()} />
+          <PracticumFormats formats={getPracticumFormats()} />
         </>
       ) : courseReviews.length > 0 && (
         <ReviewsWall
@@ -113,11 +114,10 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
           {...(courseReviews.every((r) => r.kind === "video") ? { title: "Работы учеников", description: "Видео работ учеников курса." } : {})}
         />
       )}
-      {course.slug === "practicum" ? (
-        <LeaderCard id="course-leader-title" leader={getPublicLadder("creator").leader} />
-      ) : (
+      {course.slug === "practicum" ? null : (
         <Team items={team.filter((m) => m.id !== "maidan")} eyebrow="Кто ведёт" title="Кто ведёт курс" layout="grid" />
       )}
+      {product && <NextSteps id="next" title="Что дальше" steps={nextStep ? [nextStep] : []} />}
       <FAQ items={getFaq(course.slug)} />
       <LeadSection
         className="mt-10 sm:mt-16"

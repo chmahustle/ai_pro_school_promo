@@ -43,7 +43,7 @@ export function VideoCarousel({ items, label }: { items: VideoShot[]; label: str
     el.scrollBy({ left: dir * Math.max(240, el.clientWidth * 0.8), behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   };
   const btn = "grid size-11 place-items-center rounded-full bg-ink/[0.06] text-ink transition-colors hover:bg-ink hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand";
-  const lb: LightboxItem[] = items.map((v, i) => ({ id: v.id, src: v.poster, alt: `Ролик ученика практикума ${i + 1}`, kind: "video", embedUrl: youtubeEmbedUrl(v.youtubeId), vertical: true }));
+  const lb: LightboxItem[] = items.map((v, i) => ({ id: v.id, src: v.poster, alt: v.label ?? `Ролик ученика практикума ${i + 1}`, kind: "video", embedUrl: youtubeEmbedUrl(v.youtubeId), vertical: true }));
   const close = () => {
     setOpen(null);
     requestAnimationFrame(() => triggerRef.current?.focus());
@@ -70,7 +70,7 @@ export function VideoCarousel({ items, label }: { items: VideoShot[]; label: str
                 triggerRef.current = e.currentTarget;
                 setOpen(i);
               }}
-              aria-label={`Смотреть ролик ${i + 1}`}
+              aria-label={v.label ? `Смотреть: ${v.label}` : `Смотреть ролик ${i + 1}`}
               className="group relative block aspect-[9/16] w-full overflow-hidden rounded-[22px] bg-dark shadow-soft transition-[transform,box-shadow] duration-300 hover:-translate-y-1.5 hover:shadow-float focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand motion-reduce:transition-none motion-reduce:hover:translate-y-0"
             >
               <Image src={v.poster} alt="" fill sizes="(max-width:640px) 44vw, 220px" className="object-cover" />
@@ -80,6 +80,7 @@ export function VideoCarousel({ items, label }: { items: VideoShot[]; label: str
                 </span>
               </span>
             </button>
+            {v.label && <p className="mt-3 text-[15px] font-semibold leading-snug text-ink">{v.label}</p>}
           </li>
         ))}
       </ul>

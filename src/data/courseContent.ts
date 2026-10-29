@@ -520,6 +520,91 @@ export function getPracticumResults() {
   return { title: practicumResults.title, titleTail: practicumResults.titleTail, shots: visible(practicumResults.shots).map(({ id, src, ratio }) => ({ id, src, ratio })) };
 }
 
+// ───────────── Практикум: «Какие ролики вы можете создавать» ─────────────
+
+export interface PracticumRoleVideo extends Checked {
+  id: string;
+  /** Подпись под роликом (как на странице школы) */
+  label: string;
+  /** id ролика YouTube: адрес плеера собирается в браузере по клику (ссылок youtube.com в HTML нет) */
+  youtubeId: string;
+  /** Локальный постер (до клика запросов к YouTube нет) */
+  poster: string;
+}
+
+export const practicumFormats = {
+  title: "Какие ролики вы",
+  titleAccent: "можете создавать,",
+  titleTail: "обучившись нашим ИИ",
+  videos: [
+    { id: "experts", label: "Ролики для экспертов/специалистов", youtubeId: "YJGNvYglvuE", poster: "/stories/practicum/reel-extra-3.jpg", verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "business", label: "Ролик для бизнесов/компаний", youtubeId: "Uac29_nlknA", poster: "/stories/practicum/reel-extra-4.jpg", verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "lovestory", label: "Lovestory/поздравительные ролики", youtubeId: "0lHtMeAnbrg", poster: "/stories/practicum/reel-extra-5.jpg", verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "photos", label: "Оживление старых фотографий", youtubeId: "IGaH0pRQAcs", poster: "/stories/practicum/reel-extra-6.jpg", verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "kids", label: "Обучающие видео для детей", youtubeId: "DraOftA9sdY", poster: "/stories/practicum/reel-extra-7.jpg", verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "brands", label: "Ролики для брендов", youtubeId: "bGeHiczDroc", poster: "/stories/practicum/reel-extra-8.jpg", verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "topics", label: "Визуализация сложных тем", youtubeId: "G58GV--LEYU", poster: "/stories/practicum/reel-extra-9.jpg", verified: true, source: SOURCE, asOf: AS_OF },
+  ] as PracticumRoleVideo[],
+};
+
+export function getPracticumFormats() {
+  return { ...practicumFormats, videos: visible(practicumFormats.videos).map(({ id, label, youtubeId, poster }) => ({ id, label, youtubeId, poster })) };
+}
+
+// ───────────── Практикум: «Меня зовут Надира Батырбаева» ─────────────
+
+export interface PracticumTeacherFact extends Checked {
+  id: string;
+  /** Части строки: accent - розовым */
+  parts: { text: string; accent?: boolean }[];
+}
+
+const NB3 = "\u00a0";
+
+/** Тексты - со страницы школы ai-pro-school.kz/prakticum (подтверждены владельцем 2026-10-30) */
+export const practicumTeacher = {
+  speakerId: "nadira" as const,
+  greeting: "Меня зовут",
+  name: "Надира Батырбаева",
+  lead: [{ text: "Я " }, { text: "основатель AI Pro School", accent: true }, { text: " и больше 2-х лет в ИИ." }],
+  facts: [
+    { id: "followers", parts: [{ text: "мы набрали " }, { text: `+90${NB3}000 подписчиков`, accent: true }, { text: " в инсте, тикток и ютюб" }], verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "views", parts: [{ text: "мы собрали " }, { text: `+50${NB3}000${NB3}000 просмотров`, accent: true }, { text: " всего за полгода" }], verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "students", parts: [{ text: "обучили " }, { text: "+2000 человек ИИ", accent: true }, { text: " по всему миру" }], verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "platform", parts: [{ text: "разработали " }, { text: "собственную платформу ИИ-креаторов", accent: true }, { text: " при поддержке Astana Hub" }], verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "speaker", parts: [{ text: "спикер " }, { text: "Astana Hub", accent: true }], verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "itayel", parts: [{ text: "тренер проекта " }, { text: "ITAyel", accent: true }], verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "mom", parts: [{ text: "многодетная мама, предприниматель, лектор" }], verified: true, source: SOURCE, asOf: AS_OF },
+  ] as PracticumTeacherFact[],
+};
+
+export function getPracticumTeacher() {
+  const { speakerId, greeting, name, lead } = practicumTeacher;
+  return { speakerId, greeting, name, lead, facts: visible(practicumTeacher.facts).map(({ id, parts, devNote }) => ({ id, parts, devNote })) };
+}
+
+// ───────────── Практикум: мини-гайд (скачивается в Telegram школы, не бонус за оплату) ─────────────
+
+/** Тексты и ссылка - со страницы школы ai-pro-school.kz/prakticum (публичный пост Telegram) */
+export const practicumGuide = {
+  eyebrow: "Мини-гайд",
+  title: "Заберите бонус от AI Pro School",
+  lead: "Мы подготовили для вас мини-гайд",
+  guideTitle: "«7 видов вирусных роликов, которые работают в 26-м году»",
+  text: "В нём — самые сильные форматы, которые дают охваты и помогают выделиться в ленте.",
+  action: "Скачайте гайд в нашем Telegram и используйте готовые идеи уже сегодня.",
+  cta: "Скачать мини-гайд",
+  href: "https://t.me/ai_pro_school/255",
+  cover: "/practicum-guide.webp",
+  verified: true,
+  source: SOURCE,
+  asOf: AS_OF,
+};
+
+export function getPracticumGuide() {
+  return practicumGuide.verified || SHOW_PLACEHOLDERS ? practicumGuide : null;
+}
+
 // ───────────── Что понадобится кроме курса ─────────────
 
 export interface CourseCost extends Checked {

@@ -1,11 +1,12 @@
-import { ArrowDown, FileText, Flame, Laptop, Lightbulb, LifeBuoy, MapPin, MessageCircle, PlayCircle, Sparkles, Users, Video } from "lucide-react";
-import { Accordion, Avatar, HomeSection, Pill, Reveal, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
+import { ArrowDown, FileText, Flame, Laptop, Lightbulb, LifeBuoy, MapPin, MessageCircle, PlayCircle, Send, Sparkles, Users, Video } from "lucide-react";
+import { Accordion, Avatar, Button, HomeSection, Pill, Reveal, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
 import { BuildCarousel } from "./BuildCarousel";
 import { BuildIdeas } from "./BuildIdeas";
 import { TimelineClient } from "./TimelineClient";
 import { GrowthGrid } from "./GrowthGrid";
 import { PhotoCarousel } from "./PhotoCarousel";
-import type { getOfflineBuild, getOfflineSkill, getOfflineTimeline, getPracticumGets, getPracticumGrowth, getPracticumResults, PublicCourseContent } from "@/data/courseContent";
+import { VideoCarousel } from "./VideoCarousel";
+import type { getOfflineBuild, getOfflineSkill, getOfflineTimeline, getPracticumFormats, getPracticumGets, getPracticumGrowth, getPracticumGuide, getPracticumResults, getPracticumTeacher, PublicCourseContent } from "@/data/courseContent";
 import { YoutubeTeaser } from "./YoutubeTeaser";
 import { cn, nbspDash } from "@/lib/utils";
 import Image from "next/image";
@@ -370,6 +371,103 @@ export function PracticumResults({ results }: { results: ReturnType<typeof getPr
       </h2>
       <PhotoCarousel shots={results.shots} label="Скриншоты переписок учеников после практикума" altPrefix="Результат ученика практикума" />
     </HomeSection>
+  );
+}
+
+/** «Какие ролики вы можете создавать, обучившись нашим ИИ»: семь форматов - горизонтальная лента вертикальных роликов с подписями, плеер по клику */
+export function PracticumFormats({ formats }: { formats: ReturnType<typeof getPracticumFormats> }) {
+  if (formats.videos.length === 0) return null;
+  return (
+    <Section aria-labelledby="practicum-formats-title">
+      <h2 id="practicum-formats-title" className="mb-8 font-display text-[clamp(1.875rem,1.3rem+2.4vw,3.25rem)] font-extrabold leading-[1.05] tracking-[-0.015em] text-ink">
+        {formats.title}
+        <br />
+        <span className="text-brand">{formats.titleAccent}</span>
+        <br />
+        <span className="text-[0.55em] font-bold text-ink-500">{formats.titleTail}</span>
+      </h2>
+      <VideoCarousel label="Какие ролики можно создавать" items={formats.videos.map((v) => ({ id: v.id, poster: v.poster, youtubeId: v.youtubeId, label: v.label }))} />
+    </Section>
+  );
+}
+
+/** «Меня зовут Надира Батырбаева» (практикум): спокойная лавандовая панель с мягкими фигурами - фото слева, справа имя, «Я основатель…» и семь пунктов */
+export function PracticumTeacher({ teacher, photo }: { teacher: ReturnType<typeof getPracticumTeacher>; photo: string | null }) {
+  if (teacher.facts.length === 0) return null;
+  return (
+    <Section aria-labelledby="practicum-teacher-title">
+      <div className="relative isolate overflow-hidden rounded-[32px] bg-lavender p-5 sm:p-8 lg:p-10">
+        <svg aria-hidden viewBox="0 0 100 100" fill="#ffffff" className="pointer-events-none absolute -bottom-12 -right-8 -z-10 size-[260px] opacity-80 sm:size-[320px]">
+          <path d={STAR} />
+        </svg>
+        <svg aria-hidden viewBox="0 0 200 200" fill="none" className="pointer-events-none absolute -left-16 -top-20 -z-10 size-[240px] opacity-70">
+          <circle cx="100" cy="100" r="78" stroke="#ffffff" strokeWidth="10" />
+        </svg>
+        <div className="grid items-center gap-6 sm:grid-cols-[200px_1fr] sm:gap-10 lg:grid-cols-[240px_1fr]">
+          <div className="relative mx-auto aspect-[4/5] w-[180px] overflow-hidden rounded-[24px] bg-surface shadow-float ring-4 ring-white sm:w-full">
+            {photo ? <Image src={photo} alt={teacher.name} fill sizes="240px" className="object-cover object-[50%_18%]" /> : <Avatar name={teacher.name} src={null} size="xl" className="size-full rounded-none" />}
+          </div>
+          <div>
+            <Pill tone="white">Преподаватель</Pill>
+            <h2 id="practicum-teacher-title" className="mt-3 font-display text-[clamp(1.375rem,1.1rem+1.2vw,1.875rem)] font-bold leading-tight text-ink">
+              {teacher.greeting} <span className="font-extrabold">{teacher.name}</span>
+            </h2>
+            <p className="mt-2 text-[16px] leading-snug text-ink-700">
+              {teacher.lead.map((p, i) => (
+                <span key={i} className={p.accent ? "font-semibold text-brand-600" : undefined}>
+                  {p.text}
+                </span>
+              ))}
+            </p>
+            <ul className="mt-4 grid gap-x-8 gap-y-2 lg:grid-cols-2">
+              {teacher.facts.map((f) => (
+                <li key={f.id} className="flex items-start gap-2.5 text-[14px] leading-snug text-ink-700">
+                  <span aria-hidden className="mt-[7px] size-1.5 shrink-0 rounded-full bg-brand" />
+                  <span>
+                    <DevNote note={f.devNote} />
+                    {f.parts.map((p, i) => (
+                      <span key={i} className={p.accent ? "font-semibold text-ink" : undefined}>
+                        {p.text}
+                      </span>
+                    ))}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+/** Мини-гайд (практикум): обложка и текст слева направо, кнопка в Telegram школы. Это не бонус за оплату - гайд доступен всем */
+export function PracticumGuide({ guide }: { guide: NonNullable<ReturnType<typeof getPracticumGuide>> }) {
+  return (
+    <Section aria-labelledby="practicum-guide-title">
+      <div className="relative isolate overflow-hidden rounded-[32px] bg-dark p-6 text-white sm:p-10">
+        <svg aria-hidden viewBox="0 0 100 100" fill="#ffffff" className="pointer-events-none absolute -bottom-10 -right-6 -z-10 size-[240px] opacity-[0.06]">
+          <path d={STAR} />
+        </svg>
+        <div className="grid items-center gap-8 sm:grid-cols-[180px_1fr] sm:gap-12">
+          <Image src={guide.cover} alt={guide.guideTitle} width={420} height={625} sizes="(max-width:640px) 160px, 180px" className="mx-auto h-auto w-[150px] -rotate-3 drop-shadow-2xl sm:w-full" />
+          <div>
+            <Pill tone="brand" size="sm">{guide.eyebrow}</Pill>
+            <h2 id="practicum-guide-title" className="mt-3 font-display text-[clamp(1.5rem,1.1rem+1.5vw,2.25rem)] font-extrabold leading-tight">
+              {guide.title}
+            </h2>
+            <p className="mt-3 text-[16px] leading-relaxed text-white/80">
+              {guide.lead} <b className="font-bold text-white">{guide.guideTitle}</b>
+            </p>
+            <p className="mt-2 text-[16px] leading-relaxed text-white/80">{guide.text}</p>
+            <p className="mt-2 text-[16px] leading-relaxed text-white/80">{guide.action}</p>
+            <Button variant="white" size="lg" href={guide.href} target="_blank" rel="noopener noreferrer" icon={<Send className="size-5" />} className="mt-6">
+              {guide.cta}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </Section>
   );
 }
 
