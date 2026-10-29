@@ -18,8 +18,11 @@ import { getCourse } from "@/data/courses";
 import { productForCourseSlug } from "@/data/product-ids";
 import { getCurrentPrice, getProductForCourse } from "@/data/products";
 import { getPublishedReviews } from "@/data/reviews";
-import { getPracticumGets, getPracticumGrowth, practicumVideo } from "@/data/courseContent";
-import { PracticumGets, PracticumGrowth, PracticumVideo } from "@/components/sections/CourseBlocks";
+import { Section, SectionIntro } from "@/components/ui";
+import { VideoCarousel } from "@/components/sections/VideoCarousel";
+import { youtubeIdFromUrl } from "@/lib/youtube";
+import { getPracticumGets, getPracticumGrowth, getPracticumResults, practicumVideo } from "@/data/courseContent";
+import { PracticumGets, PracticumGrowth, PracticumResults, PracticumVideo } from "@/components/sections/CourseBlocks";
 import { team } from "@/data/team";
 import { SITE_URL, site } from "@/lib/site";
 
@@ -34,7 +37,6 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
   // Практикум: отдельные стены - рилсы (видео) и благодарности (переписки)
   const practicumAll = getPublishedReviews().filter((r) => r.course === "practicum");
   const practicumReels = practicumAll.filter((r) => r.kind === "video");
-  const practicumThanks = practicumAll.filter((r) => r.kind === "chat");
   // Цена для разметки - из products.ts (единственный источник)
   const product = getProductForCourse(course.slug);
   const offerPrice = product ? getCurrentPrice(product) : null;
@@ -78,9 +80,9 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
       <div className="mt-6 sm:mt-10">
         {course.slug === "practicum" ? (
           // Практикум: только кейсы про просмотры, без доходов и личных историй (Мадина - только на странице курса AI Content Creator)
-          <HomeStories audience={course.audiences[0]} limit={3} onlyViews description="Люди без технического образования, освоившие ИИ-ролики" />
+          <HomeStories audience={course.audiences[0]} limit={12} onlyViews description="Люди без технического образования, освоившие ИИ-ролики" />
         ) : (
-          <HomeStories audience={course.audiences[0]} limit={3} />
+          <HomeStories audience={course.audiences[0]} limit={12} />
         )}
       </div>
       {course.slug === "practicum" && <PracticumGrowth growth={getPracticumGrowth()} />}
@@ -90,24 +92,17 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
       {course.slug === "practicum" ? (
         <>
           {/* Практикум: рилсы учеников и переписки-благодарности (отзывы со страницы школы, из reviews.ts) */}
-          <ReviewsWall
-            items={practicumReels}
-            tone="bg"
-            eyebrow="Результаты"
-            title="Как залетают рилсы наших учеников"
-            description="Видео работ учеников практикума."
-            limit={8}
-            moreHref="/reviews"
-          />
-          <ReviewsWall
-            items={practicumThanks}
-            tone="bg"
-            eyebrow="Отзывы"
-            title="Каждый день мы получаем столько благодарностей"
-            description="Переписки с учениками после практикума."
-            limit={12}
-            moreHref="/reviews"
-          />
+          <Section aria-labelledby="practicum-reels-title">
+            <SectionIntro id="practicum-reels-title" align="left" eyebrow="Результаты" title="Как залетают рилсы наших учеников" description="Видео работ учеников практикума." />
+            <VideoCarousel
+              label="Рилсы учеников практикума"
+              items={practicumReels.flatMap((r) => {
+                const id = youtubeIdFromUrl(r.embedUrl);
+                return id && r.src ? [{ id: r.id, poster: r.src, youtubeId: id }] : [];
+              })}
+            />
+          </Section>
+          <PracticumResults results={getPracticumResults()} />
         </>
       ) : courseReviews.length > 0 && (
         <ReviewsWall

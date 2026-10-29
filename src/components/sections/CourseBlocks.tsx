@@ -4,7 +4,8 @@ import { BuildCarousel } from "./BuildCarousel";
 import { BuildIdeas } from "./BuildIdeas";
 import { TimelineClient } from "./TimelineClient";
 import { GrowthGrid } from "./GrowthGrid";
-import type { getOfflineBuild, getOfflineSkill, getOfflineTimeline, getPracticumGets, getPracticumGrowth, PublicCourseContent } from "@/data/courseContent";
+import { PhotoCarousel } from "./PhotoCarousel";
+import type { getOfflineBuild, getOfflineSkill, getOfflineTimeline, getPracticumGets, getPracticumGrowth, getPracticumResults, PublicCourseContent } from "@/data/courseContent";
 import { YoutubeTeaser } from "./YoutubeTeaser";
 import { cn, nbspDash } from "@/lib/utils";
 import Image from "next/image";
@@ -353,6 +354,21 @@ export function PracticumGrowth({ growth }: { growth: ReturnType<typeof getPract
         </div>
       </div>
       <GrowthGrid stats={growth.stats} />
+    </HomeSection>
+  );
+}
+
+/** «Результаты наших учеников после практикума»: тёмная панель, заголовок в две строки, скриншоты переписок каруселью (как на странице школы) */
+export function PracticumResults({ results }: { results: ReturnType<typeof getPracticumResults> }) {
+  if (results.shots.length === 0) return null;
+  return (
+    <HomeSection tone="dark" labelledBy="practicum-results-title" mobileCompact className="mt-4">
+      <h2 id="practicum-results-title" className="mb-10 font-display text-[clamp(1.875rem,1.3rem+2.4vw,3.25rem)] font-extrabold leading-[1.05] tracking-[-0.015em] text-white">
+        <span className="text-brand">{results.title}</span>
+        <br />
+        {results.titleTail}
+      </h2>
+      <PhotoCarousel shots={results.shots} label="Скриншоты переписок учеников после практикума" altPrefix="Результат ученика практикума" />
     </HomeSection>
   );
 }

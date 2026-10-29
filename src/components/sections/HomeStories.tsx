@@ -27,7 +27,7 @@ interface HomeStoriesProps {
  */
 export function HomeStories({ limit, withFilters, audience, direction, variant, includeIndividual, onlyViews, description }: HomeStoriesProps = {}) {
   const all = getPublicCases(audience, direction, includeIndividual);
-  const stories = onlyViews ? all.filter((c) => c.metricLabel.includes("просмотр")) : all;
+  const stories = onlyViews ? all.filter((c) => c.metricLabel.includes("просмотр") || c.authorName.includes("практикума")) : all;
   if (stories.length < 3) return null;
   // Вкладки направлений: вайб-кодинг - только если есть подтверждённые кейсы этого направления
   const tabs = getPublicResultsTabs(stories).tabs;

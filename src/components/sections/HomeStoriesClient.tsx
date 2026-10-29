@@ -2,6 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 import { ArrowLink, CaseCard, HomeSection, Lightbox, SectionIntro, type LightboxItem } from "@/components/ui";
+import { BuildCarousel } from "./BuildCarousel";
 import { storyAudienceFilters } from "@/data/story-filters";
 import type { PublicCase } from "@/data/public-types";
 import type { AudienceSlug } from "@/data/types";
@@ -143,6 +144,16 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
 
       {/* Одинаковая высота карточек (items-stretch). ≥1024 - 3 колонки, ≥768 - 2; на мобильном горизонтальный scroll-snap, карточка 84% ширины.
           Меньше 3 карточек после фильтра: две - по 50%, одна - по центру с max-w, без пустых зон. */}
+      {limit != null && stories.length > 3 ? (
+        // Больше трёх карточек (практикум, ИИ-креатор): лента со scroll-snap и стрелками вместо длинной сетки
+        <BuildCarousel label="Работы учеников" always>
+          {stories.map((c) => (
+            <li key={c.id} className="flex w-[84%] shrink-0 snap-start sm:w-[380px]">
+              <CaseCard item={c} onOpenVideo={c.youtubeId ? (el) => openMedia(c.id, el) : undefined} className="w-full" />
+            </li>
+          ))}
+        </BuildCarousel>
+      ) : (
       <ul
         className={cn(
           "-mt-4 sm:-mt-6 -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:-mx-6 sm:px-6 md:mx-0 md:grid md:snap-none md:items-stretch md:gap-5 md:overflow-visible md:px-0 md:pb-0 [&::-webkit-scrollbar]:hidden",
@@ -157,6 +168,7 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
           </li>
         ))}
       </ul>
+      )}
 
       <p className="mt-6 text-[12px] leading-snug text-white/55">Результаты индивидуальны и не являются гарантией дохода.</p> {/* copy-check:ignore */}
 

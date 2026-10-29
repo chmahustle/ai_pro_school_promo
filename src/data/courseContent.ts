@@ -487,6 +487,39 @@ export function getPracticumGrowth() {
   return { ...practicumGrowth, stats: visible(practicumGrowth.stats).map(({ id, platform, gain, period, beforeSrc, afterSrc, beforeRatio, afterRatio, devNote }) => ({ id, platform, gain, period, beforeSrc, afterSrc, beforeRatio, afterRatio, devNote })) };
 }
 
+// ───────────── Практикум: «Результаты наших учеников после практикума» ─────────────
+
+export interface PracticumShot extends Checked {
+  id: string;
+  /** Скриншот переписки (public/practicum-results/, со страницы школы ai-pro-school.kz/prakticum) */
+  src: string;
+  /** Соотношение сторон (ширина / высота) */
+  ratio: number;
+}
+
+export const practicumResults = {
+  title: "Результаты наших учеников",
+  titleTail: "после практикума",
+  shots: [
+    { id: "t01", src: "/practicum-results/01.webp", ratio: 320 / 400, verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "t02", src: "/practicum-results/02.webp", ratio: 320 / 400, verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "t03", src: "/practicum-results/03.webp", ratio: 650 / 1014, verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "t04", src: "/practicum-results/04.webp", ratio: 320 / 400, verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "t05", src: "/practicum-results/05.webp", ratio: 720 / 948, verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "t06", src: "/practicum-results/06.webp", ratio: 720 / 914, verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "t07", src: "/practicum-results/07.webp", ratio: 720 / 878, verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "t08", src: "/practicum-results/08.webp", ratio: 320 / 400, verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "t09", src: "/practicum-results/09.webp", ratio: 320 / 400, verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "t10", src: "/practicum-results/10.webp", ratio: 720 / 974, verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "t11", src: "/practicum-results/11.webp", ratio: 320 / 400, verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "t12", src: "/practicum-results/12.webp", ratio: 720 / 924, verified: true, source: SOURCE, asOf: AS_OF },
+  ] as PracticumShot[],
+};
+
+export function getPracticumResults() {
+  return { title: practicumResults.title, titleTail: practicumResults.titleTail, shots: visible(practicumResults.shots).map(({ id, src, ratio }) => ({ id, src, ratio })) };
+}
+
 // ───────────── Что понадобится кроме курса ─────────────
 
 export interface CourseCost extends Checked {
