@@ -462,6 +462,9 @@ export interface PracticumGrowthStat extends Checked {
   /** Скриншоты профиля «было» и «стало» (public/growth/, со страницы школы ai-pro-school.kz/prakticum) */
   beforeSrc: string;
   afterSrc: string;
+  /** Соотношение сторон скриншотов (ширина / высота) */
+  beforeRatio: number;
+  afterRatio: number;
 }
 
 const NBS = "\u00a0";
@@ -474,14 +477,14 @@ export const practicumGrowth = {
   highlight: "И самое главное:",
   highlightText: "этот же ролик можно выкладывать везде",
   stats: [
-    { id: "instagram", platform: "Instagram", gain: `+75${NBS}000`, period: `за 6${NBS}месяцев`, beforeSrc: "/growth/instagram-before.webp", afterSrc: "/growth/instagram-after.webp", verified: true, source: SOURCE, asOf: AS_OF },
-    { id: "tiktok", platform: "TikTok", gain: `+12${NBS}000`, period: `за 3${NBS}месяца`, beforeSrc: "/growth/tiktok-before.webp", afterSrc: "/growth/tiktok-after.webp", verified: true, source: SOURCE, asOf: AS_OF },
-    { id: "youtube", platform: "YouTube", gain: `+10${NBS}000`, period: `за 2${NBS}месяца`, beforeSrc: "/growth/youtube-before.webp", afterSrc: "/growth/youtube-after.webp", verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "instagram", platform: "Instagram", gain: `+75${NBS}000`, period: `за 6${NBS}месяцев`, beforeSrc: "/growth/instagram-before.webp", afterSrc: "/growth/instagram-after.webp", beforeRatio: 720 / 514, afterRatio: 720 / 518, verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "tiktok", platform: "TikTok", gain: `+12${NBS}000`, period: `за 3${NBS}месяца`, beforeSrc: "/growth/tiktok-before.webp", afterSrc: "/growth/tiktok-after.webp", beforeRatio: 720 / 514, afterRatio: 720 / 590, verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "youtube", platform: "YouTube", gain: `+10${NBS}000`, period: `за 2${NBS}месяца`, beforeSrc: "/growth/youtube-before.webp", afterSrc: "/growth/youtube-after.webp", beforeRatio: 720 / 514, afterRatio: 720 / 470, verified: true, source: SOURCE, asOf: AS_OF },
   ] as PracticumGrowthStat[],
 };
 
 export function getPracticumGrowth() {
-  return { ...practicumGrowth, stats: visible(practicumGrowth.stats).map(({ id, platform, gain, period, beforeSrc, afterSrc, devNote }) => ({ id, platform, gain, period, beforeSrc, afterSrc, devNote })) };
+  return { ...practicumGrowth, stats: visible(practicumGrowth.stats).map(({ id, platform, gain, period, beforeSrc, afterSrc, beforeRatio, afterRatio, devNote }) => ({ id, platform, gain, period, beforeSrc, afterSrc, beforeRatio, afterRatio, devNote })) };
 }
 
 // ───────────── Что понадобится кроме курса ─────────────

@@ -1,8 +1,9 @@
-import { ArrowDown, FileText, Flame, Instagram, Laptop, Lightbulb, LifeBuoy, MapPin, MessageCircle, PlayCircle, Sparkles, Users, Video, Youtube } from "lucide-react";
+import { ArrowDown, FileText, Flame, Laptop, Lightbulb, LifeBuoy, MapPin, MessageCircle, PlayCircle, Sparkles, Users, Video } from "lucide-react";
 import { Accordion, Avatar, HomeSection, Pill, Reveal, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
 import { BuildCarousel } from "./BuildCarousel";
 import { BuildIdeas } from "./BuildIdeas";
 import { TimelineClient } from "./TimelineClient";
+import { GrowthGrid } from "./GrowthGrid";
 import type { getOfflineBuild, getOfflineSkill, getOfflineTimeline, getPracticumGets, getPracticumGrowth, PublicCourseContent } from "@/data/courseContent";
 import { YoutubeTeaser } from "./YoutubeTeaser";
 import { cn, nbspDash } from "@/lib/utils";
@@ -328,7 +329,6 @@ export function PracticumVideo({ youtubeId, posterSrc, title }: { youtubeId: str
   );
 }
 
-const GROWTH_ICONS = { instagram: Instagram, youtube: Youtube } as const;
 
 /** «Мы сами выросли благодаря роликам через ИИ»: рост площадок школы (Instagram, TikTok, YouTube) */
 export function PracticumGrowth({ growth }: { growth: ReturnType<typeof getPracticumGrowth> }) {
@@ -343,41 +343,13 @@ export function PracticumGrowth({ growth }: { growth: ReturnType<typeof getPract
           <br />
           {growth.titleTail}
         </h2>
-        <p className="mt-5 max-w-[46ch] text-[16px] leading-relaxed text-white/80 [text-wrap:balance]">{growth.lead}</p>
-        <p className="mt-4 max-w-[46ch] text-[16px] leading-relaxed text-white/90 [text-wrap:balance]">
+        <p className="mt-7 max-w-[46ch] text-[17px] leading-[1.7] text-white/80 [text-wrap:balance]">{growth.lead}</p>
+        <p className="mt-5 max-w-[46ch] text-[17px] leading-[1.7] text-white/90 [text-wrap:balance]">
           <Flame className="mr-1.5 inline size-5 -translate-y-0.5 text-brand" aria-hidden />
           <b className="font-bold text-brand">{growth.highlight}</b> {growth.highlightText}
         </p>
       </div>
-      <RevealGroup as="ul" className="mx-auto mt-8 grid max-w-[1180px] gap-4 sm:grid-cols-3">
-        {growth.stats.map((st) => {
-          const Icon = st.id === "tiktok" ? null : GROWTH_ICONS[st.id];
-          return (
-            <RevealItem as="li" key={st.id} className="flex">
-              <div className="flex w-full flex-col items-center gap-2 rounded-[24px] bg-white/[0.07] p-5 text-center ring-1 ring-white/15">
-                <DevNote note={st.devNote} />
-                <span className="inline-flex items-center gap-2 rounded-pill bg-gradient-to-r from-brand-600 to-brand px-4 py-1.5 text-[14px] font-bold text-white">
-                  {Icon ? <Icon className="size-4" aria-hidden /> : <span aria-hidden className="text-[13px] font-extrabold">♪</span>}
-                  {st.platform}
-                </span>
-                <p className="whitespace-nowrap font-display text-[clamp(1.75rem,1.4rem+1.4vw,2.5rem)] font-extrabold leading-none text-white">{st.gain}</p>
-                <p className="whitespace-nowrap text-[14px] text-white/65">{st.period}</p>
-                {/* Профиль до и после: скриншоты со страницы школы */}
-                <div className="mt-2 grid w-full grid-cols-2 gap-2">
-                  {([["Было", st.beforeSrc], ["Стало", st.afterSrc]] as const).map(([cap, src]) => (
-                    <figure key={cap} className="m-0 flex flex-col gap-1.5">
-                      <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-white">
-                        <Image src={src} alt={`${st.platform}: профиль школы, ${cap.toLowerCase()}`} fill sizes="(max-width:640px) 40vw, 160px" className="object-cover object-top" />
-                      </div>
-                      <figcaption className={cn("text-[12px] font-semibold", cap === "Стало" ? "text-brand-200" : "text-white/60")}>{cap}</figcaption>
-                    </figure>
-                  ))}
-                </div>
-              </div>
-            </RevealItem>
-          );
-        })}
-      </RevealGroup>
+      <GrowthGrid stats={growth.stats} />
     </HomeSection>
   );
 }

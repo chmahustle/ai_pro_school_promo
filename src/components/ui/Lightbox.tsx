@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 import { Modal } from "./Modal";
 import { MediaPlaceholder } from "./MediaPlaceholder";
 
@@ -17,6 +18,8 @@ export interface LightboxItem {
   videoSrc?: string;
   /** Вертикальный ролик 9:16 (embed): высота до 85vh, без автозапуска */
   vertical?: boolean;
+  /** Картинка показывается целиком, без обрезки: соотношение сторон (ширина / высота) */
+  ratio?: number;
 }
 
 interface LightboxProps {
@@ -56,7 +59,14 @@ export function Lightbox({ items, index, onClose, onChange }: LightboxProps) {
       {item && (
         <div className="flex flex-col items-center gap-4 px-2 pb-6 pt-12 sm:px-14">
           <div className="relative w-full max-w-4xl">
-            {item.videoSrc ? (
+            {item.ratio && item.src ? (
+              <div
+                className="relative mx-auto overflow-hidden rounded-2xl bg-white"
+                style={{ aspectRatio: item.ratio, width: `min(100%, calc(78dvh * ${item.ratio}))` }}
+              >
+                <Image src={item.src} alt={item.alt} fill sizes="(max-width:1024px) 100vw, 900px" className="object-contain" />
+              </div>
+            ) : item.videoSrc ? (
               <video
                 key={item.id}
                 src={item.videoSrc}
