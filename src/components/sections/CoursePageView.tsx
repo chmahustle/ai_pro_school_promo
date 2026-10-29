@@ -88,7 +88,6 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
       {course.slug === "practicum" && <PracticumGrowth growth={getPracticumGrowth()} />}
       {/* Практикум: блок «Что входит» убран по решению владельца (состав - в «Что вы получаете», цена - в hero и форме) */}
       {course.slug !== "practicum" && <Pricing course={course} />}
-      {course.slug === "practicum" && getPracticumGuide() && <PracticumGuide guide={getPracticumGuide()!} />}
       {product && <RefundTerms text={getRefundTerms(product.id)} />}
       {course.slug === "practicum" ? (
         <>
@@ -120,6 +119,7 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
       )}
       {product && <NextSteps id="next" title="Что дальше" steps={nextStep ? [nextStep] : []} />}
       <FAQ items={getFaq(course.slug)} />
+      {course.slug === "practicum" && getPracticumGuide() && <PracticumGuide guide={getPracticumGuide()!} />}
       <LeadSection
         className="mt-10 sm:mt-16"
         formId={`course-${course.slug}`}
