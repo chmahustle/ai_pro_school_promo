@@ -118,9 +118,9 @@ export const testimonials: Testimonial[] = [
       verified: true,
     };
   }),
-  // chat-9..12 - логотипы нейросетей (Astana Hub, ChatGPT, Google, Grok), не отзывы: убраны вместе с файлами
+  // chat-9..12 - логотипы нейросетей, 19 - групповое фото, 20..24 - статистика профиля: не отзывы, убраны
   ...Array.from({ length: 24 }, (_, i) => i + 1)
-    .filter((n) => n < 9 || n > 12)
+    .filter((n) => ![9, 10, 11, 12, 19, 20, 21, 22, 23, 24].includes(n))
     .map((n) => {
     const ext = n === 19 ? "png" : "jpeg";
     return {

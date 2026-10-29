@@ -105,6 +105,7 @@ export const works: Work[] = [
     thirdPartyWatermark: false,
     platformUrl: "https://www.youtube.com/watch?v=QoGgW3U7EQc",
   },
+  // extra-1 (переписка) и extra-2 («7 дней мы даём» - это «Коротко о практикуме») в «Работы учеников» не входят
   ...Array.from({ length: 9 }, (_, i) => {
     const n = i + 1;
     const yt = [
@@ -127,7 +128,7 @@ export const works: Work[] = [
       thirdPartyWatermark: false,
       platformUrl: `https://www.youtube.com/watch?v=${yt}`,
     } satisfies Work;
-  }),
+  }).filter((w) => w.id !== "w-extra-1" && w.id !== "w-extra-2"),
 ];
 
 export function getVisibleWorks(): Work[] {
