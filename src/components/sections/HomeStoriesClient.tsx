@@ -171,17 +171,20 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
             </li>
           ))}
           {extraVideos.map((v, i) => (
-            <li key={v.id} className="flex w-[52%] shrink-0 snap-start sm:w-[230px]">
+            <li key={v.id} className="flex w-[62%] shrink-0 snap-start sm:w-[260px]">
+              {/* Белая рамка, как у карточек выше: внутри вертикальный ролик на всю высоту ряда */}
               <button
                 type="button"
                 onClick={(e) => openMedia(`x-${v.id}`, e.currentTarget)}
                 aria-label={`Смотреть ролик ученика ${i + 1}`}
-                className="group relative block w-full overflow-hidden rounded-[28px] bg-white/10 transition-[transform,box-shadow] duration-300 hover:-translate-y-1.5 hover:shadow-float focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                className="group flex w-full rounded-[28px] bg-surface p-3 shadow-soft transition-[transform,box-shadow] duration-300 hover:-translate-y-1.5 hover:shadow-float focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
-                <Image src={v.poster} alt="" fill sizes="(max-width:640px) 52vw, 230px" className="object-cover" />
-                <span className="absolute inset-0 grid place-items-center bg-ink/15">
-                  <span className="grid size-14 place-items-center rounded-full bg-white/95 text-ink shadow-float transition-transform duration-300 group-hover:scale-110 motion-reduce:transition-none motion-reduce:group-hover:scale-100">
-                    <Play className="ml-0.5 size-6 fill-current" aria-hidden />
+                <span className="relative block min-h-[320px] w-full flex-1 overflow-hidden rounded-[20px] bg-ink">
+                  <Image src={v.poster} alt="" fill sizes="(max-width:640px) 62vw, 260px" className="object-cover" />
+                  <span className="absolute inset-0 grid place-items-center bg-ink/15">
+                    <span className="grid size-14 place-items-center rounded-full bg-white/95 text-ink shadow-float transition-transform duration-300 group-hover:scale-110 motion-reduce:transition-none motion-reduce:group-hover:scale-100">
+                      <Play className="ml-0.5 size-6 fill-current" aria-hidden />
+                    </span>
                   </span>
                 </span>
               </button>

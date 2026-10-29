@@ -59,49 +59,65 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
       : {}),
   };
 
+  const isPracticum = course.slug === "practicum";
+  const programBlock = (
+    <Programs
+      modules={course.program}
+      title={isPracticum ? "Программа практикума" : "Программа курса"}
+      description="Пошагово, без перегруза. Всё сразу применимо на практике"
+    />
+  );
+  // Результаты учеников этой аудитории - тот же блок, что на главной (практикум: только кейсы про просмотры + рилсы учеников в той же ленте)
+  const worksBlock = (
+    <div className="mt-6 sm:mt-10">
+      {isPracticum ? (
+        <HomeStories
+          audience={course.audiences[0]}
+          limit={12}
+          onlyViews
+          description="Люди без технического образования, освоившие ИИ-ролики"
+          extraVideos={practicumReels.flatMap((r) => {
+            const id = youtubeIdFromUrl(r.embedUrl);
+            // Ролик «7 дней мы даём» (wC3Iwmk_MTg) - это «Коротко о практикуме», в ленту работ не входит
+            return id && id !== practicumVideo.youtubeId && r.src ? [{ id: r.id, poster: r.src, youtubeId: id }] : [];
+          })}
+        />
+      ) : (
+        <HomeStories audience={course.audiences[0]} limit={12} />
+      )}
+    </div>
+  );
+
   return (
     <div className="calm-hover pt-[88px] sm:pt-[96px]">
       <LandingHeader ctaLabel={course.ctaLabel} interest={productForCourseSlug(course.slug)} formAnchor="lead" />
       <CourseHero course={course} />
       <CourseForWhom course={course} />
-      <Programs
-        modules={course.program}
-        title={course.slug === "practicum" ? "Программа практикума" : "Программа курса"}
-        description="Пошагово, без перегруза. Всё сразу применимо на практике"
-      />
-      {course.slug === "practicum" && <PracticumGets items={getPracticumGets()} />}
-      {course.slug === "practicum" && <PracticumTeacher teacher={getPracticumTeacher()} photo={getCourseTeachers().find((t) => t.id === "nadira")?.photo ?? null} />}
-      {course.slug === "practicum" && <PracticumVideo youtubeId={practicumVideo.youtubeId} posterSrc={practicumVideo.posterSrc} title={practicumVideo.title} />}
-      <CourseOutcomes course={course} />
-      <CourseMonetization course={course} />
-      {/* Результаты учеников этой аудитории - тот же блок, что на главной */}
-      <div className="mt-6 sm:mt-10">
-        {course.slug === "practicum" ? (
-          // Практикум: только кейсы про просмотры, без доходов и личных историй (Мадина - только на странице курса AI Content Creator)
-          <HomeStories
-            audience={course.audiences[0]}
-            limit={12}
-            onlyViews
-            description="Люди без технического образования, освоившие ИИ-ролики"
-            extraVideos={practicumReels.flatMap((r) => {
-              const id = youtubeIdFromUrl(r.embedUrl);
-              return id && r.src ? [{ id: r.id, poster: r.src, youtubeId: id }] : [];
-            })}
-          />
-        ) : (
-          <HomeStories audience={course.audiences[0]} limit={12} />
-        )}
-      </div>
-      {course.slug === "practicum" && <PracticumGrowth growth={getPracticumGrowth()} />}
-      {/* Практикум: блок «Что входит» убран по решению владельца (состав - в «Что вы получаете», цена - в hero и форме) */}
-      {course.slug !== "practicum" && <Pricing course={course} />}
-      {product && <RefundTerms text={getRefundTerms(product.id)} />}
-      {course.slug === "practicum" ? (
+      {isPracticum ? (
         <>
-          {/* Практикум: рилсы учеников и переписки-благодарности (отзывы со страницы школы, из reviews.ts) */}
+          {/* Воронка практикума: узнал себя → быстро понял суть (видео) → что научится → как проходит и что входит →
+              доказательства (работы, переписки) → что будет после (заказы) → кто ведёт и почему им верить → снять сомнения (FAQ) → мини-гайд → запись */}
+          <PracticumVideo youtubeId={practicumVideo.youtubeId} posterSrc={practicumVideo.posterSrc} title={practicumVideo.title} />
+          <CourseOutcomes course={course} />
+          {programBlock}
+          <PracticumGets items={getPracticumGets()} />
+          {worksBlock}
           <PracticumResults results={getPracticumResults()} />
+          <CourseMonetization course={course} />
+          <PracticumTeacher teacher={getPracticumTeacher()} photo={getCourseTeachers().find((t) => t.id === "nadira")?.photo ?? null} />
+          <PracticumGrowth growth={getPracticumGrowth()} />
         </>
-      ) : courseReviews.length > 0 && (
+      ) : (
+        <>
+          {programBlock}
+          <CourseOutcomes course={course} />
+          <CourseMonetization course={course} />
+          {worksBlock}
+          <Pricing course={course} />
+        </>
+      )}
+      {product && <RefundTerms text={getRefundTerms(product.id)} />}
+      {!isPracticum && courseReviews.length > 0 && (
         <ReviewsWall
           items={courseReviews}
           tone="bg"
@@ -110,12 +126,10 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
           {...(courseReviews.every((r) => r.kind === "video") ? { title: "Работы учеников", description: "Видео работ учеников курса." } : {})}
         />
       )}
-      {course.slug === "practicum" ? null : (
-        <Team items={team.filter((m) => m.id !== "maidan")} eyebrow="Кто ведёт" title="Кто ведёт курс" layout="grid" />
-      )}
+      {!isPracticum && <Team items={team.filter((m) => m.id !== "maidan")} eyebrow="Кто ведёт" title="Кто ведёт курс" layout="grid" />}
       {product && <NextSteps id="next" title="Что дальше" steps={nextStep ? [nextStep] : []} />}
       <FAQ items={getFaq(course.slug)} />
-      {course.slug === "practicum" && getPracticumGuide() && <PracticumGuide guide={getPracticumGuide()!} />}
+      {isPracticum && getPracticumGuide() && <PracticumGuide guide={getPracticumGuide()!} />}
       <LeadSection
         className="mt-10 sm:mt-16"
         formId={`course-${course.slug}`}
