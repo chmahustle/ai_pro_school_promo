@@ -7,8 +7,6 @@ interface HomeStoriesProps {
   limit?: number | null;
   /** Фильтр по аудитории над карточками */
   withFilters?: boolean;
-  /** Ссылка «Все результаты» в шапке (на главной) */
-  showAllLink?: boolean;
   /** Показывать только кейсы этой аудитории (лендинги) */
   audience?: AudienceSlug;
   /** Показывать только кейсы этого направления (страницы направлений) */
@@ -27,11 +25,11 @@ interface HomeStoriesProps {
  * «Результаты учеников» (серверная часть): отбор verified && consent и сборка публичных карточек -
  * здесь, до передачи в браузер. Меньше 3 подтверждённых кейсов - блок скрыт.
  */
-export function HomeStories({ limit, withFilters, showAllLink, audience, direction, variant, includeIndividual, onlyViews, description }: HomeStoriesProps = {}) {
+export function HomeStories({ limit, withFilters, audience, direction, variant, includeIndividual, onlyViews, description }: HomeStoriesProps = {}) {
   const all = getPublicCases(audience, direction, includeIndividual);
   const stories = onlyViews ? all.filter((c) => c.metricLabel.includes("просмотр")) : all;
   if (stories.length < 3) return null;
   // Вкладки направлений: вайб-кодинг - только если есть подтверждённые кейсы этого направления
   const tabs = getPublicResultsTabs(stories).tabs;
-  return <HomeStoriesClient stories={stories} tabs={tabs} variant={variant} description={description} limit={limit} withFilters={withFilters} showAllLink={showAllLink} />;
+  return <HomeStoriesClient stories={stories} tabs={tabs} variant={variant} description={description} limit={limit} withFilters={withFilters} />;
 }

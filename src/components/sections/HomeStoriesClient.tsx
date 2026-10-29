@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import { ArrowLink, CaseCard, HomeSection, Lightbox, SectionIntro, type LightboxItem } from "@/components/ui";
+import { ArrowRight } from "lucide-react";
+import { CaseCard, Button, HomeSection, Lightbox, SectionIntro, type LightboxItem } from "@/components/ui";
 import { storyAudienceFilters } from "@/data/story-filters";
 import type { PublicCase } from "@/data/public-types";
 import type { AudienceSlug } from "@/data/types";
@@ -26,15 +27,13 @@ interface HomeStoriesClientProps {
   limit?: number | null;
   /** Фильтр по аудитории над карточками */
   withFilters?: boolean;
-  /** Ссылка «Все результаты» в шапке (на главной) */
-  showAllLink?: boolean;
 }
 
 /**
  * «Результаты учеников»: тёмная панель с лентами. На главной - 3 карточки и ссылка на /reviews,
  * на /reviews - все карточки с фильтром по аудитории (тот же стиль).
  */
-export function HomeStoriesClient({ stories: all, tabs = [], variant = "results", description, limit = HOME_LIMIT, withFilters = false, showAllLink = true }: HomeStoriesClientProps) {
+export function HomeStoriesClient({ stories: all, tabs = [], variant = "results", description, limit = HOME_LIMIT, withFilters = false }: HomeStoriesClientProps) {
   const [filter, setFilter] = useState<FilterId>("all");
   const [direction, setDirection] = useState<"creator" | "vibecoding">(tabs[0]?.id ?? "creator");
   const showTabs = tabs.length > 1 && !withFilters;
@@ -86,13 +85,6 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
         eyebrow={variant === "projects" ? "Проекты" : "Результаты учеников"}
         title={variant === "projects" ? noBreakHyphen("Проекты вайб-кодинга") : "Работы учеников"}
         description={variant === "projects" ? undefined : (description ?? "Ролики и результаты учеников AI Pro School.")}
-        action={
-          showAllLink ? (
-            <ArrowLink href="/reviews" tone="onDark">
-              Все результаты
-            </ArrowLink>
-          ) : undefined
-        }
       />
 
       {showTabs && (
@@ -158,6 +150,15 @@ export function HomeStoriesClient({ stories: all, tabs = [], variant = "results"
           </li>
         ))}
       </ul>
+
+      {/* Кнопка ко всем отзывам и результатам - вместо ссылки в шапке (не дублируем); на самой странице /reviews (limit = null) её нет */}
+      {limit != null && (
+        <div className="mt-8 flex justify-center">
+          <Button variant="white" size="lg" href="/reviews" icon={<ArrowRight className="size-5" />}>
+            Все результаты и отзывы
+          </Button>
+        </div>
+      )}
 
       <p className="mt-6 text-[12px] leading-snug text-white/55">Результаты индивидуальны и не являются гарантией дохода.</p> {/* copy-check:ignore */}
 

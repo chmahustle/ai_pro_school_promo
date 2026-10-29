@@ -78,7 +78,7 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
       <div className="mt-6 sm:mt-10">
         {course.slug === "practicum" ? (
           // Практикум: только кейсы про просмотры, без доходов и личных историй (Мадина - только на странице курса AI Content Creator)
-          <HomeStories audience={course.audiences[0]} limit={3} onlyViews description="Люди без технического образования, освоившие ИИ-ролики" showAllLink={false} />
+          <HomeStories audience={course.audiences[0]} limit={3} onlyViews description="Люди без технического образования, освоившие ИИ-ролики" />
         ) : (
           <HomeStories audience={course.audiences[0]} limit={3} />
         )}
