@@ -371,24 +371,12 @@ export const offlineIdeas: { id: string; title: string; items: string[] }[] = [
 
 export const offlineIdeasNote = "На уроке собираете первую версию одной идеи. Остальные дома, тем же способом.";
 
-/**
- * Подпись под блоком «Что соберёте именно вы». В prod - только формулировка про демо и вымышленные данные (public).
- * Утверждение, что именно эти продукты собираются на уроке, школа не подтверждала (confirmedBySchool: false) - пометка только в dev.
- */
-export const offlineBuildCaption = {
-  public: "Примеры результата. Имена и данные вымышлены; на уроке собираете демо-версию.",
-  confirmedBySchool: false,
-  devNote: "не подтверждено школой, что именно эти продукты собираются на уроке",
-};
-
 /** Публичная модель блока: только verified (dev - остальные с пометкой) */
 export function getOfflineBuild() {
   return {
     cards: visible(offlineBuild).map(({ id, audience, pain, now, built, devNote }) => ({ id, audience, pain, now, built, devNote })),
     ideas: offlineIdeas,
     ideasNote: offlineIdeasNote,
-    caption: offlineBuildCaption.public,
-    captionDevNote: SHOW_PLACEHOLDERS && !offlineBuildCaption.confirmedBySchool ? offlineBuildCaption.devNote : undefined,
     ideasCount: offlineIdeas.reduce((n, g) => n + g.items.length, 0),
   };
 }
@@ -471,6 +459,9 @@ export interface PracticumGrowthStat extends Checked {
   /** «+75 000» */
   gain: string;
   period: string;
+  /** Скриншоты профиля «было» и «стало» (public/growth/, со страницы школы ai-pro-school.kz/prakticum) */
+  beforeSrc: string;
+  afterSrc: string;
 }
 
 const NBS = "\u00a0";
@@ -483,14 +474,14 @@ export const practicumGrowth = {
   highlight: "И самое главное:",
   highlightText: "этот же ролик можно выкладывать везде",
   stats: [
-    { id: "instagram", platform: "Instagram", gain: `+75${NBS}000`, period: `за 6${NBS}месяцев`, verified: true, source: SOURCE, asOf: AS_OF },
-    { id: "tiktok", platform: "TikTok", gain: `+12${NBS}000`, period: `за 3${NBS}месяца`, verified: true, source: SOURCE, asOf: AS_OF },
-    { id: "youtube", platform: "YouTube", gain: `+10${NBS}000`, period: `за 2${NBS}месяца`, verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "instagram", platform: "Instagram", gain: `+75${NBS}000`, period: `за 6${NBS}месяцев`, beforeSrc: "/growth/instagram-before.webp", afterSrc: "/growth/instagram-after.webp", verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "tiktok", platform: "TikTok", gain: `+12${NBS}000`, period: `за 3${NBS}месяца`, beforeSrc: "/growth/tiktok-before.webp", afterSrc: "/growth/tiktok-after.webp", verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "youtube", platform: "YouTube", gain: `+10${NBS}000`, period: `за 2${NBS}месяца`, beforeSrc: "/growth/youtube-before.webp", afterSrc: "/growth/youtube-after.webp", verified: true, source: SOURCE, asOf: AS_OF },
   ] as PracticumGrowthStat[],
 };
 
 export function getPracticumGrowth() {
-  return { ...practicumGrowth, stats: visible(practicumGrowth.stats).map(({ id, platform, gain, period, devNote }) => ({ id, platform, gain, period, devNote })) };
+  return { ...practicumGrowth, stats: visible(practicumGrowth.stats).map(({ id, platform, gain, period, beforeSrc, afterSrc, devNote }) => ({ id, platform, gain, period, beforeSrc, afterSrc, devNote })) };
 }
 
 // ───────────── Что понадобится кроме курса ─────────────

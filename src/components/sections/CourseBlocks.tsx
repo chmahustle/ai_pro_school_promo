@@ -1,7 +1,8 @@
-import { ArrowDown, Check, FileText, Flame, Info, Instagram, Laptop, Lightbulb, LifeBuoy, MapPin, MessageCircle, PlayCircle, Sparkles, Users, Video, Youtube } from "lucide-react";
+import { ArrowDown, FileText, Flame, Instagram, Laptop, Lightbulb, LifeBuoy, MapPin, MessageCircle, PlayCircle, Sparkles, Users, Video, Youtube } from "lucide-react";
 import { Accordion, Avatar, HomeSection, Pill, Reveal, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
 import { BuildCarousel } from "./BuildCarousel";
 import { BuildIdeas } from "./BuildIdeas";
+import { TimelineClient } from "./TimelineClient";
 import type { getOfflineBuild, getOfflineSkill, getOfflineTimeline, getPracticumGets, getPracticumGrowth, PublicCourseContent } from "@/data/courseContent";
 import { YoutubeTeaser } from "./YoutubeTeaser";
 import { cn, nbspDash } from "@/lib/utils";
@@ -98,11 +99,11 @@ export function CourseSkill({ skill }: { skill: ReturnType<typeof getOfflineSkil
         <h2 id="offline-skill-title" className="font-display text-[clamp(1.875rem,1.3rem+2.4vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.015em] text-ink">
           {nbspDash(skill.title)} <span className="text-brand">{skill.titleAccent}</span>
         </h2>
-        <p className="mt-4 max-w-[52ch] text-[16px] leading-relaxed text-ink-700 [text-wrap:balance]">
+        <p className="mt-6 max-w-[56ch] text-[17px] leading-[1.7] text-ink-700 [text-wrap:balance]">
           {skill.lead} <span className="font-semibold text-brand">{skill.leadAccent}</span>.
         </p>
       </div>
-      <RevealGroup as="ol" className="mx-auto mt-8 grid max-w-[1040px] gap-4 md:grid-cols-3">
+      <RevealGroup as="ol" className="mt-12 grid gap-4 md:grid-cols-3">
         {skill.items.map((it, i) => (
           <RevealItem as="li" key={it.id} className="flex">
             <div className="flex w-full items-start gap-4 rounded-[24px] bg-surface p-5 shadow-soft sm:p-6">
@@ -120,13 +121,15 @@ export function CourseSkill({ skill }: { skill: ReturnType<typeof getOfflineSkil
   );
 }
 
+const STAR = "M50 8C53.2 32.5 67.5 46.8 92 50C67.5 53.2 53.2 67.5 50 92C46.8 67.5 32.5 53.2 8 50C32.5 46.8 46.8 32.5 50 8Z";
+
 type BuildData = ReturnType<typeof getOfflineBuild>;
 
 function Bubble({ text, time, gap, tone }: { text: string; time?: string; gap?: string; tone: "now" | "built" }) {
   return (
     <>
       {gap && <p className={cn("py-0.5 text-center text-[12px] font-semibold uppercase tracking-wide", tone === "now" ? "text-white/60" : "text-ink-500")}>{gap}</p>}
-      <div className={cn("flex items-end justify-between gap-3 rounded-2xl px-3.5 py-2.5 text-[14px] leading-snug", tone === "now" ? "bg-white/10 text-white/75" : "bg-white text-ink shadow-soft")}>
+      <div className={cn("flex items-end justify-between gap-3 rounded-2xl px-3 py-2.5 text-[14px] leading-snug sm:px-3.5", tone === "now" ? "bg-white/10 text-white/75" : "bg-white text-ink shadow-soft")}>
         <span>{text}</span>
         {time && <span className={cn("shrink-0 text-[12px] tabular-nums", tone === "now" ? "text-white/55" : "text-ink-500")}>{time}</span>}
       </div>
@@ -165,7 +168,7 @@ function Connector({ horizontal }: { horizontal?: boolean }) {
  * «Что соберёте именно вы» (страница офлайн-урока /courses/vibecoding-offline, ProductLanding): на тёмной панели четыре карточки-примера.
  * В карточке: метка аудитории и боль (заголовок с запасом под 3 строки) → тёмная панель «Сейчас» → коннектор «на уроке» →
  * светлая панель «Соберёте на уроке». ≥1024 px - сетка из трёх колонок (общие строки через subgrid: панели всех карточек начинаются
- * на одной линии, нижние одной высоты), ниже - лента со scroll-snap. Затем «Ещё N идей» и заметная подпись про демо и вымышленные данные.
+ * на одной линии, нижние одной высоты), ниже - лента со scroll-snap. Затем «Ещё N идей».
  */
 export function CourseBuild({ build }: { build: BuildData }) {
   if (build.cards.length === 0) return null;
@@ -180,7 +183,7 @@ export function CourseBuild({ build }: { build: BuildData }) {
             <li
               key={c.id}
               className={cn(
-                "flex w-[84%] shrink-0 snap-start flex-col gap-4 rounded-[28px] bg-white/[0.06] p-5 text-white ring-1 ring-white/10 sm:w-[420px] sm:p-6",
+                "flex w-[92%] shrink-0 snap-start flex-col gap-4 rounded-[28px] bg-white/[0.06] p-3.5 text-white ring-1 ring-white/10 sm:w-[420px] sm:p-6",
                 wide
                   ? "lg:col-span-3 lg:grid lg:w-auto lg:grid-cols-[1fr_auto_1fr] lg:grid-rows-[auto_1fr] lg:gap-x-4 lg:gap-y-4"
                   : "lg:row-span-4 lg:grid lg:w-auto lg:grid-rows-subgrid lg:gap-y-4",
@@ -192,7 +195,7 @@ export function CourseBuild({ build }: { build: BuildData }) {
                 <h3 className="mt-3 font-display text-[22px] font-bold leading-snug [text-wrap:balance] sm:text-[24px]">{nbspDash(c.pain)}</h3>
               </div>
 
-              <div className={cn("flex min-h-[15rem] flex-col gap-2 rounded-[20px] bg-black/30 p-3.5 ring-1 ring-white/10", wide && "lg:min-h-0")}>
+              <div className={cn("flex min-h-[15rem] flex-col gap-2 rounded-[20px] bg-black/30 p-3 ring-1 ring-white/10 sm:p-3.5", wide && "lg:min-h-0")}>
                 <p className="text-[12px] font-bold uppercase tracking-wider text-white/70">Сейчас · {c.now.source}</p>
                 {c.now.lines.map((l, i) => (
                   <Bubble key={i} text={l.text} time={l.time} gap={l.gap} tone="now" />
@@ -202,7 +205,7 @@ export function CourseBuild({ build }: { build: BuildData }) {
 
               <Connector horizontal={wide} />
 
-              <div className="flex flex-1 flex-col gap-2 rounded-[20px] bg-lavender p-3.5 text-ink">
+              <div className="flex flex-1 flex-col gap-2 rounded-[20px] bg-lavender p-3 text-ink sm:p-3.5">
                 <p className="text-[12px] font-bold uppercase tracking-wider text-ink-700">Соберёте на уроке</p>
                 <p className="flex flex-wrap items-center gap-2 font-display text-[18px] font-bold leading-tight">
                   {c.built.title}
@@ -245,60 +248,26 @@ export function CourseBuild({ build }: { build: BuildData }) {
       <BuildIdeas groups={build.ideas} />
       <p className="mt-4 max-w-[60ch] text-[14px] text-white/70">{build.ideasNote}</p>
 
-      {/* Заметная подпись: примеры и данные вымышлены, на уроке собираете демо-версию */}
-      <div className="mt-6 flex items-start gap-3 rounded-[20px] bg-white/[0.08] p-4 ring-1 ring-white/25">
-        <Info className="mt-0.5 size-5 shrink-0 text-brand-200" aria-hidden />
-        <div>
-          <p className="text-[15px] font-semibold leading-snug text-white">{build.caption}</p>
-          {build.captionDevNote && <DevNote note={build.captionDevNote} className="mt-1" />}
-        </div>
-      </div>
     </HomeSection>
   );
 }
 
 type TimelineData = ReturnType<typeof getOfflineTimeline>;
 
-/** «3 часа на уроке»: карточка с датой и временем урока (из products.ts), вертикальная линия по блокам и карточка «Итог» */
+/** «3 часа на уроке»: широкий блок слева направо, линия по блокам прорисовывается при прокрутке (клиентская часть - TimelineClient) */
 export function CourseTimeline({ timeline, date, time }: { timeline: TimelineData; date: string | null; time: string | null }) {
   if (timeline.items.length === 0) return null;
   return (
     <Section aria-labelledby="offline-timeline-title">
-      <div className="mx-auto max-w-[760px]">
-        <h2 id="offline-timeline-title" className="text-center font-display text-[clamp(1.875rem,1.3rem+2.4vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.015em] text-ink">
-          {timeline.title}
-        </h2>
-        <div className="mt-8 rounded-[28px] bg-surface p-5 shadow-soft sm:p-7">
-          {(date || time) && (
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              {date && <p className="font-display text-[19px] font-bold">Урок, {date}</p>}
-              {time && <span className="rounded-pill bg-brand-100 px-3.5 py-1.5 text-[14px] font-bold tabular-nums text-brand-700">{time}</span>}
-            </div>
-          )}
-          <ol className={cn("flex flex-col", (date || time) && "mt-6")}>
-            {timeline.items.map((it, i) => (
-              <li key={it.id} className="relative flex gap-4 pb-6 last:pb-0">
-                {i < timeline.items.length - 1 && <span aria-hidden className="absolute left-[34px] top-9 bottom-0 w-0.5 -translate-x-1/2 bg-brand-200" />}
-                <span className={cn("z-10 h-8 w-[68px] shrink-0 rounded-xl text-center text-[14px] font-bold leading-8 tabular-nums", i === 0 ? "bg-brand-600 text-white" : "bg-brand-100 text-brand-700")}>{it.time}</span>
-                <div>
-                  <DevNote note={it.devNote} />
-                  <h3 className="font-display text-[18px] font-bold leading-snug">{it.title}</h3>
-                  <p className="mt-1 text-[15px] leading-relaxed text-ink-700">{it.text}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-        <div className="mt-4 flex items-center gap-4 rounded-[24px] bg-surface p-5 ring-2 ring-brand/25">
-          <span className="grid size-14 shrink-0 place-items-center rounded-full bg-brand-600 text-white">
-            <Check className="size-6" aria-hidden />
-          </span>
-          <p className="text-[17px] font-bold leading-snug">
-            {timeline.outcomePrefix} <span className="text-brand">{timeline.outcomeAccent}</span>
-            {timeline.outcomeRest}
-          </p>
-        </div>
-      </div>
+      <TimelineClient
+        title={timeline.title}
+        date={date}
+        time={time}
+        items={timeline.items}
+        outcomePrefix={timeline.outcomePrefix}
+        outcomeAccent={timeline.outcomeAccent}
+        outcomeRest={timeline.outcomeRest}
+      />
     </Section>
   );
 }
@@ -380,7 +349,7 @@ export function PracticumGrowth({ growth }: { growth: ReturnType<typeof getPract
           <b className="font-bold text-brand">{growth.highlight}</b> {growth.highlightText}
         </p>
       </div>
-      <RevealGroup as="ul" className="mx-auto mt-8 grid max-w-[900px] gap-4 sm:grid-cols-3">
+      <RevealGroup as="ul" className="mx-auto mt-8 grid max-w-[1180px] gap-4 sm:grid-cols-3">
         {growth.stats.map((st) => {
           const Icon = st.id === "tiktok" ? null : GROWTH_ICONS[st.id];
           return (
@@ -393,6 +362,17 @@ export function PracticumGrowth({ growth }: { growth: ReturnType<typeof getPract
                 </span>
                 <p className="whitespace-nowrap font-display text-[clamp(1.75rem,1.4rem+1.4vw,2.5rem)] font-extrabold leading-none text-white">{st.gain}</p>
                 <p className="whitespace-nowrap text-[14px] text-white/65">{st.period}</p>
+                {/* Профиль до и после: скриншоты со страницы школы */}
+                <div className="mt-2 grid w-full grid-cols-2 gap-2">
+                  {([["Было", st.beforeSrc], ["Стало", st.afterSrc]] as const).map(([cap, src]) => (
+                    <figure key={cap} className="m-0 flex flex-col gap-1.5">
+                      <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-white">
+                        <Image src={src} alt={`${st.platform}: профиль школы, ${cap.toLowerCase()}`} fill sizes="(max-width:640px) 40vw, 160px" className="object-cover object-top" />
+                      </div>
+                      <figcaption className={cn("text-[12px] font-semibold", cap === "Стало" ? "text-brand-200" : "text-white/60")}>{cap}</figcaption>
+                    </figure>
+                  ))}
+                </div>
               </div>
             </RevealItem>
           );
@@ -468,7 +448,14 @@ export function CourseTeachers({ teachers, title = "Ведёт курс", id = "
       <RevealGroup as="ul" className="grid gap-4 sm:grid-cols-2">
         {teachers.map((t) => (
           <RevealItem as="li" key={t.id} className="flex">
-            <div className="flex w-full items-center gap-5 rounded-[28px] bg-lavender p-5 sm:gap-6 sm:p-6">
+            <div className="relative isolate flex w-full items-center gap-5 overflow-hidden rounded-[28px] bg-lavender p-5 sm:gap-6 sm:p-6">
+              {/* Декор как у «Ведёт …»: большая звезда справа внизу и контурный круг слева вверху (за содержимым) */}
+              <svg aria-hidden viewBox="0 0 100 100" fill="#ffffff" className="pointer-events-none absolute -bottom-8 -right-6 -z-10 size-[170px] opacity-80 sm:size-[200px]">
+                <path d={STAR} />
+              </svg>
+              <svg aria-hidden viewBox="0 0 200 200" fill="none" className="pointer-events-none absolute -left-12 -top-14 -z-10 size-[170px] opacity-70">
+                <circle cx="100" cy="100" r="78" stroke="#ffffff" strokeWidth="10" />
+              </svg>
               <div className="relative size-[96px] shrink-0 overflow-hidden rounded-[22px] bg-surface shadow-float ring-4 ring-white sm:size-[120px]">
                 {t.photo ? <Image src={t.photo} alt={t.name} fill sizes="120px" className="object-cover object-[50%_18%]" /> : <Avatar name={t.name} src={null} size="xl" className="size-full rounded-none" />}
               </div>
