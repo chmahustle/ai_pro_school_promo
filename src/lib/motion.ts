@@ -27,4 +27,5 @@ export const stagger = (staggerChildren = 0.08, delayChildren = 0): Variants => 
   show: { transition: { staggerChildren, delayChildren } },
 });
 
-export const viewportOnce = { once: true, amount: 0.25, margin: "0px 0px -80px 0px" } as const;
+// amount маленький: на телефоне высокие списки (колонка карточек 9:16) выше экрана в разы - при 0.25 они никогда не набирали бы 25% видимости и оставались прозрачными (iOS Safari)
+export const viewportOnce = { once: true, amount: 0.08, margin: "0px 0px -80px 0px" } as const;
