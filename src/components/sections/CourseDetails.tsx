@@ -85,14 +85,18 @@ export function CourseMonetization({ course }: { course: Course }) {
             <div className="audience-tile flex w-full flex-col gap-4 rounded-[24px] bg-white/[0.07] p-6 ring-1 ring-white/10">
               <span className="font-display text-[40px] font-extrabold leading-none text-white/20 tabular-nums">0{i + 1}</span>
               <h3 className="font-display text-lg leading-tight text-white">{m.title}</h3>
-              <ul className="flex flex-col gap-2">
-                {m.items.map((it) => (
-                  <li key={it} className="flex items-start gap-2.5 text-[14px] text-white/70">
-                    <span className="mt-[8px] size-1.5 shrink-0 rounded-full bg-brand" aria-hidden />
-                    {it}
-                  </li>
-                ))}
-              </ul>
+              {m.items.length === 1 ? (
+                <p className="text-[14px] leading-relaxed text-white/70">{m.items[0]}</p>
+              ) : (
+                <ul className="flex flex-col gap-2">
+                  {m.items.map((it) => (
+                    <li key={it} className="flex items-start gap-2.5 text-[14px] text-white/70">
+                      <span className="mt-[8px] size-1.5 shrink-0 rounded-full bg-brand" aria-hidden />
+                      {it}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </RevealItem>
         ))}
