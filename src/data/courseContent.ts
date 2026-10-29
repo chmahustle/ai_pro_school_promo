@@ -401,6 +401,71 @@ export function getOfflineTimeline() {
   };
 }
 
+// ───────────── Практикум: «Что вы получаете, присоединившись», видео и «Мы сами выросли» ─────────────
+// Тексты - со страницы школы ai-pro-school.kz/prakticum (подтверждены владельцем 2026-10-29)
+
+export interface PracticumGet extends Checked {
+  id: string;
+  /** Крупная розовая метка: «3 эфира», «30 дней» */
+  label: string;
+  text: string;
+  /** Часть text, выделяемая жирным (должна входить в text) */
+  bold?: string;
+}
+
+export const practicumGets: PracticumGet[] = [
+  { id: "live", label: "3 эфира", text: "без воды по 90 минут", bold: "по 90 минут", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "chat", label: "7 дней", text: "чат с обратной связью в тг", bold: "чат", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "records", label: "30 дней", text: "доступ к записям", bold: "доступ", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "ideas", label: "Идеи", text: "для любой ниши даже сложной", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "prompts", label: "Промпты", text: "для создания сценариев", bold: "сценариев", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "docs", label: "Инструкции", text: "в отдельном документе", verified: true, source: SOURCE, asOf: AS_OF },
+  { id: "clients", label: "Способы", text: "быстрого поиска клиентов", verified: true, source: SOURCE, asOf: AS_OF },
+];
+
+export function getPracticumGets() {
+  return visible(practicumGets).map(({ id, label, text, bold, devNote }) => ({ id, label, text, bold, devNote }));
+}
+
+/** «Коротко о практикуме»: видео на YouTube (плеер по клику), превью - локальный файл (до клика запросов к YouTube нет) */
+export const practicumVideo = {
+  youtubeId: "wC3Iwmk_MTg",
+  posterSrc: "/cases/yt-wC3Iwmk_MTg.jpg",
+  title: "Коротко о практикуме",
+  verified: true,
+  source: SOURCE,
+  asOf: AS_OF,
+};
+
+/** «Мы сами выросли благодаря роликам через ИИ»: рост площадок школы */
+export interface PracticumGrowthStat extends Checked {
+  id: "instagram" | "tiktok" | "youtube";
+  platform: string;
+  /** «+75 000» */
+  gain: string;
+  period: string;
+}
+
+const NBS = "\u00a0";
+
+export const practicumGrowth = {
+  title: "Мы сами выросли",
+  titleAccent: "благодаря роликам",
+  titleTail: "через ИИ",
+  lead: "Мы используем ровно ту же систему, которую передаём вам на практикуме",
+  highlight: "И самое главное:",
+  highlightText: "этот же ролик можно выкладывать везде",
+  stats: [
+    { id: "instagram", platform: "Instagram", gain: `+75${NBS}000`, period: `за 6${NBS}месяцев`, verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "tiktok", platform: "TikTok", gain: `+12${NBS}000`, period: `за 3${NBS}месяца`, verified: true, source: SOURCE, asOf: AS_OF },
+    { id: "youtube", platform: "YouTube", gain: `+10${NBS}000`, period: `за 2${NBS}месяца`, verified: true, source: SOURCE, asOf: AS_OF },
+  ] as PracticumGrowthStat[],
+};
+
+export function getPracticumGrowth() {
+  return { ...practicumGrowth, stats: visible(practicumGrowth.stats).map(({ id, platform, gain, period, devNote }) => ({ id, platform, gain, period, devNote })) };
+}
+
 // ───────────── Что понадобится кроме курса ─────────────
 
 export interface CourseCost extends Checked {

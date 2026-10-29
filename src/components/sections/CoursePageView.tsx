@@ -18,6 +18,8 @@ import { getCourse } from "@/data/courses";
 import { productForCourseSlug } from "@/data/product-ids";
 import { getCurrentPrice, getProductForCourse } from "@/data/products";
 import { getPublishedReviews } from "@/data/reviews";
+import { getPracticumGets, getPracticumGrowth, practicumVideo } from "@/data/courseContent";
+import { PracticumGets, PracticumGrowth, PracticumVideo } from "@/components/sections/CourseBlocks";
 import { team } from "@/data/team";
 import { SITE_URL, site } from "@/lib/site";
 
@@ -29,6 +31,10 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
   if (!course) notFound();
 
   const courseReviews = getPublishedReviews().filter((r) => r.course === course.slug).slice(0, 6);
+  // Практикум: отдельные стены - рилсы (видео) и благодарности (переписки)
+  const practicumAll = getPublishedReviews().filter((r) => r.course === "practicum");
+  const practicumReels = practicumAll.filter((r) => r.kind === "video");
+  const practicumThanks = practicumAll.filter((r) => r.kind === "chat");
   // Цена для разметки - из products.ts (единственный источник)
   const product = getProductForCourse(course.slug);
   const offerPrice = product ? getCurrentPrice(product) : null;
@@ -64,6 +70,8 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
         title={course.slug === "practicum" ? "Программа практикума" : "Программа курса"}
         description="Пошагово, без перегруза. Всё сразу применимо на практике"
       />
+      {course.slug === "practicum" && <PracticumGets items={getPracticumGets()} />}
+      {course.slug === "practicum" && <PracticumVideo youtubeId={practicumVideo.youtubeId} posterSrc={practicumVideo.posterSrc} title={practicumVideo.title} />}
       <CourseOutcomes course={course} />
       <CourseMonetization course={course} />
       {/* Результаты учеников этой аудитории - тот же блок, что на главной */}
@@ -75,10 +83,33 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
           <HomeStories audience={course.audiences[0]} limit={3} />
         )}
       </div>
+      {course.slug === "practicum" && <PracticumGrowth growth={getPracticumGrowth()} />}
       <Pricing course={course} />
       {product && <RefundTerms text={getRefundTerms(product.id)} />}
       {product && <NextSteps id="next" title="Что дальше" steps={nextStep ? [nextStep] : []} />}
-      {courseReviews.length > 0 && (
+      {course.slug === "practicum" ? (
+        <>
+          {/* Практикум: рилсы учеников и переписки-благодарности (отзывы со страницы школы, из reviews.ts) */}
+          <ReviewsWall
+            items={practicumReels}
+            tone="bg"
+            eyebrow="Результаты"
+            title="Как залетают рилсы наших учеников"
+            description="Видео работ учеников практикума."
+            limit={8}
+            moreHref="/reviews"
+          />
+          <ReviewsWall
+            items={practicumThanks}
+            tone="bg"
+            eyebrow="Отзывы"
+            title="Каждый день мы получаем столько благодарностей"
+            description="Переписки с учениками после практикума."
+            limit={12}
+            moreHref="/reviews"
+          />
+        </>
+      ) : courseReviews.length > 0 && (
         <ReviewsWall
           items={courseReviews}
           tone="bg"

@@ -2,7 +2,9 @@ import { Laptop, LifeBuoy, MapPin, MessageCircle, PlayCircle, Video } from "luci
 import { Accordion, Avatar, HomeSection, Pill, Reveal, RevealGroup, RevealItem, Section, SectionIntro } from "@/components/ui";
 import { BuildCarousel } from "./BuildCarousel";
 import { Check, Plus } from "lucide-react";
-import type { getOfflineBuild, getOfflineSkill, getOfflineTimeline, PublicCourseContent } from "@/data/courseContent";
+import type { getOfflineBuild, getOfflineSkill, getOfflineTimeline, getPracticumGets, getPracticumGrowth, PublicCourseContent } from "@/data/courseContent";
+import { YoutubeTeaser } from "./YoutubeTeaser";
+import { Instagram, Youtube, Flame } from "lucide-react";
 import { cn, nbspDash } from "@/lib/utils";
 import Image from "next/image";
 
@@ -254,6 +256,98 @@ export function CourseTimeline({ timeline, date, time }: { timeline: TimelineDat
         </div>
       </div>
     </Section>
+  );
+}
+
+/** «Что вы получаете, присоединившись» (практикум): тёмная панель, семь строк «розовая метка + пояснение» */
+export function PracticumGets({ items }: { items: ReturnType<typeof getPracticumGets> }) {
+  if (items.length === 0) return null;
+  return (
+    <HomeSection tone="dark" labelledBy="practicum-gets-title" mobileCompact className="mt-4">
+      <div className="mx-auto max-w-[760px]">
+        <h2 id="practicum-gets-title" className="text-center font-display text-[clamp(1.875rem,1.3rem+2.4vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.015em] text-white">
+          <span className="text-brand">Что вы получаете,</span>
+          <br />
+          присоединившись
+        </h2>
+        <RevealGroup as="ul" className="mt-8 flex flex-col gap-3">
+          {items.map((it) => (
+            <RevealItem as="li" key={it.id}>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-[20px] bg-white/[0.07] p-3 ring-1 ring-white/15 sm:p-4">
+                <DevNote note={it.devNote} />
+                <span className="rounded-2xl bg-brand px-4 py-2 font-display text-[clamp(1.125rem,1rem+0.6vw,1.5rem)] font-extrabold uppercase leading-none tracking-wide text-white">{it.label}</span>
+                <span className="text-[15px] leading-snug text-white/85 sm:text-[17px]">
+                  {it.bold && it.text.includes(it.bold) ? (
+                    <>
+                      {it.text.slice(0, it.text.indexOf(it.bold))}
+                      <b className="font-bold text-white">{it.bold}</b>
+                      {it.text.slice(it.text.indexOf(it.bold) + it.bold.length)}
+                    </>
+                  ) : (
+                    it.text
+                  )}
+                </span>
+              </div>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+      </div>
+    </HomeSection>
+  );
+}
+
+/** «Коротко о практикуме»: видео-превью, плеер по клику */
+export function PracticumVideo({ youtubeId, posterSrc, title }: { youtubeId: string; posterSrc: string; title: string }) {
+  return (
+    <Section aria-labelledby="practicum-video-title">
+      <h2 id="practicum-video-title" className="mb-8 text-center font-display text-[clamp(1.875rem,1.3rem+2.4vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.015em] text-ink">
+        Коротко о <span className="text-brand">практикуме</span>
+      </h2>
+      <YoutubeTeaser youtubeId={youtubeId} posterSrc={posterSrc} title={title} />
+    </Section>
+  );
+}
+
+const GROWTH_ICONS = { instagram: Instagram, youtube: Youtube } as const;
+
+/** «Мы сами выросли благодаря роликам через ИИ»: рост площадок школы (Instagram, TikTok, YouTube) */
+export function PracticumGrowth({ growth }: { growth: ReturnType<typeof getPracticumGrowth> }) {
+  if (growth.stats.length === 0) return null;
+  return (
+    <HomeSection tone="dark" labelledBy="practicum-growth-title" mobileCompact className="mt-4">
+      <div className="mx-auto flex max-w-[860px] flex-col items-center text-center">
+        <h2 id="practicum-growth-title" className="font-display text-[clamp(1.875rem,1.3rem+2.4vw,3.25rem)] font-extrabold leading-[1.05] tracking-[-0.015em] text-white">
+          {growth.title}
+          <br />
+          <span className="text-brand">{growth.titleAccent}</span>
+          <br />
+          {growth.titleTail}
+        </h2>
+        <p className="mt-5 max-w-[46ch] text-[16px] leading-relaxed text-white/80 [text-wrap:balance]">{growth.lead}</p>
+        <p className="mt-4 max-w-[46ch] text-[16px] leading-relaxed text-white/90 [text-wrap:balance]">
+          <Flame className="mr-1.5 inline size-5 -translate-y-0.5 text-brand" aria-hidden />
+          <b className="font-bold text-brand">{growth.highlight}</b> {growth.highlightText}
+        </p>
+      </div>
+      <RevealGroup as="ul" className="mx-auto mt-8 grid max-w-[900px] gap-4 sm:grid-cols-3">
+        {growth.stats.map((st) => {
+          const Icon = st.id === "tiktok" ? null : GROWTH_ICONS[st.id];
+          return (
+            <RevealItem as="li" key={st.id} className="flex">
+              <div className="flex w-full flex-col items-center gap-2 rounded-[24px] bg-white/[0.07] p-5 text-center ring-1 ring-white/15">
+                <DevNote note={st.devNote} />
+                <span className="inline-flex items-center gap-2 rounded-pill bg-gradient-to-r from-brand-600 to-brand px-4 py-1.5 text-[14px] font-bold text-white">
+                  {Icon ? <Icon className="size-4" aria-hidden /> : <span aria-hidden className="text-[13px] font-extrabold">♪</span>}
+                  {st.platform}
+                </span>
+                <p className="whitespace-nowrap font-display text-[clamp(1.75rem,1.4rem+1.4vw,2.5rem)] font-extrabold leading-none text-white">{st.gain}</p>
+                <p className="whitespace-nowrap text-[14px] text-white/65">{st.period}</p>
+              </div>
+            </RevealItem>
+          );
+        })}
+      </RevealGroup>
+    </HomeSection>
   );
 }
 

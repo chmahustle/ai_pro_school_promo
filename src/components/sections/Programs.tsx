@@ -40,8 +40,8 @@ export function Programs({ modules, title = "Программа", eyebrow = "Ч�
                   </ul>
                   {m.outcome && (
                     <p className="rounded-xl bg-surface px-4 py-3 text-[14px] font-medium text-ink">
-                      <span className="mr-2 text-xs font-bold uppercase tracking-wide text-brand-700">Итог</span>
-                      {m.outcome}
+                      <span className="mr-2 text-xs font-bold uppercase tracking-wide text-brand-700">{m.outcome.startsWith("Практика:") ? "Практика" : "Итог"}</span>
+                      {m.outcome.replace(/^Практика:\s*/, "")}
                     </p>
                   )}
                 </div>

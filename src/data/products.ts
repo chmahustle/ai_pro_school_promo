@@ -141,9 +141,9 @@ export const products: Product[] = [
     step: "try",
     name: vocabulary.practicum,
     resultLine: "Первый ИИ-ролик с телефона на бесплатных нейросетях",
-    // TODO(клиент): подтвердить формат (3 эфира по 90 минут, Пн/Вт/Ср, потоки пн/чт) → formatVerified: true, формат вернуть на подробный
-    formatVerified: false,
-    format: "онлайн, живые эфиры, 7 дней",
+    // Формат подтверждён владельцем по странице школы (2026-10-29): 3 эфира по 90 минут (пн, вт, ср), чат 7 дней, записи 30 дней
+    formatVerified: true,
+    format: "онлайн, 3 эфира по 90 минут, 7 дней",
     price: 9900,
     pricePrefix: "",
     priceNote: "",
