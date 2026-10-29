@@ -85,6 +85,18 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
           <HomeStories audience={course.audiences[0]} limit={12} />
         )}
       </div>
+      {course.slug === "practicum" && (
+        <Section aria-labelledby="practicum-reels-title">
+          <SectionIntro id="practicum-reels-title" align="left" eyebrow="Результаты" title="Как залетают рилсы наших учеников" description="Видео работ учеников практикума." />
+          <VideoCarousel
+            label="Рилсы учеников практикума"
+            items={practicumReels.flatMap((r) => {
+              const id = youtubeIdFromUrl(r.embedUrl);
+              return id && r.src ? [{ id: r.id, poster: r.src, youtubeId: id }] : [];
+            })}
+          />
+        </Section>
+      )}
       {course.slug === "practicum" && <PracticumGrowth growth={getPracticumGrowth()} />}
       {/* Практикум: блок «Что входит» убран по решению владельца (состав - в «Что вы получаете», цена - в hero и форме) */}
       {course.slug !== "practicum" && <Pricing course={course} />}
@@ -92,16 +104,6 @@ export function CoursePageView({ slug }: { slug: "practicum" | "ai-creator" }) {
       {course.slug === "practicum" ? (
         <>
           {/* Практикум: рилсы учеников и переписки-благодарности (отзывы со страницы школы, из reviews.ts) */}
-          <Section aria-labelledby="practicum-reels-title">
-            <SectionIntro id="practicum-reels-title" align="left" eyebrow="Результаты" title="Как залетают рилсы наших учеников" description="Видео работ учеников практикума." />
-            <VideoCarousel
-              label="Рилсы учеников практикума"
-              items={practicumReels.flatMap((r) => {
-                const id = youtubeIdFromUrl(r.embedUrl);
-                return id && r.src ? [{ id: r.id, poster: r.src, youtubeId: id }] : [];
-              })}
-            />
-          </Section>
           <PracticumResults results={getPracticumResults()} />
           <PracticumFormats formats={getPracticumFormats()} />
         </>
