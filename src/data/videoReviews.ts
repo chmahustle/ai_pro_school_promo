@@ -40,6 +40,8 @@ export const videoReviews: VideoReview[] = [
   { id: "r-1127", src: `${BASE}/IMG_1127.mp4`, poster: `${BASE}/IMG_1127.webp`, durationSec: 74, ...meta },
   { id: "r-1139", src: `${BASE}/IMG_1139.mp4`, poster: `${BASE}/IMG_1139.webp`, durationSec: 16, ...meta },
   { id: "r-6902", src: `${BASE}/IMG_6902.mp4`, poster: `${BASE}/IMG_6902.webp`, durationSec: 58, ...meta },
+  // Только для блока «Ученики без опыта в коде уже сделали» на лендингах /for/*: на страницах курса не показывается (pages: [])
+  { id: "r-0979", src: `${BASE}/IMG_0979.mp4`, poster: `${BASE}/IMG_0979.webp`, durationSec: 56, ...meta, pages: [] },
 ];
 
 /** Публичная модель: только то, что нужно плееру (без verified/consent/source) */
@@ -58,4 +60,10 @@ export function getVideoReviews(page: VideoReviewPage): PublicVideoReview[] {
   return videoReviews
     .filter((v) => v.pages.includes(page) && v.verified && v.consent)
     .map((v) => ({ id: v.id, src: v.src, poster: v.poster, duration: formatDuration(v.durationSec) }));
+}
+
+/** Один ролик по id (лендинги /for/*: блок «Ученики без опыта в коде уже сделали»): verified && consent, иначе null */
+export function getVideoReviewById(id: string): PublicVideoReview | null {
+  const v = videoReviews.find((x) => x.id === id && x.verified && x.consent);
+  return v ? { id: v.id, src: v.src, poster: v.poster, duration: formatDuration(v.durationSec) } : null;
 }

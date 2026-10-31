@@ -369,7 +369,18 @@ export interface Audience {
   studentWorks?: {
     eyebrow: string;
     title: string;
-    items: { title: string; text: string; /** Путь к скриншоту; нет файла - слот не рисуется */ image: string | null; verified: boolean; consent: boolean; source: string; asOf: string }[];
+    items: {
+      title: string;
+      text: string;
+      /** Путь к скриншоту; нет файла - слот не рисуется */
+      image: string | null;
+      /** id ролика из videoReviews.ts (файлы, длительность и согласие - там); нет - карточка без видео */
+      videoId?: string;
+      verified: boolean;
+      consent: boolean;
+      source: string;
+      asOf: string;
+    }[];
   };
 
   /** «Кому эфир не подойдёт»: честные ограничения; нет - блока нет */
