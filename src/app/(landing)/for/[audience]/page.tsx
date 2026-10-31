@@ -87,9 +87,9 @@ type Block =
  *  career     - сначала чек-лист рутины, затем программа; кейсы выше спикеров
  */
 const blockOrder: Record<Exclude<AudienceSlug, "beginners">, Block[]> = {
-  business: ["pains", "benefits", "buildMore", "payback", "timeline", "takeaways", "whyPaid", "hosts", "notFor", "studentWorks", "results", "next", "faq"],
-  freelancers: ["pains", "sellMore", "buildMore", "paybackOrder", "timeline", "takeaways", "whyPaid", "hosts", "notFor", "studentWorks", "results", "next", "faq"],
-  career: ["pains", "benefits", "buildMore", "paybackOrder", "timeline", "takeaways", "whyPaid", "hosts", "notFor", "studentWorks", "results", "next", "faq"],
+  business: ["pains", "benefits", "buildMore", "payback", "timeline", "takeaways", "whyPaid", "hosts", "notFor", "studentWorks", "results", "faq"],
+  freelancers: ["pains", "sellMore", "buildMore", "paybackOrder", "timeline", "takeaways", "whyPaid", "hosts", "notFor", "studentWorks", "results", "faq"],
+  career: ["pains", "benefits", "buildMore", "paybackOrder", "timeline", "takeaways", "whyPaid", "hosts", "notFor", "studentWorks", "results", "faq"],
 };
 
 export default async function AudienceLandingPage({ params }: { params: Promise<{ audience: string }> }) {
