@@ -30,6 +30,15 @@ export interface LeadFormProps {
   /** Показать поле комментария */
   withComment?: boolean;
   submitLabel?: string;
+  /** Цена в розовой пилюле внутри кнопки («Занять место 9 900 ₸»); вместо стрелки */
+  submitPrice?: string;
+  /** Своя подпись поля телефона (например, «WhatsApp») вместо «Телефон» */
+  phoneLabel?: string;
+  /** Свои подсказки в полях (например, «Айгерим» и «+7 700 000 00 00») */
+  namePlaceholder?: string;
+  phonePlaceholder?: string;
+  /** Своя строка под кнопкой вместо общего обещания ответа из конфига */
+  responseNote?: string;
   /** Информационная подсказка без сроков: отдельной строкой над responseNote */
   hint?: string;
   /** Куда редиректить после успеха. По умолчанию /thanks/<продукт> */
@@ -49,6 +58,11 @@ export function LeadForm({
   lockProduct,
   withComment,
   submitLabel,
+  submitPrice,
+  phoneLabel,
+  namePlaceholder,
+  phonePlaceholder,
+  responseNote,
   hint,
   thanksPath,
   invert,
@@ -155,7 +169,7 @@ export function LeadForm({
       <div className={cn("grid gap-4", compact && "sm:grid-cols-2")}>
         <Input
           label={t.form.name}
-          placeholder={t.form.namePlaceholder}
+          placeholder={namePlaceholder ?? t.form.namePlaceholder}
           autoComplete="name"
           error={errors.name?.message}
           className={invert ? "bg-white/95" : undefined}
@@ -166,11 +180,11 @@ export function LeadForm({
           name="phone"
           render={({ field }) => (
             <Input
-              label={t.form.phone}
+              label={phoneLabel ?? t.form.phone}
               type="tel"
               inputMode="tel"
               autoComplete="tel"
-              placeholder={PHONE_PLACEHOLDER}
+              placeholder={phonePlaceholder ?? PHONE_PLACEHOLDER}
               error={errors.phone?.message}
               className={invert ? "bg-white/95" : undefined}
               name={field.name}
@@ -243,15 +257,24 @@ export function LeadForm({
         size="lg"
         fullWidth
         disabled={isSubmitting || done}
+        className={submitPrice && !isSubmitting && !done ? "gap-4" : undefined}
         icon={
-          isSubmitting ? <Loader2 className="size-5 animate-spin" /> : done ? <Check className="size-5" /> : <ArrowRight className="size-5" />
+          isSubmitting ? (
+            <Loader2 className="size-5 animate-spin" />
+          ) : done ? (
+            <Check className="size-5" />
+          ) : submitPrice ? (
+            <span className="whitespace-nowrap rounded-pill bg-brand px-3 py-1 text-[13px] font-bold text-white transition-colors duration-300 group-hover:bg-white group-hover:text-brand">{submitPrice}</span>
+          ) : (
+            <ArrowRight className="size-5" />
+          )
         }
       >
         {isSubmitting ? t.form.submitting : done ? t.form.success : (submitLabel ?? t.form.submit)}
       </Button>
 
       {hint && <p className={cn("text-center text-[13px] leading-snug", invert ? "text-white/60" : "text-ink-500")}>{hint}</p>}
-      <p className={cn("text-center text-[13px] leading-snug", invert ? "text-white/60" : "text-ink-500")}>{config.responseNote}</p>
+      <p className={cn("text-center text-[13px] leading-snug", invert ? "text-white/60" : "text-ink-500")}>{responseNote ?? config.responseNote}</p>
       <p className={cn("text-center text-[12px] leading-snug", invert ? "text-white/55" : "text-ink-500")}>
         {config.agreement.before}
         <Link href={config.agreement.href} className={cn("underline underline-offset-2", invert ? "text-white" : "text-ink")}>

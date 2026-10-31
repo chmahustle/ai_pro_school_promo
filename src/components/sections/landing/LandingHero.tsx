@@ -119,13 +119,15 @@ export type LandingHeroData = Pick<Audience, "slug" | "accent" | "hero" | "tags"
 interface LandingHeroProps {
   audience: LandingHeroData;
   formAnchor: string;
+  /** Цена эфира строкой из products.ts («9 900 ₸»); пусто - пилюля не рисуется */
+  price?: string;
 }
 
 /**
- * Hero ЦА-лендинга: компактная тёмная панель (#171717) с тональными лентами, белый заголовок с розовым акцентом,
+ * Hero ЦА-лендинга (на весь экран: min-h-dvh, контент по центру, бегущая строка тегов у нижнего края): тёмная панель (#171717) с тональными лентами, белый заголовок с розовым акцентом,
  * кнопки со стрелками, бегущая строка тегов внизу. Тёмный - чтобы лендинг выглядел солидно, особенно для бизнеса.
  */
-export function LandingHero({ audience, formAnchor }: LandingHeroProps) {
+export function LandingHero({ audience, formAnchor, price }: LandingHeroProps) {
   const { hero } = audience;
   const th = themeFor(audience.accent);
 
@@ -134,19 +136,19 @@ export function LandingHero({ audience, formAnchor }: LandingHeroProps) {
   }, [audience.slug]);
 
   return (
-    <section className="px-2 pt-[76px] sm:px-4 sm:pt-[88px]" aria-labelledby="landing-hero-title">
-      <div className={cn("relative overflow-hidden rounded-3xl", th.panel)}>
+    <section className="flex min-h-dvh flex-col px-2 pb-2 pt-[76px] sm:px-4 sm:pb-4 sm:pt-[88px]" aria-labelledby="landing-hero-title">
+      <div className={cn("relative flex flex-1 flex-col overflow-hidden rounded-3xl", th.panel)}>
         {th.mesh && <MeshBackdrop variant={th.mesh} rounded="rounded-3xl" />}
         <Ribbon variant="pair" tone={th.ribbon.tone} opacity={th.ribbon.opacity} />
 
         {/* Летающие карточки с утверждениями: пока данные не подтверждены - только в dev, и только на широких экранах */}
-        {SHOW_PLACEHOLDERS && (
+        {(SHOW_PLACEHOLDERS || hero.floatingCardsPublic) && (
           <div className="pointer-events-none absolute inset-0 z-10 hidden xl:block">
             {hero.floatingCards.slice(0, cardSlots.length).map((c, i) => {
               const slot = cardSlots[i]!;
               return (
                 <motion.div
-                  key={c.label}
+                  key={c.value}
                   className={cn("pointer-events-auto absolute w-[210px]", slot.pos)}
                   initial={{ opacity: 0, x: slot.from, y: 24, scale: 0.92 }}
                   animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
@@ -157,11 +159,15 @@ export function LandingHero({ audience, formAnchor }: LandingHeroProps) {
                     style={{ ["--float-rotate" as string]: `${slot.rotate}deg`, transform: `rotate(${slot.rotate}deg)`, animationDelay: `-${slot.phase}s` }}
                     className={cn("rounded-[22px] p-4 ring-1 backdrop-blur-md", th.card, i % 2 ? "animate-float-slow" : "animate-float")}
                   >
-                    <p className={cn("flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wide", th.cardLabel)}>
-                      <span className="size-1.5 rounded-full bg-brand" aria-hidden />
-                      {c.label}
-                    </p>
-                    <p className={cn("mt-2 font-display text-[26px] font-extrabold leading-none", th.cardValue)}>{c.value}</p>
+                    {c.label ? (
+                      <p className={cn("flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wide", th.cardLabel)}>
+                        <span className="size-1.5 rounded-full bg-brand" aria-hidden />
+                        {c.label}
+                      </p>
+                    ) : (
+                      <span className="block size-1.5 rounded-full bg-brand" aria-hidden />
+                    )}
+                    <p className={cn("mt-2 font-display font-extrabold leading-none", c.label ? "text-[26px]" : "text-[22px]", th.cardValue)}>{c.value}</p>
                     {c.sub && <p className={cn("mt-1.5 text-[12px] leading-snug", th.cardSub)}>{c.sub}</p>}
                   </div>
                 </motion.div>
@@ -174,7 +180,7 @@ export function LandingHero({ audience, formAnchor }: LandingHeroProps) {
           variants={stagger(0.1, 0.05)}
           initial="hidden"
           animate="show"
-          className="relative z-20 mx-auto flex max-w-3xl flex-col items-center px-4 pb-10 pt-12 text-center sm:px-6 sm:pb-12 sm:pt-14"
+          className="relative z-20 mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-4 pb-10 pt-12 text-center sm:px-6 sm:pb-12 sm:pt-14"
         >
           <motion.div variants={fadeUp}>
             <Pill tone={th.eyebrow} dot>
@@ -185,12 +191,12 @@ export function LandingHero({ audience, formAnchor }: LandingHeroProps) {
           <motion.h1
             id="landing-hero-title"
             variants={fadeUp}
-            className={cn("mt-4 font-display text-[clamp(1.875rem,1.2rem+2.6vw,3.25rem)] font-extrabold leading-[1.06] tracking-[-0.015em] [text-wrap:balance]", th.title)}
+            className={cn("mt-4 font-display text-[clamp(1.625rem,1.1rem+2vw,2.75rem)] font-extrabold leading-[1.06] tracking-[-0.015em] [text-wrap:balance]", th.title)}
           >
             <Highlighted text={nbspDash(hero.title)} highlight={hero.highlight} className={th.highlight} />
           </motion.h1>
 
-          <motion.p variants={fadeUp} className={cn("mt-4 max-w-[54ch] text-[14px] leading-relaxed sm:text-[15px]", th.sub)}>
+          <motion.p variants={fadeUp} className={cn("mt-4 max-w-[58ch] text-[13px] leading-relaxed sm:text-[14px]", th.sub)}>
             {nbspDash(hero.subtitle)}
           </motion.p>
 
@@ -200,15 +206,29 @@ export function LandingHero({ audience, formAnchor }: LandingHeroProps) {
               fillTone={th.primary.fillTone}
               size="md"
               href={`#${formAnchor}`}
-              icon={<ArrowRight className="size-4" />}
-              className="w-full sm:w-auto"
+              icon={
+                hero.ctaShort ? (
+                  price ? (
+                    <span className="whitespace-nowrap rounded-pill bg-brand px-3 py-1 text-[13px] font-bold text-white transition-colors duration-300 group-hover:bg-white group-hover:text-brand">{price}</span>
+                  ) : undefined
+                ) : (
+                  <ArrowRight className="size-4" />
+                )
+              }
+              className={cn("w-full sm:w-auto", hero.ctaShort && price && "gap-4 pl-6 pr-3")}
               onClick={() => track({ name: "cta_click", params: { label: hero.primaryCta, location: "landing-hero" } })}
             >
-              {hero.primaryCta}
+              {hero.ctaShort ?? hero.primaryCta}
             </Button>
           </motion.div>
 
-          {audience.leadMagnet && (
+          {hero.ctaNote && (
+            <motion.p variants={fadeUp} className={cn("mt-3 text-[13px]", th.sub)}>
+              {hero.ctaNote}
+            </motion.p>
+          )}
+
+          {audience.leadMagnet && !hero.ctaShort && (
             <motion.p variants={fadeUp} className={cn("mt-5 inline-flex items-center gap-2 rounded-pill px-4 py-2 text-[13px] font-medium ring-1", th.magnet)}>
               <Gift className="size-4 text-brand" aria-hidden />
               {audience.leadMagnet.title} - в подарок
@@ -216,11 +236,11 @@ export function LandingHero({ audience, formAnchor }: LandingHeroProps) {
           )}
 
           {hero.floatingCards.length > 0 && (
-            <motion.ul variants={fadeUp} className="mt-6 grid w-full gap-2 text-left lg:hidden" style={{ gridTemplateColumns: `repeat(${Math.min(3, hero.floatingCards.length)}, minmax(0, 1fr))` }} aria-label="Коротко">
+            <motion.ul variants={fadeUp} className="mt-6 grid w-full grid-cols-1 gap-2 text-left sm:grid-cols-3 lg:hidden" aria-label="Коротко">
               {hero.floatingCards.map((c) => (
-                <li key={c.label} className={cn("rounded-2xl p-3 ring-1", th.card)}>
+                <li key={c.value} className={cn("rounded-2xl p-3 ring-1", th.card)}>
                   <p className={cn("font-display text-base leading-none", th.cardValue)}>{c.value}</p>
-                  <p className={cn("mt-1 text-[11px] leading-tight", th.cardSub)}>{c.label}</p>
+                  <p className={cn("mt-1 text-[11px] leading-tight", th.cardSub)}>{c.label ?? c.sub}</p>
                 </li>
               ))}
             </motion.ul>

@@ -1,10 +1,21 @@
-import { getProduct } from "@/data/products";
+import { getProduct, efirPriceLabel, efirIsFree, getCurrentPrice } from "@/data/products";
 import { getFaq, type FaqPage } from "@/data/faq";
 import { efirNoHiddenConditions } from "@/data/efir";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { LandingHeader } from "@/components/layout/LandingHeader";
 import { LandingHero } from "@/components/sections/landing/LandingHero";
+import { NotFor } from "@/components/sections/landing/NotFor";
+import { StudentWorks } from "@/components/sections/landing/StudentWorks";
+import { Hosts } from "@/components/sections/landing/Hosts";
+import { WhyPaid } from "@/components/sections/landing/WhyPaid";
+import { Timeline } from "@/components/sections/landing/Timeline";
+import { PaybackOrder } from "@/components/sections/landing/PaybackOrder";
+import { Payback } from "@/components/sections/landing/Payback";
+import { BuildMore } from "@/components/sections/landing/BuildMore";
+import { SellMore } from "@/components/sections/landing/SellMore";
+import { Benefits } from "@/components/sections/landing/Benefits";
+import { Pains } from "@/components/sections/landing/Pains";
 import { Outcomes } from "@/components/sections/landing/Outcomes";
 import { ForWhom } from "@/components/sections/landing/ForWhom";
 import { Comparison } from "@/components/sections/landing/Comparison";
@@ -55,7 +66,19 @@ type Block =
   | "metrics"
   | "format"
   | "faq"
-  | "next";
+  | "next"
+  | "pains"
+  | "benefits"
+  | "sellMore"
+  | "buildMore"
+  | "payback"
+  | "paybackOrder"
+  | "timeline"
+  | "takeaways"
+  | "whyPaid"
+  | "hosts"
+  | "studentWorks"
+  | "notFor";
 
 /**
  * Порядок блоков под каждую ЦА - одни компоненты, разные акценты:
@@ -64,9 +87,9 @@ type Block =
  *  career     - сначала чек-лист рутины, затем программа; кейсы выше спикеров
  */
 const blockOrder: Record<Exclude<AudienceSlug, "beginners">, Block[]> = {
-  business: ["comparison", "outcomes", "forWhom", "speakers", "results", "format", "next", "faq"],
-  freelancers: ["comparison", "outcomes", "forWhom", "metrics", "speakers", "results", "format", "next", "faq"],
-  career: ["comparison", "outcomes", "forWhom", "results", "speakers", "reviews", "format", "next", "faq"],
+  business: ["pains", "benefits", "buildMore", "payback", "timeline", "takeaways", "whyPaid", "hosts", "notFor", "studentWorks", "results", "next", "faq"],
+  freelancers: ["pains", "sellMore", "buildMore", "paybackOrder", "timeline", "takeaways", "whyPaid", "hosts", "notFor", "studentWorks", "results", "next", "faq"],
+  career: ["pains", "benefits", "buildMore", "paybackOrder", "timeline", "takeaways", "whyPaid", "hosts", "notFor", "studentWorks", "results", "next", "faq"],
 };
 
 export default async function AudienceLandingPage({ params }: { params: Promise<{ audience: string }> }) {
@@ -74,6 +97,8 @@ export default async function AudienceLandingPage({ params }: { params: Promise<
   const a = getAudience(slug);
   if (!a || !a.path.startsWith("/for/")) notFound();
 
+  // Свои тексты формы (шаги, цена в кнопке) - только пока эфир платный: в них цена и оплата Kaspi
+  const apply = a.apply && !efirIsFree() ? a.apply : null;
   const order = blockOrder[a.slug as keyof typeof blockOrder] ?? blockOrder.business;
   // Тёмная шапка только над чёрным hero (бизнес); над светлыми (фриланс, специалисты) - светлая
 
@@ -89,6 +114,7 @@ export default async function AudienceLandingPage({ params }: { params: Promise<
           leadMagnet: a.leadMagnet,
         }}
         formAnchor={FORM_ID}
+        price={efirPriceLabel()}
       />
       {order.map((b) => (
         <LandingBlock key={b} block={b} audience={a} />
@@ -97,18 +123,28 @@ export default async function AudienceLandingPage({ params }: { params: Promise<
         className="mt-10 sm:mt-16"
         id={FORM_ID}
         formId={`landing-${a.slug}`}
-        eyebrow="Регистрация"
-        title={a.form.title}
-        description={a.form.description}
+        eyebrow={apply ? apply.eyebrow : "Регистрация"}
+        title={apply ? apply.formTitle : a.form.title}
+        description={apply ? apply.formText : a.form.description}
         tone="mesh"
         mesh={meshForAudience(a.slug)}
         defaultProduct="efir"
         lockProduct
         compact
-        submitLabel={a.form.submitLabel}
-        hint="Ссылка на эфир и гайд придут в WhatsApp"
+        submitLabel={apply ? apply.submitLabel : a.form.submitLabel}
+        phoneLabel={apply ? "WhatsApp" : undefined}
+        namePlaceholder={apply ? "Айгерим" : undefined}
+        phonePlaceholder={apply ? "+7 701 000 00 00" : undefined}
+        responseNote={apply ? apply.note : undefined}
+        hint={apply ? undefined : "Ссылка на эфир и гайд придут в WhatsApp"}
         thanksPath="/thanks/efir"
-        bullets={a.leadMagnet ? [a.leadMagnet.title, "Ссылка на эфир - в WhatsApp", efirNoHiddenConditions()] : undefined}
+        bullets={
+          apply
+            ? apply.steps.map((st) => `${st.title}: ${st.text.replace("{price}", efirPriceLabel())}`)
+            : a.leadMagnet
+              ? [a.leadMagnet.title, "Ссылка на эфир - в WhatsApp", efirNoHiddenConditions()]
+              : undefined
+        }
       />
     </>
   );
@@ -122,6 +158,32 @@ function LandingBlock({ block, audience }: { block: Block; audience: Audience })
       if (!audience.comparison) return null;
       if (audience.comparison.status === "placeholder" && !SHOW_PLACEHOLDERS) return null;
       return <Comparison data={audience.comparison} accent={audience.accent} />;
+    case "pains":
+      return <Pains items={audience.pains ?? []} title={audience.painsTitle} />;
+    case "notFor":
+      return audience.notFor ? <NotFor data={audience.notFor} /> : null;
+    case "studentWorks":
+      return audience.studentWorks ? <StudentWorks data={audience.studentWorks} /> : null;
+    case "hosts":
+      return audience.hosts ? <Hosts data={audience.hosts} /> : null;
+    case "whyPaid":
+      return audience.whyPaid ? <WhyPaid data={audience.whyPaid} price={efirIsFree() ? "" : efirPriceLabel()} ctaLabel={audience.hero.ctaShort ?? "Записаться на эфир"} formAnchor={FORM_ID} /> : null;
+    case "takeaways":
+      return audience.takeaways ? (
+        <Outcomes audience={audience} id="takeaways" eyebrow={audience.takeaways.eyebrow} title={audience.takeaways.title} items={audience.takeaways.items} columns={4} hideMagnet />
+      ) : null;
+    case "timeline":
+      return audience.timeline ? <Timeline data={audience.timeline} price={efirIsFree() ? "" : efirPriceLabel()} formAnchor={FORM_ID} /> : null;
+    case "paybackOrder":
+      return audience.paybackOrder ? <PaybackOrder data={audience.paybackOrder} price={getCurrentPrice(getProduct("efir"))} /> : null;
+    case "payback":
+      return audience.payback ? <Payback data={audience.payback} price={efirIsFree() ? "" : efirPriceLabel()} /> : null;
+    case "buildMore":
+      return audience.buildMore ? <BuildMore data={audience.buildMore} /> : null;
+    case "sellMore":
+      return audience.sellMore ? <SellMore data={audience.sellMore} /> : null;
+    case "benefits":
+      return audience.benefits ? <Benefits data={audience.benefits} /> : null;
     case "outcomes":
       return <Outcomes audience={audience} />;
     case "forWhom":

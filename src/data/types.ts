@@ -272,12 +272,127 @@ export interface Audience {
     subtitle: string;
     primaryCta: string;
     secondaryCta?: string;
-    /** Плавающие карточки вокруг заголовка */
-    floatingCards: { label: string; value: string; sub?: string }[];
+    /** Короткая подпись кнопки hero: рядом рисуется цена эфира в пилюле («Занять место 9 900 ₸») */
+    ctaShort?: string;
+    /** Строка под кнопкой hero («Онлайн, вживую · 1,5 часа») */
+    ctaNote?: string;
+    /** Плавающие карточки вокруг заголовка; label - необязательная мелкая надпись над value */
+    floatingCards: { label?: string; value: string; sub?: string }[];
+    /** Карточки утверждены владельцем: показываем и в проде (иначе только в dev) */
+    floatingCardsPublic?: boolean;
   };
 
   /** Теги бегущей строки */
   tags?: string[];
+
+  /** «Узнаёте себя?»: боли аудитории сразу после hero; нет - блока нет */
+  pains?: { title: string; text: string }[];
+  /** Заголовок блока болей; по умолчанию «Узнаёте себя?» */
+  painsTitle?: string;
+
+  /** «Что продать текущему клиенту» (фрилансеры): карточки услуг и пример связки; нет - блока нет */
+  sellMore?: {
+    eyebrow: string;
+    title: string;
+    cards: { title: string; text: string; tag: string }[];
+    example: {
+      label: string;
+      title: string;
+      parts: { kicker: string; title: string; price: string }[];
+      total: { label: string; value: string; note: string };
+    };
+  };
+
+  /** «Навайбкодить можно не только сайт» (фрилансеры): карточки задач и раскрывающийся список идей; нет - блока нет */
+  buildMore?: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    cards: { title: string; text: string }[];
+    ideasTitle: string;
+    ideas: string[];
+  };
+
+  /** «Окупаемость» (бизнес): пример на одном боте и калькулятор потерь; нет - блока нет */
+  payback?: {
+    eyebrow: string;
+    title: string;
+    example: { title: string; rows: { label: string; value: string }[]; yearLabel: string; yearValue: string };
+    calc: {
+      title: string;
+      fields: { id: "spend" | "missed" | "check"; label: string; initial: number }[];
+      ownBotCost: number;
+      weeksPerMonth: number;
+      disclaimer: string;
+    };
+  };
+
+  /** «Один заказ окупает эфир в N раз» (специалисты в найме): множитель считается из цены эфира; нет - блока нет */
+  paybackOrder?: {
+    eyebrow: string;
+    /** Средний заказ, ₸ */
+    orderValue: number;
+    orderLabel: string;
+    caption: string;
+    schemeTitle: string;
+    scheme: string[];
+    note: string;
+    /** Ряд карточек под блоком («Что можно предложить своим клиентам»); нет - ряда нет */
+    offers?: { title: string; items: { kicker: string; title: string; text: string }[] };
+  };
+
+  /** «Что будет на эфире, по минутам» (фрилансеры): строки программы и кнопка записи; нет - блока нет */
+  timeline?: {
+    eyebrow: string;
+    title: string;
+    items: { time: string; title: string; text: string; chips?: string[]; highlight?: boolean }[];
+    ctaLabel: string;
+  };
+
+  /** «С чем вы уйдёте после 1,5 часов» (бизнес): цветные плитки в стиле «Программа эфира»; нет - блока нет */
+  takeaways?: { eyebrow: string; title: string; items: { title: string; text: string }[] };
+
+  /** «Почему эфир платный» (фрилансеры): карточка с пояснением; цена в пилюле - из products.ts, у бесплатного эфира блока нет */
+  whyPaid?: { title: string; text: string };
+
+  /** «Ведущие эфира»: два ведущих (имя, роль, фото - из team.ts) с фактами и ряд цифр школы (из metrics.ts); нет - блока нет */
+  hosts?: {
+    eyebrow: string;
+    title: string;
+    people: { id: "maidan" | "nadira"; facts: { text: string; /** Дописывается к строке, только если резидентство показывается (astanaHub.show) */ astanaHub?: string }[] }[];
+    stats: { id: "students" | "views" | "streams"; label: string }[];
+    /** Подпись плитки «Astana Hub»; плитка только если astanaHub.show (в dev - всегда, с бейджем) */
+    hubStat?: string;
+  };
+
+  /** «Ученики без опыта в коде уже сделали» (бизнес): карточки проектов. Прод - только verified && consent, меньше 3 - блока нет */
+  studentWorks?: {
+    eyebrow: string;
+    title: string;
+    items: { title: string; text: string; /** Путь к скриншоту; нет файла - слот не рисуется */ image: string | null; verified: boolean; consent: boolean; source: string; asOf: string }[];
+  };
+
+  /** «Кому эфир не подойдёт»: честные ограничения; нет - блока нет */
+  notFor?: { eyebrow: string; title: string; items: { title: string; text: string }[] };
+
+  /** Тексты формы заявки (вместо обычных): шаги идут списком под описанием, маркер {price} в тексте шага заменяется ценой эфира */
+  apply?: {
+    /** Пилюля над заголовком */
+    eyebrow: string;
+    steps: { title: string; text: string }[];
+    formTitle: string;
+    formText: string;
+    submitLabel: string;
+    /** Строка под кнопкой формы */
+    note: string;
+  };
+
+  /** «Что даёт вайбкодинг»: две колонки (экономия / доход) после болей; нет - блока нет */
+  benefits?: {
+    eyebrow: string;
+    title: string;
+    columns: { title: string; icon: "down" | "up" | "tenge" | "growth"; items: { title: string; text: string }[] }[];
+  };
 
   /** «За 1,5 часа вы поймёте» / «Что получите» */
   outcomes: { title: string; text: string }[];
