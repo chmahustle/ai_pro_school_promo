@@ -12,7 +12,7 @@
  *
  * Для каждой страницы и ширины: <имя>-<ширина>-top.png и (если не --no-extra) -form.png (последняя форма по центру экрана)
  * и -bottom.png (низ страницы: футер, плавающие кнопки). Папка tmp/shots в .gitignore.
- * Первый запуск и подробности - в CLAUDE.md («Скриншоты»): scripts/shots-setup.sh, scripts/shots-serve.sh.
+ * Первый запуск: scripts/shots-setup.sh; копия сайта на отдельном порту: scripts/shots-serve.sh.
  * Не снимайте с dev-сервера, который работает на общем .next: используйте scripts/shots-serve.sh (отдельная копия, свой порт).
  */
 import { createRequire } from "node:module";
