@@ -130,7 +130,7 @@
 
 ## Футер: реквизиты и юридические страницы (шаг 18)
 
-- `src/data/company.ts` → `legal` (`name`, `bin`, `address`, `verified`): пока пусто - в футере «© 2026 AI Pro School». После заполнения и `verified: true` появится «© 2026 {юрлицо}. Все права защищены. · БИН … · адрес».
+- `src/data/company.ts`: реквизиты ТОО (`legalName`, `bin`, `address`, `website`) и `copyrightYear` (динамический) - единственный источник для футеров и /contacts; документы - `src/data/legalDocs.ts`.
 - Политика конфиденциальности (`privacyApproved`): пока `false` - ссылки в футерах нет (страница `/privacy` остаётся, ссылка под формами на неё есть - юрист должен утвердить текст).
 - Публичная оферта: нужна страница на домене сайта (`/offer`) и `offerApproved: true` + `offerUrl`. Старая оферта на nadira-school.kz в футере не показывается.
 

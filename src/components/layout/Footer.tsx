@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Instagram, MessageCircle, Youtube } from "lucide-react";
 import { NoBreakTerms } from "@/components/ui/NoBreakTerms";
 import { Logo } from "./Logo";
+import { LegalLine } from "./LegalLine";
 import { LOGIN_URL } from "./nav";
 import { getFooterData } from "@/data/public";
 import { cn } from "@/lib/utils";
@@ -103,26 +104,7 @@ export function Footer() {
 
         {/* Юридическая строка */}
         <div className="relative mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:flex-row sm:items-center sm:justify-between sm:gap-6">
-          <div className="relative min-w-0 text-[13px] leading-relaxed text-white/50">
-            <p>
-              {f.copyright}
-              {f.requisites.map((r, i) => (
-                <span key={r} className={i === 0 ? "ml-1" : "mt-1 block sm:mt-0 sm:ml-1 sm:inline"}>
-                  · {r}
-                </span>
-              ))}
-            </p>
-          </div>
-
-          {f.legalLinks.length > 0 && (
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-3 text-[13px] text-white/50">
-              {f.legalLinks.map((l) => (
-                <Link key={l.href} href={l.href} className="transition-colors hover:text-white">
-                  {l.label}
-                </Link>
-              ))}
-            </div>
-          )}
+          <LegalLine tone="dark" className="sm:pr-20" />
         </div>
 
         {/* Гигантский wordmark */}

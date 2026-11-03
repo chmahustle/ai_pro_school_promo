@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { legalDocs } from "./src/data/legalDocs";
 
 /** Боевые хосты, которые индексируются; всё остальное получает X-Robots-Tag: noindex. */
 const INDEXABLE_HOSTS = ["ai-pro-school.kz", "www.ai-pro-school.kz"];
@@ -35,6 +36,10 @@ const nextConfig: NextConfig = {
       { source: "/ai2026", destination: "/courses/ai-creator", permanent: true },
       { source: "/prakticum", destination: "/courses/practicum", permanent: true },
       { source: "/courses/ai2026", destination: "/courses/ai-creator", permanent: true },
+      // Юридические документы лежат в Google Docs; короткие адреса на нашем домене (на /public ссылается п. 13.2 оферты).
+      // Проект не static export, поэтому обычный серверный редирект; временный, чтобы адрес документа можно было сменить
+      { source: legalDocs.privacy.sitePath, destination: legalDocs.privacy.docHref, permanent: false },
+      { source: legalDocs.offer.sitePath, destination: legalDocs.offer.docHref, permanent: false },
     ];
   },
 };

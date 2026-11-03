@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Check, Loader2, MessageCircle } from "lucide-react";
-import Link from "next/link";
 import { Button, Dropdown, Input, Textarea } from "@/components/ui";
 import { leadSchema, type LeadInput } from "@/lib/leads/schema";
 import { submitLead } from "@/lib/leads/submit";
@@ -13,6 +12,7 @@ import { applyPhoneInput, PHONE_PLACEHOLDER } from "@/lib/phone";
 import { getAttribution, getSegment } from "@/lib/utm";
 import { newEventId, track } from "@/lib/analytics";
 import { resolveLeadProduct } from "@/data/product-ids";
+import { legalDocs } from "@/data/legalDocs";
 import type { FormConfig } from "@/data/public-types";
 import { site } from "@/lib/site";
 import { useT } from "@/i18n/LocaleProvider";
@@ -276,10 +276,14 @@ export function LeadForm({
       {hint && <p className={cn("text-center text-[13px] leading-snug", invert ? "text-white/60" : "text-ink-500")}>{hint}</p>}
       <p className={cn("text-center text-[13px] leading-snug", invert ? "text-white/60" : "text-ink-500")}>{responseNote ?? config.responseNote}</p>
       <p className={cn("text-center text-[12px] leading-snug", invert ? "text-white/55" : "text-ink-500")}>
-        {config.agreement.before}
-        <Link href={config.agreement.href} className={cn("underline underline-offset-2", invert ? "text-white" : "text-ink")}>
-          {config.agreement.linkText}
-        </Link>
+        Нажимая кнопку, вы соглашаетесь с{" "}
+        <a href={legalDocs.privacy.docHref} target="_blank" rel="noopener noreferrer" className={cn("underline underline-offset-2", invert ? "text-white" : "text-ink")}>
+          Политикой конфиденциальности
+        </a>{" "}
+        и условиями{" "}
+        <a href={legalDocs.offer.docHref} target="_blank" rel="noopener noreferrer" className={cn("underline underline-offset-2", invert ? "text-white" : "text-ink")}>
+          Договора публичной оферты
+        </a>
       </p>
     </form>
   );

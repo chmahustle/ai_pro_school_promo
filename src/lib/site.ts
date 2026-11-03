@@ -17,7 +17,6 @@ export const IS_INDEXABLE = (() => {
 
 export const site = {
   name: "AI Pro School",
-  legalName: "AI Pro School", // TODO: юридическое лицо (ИП/ТОО) для футера и оферты
   tagline: "Онлайн-школа ИИ в Казахстане",
   description:
     "Практическое обучение заработку на ИИ: ИИ-контент, вайб-кодинг, автоматизация. Для новичков, фрилансеров, бизнеса и специалистов в найме.",
@@ -44,9 +43,6 @@ export const site = {
 
   /** Собственная платформа ИИ-креаторов (упоминается на практикуме) */
   platformUrl: "https://strimmeo.com",
-
-  /** Существующая оферта (Tilda). TODO: перенести на /privacy */
-  legacyOfferUrl: "https://nadira-school.kz/public",
 } as const;
 
 export type Site = typeof site;

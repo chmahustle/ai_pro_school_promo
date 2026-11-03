@@ -4,6 +4,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { getFooterData } from "../src/data/public.ts";
 import { catalogUrl, directionPages, getProduct, products } from "../src/data/products.ts";
+import { legalDocs } from "../src/data/legalDocs.ts";
 import { company } from "../src/data/company.ts";
 
 import { readdirSync } from "node:fs";
@@ -43,7 +44,6 @@ test("футер: все внутренние ссылки ведут на су�
     ...f.directions.flatMap((d) => [d.href, ...d.links.map((l) => l.href)]),
     ...f.audiences.map((a) => a.href),
     ...f.school.map((l) => l.href),
-    ...f.legalLinks.map((l) => l.href),
   ].filter((u) => u.startsWith("/"));
   for (const u of urls) assert.ok(pageExists(u), `нет страницы для ${u}`);
 });
@@ -53,18 +53,15 @@ test("футер: соцсети и телефон из company.ts, пустой
   assert.equal(f.contacts.phone?.href, `tel:+${company.contacts.phoneRaw}`);
   assert.equal(f.contacts.whatsapp, company.contacts.whatsapp);
   for (const s of f.contacts.socials) assert.equal(s.href, company.contacts.social[s.id]);
-  const all = [f.contacts.whatsapp, f.contacts.phone?.href, ...f.contacts.socials.map((s) => s.href), ...f.legalLinks.map((l) => l.href)].filter(Boolean);
+  const all = [f.contacts.whatsapp, f.contacts.phone?.href, ...f.contacts.socials.map((s) => s.href)].filter(Boolean);
   for (const h of all) assert.ok(h && h !== "#" && !h.startsWith("#"), `плохой href: ${h}`);
 });
 
-test("футер: политика и оферта - только утверждённые и на домене сайта; юр. строка - только подтверждённые реквизиты", () => {
+test("футер: реквизиты ТОО из company.ts, политика и оферта - внешние документы (/pub)", () => {
   const f = getFooterData();
-  if (!company.privacyApproved) assert.ok(!f.legalLinks.some((l) => l.href === "/privacy"));
-  if (!company.offerApproved) assert.ok(!f.legalLinks.some((l) => l.label.includes("оферта")));
-  for (const l of f.legalLinks) assert.ok(l.href.startsWith("/"), `ссылка не на домене сайта: ${l.href}`);
-  const legalOk = company.legal.verified && company.legal.name.trim() && company.legal.bin.trim();
-  if (!legalOk) {
-    assert.match(f.copyright, /^© \d{4} AI Pro School$/);
-    assert.deepEqual(f.requisites, []);
-  }
+  assert.equal(f.legal.legalName, company.legalName);
+  assert.equal(f.legal.bin, company.bin);
+  assert.deepEqual(f.legal.docs.map((d) => d.title), [legalDocs.privacy.title, legalDocs.offer.title]);
+  assert.deepEqual(f.legal.docs.map((d) => d.href), [legalDocs.privacy.docHref, legalDocs.offer.docHref]);
+  for (const d of f.legal.docs) assert.match(d.href, /^https:\/\/docs\.google\.com\/document\/d\/e\/[\w-]+\/pub$/);
 });

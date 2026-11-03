@@ -8,6 +8,7 @@
  *     (их нет в коде интерфейса - значит, в чанк попали данные);
  *   • секреты: имя META_CAPI_TOKEN (серверный токен Meta Conversions API) не должно встречаться ни в HTML, ни в чанках;
  *     если токен задан в окружении сборки, ищем и его значение.
+ *   • банковские реквизиты («KZ63722S», «CASPKZKA», «Kaspi Bank», «ИИК», «КБе») - в HTML/RSC и в чанках;
  *   • dev-пометки и TODO в HTML/RSC страниц («TODO», «ответ не подтверждён», «не подтверждено», PLACEHOLDER, UNVERIFIED и т.п.).
  * Нашли - сборка падает с указанием файла и контекста.
  */
@@ -63,6 +64,8 @@ const PAGE_REGEXES = [
   // «зарабатывает» целиком (не «зарабатываете» в заголовках курса)
   { re: /(?<![а-яё])зарабатывает(?![а-яё])/, name: "зарабатывает" },
 ];
+// Шаг 31: банковские реквизиты школы не должны попасть на сайт ни в HTML/RSC, ни в клиентские чанки
+const BANK_PHRASES = ["KZ63722S", "CASPKZKA", "Kaspi Bank", "ИИК", "КБе"];
 const CHUNK_IDENTIFIERS = ["priceStatus", "piiBlurred", "logoPermission"];
 
 function* walk(dir, exts) {
@@ -92,7 +95,7 @@ for (const file of walk(join(NEXT, "server", "app"), [".html", ".rsc"])) {
     const m = re.exec(text);
     if (m) hits.push({ file, what: `ключ "${key}"`, ctx: ctx(text, m.index, key.length + 4) });
   }
-  for (const phrase of [...PHRASES, ...PAGE_PHRASES]) {
+  for (const phrase of [...PHRASES, ...PAGE_PHRASES, ...BANK_PHRASES]) {
     const i = text.indexOf(phrase);
     if (i !== -1) hits.push({ file, what: `фраза «${phrase}»`, ctx: ctx(text, i, phrase.length) });
   }
@@ -105,7 +108,7 @@ for (const file of walk(join(NEXT, "server", "app"), [".html", ".rsc"])) {
 // 2. Клиентские чанки
 for (const file of walk(join(NEXT, "static"), [".js"])) {
   const text = readFileSync(file, "utf8");
-  for (const phrase of PHRASES) {
+  for (const phrase of [...PHRASES, ...BANK_PHRASES]) {
     const i = text.indexOf(phrase);
     if (i !== -1) hits.push({ file, what: `фраза «${phrase}»`, ctx: ctx(text, i, phrase.length) });
   }

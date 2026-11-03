@@ -226,12 +226,18 @@ export interface PublicFooter {
     phone: { label: string; href: string } | null;
     socials: { id: "instagram" | "tiktok" | "youtube"; label: string; href: string }[];
   };
-  /** «© 2026 AI Pro School» или «© 2026 {юрлицо}. Все права защищены.» (только подтверждённые реквизиты) */
-  copyright: string;
-  /** БИН, адрес - только подтверждённые */
-  requisites: string[];
-  /** Политика и оферта: только утверждённые и только на домене сайта */
-  legalLinks: { label: string; href: string }[];
+  /** Реквизиты ТОО и ссылки на документы */
+  legal: PublicLegalInfo;
+}
+
+export interface PublicLegalInfo {
+  legalName: string;
+  bin: string;
+  address: string;
+  website: string;
+  copyrightYear: number;
+  /** Политика конфиденциальности и договор публичной оферты: внешние документы (Google Docs, /pub) */
+  docs: { title: string; href: string }[];
 }
 
 export interface PublicTestimonial {
@@ -297,8 +303,6 @@ export interface PublicBonuses {
 export interface FormConfig {
   /** Продукты из products.ts + «Не знаю, помогите выбрать» */
   productOptions: { value: string; label: string }[];
-  /** Согласие под кнопкой: «before» + ссылка «linkText» */
-  agreement: { before: string; linkText: string; href: string };
   /** Обещание под кнопкой («Ответим в WhatsApp в течение 5 минут») */
   responseNote: string;
 }

@@ -6,6 +6,7 @@ import "server-only";
  */
 import { audiences, landingAudiences } from "./audiences";
 import { company } from "./company";
+import { legalDocs } from "./legalDocs";
 import { getCourseContent } from "./courseContent";
 import { getSpeakerRole, speakers } from "./speakers";
 import { courses } from "./courses";
@@ -26,7 +27,6 @@ import {
   getEntrySubtitle,
   getNextCohort,
   catalogUrl,
-  currentDate,
   getCurrentPrice,
   getDeliverables,
   getPartnerProjectStep,
@@ -40,7 +40,7 @@ import {
 } from "./products";
 import { GENERAL_PRODUCT } from "./product-ids";
 import { vocabulary } from "./vocabulary";
-import { SITE_URL, site } from "@/lib/site";
+import { site } from "@/lib/site";
 import { formatMonthYear, formatNumber, formatTenge, nameInSentence } from "@/lib/utils";
 import { youtubeIdFromUrl } from "@/lib/youtube";
 import { isStoryPublishable, stories as allStories } from "./stories";
@@ -51,6 +51,7 @@ import { getVisibleWorks } from "./works";
 import type { Audience, AudienceSlug, Course, Partner, Review, Story, TeamMember } from "./types";
 import type {
   PublicFooter,
+  PublicLegalInfo,
   MenuAudience,
   MenuData,
   PublicDirectionPage,
@@ -318,25 +319,16 @@ export function getMenuData(): MenuData {
   };
 }
 
-/** Ссылка принадлежит домену сайта: относительная («/offer») или абсолютная на хост SITE_URL */
-function isOwnDomainUrl(url: string): boolean {
-  if (url.startsWith("/") && !url.startsWith("//")) return true;
-  try {
-    return new URL(url).hostname === new URL(SITE_URL).hostname;
-  } catch {
-    return false;
-  }
-}
-
-/**
- * Ссылки «Политика конфиденциальности» и «Оферта» для футеров: только утверждённые (company.ts → privacyApproved / offerApproved)
- * и только на страницы домена сайта. Иначе ссылки нет.
- */
-export function getLegalLinks(): { label: string; href: string }[] {
-  const links: { label: string; href: string }[] = [];
-  if (company.privacyApproved) links.push({ label: "Политика конфиденциальности", href: "/privacy" });
-  if (company.offerApproved && company.offerUrl && isOwnDomainUrl(company.offerUrl)) links.push({ label: "Публичная оферта", href: company.offerUrl });
-  return links;
+/** Реквизиты ТОО (company.ts) и ссылки на юридические документы (legalDocs.ts) для футеров и /contacts. Без банковских данных */
+export function getLegalInfo(): PublicLegalInfo {
+  return {
+    legalName: company.legalName,
+    bin: company.bin,
+    address: company.address,
+    website: company.website,
+    copyrightYear: company.copyrightYear,
+    docs: [legalDocs.privacy, legalDocs.offer].map((d) => ({ title: d.title, href: d.docHref })),
+  };
 }
 
 /**
@@ -356,8 +348,6 @@ export function getFooterData(): PublicFooter {
   });
   const beginners = audiences.find((a) => a.slug === "beginners");
   const c = company.contacts;
-  const legalOk = company.legal.verified && company.legal.name.trim() !== "" && company.legal.bin.trim() !== "";
-  const year = currentDate().getFullYear();
   return {
     description: company.description,
     directions: [directionColumn("creator"), directionColumn("vibecoding")],
@@ -382,9 +372,7 @@ export function getFooterData(): PublicFooter {
         ] as const
       ).filter((x) => x.href.trim() !== "").map((x) => ({ ...x, href: x.href.trim() })),
     },
-    copyright: legalOk ? `© ${year} ${company.legal.name.trim()}. Все права защищены.` : `© ${year} AI Pro School`,
-    requisites: legalOk ? [`БИН ${company.legal.bin.trim()}`, company.legal.address.trim()].filter(Boolean) : [],
-    legalLinks: getLegalLinks(),
+    legal: getLegalInfo(),
   };
 }
 
@@ -495,7 +483,6 @@ export function isInstallmentEnabled(course: Course): boolean {
 export function getFormConfig(): FormConfig {
   return {
     productOptions: [...products.map((p) => ({ value: p.id as string, label: p.name })), { value: formConfig.generalOption.value, label: formConfig.generalOption.label }],
-    agreement: { before: company.privacyConsent.before, linkText: company.privacyConsent.linkText, href: company.privacyConsent.href },
     responseNote: formConfig.responseNote.text,
   };
 }
