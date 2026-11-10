@@ -11,20 +11,6 @@ import { SHOW_PLACEHOLDERS, filterForPublish } from "@/lib/placeholders";
  */
 export const results: ResultCase[] = [
   {
-    id: "alena",
-    name: "Алёна Заярных",
-    context: "без опыта в AI-видео",
-    headline: "Договор на 15 роликов: 500 000 ₸",
-    before: "Нет опыта в AI-видео, первые ролики не залетали, думала сдаться.",
-    after: "500+ AI-видео, миллионные просмотры, куратор AI Pro School.",
-    quote: "Несколько месяцев от первого видео до куратора школы",
-    photo: "/photo/alena.webp",
-    audiences: ["freelancers", "beginners", "business", "career"],
-    course: "ai-creator",
-    source: "https://freelance.ai-pro-school.kz/",
-    status: "verified",
-  },
-  {
     id: "madina",
     name: "Мадина",
     context: "мама двоих детей в декрете",

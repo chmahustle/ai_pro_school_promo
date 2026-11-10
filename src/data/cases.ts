@@ -57,28 +57,6 @@ const AS_OF = "2026-10";
 
 export const cases: Case[] = [
   {
-    id: "alena",
-    direction: "creator",
-    audiences: ["freelancers", "beginners", "business", "career"],
-    individualResult: true,
-    authorName: "Алёна Заярных",
-    authorRole: "без опыта в AI-видео",
-    metric: "500 000 ₸",
-    metricLabel: "договор на 15 роликов",
-    photoSrc: "/photo/alena.webp",
-    posterSrc: null,
-    sourceUrl: null,
-    before: "Нет опыта в AI-видео, первые ролики не залетали, думала сдаться.",
-    after: "500+ AI-видео, миллионные просмотры, куратор AI Pro School.",
-    quote: "Несколько месяцев от первого видео до куратора школы",
-    textsVerified: true,
-    sourceKind: "student-f",
-    asOf: AS_OF,
-    verified: true,
-    consent: true,
-    note: "нужен скриншот статистики или видео", // TODO(клиент)
-  },
-  {
     id: "madina",
     direction: "creator",
     audiences: ["beginners", "freelancers", "business", "career"],

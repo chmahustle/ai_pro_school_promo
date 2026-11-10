@@ -10,27 +10,6 @@ import { SHOW_PLACEHOLDERS } from "@/lib/placeholders";
  */
 export const stories: Story[] = [
   {
-    id: "alena",
-    individualResult: true, // доход: только отдельной историей
-    direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
-    name: "Алёна Заярных",
-    descriptor: "без опыта в AI-видео",
-    photo: "/photo/alena.webp",
-    result: { value: "500 000", unit: "₸", text: "· договор на 15 роликов" },
-    before: "Нет опыта в AI-видео, первые ролики не залетали, думала сдаться.",
-    after: "500+ AI-видео, миллионные просмотры, куратор AI Pro School.",
-    quote: {
-      text: "Несколько месяцев от первого видео до куратора школы",
-      verbatim: true,
-    },
-    audiences: ["freelancers", "beginners", "business", "career"],
-    source: "freelance.ai-pro-school.kz",
-    asOf: "2026-10",
-    verified: true,
-    consent: true,
-    note: "Источник: https://freelance.ai-pro-school.kz/ #cases",
-  },
-  {
     id: "madina",
     direction: "creator", // кейсы про ИИ-ролики; вайб-кодинг-кейсов пока нет
     name: "Мадина",

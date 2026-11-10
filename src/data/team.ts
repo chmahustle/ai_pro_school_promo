@@ -41,18 +41,11 @@ export const team: TeamMember[] = [
       "Акселерации: IRA MostVC и Terricon Valley",
     ],
     photo: "/photo/maidan.jpg",
+    socials: {
+      instagram: "https://www.instagram.com/naymanov.maydan/",
+    },
     status: "verified",
     note: "Текст - из лендингов вайб-кодинга. Фото - public/photo/maidan.jpg.",
-  },
-  {
-    id: "alena",
-    name: "Алёна Заярных",
-    role: "Куратор",
-    bio: "Выпускница школы. Прошла путь от первых ИИ-роликов до куратора: 500+ AI-видео, миллионные просмотры.",
-    facts: ["500+ AI-видео", "Договор на 15 роликов на 500 000 ₸", "Куратор AI Pro School"],
-    photo: "/photo/alena.webp",
-    status: "verified",
-    note: "Упоминается как куратор в кейсах на лендингах. Роль/био - TODO уточнить.",
   },
 ];
 
